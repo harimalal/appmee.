@@ -497,11 +497,11 @@ const Dashboard = (() => {
     // Déconnexion
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
       Auth.clearSession();
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     });
     document.getElementById('ddLogoutBtn')?.addEventListener('click', () => {
       Auth.clearSession();
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     });
 
     // Fermeture modales
