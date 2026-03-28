@@ -16,7 +16,7 @@ const Auth = (() => {
   const CFG = {
     SESSION_KEY:   'appmetier_session_v1',
     USERS_KEY:     'appmetier_users_v1',
-    DASHBOARD_URL: 'dashboard.html',
+    DASHBOARD_URL: '/dashboard.html',
     TTL:           7 * 24 * 60 * 60 * 1000, // 7 jours en ms
   };
 
