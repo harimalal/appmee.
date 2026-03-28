@@ -1,7 +1,7 @@
 /* ============================================================
    APPMETIER PLATFORM — Dashboard Styles
    ============================================================ */
-
+ 
 /* ---- Layout ---- */
 .dash-root {
   display: grid;
@@ -9,8 +9,9 @@
   grid-template-rows: 52px 1fr;
   min-height: 100vh;
   background: var(--cream);
+  overflow: hidden;
 }
-
+ 
 /* ---- Header ---- */
 .dash-header {
   grid-column: 1 / -1;
@@ -25,7 +26,7 @@
   z-index: 100;
   border-bottom: 1px solid rgba(255,255,255,.07);
 }
-
+ 
 .dash-brand {
   display: flex;
   align-items: center;
@@ -57,7 +58,7 @@
   letter-spacing: .06em;
   text-transform: uppercase;
 }
-
+ 
 .dash-header-right {
   display: flex;
   align-items: center;
@@ -82,7 +83,7 @@
   border-radius: 50%;
   border: 1.5px solid var(--ink);
 }
-
+ 
 .dash-user-btn {
   display: flex;
   align-items: center;
@@ -112,7 +113,7 @@
   font-weight: 500;
   color: rgba(255,255,255,.7);
 }
-
+ 
 /* Dropdown */
 .user-dropdown {
   position: absolute;
@@ -159,7 +160,7 @@
 .dd-item.danger { color: var(--red); }
 .dd-item.danger:hover { background: var(--red-lt); }
 .dd-sep { height: 1px; background: var(--rule); }
-
+ 
 /* ---- Sidebar ---- */
 .dash-sidebar {
   background: var(--white);
@@ -168,12 +169,10 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  position: sticky;
-  top: 52px;
   height: calc(100vh - 52px);
   overflow-y: auto;
 }
-
+ 
 .sidebar-label {
   font-size: 9px;
   font-weight: 600;
@@ -184,7 +183,7 @@
   margin-top: 6px;
 }
 .sidebar-label:first-child { margin-top: 0; }
-
+ 
 .sidebar-item {
   display: flex;
   align-items: center;
@@ -219,14 +218,16 @@
 .sidebar-item.danger { color: var(--accent); }
 .sidebar-item.danger:hover { background: var(--red-lt); }
 .sidebar-spacer { flex: 1; }
-
+ 
 /* ---- Contenu ---- */
 .dash-content {
   padding: 32px 32px 48px;
   max-width: 1200px;
   width: 100%;
+  overflow-y: auto;
+  height: calc(100vh - 52px);
 }
-
+ 
 /* Vue */
 .dash-view { display: none; }
 .dash-view.active {
@@ -237,7 +238,7 @@
   from { opacity:0; transform:translateY(4px); }
   to   { opacity:1; transform:translateY(0); }
 }
-
+ 
 /* Page header */
 .page-header { margin-bottom: 28px; }
 .page-title {
@@ -254,14 +255,14 @@
   color: var(--ink-muted);
   font-weight: 300;
 }
-
+ 
 /* ---- Grille applications ---- */
 .apps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
-
+ 
 .app-card {
   background: var(--white);
   border: 1px solid var(--rule);
@@ -279,7 +280,7 @@
   background: var(--cream-dark);
   opacity: .6;
 }
-
+ 
 .app-card-tag {
   font-size: 9px;
   font-weight: 600;
@@ -311,7 +312,7 @@
   padding-top: 14px;
   border-top: 1px solid var(--cream-deep);
 }
-
+ 
 .app-card-open {
   background: var(--accent);
   color: #fff;
@@ -326,7 +327,7 @@
   transition: background .15s;
 }
 .app-card-open:hover { background: var(--accent-h); }
-
+ 
 .app-card-activate {
   background: transparent;
   color: var(--ink-light);
@@ -341,14 +342,14 @@
   transition: border-color .15s, color .15s;
 }
 .app-card-activate:hover { border-color: var(--ui-brd2); color: var(--ink); }
-
+ 
 /* Cadenas */
 .app-lock-icon {
   position: absolute;
   top: 18px; right: 18px;
   opacity: .2;
 }
-
+ 
 /* ---- Abonnements ---- */
 .subs-list { display: flex; flex-direction: column; gap: 10px; }
 .sub-row {
@@ -366,7 +367,7 @@
 .sub-row-name { font-size: 14px; font-weight: 600; color: var(--ink); font-family: var(--font-serif); }
 .sub-row-meta { font-size: 11px; color: var(--ink-muted); margin-top: 2px; font-weight: 300; }
 .sub-row-actions { display: flex; gap: 8px; align-items: center; }
-
+ 
 /* ---- Profil ---- */
 .profile-grid {
   display: grid;
@@ -390,7 +391,7 @@
 }
 .profile-form { display: flex; flex-direction: column; gap: 16px; }
 .profile-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
+ 
 /* ---- Empty state ---- */
 .empty-state {
   text-align: center;
@@ -419,7 +420,7 @@
   margin: 0 auto 20px;
   line-height: 1.7;
 }
-
+ 
 /* ---- Modal souscrire ---- */
 .sub-modal-app {
   display: flex;
@@ -473,7 +474,7 @@
   margin-top: 10px;
   font-weight: 300;
 }
-
+ 
 /* ---- Mobile overlay ---- */
 .sidebar-overlay {
   display: none;
@@ -483,7 +484,7 @@
   z-index: 89;
   backdrop-filter: blur(2px);
 }
-
+ 
 /* ============================================================
    RESPONSIVE DASHBOARD
    ============================================================ */
@@ -491,7 +492,7 @@
   .apps-grid { grid-template-columns: repeat(2, 1fr); }
   .profile-grid { grid-template-columns: 1fr; }
 }
-
+ 
 @media (max-width: 860px) {
   .dash-root { grid-template-columns: 1fr; }
   .dash-sidebar {
@@ -507,7 +508,7 @@
   .sidebar-overlay.visible { display: block; }
   .dash-content { padding: 24px 16px; }
 }
-
+ 
 @media (max-width: 600px) {
   .apps-grid { grid-template-columns: 1fr; }
   .dash-brand-sep,
