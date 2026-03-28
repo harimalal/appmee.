@@ -122,7 +122,7 @@ const Auth = (() => {
 
   function requireAuth() {
     const s = getSession();
-    if (!s) { window.location.href = 'index.html'; return null; }
+    if (!s) { window.location.href = '/index.html'; return null; }
     return s.user;
   }
 
