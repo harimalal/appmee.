@@ -122,12 +122,23 @@ const Auth = (() => {
 
   function requireAuth() {
     const s = getSession();
-    if (!s) { window.location.href = '/index.html'; return null; }
+    if (!s) {
+      // Ne rediriger que si on est sur le dashboard
+      const path = window.location.pathname;
+      const onDashboard = path.includes('dashboard');
+      if (onDashboard) window.location.href = '/index.html';
+      return null;
+    }
     return s.user;
   }
 
   function redirectIfAuth() {
-    if (getSession()) window.location.href = CFG.DASHBOARD_URL;
+    // Ne rediriger que si on est sur la page de login (index.html)
+    const path = window.location.pathname;
+    const onLoginPage = path === '/' || path === '/index.html' || path.endsWith('index.html');
+    if (onLoginPage && getSession()) {
+      window.location.href = CFG.DASHBOARD_URL;
+    }
   }
 
   // ============================================================
