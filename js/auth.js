@@ -16,7 +16,7 @@ const Auth = (() => {
   const CFG = {
     SESSION_KEY:   'appmetier_session_v1',
     USERS_KEY:     'appmetier_users_v1',
-    DASHBOARD_URL: '/dashboard.html',
+    DASHBOARD_URL: '/dashboard',
     TTL:           7 * 24 * 60 * 60 * 1000, // 7 jours en ms
   };
 
@@ -126,7 +126,7 @@ const Auth = (() => {
       // Ne rediriger que si on est sur le dashboard
       const path = window.location.pathname;
       const onDashboard = path.includes('dashboard');
-      if (onDashboard) window.location.href = '/index.html';
+      if (onDashboard) window.location.href = '/';
       return null;
     }
     return s.user;
