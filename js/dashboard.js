@@ -98,15 +98,17 @@ const Dashboard = (() => {
   // ============================================================
   // ABONNEMENTS — données locales (→ Supabase en prod)
   // ============================================================
-  function getSubs() {
+function getSubs() {
     try {
-      return JSON.parse(localStorage.getItem(`appmetier_subs_${currentUser.id}`) || '[]');
+      const userId = currentUser?.id || 'guest';
+      return JSON.parse(localStorage.getItem(`appmetier_subs_${userId}`) || '[]');
     } catch { return []; }
   }
 
-  function saveSubs(subs) {
+function saveSubs(subs) {
     try {
-      localStorage.setItem(`appmetier_subs_${currentUser.id}`, JSON.stringify(subs));
+      const userId = currentUser?.id || 'guest';
+      localStorage.setItem(`appmetier_subs_${userId}`, JSON.stringify(subs));
     } catch { toast('Erreur de sauvegarde.', 'error'); }
   }
 
@@ -497,11 +499,11 @@ const Dashboard = (() => {
     // Déconnexion
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
       Auth.clearSession();
-      window.location.href = '/index.html';
+      window.location.href = '/';
     });
     document.getElementById('ddLogoutBtn')?.addEventListener('click', () => {
       Auth.clearSession();
-      window.location.href = '/index.html';
+      window.location.href = '/';
     });
 
     // Fermeture modales
