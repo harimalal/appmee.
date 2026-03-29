@@ -6,10 +6,9 @@
 .dash-root {
   display: grid;
   grid-template-columns: 192px 1fr;
-  grid-template-rows: auto 1fr;
-  min-height: 100vh;
+  grid-template-rows: 1fr; /* Une seule ligne suffit */
+  min-height: calc(100vh - 60px); /* On enlève la hauteur de la barre du haut */
   background: var(--cream);
-  overflow: hidden;
 }
  
 /* ---- Header ---- */
