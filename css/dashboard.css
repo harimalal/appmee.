@@ -6,7 +6,7 @@
 .dash-root {
   display: grid;
   grid-template-columns: 192px 1fr;
-  grid-template-rows: 52px 1fr;
+  grid-template-rows: auto 1fr;
   min-height: 100vh;
   background: var(--cream);
   overflow: hidden;
