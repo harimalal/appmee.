@@ -385,10 +385,12 @@ function saveSubs(subs) {
     document.getElementById('cancelText').innerHTML =
       `Résilier <strong>${esc(app.label)}</strong> ? Votre accès reste actif jusqu'au <strong>${renew}</strong>.`;
     const btn = document.getElementById('cancelConfirmBtn');
-    btn.disabled = false; // <-- LIGNE AJOUTÉE
+    btn.disabled = false;
+    btn.textContent = 'Confirmer la résiliation'; /* <-- LIGNE AJOUTÉE : On remet le texte à neuf */
     btn.onclick = () => handleCancel(appId);
+    
     openModal('cancelModal');
-  }
+    }
 
   async function handleCancel(appId) {
     const btn = document.getElementById('cancelConfirmBtn');
