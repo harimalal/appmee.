@@ -4,24 +4,31 @@
  
 /* ---- Layout ---- */
 .dash-root {
-  display: grid;
-  grid-template-columns: 192px 1fr; /* Col 1: Sidebar | Col 2: Contenu */
-  grid-template-rows: 1fr;          /* Une seule ligne de toute la hauteur */
-  min-height: calc(100vh - 52px);   /* Hauteur totale moins le header */
+  display: flex !important;   /* On passe en Flexbox, c'est plus simple que la Grille */
+  align-items: flex-start;    /* On colle tout en haut */
+  min-height: calc(100vh - 52px);
   background: var(--cream);
   overflow: hidden;
-  align-items: start;               /* Aligne tout vers le haut par défaut */
 }
 
-/* On s'assure que le contenu ne se fait pas pousser par l'overlay */
-.dash-content {
-  grid-column: 2;                   /* Oblige le contenu à rester à droite */
-  grid-row: 1;                      /* Oblige le contenu à rester en haut */
-  padding: 32px 32px 48px;
-  max-width: 1200px;
-  width: 100%;
-  overflow-y: auto;
+/* ---- Sidebar ---- */
+.dash-sidebar {
+  width: 192px;               /* On fixe la largeur */
+  flex-shrink: 0;             /* On l'empêche de s'écraser */
+  background: var(--white);
+  border-right: 1px solid var(--rule);
   height: calc(100vh - 52px);
+  position: sticky;
+  top: 52px;
+}
+
+/* ---- Contenu ---- */
+.dash-content {
+  flex-grow: 1;               /* Prend tout le reste de la largeur */
+  padding: 20px 32px;         /* Petit espace propre en haut */
+  margin-top: 0 !important;   /* Force la suppression de toute marge */
+  height: calc(100vh - 52px);
+  overflow-y: auto;
 }
  
 /* ---- Header ---- */
