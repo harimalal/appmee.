@@ -343,6 +343,7 @@ function saveSubs(subs) {
       </div>`).join('');
 
     const btn = document.getElementById('subModalBtn');
+    btn.disabled = false;
     if (active) {
       btn.textContent = 'Ouvrir l\'application';
       btn.onclick = () => { closeModal('subModal'); launchApp(appId); };
@@ -383,7 +384,9 @@ function saveSubs(subs) {
     const renew = sub.renews_at ? new Date(sub.renews_at).toLocaleDateString('fr-FR') : '—';
     document.getElementById('cancelText').innerHTML =
       `Résilier <strong>${esc(app.label)}</strong> ? Votre accès reste actif jusqu'au <strong>${renew}</strong>.`;
-    document.getElementById('cancelConfirmBtn').onclick = () => handleCancel(appId);
+    const btn = document.getElementById('cancelConfirmBtn');
+    btn.disabled = false; // <-- LIGNE AJOUTÉE
+    btn.onclick = () => handleCancel(appId);
     openModal('cancelModal');
   }
 
