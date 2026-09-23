@@ -1,0 +1,437 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Le système MAESTRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --ink: #16151C; --ink-soft: #55535F; --paper: #FAF9F6; --surface: #FFFFFF; --line: #E4E1DA;
+    --accent: #4739A8; --accent-soft: #E5E1F4;
+    --good: #1E8E5A; --good-soft: #E4F3EB; --warn: #B4700F; --warn-soft: #FBF0DD; --bad: #C4432C; --bad-soft: #FBE9E4;
+    --night: #131219; --night-surface: #1C1B26; --night-ink: #F2F0EA; --night-ink-soft: #A6A3B4; --night-line: #302E3E;
+    --night-accent: #A99CF0; --night-accent-soft: rgba(169,156,240,.15); --night-good: #4ADE80; --night-good-soft: rgba(74,222,128,.12);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font-family: 'IBM Plex Sans', -apple-system, sans-serif; }
+  .display { font-family: 'Fraunces', Georgia, serif; text-wrap: balance; }
+  .mono { font-family: 'IBM Plex Mono', 'Courier New', monospace; }
+
+  .deck { width: 100%; height: 100vh; position: relative; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
+    padding: 7vh 9vw 10vh 12vw; opacity: 0; transform: translateY(10px) scale(.995);
+    transition: opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1);
+    overflow-y: auto;
+  }
+  .slide.active { display: flex; opacity: 1; transform: none; z-index: 5; }
+  .slide.light { background: var(--paper); color: var(--ink); }
+  .slide.dark { background: var(--night); color: var(--night-ink); }
+  .slide.dark .ink-soft { color: var(--night-ink-soft); }
+  .light .ink-soft { color: var(--ink-soft); }
+
+  @keyframes riseIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .slide.active .eyebrow { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) both; }
+  .slide.active h1, .slide.active h2 { animation: riseIn .55s cubic-bezier(.2,.8,.3,1) .07s both; }
+  .slide.active .vo { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .16s both; }
+  .slide.active > p { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .2s both; }
+  .slide.active .io-card { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .24s both; }
+  .slide.active .stat-grid > *, .slide.active .grid-4 > *, .slide.active .grid-2 > *,
+  .slide.active .timeline > *, .slide.active .control-split > *, .slide.active .checklist > li,
+  .slide.active .case-steps > .case-step { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) both; }
+  .slide.active .stat-grid>*:nth-child(1), .slide.active .grid-4>*:nth-child(1), .slide.active .grid-2>*:nth-child(1),
+  .slide.active .timeline>*:nth-child(1), .slide.active .control-split>*:nth-child(1), .slide.active .checklist>li:nth-child(1),
+  .slide.active .case-steps>.case-step:nth-child(1) { animation-delay: .24s; }
+  .slide.active .stat-grid>*:nth-child(2), .slide.active .grid-4>*:nth-child(2), .slide.active .grid-2>*:nth-child(2),
+  .slide.active .timeline>*:nth-child(2), .slide.active .control-split>*:nth-child(2), .slide.active .checklist>li:nth-child(2),
+  .slide.active .case-steps>.case-step:nth-child(2) { animation-delay: .32s; }
+  .slide.active .stat-grid>*:nth-child(3), .slide.active .grid-4>*:nth-child(3), .slide.active .timeline>*:nth-child(3),
+  .slide.active .checklist>li:nth-child(3), .slide.active .case-steps>.case-step:nth-child(3) { animation-delay: .4s; }
+  .slide.active .stat-grid>*:nth-child(4), .slide.active .grid-4>*:nth-child(4), .slide.active .timeline>*:nth-child(4),
+  .slide.active .checklist>li:nth-child(4), .slide.active .case-steps>.case-step:nth-child(4) { animation-delay: .48s; }
+  .slide.active .stat-grid>*:nth-child(5), .slide.active .timeline>*:nth-child(5), .slide.active .checklist>li:nth-child(5) { animation-delay: .56s; }
+  .slide.active .checklist>li:nth-child(6), .slide.active .checklist>li:nth-child(7), .slide.active .checklist>li:nth-child(8),
+  .slide.active .stat-grid>*:nth-child(6) { animation-delay: .62s; }
+  .slide.active .terme { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .5s both; }
+  .slide.active .loop { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .66s both; }
+  @media (prefers-reduced-motion: reduce) { .slide, .slide * { animation: none !important; transition: none !important; } }
+
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .dark .eyebrow { color: var(--night-accent); }
+  .eyebrow .icon { width: 16px; height: 16px; }
+  .eyebrow .chap { opacity: .55; }
+
+  h1 { font-size: clamp(2.1rem, 4.6vw, 3.7rem); font-weight: 600; line-height: 1.05; margin: 0 0 18px; max-width: 19ch; }
+  h2 { font-size: clamp(1.7rem, 3.3vw, 2.6rem); font-weight: 600; line-height: 1.1; margin: 0 0 18px; max-width: 22ch; }
+  p { font-size: 1.02rem; line-height: 1.62; max-width: 60ch; margin: 0 0 12px; }
+  svg.icon { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+  .vo { font-size: 1.16rem; line-height: 1.58; max-width: 56ch; margin: 2px 0 8px; padding-left: 18px; border-left: 3px solid var(--accent); color: var(--ink); }
+  .dark .vo { border-left-color: var(--night-accent); color: var(--night-ink); }
+  .vo .vo-tag { display: block; font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; }
+  .dark .vo .vo-tag { color: var(--night-accent); }
+  .vo strong { font-weight: 600; }
+
+  .loop { margin-top: 26px; font-family: 'IBM Plex Mono', monospace; font-size: .8rem; letter-spacing: .01em; color: var(--accent); display: flex; align-items: baseline; gap: 9px; max-width: 52ch; }
+  .dark .loop { color: var(--night-accent); }
+  .loop::before { content: "\21B3"; font-size: 1rem; }
+
+  .terme { margin-top: 18px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 10px; padding: 13px 18px; max-width: 620px; background: var(--surface); }
+  .dark .terme { border-color: var(--night-line); border-left-color: var(--warn); background: var(--night-surface); }
+  .terme .t-label { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--warn); }
+  .terme .t-term { font-weight: 600; font-size: 1rem; margin: 3px 0 2px; }
+  .terme .t-def { font-size: .88rem; color: var(--ink-soft); line-height: 1.48; }
+  .dark .terme .t-def { color: var(--night-ink-soft); }
+  .terme + .terme { margin-top: 10px; }
+
+  .io-card { border: 1.5px solid var(--line); border-radius: 16px; padding: 22px 24px; background: var(--surface); max-width: 780px; margin-top: 8px; }
+  .dark .io-card { border-color: var(--night-line); background: var(--night-surface); }
+  .io-card .io-label { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .dark .io-card .io-label { color: var(--night-accent); }
+  .io-card .io-body { font-size: .92rem; line-height: 1.65; color: var(--ink-soft); white-space: pre-wrap; }
+  .dark .io-card .io-body { color: var(--night-ink-soft); }
+  .io-card.mono-body .io-body { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; line-height: 1.75; }
+
+  .rail { position: fixed; left: 32px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 50; }
+  .rail .tick { width: 5px; height: 16px; border-radius: 3px; background: rgba(120,116,140,.28); cursor: pointer; transition: background .25s, transform .25s; }
+  .rail .tick.active { background: var(--accent); transform: scaleY(1.2); }
+  .nav-buttons { position: fixed; bottom: 26px; right: 32px; display: flex; gap: 10px; z-index: 60; }
+  .nav-btn { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 9px 15px; border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
+  body:has(.slide.dark.active) .nav-btn { border-color: var(--night-line); color: var(--night-ink); }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
+  .counter { position: fixed; bottom: 28px; left: 56px; font-family: 'IBM Plex Mono', monospace; font-size: .78rem; color: var(--ink-soft); z-index: 60; }
+  body:has(.slide.dark.active) .counter { color: var(--night-ink-soft); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 980px; margin-top: 8px; }
+  .stat-card { border: 1px solid var(--line); border-radius: 14px; padding: 20px 18px; background: var(--surface); transition: transform .2s, box-shadow .2s; }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(20,18,30,.08); }
+  .dark .stat-card { border-color: var(--night-line); background: var(--night-surface); }
+  .stat-value { font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; line-height: 1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+  .stat-value.good { color: var(--good); }
+  .stat-label { font-size: .88rem; line-height: 1.4; color: var(--ink-soft); }
+  .dark .stat-label { color: var(--night-ink-soft); }
+  .stat-card.time { grid-column: span 2; }
+  .stat-card.time .stat-value { font-size: 2.9rem; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 940px; margin-top: 6px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 940px; margin-top: 6px; }
+  .box { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--surface); transition: transform .2s, box-shadow .2s; }
+  .box:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(20,18,30,.08); }
+  .dark .box { border-color: var(--night-line); background: var(--night-surface); }
+  .box h3 { font-size: 1rem; font-weight: 600; margin: 0 0 7px; }
+  .box p { font-size: .9rem; margin: 0; color: var(--ink-soft); }
+  .dark .box p { color: var(--night-ink-soft); }
+  .box ul { margin: 7px 0 0; padding-left: 17px; font-size: .85rem; line-height: 1.58; color: var(--ink-soft); }
+  .dark .box ul { color: var(--night-ink-soft); }
+  .box ul li { margin: 4px 0; }
+  .box .box-tag { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+  .dark .box .box-tag { color: var(--night-accent); }
+
+  .case-steps { position: relative; padding-left: 52px; max-width: 680px; margin-top: 12px; }
+  .case-steps::before { content: ''; position: absolute; left: 20px; top: 6px; bottom: 6px; width: 2px; background: var(--night-line); }
+  .case-step { position: relative; margin-bottom: 20px; }
+  .case-step:last-child { margin-bottom: 0; }
+  .case-num { position: absolute; left: -52px; top: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--night); border: 1.5px solid var(--night-line); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: .82rem; color: var(--night-ink-soft); }
+  .case-step.resolved .case-num { border-color: var(--night-good); color: var(--night-good); background: var(--night-good-soft); }
+  .case-title { font-weight: 600; font-size: .98rem; margin-bottom: 4px; }
+  .case-step.resolved .case-title { color: var(--night-good); }
+  .case-desc { font-size: .89rem; color: var(--night-ink-soft); line-height: 1.5; max-width: 58ch; }
+
+  .control-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin-top: 6px; }
+  .control-col { border-radius: 16px; padding: 20px 22px; background: var(--night-surface); }
+  .control-col h3 { font-size: 1rem; margin: 0 0 12px; display: flex; align-items: center; gap: 9px; }
+  .control-col ul { list-style: none; padding: 0; margin: 0; }
+  .control-col li { padding: 7px 0; font-size: .87rem; border-bottom: 1px solid rgba(255,255,255,.06); color: var(--night-ink-soft); }
+  .control-col li:last-child { border-bottom: none; }
+  .ratio-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; max-width: 900px; margin: 20px 0 8px; border: 1px solid var(--night-line); }
+  .ratio-bar .r-you { background: var(--night-accent); }
+  .ratio-bar .r-ia { background: var(--night-surface); }
+  .ratio-legend { display: flex; gap: 22px; font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: var(--night-ink-soft); }
+  .ratio-legend b { color: var(--night-ink); }
+
+  .checklist { list-style: none; padding: 0; margin: 16px 0 0; max-width: 760px; }
+  .checklist li { display: flex; gap: 12px; padding: 9px 0; font-size: .97rem; border-bottom: 1px solid var(--night-line); align-items: flex-start; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .icon { margin-top: 3px; color: var(--night-good); flex-shrink: 0; }
+  .checklist .icon.todo { color: var(--warn); }
+
+  @media (max-width: 820px) {
+    .slide { padding: 8vh 7vw 12vh 8vw; }
+    .stat-grid, .grid-4 { grid-template-columns: 1fr 1fr; }
+    .grid-2, .control-split { grid-template-columns: 1fr; }
+    .rail { display: none; }
+    .stat-card.time { grid-column: span 2; }
+  }
+</style>
+<div class="deck" id="deck">
+
+  <!-- 1 · COLD OPEN -->
+  <section class="slide dark active">
+    <div class="eyebrow">
+      <svg class="icon" viewBox="0 0 128 128" style="stroke-width:6"><path d="M26 102 A52 52 0 0 1 78 50" opacity=".55"/><path d="M26 102 A70 70 0 0 1 96 32"/><line x1="26" y1="102" x2="104" y2="24"/><circle cx="26" cy="102" r="7" fill="currentColor" stroke="none"/></svg>
+      MAESTRO · le système <span class="chap">· 01</span>
+    </div>
+    <h1 class="display">Tu donnes un objectif. Une phrase. Et tu ne touches plus à rien jusqu'à la livraison.</h1>
+    <div class="vo">
+      <span class="vo-tag">Narration</span>
+      Sur une mission un peu large, tu intervenais quatre ou cinq fois : cadrer, répondre à une question au milieu, corriger un choix, revalider. Aujourd'hui on a construit le protocole qui ramène ça à <strong>une seule fois</strong> — au début. Ce qui suit, c'est comment, et ce qui est réellement posé sur le disque.
+    </div>
+    <div class="loop">Mais d'abord, regarde ce que tu m'as demandé. Mot pour mot.</div>
+    <p class="ink-soft mono" style="margin-top:22px;font-size:.8rem;">30 août 2026 · Claude Code · lecture ~6 min</p>
+  </section>
+
+  <!-- 2 · DONNÉE D'ENTRÉE -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/><path d="M9 15l10-10M15 5h4v4"/></svg>La commande <span class="chap">· 02</span></div>
+    <h2>Voilà la demande. En entier, sans la lisser.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>La question posée était simple : est-ce que c'est possible, et de quoi j'ai besoin pour le faire sans que tu interviennes en cours de route ?</div>
+    <div class="io-card mono-body">
+      <div class="io-label"><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>Demandes reçues (verbatim, condensé)</div>
+      <div class="io-body">« Je veux bâtir tout un système pour que tu sois autonome. Je couche un objectif, un petit contexte, et c'est toi qui évoques tous les experts pour le faire selon le plan et les sous-tâches. Moi j'ai plus qu'à valider. »
+
+« Un agent orchestrateur comme OpenHands ou Hermes, 100 % autonome. Avec la gestion de la mémoire, des tokens, des modèles. »
+
+« J'aurais juste à dire : fais-moi toute la stratégie de distribution d'ARTEASY, que je puisse jusqu'au copier-coller les choses. Zéro intervention sur l'exécution. Juste au début pour cadrer et à la fin pour valider. »
+
+« Va piocher des exemples de benchmark de ce qui marche déjà, éprouvé. Rien d'inventé de zéro. »
+
+« Les experts : pas juste un nom connu. Tu définis leur spec, comment tu les cibles, un panel qui peut se challenger. »
+
+« Privilégie aussi n8n, l'open source, les repos GitHub. »
+
+« Crée toute l'infrastructure du skill MAESTRO. »</div>
+    </div>
+    <div class="loop">La réponse tient en un mot : un protocole. On y arrive scène 5.</div>
+  </section>
+
+  <!-- 3 · L'ENJEU -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>L'enjeu <span class="chap">· 03</span></div>
+    <h2 class="display">Le problème, ce n'était pas mes capacités. C'était les allers-retours.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Une mission large contient des dizaines de micro-décisions : quel canal, quel angle, quel format, quel prix. Si elles ne sont pas tranchées avant, soit je m'arrête pour demander — et tu interviens — soit je devine, et trois étapes plus loin le livrable est à côté.</div>
+    <div class="terme">
+      <div class="t-label">Terme à retenir</div>
+      <div class="t-term">Orchestrateur</div>
+      <div class="t-def">Une couche au-dessus de la boucle d'agent : elle ne réécrit pas comment l'IA pense, elle organise la mission — cadrage, experts, état, contrôle qualité.</div>
+    </div>
+    <div class="loop">Du coup, première décision : on ne construit pas ce que tu croyais.</div>
+  </section>
+
+  <!-- 4 · LE RECADRAGE -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/></svg>Le recadrage <span class="chap">· 04</span></div>
+    <h2 class="display">Tu voulais OpenHands. On a construit dix fois plus léger.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Réécrire une boucle d'agent — mémoire, tokens, multi-modèle — c'est des mois, et c'est déjà fait. Claude Code le gère. MAESTRO n'ajoute que ce qui manque : le protocole de mission. Pas de daemon, pas de serveur. Un skill.</div>
+    <div class="loop">Maintenant, la méthode. Les quatre gestes qui reviennent à chaque mission.</div>
+  </section>
+
+  <!-- 5 · LA MÉTHODE -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L3 10l6-1z"/></svg>La méthode <span class="chap">· 05</span></div>
+    <h2>Les 4 gestes que MAESTRO répète à chaque fois</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Chacun existe pour supprimer une raison de t'interrompre : l'ambiguïté, le choix de goût, l'invention hasardeuse, la perte de contexte entre deux sessions.</div>
+    <div class="grid-4">
+      <div class="box"><span class="box-tag">1 · Cadrage</span><h3>Un seul point de contrôle</h3><ul><li>Un fichier CADRAGE.md : objectif reformulé, hypothèses, options sourcées</li><li>Tu écris « GO » + tes corrections. Une passe.</li></ul></div>
+      <div class="box"><span class="box-tag">2 · Benchmark</span><h3>Rien d'inventé de zéro</h3><ul><li>2-3 cas réels éprouvés par sous-tâche, décortiqués</li><li>Inclut repos GitHub et templates n8n</li></ul></div>
+      <div class="box"><span class="box-tag">3 · Experts</span><h3>Un expert par tâche, si justifié</h3><ul><li>Fonction incarnée, méthodes, hacks, secret sauce</li><li>Débat contradictoire sur les 3-4 décisions lourdes</li></ul></div>
+      <div class="box"><span class="box-tag">4 · État</span><h3>Tout sur le disque, en continu</h3><ul><li>etat.md mis à jour après chaque sous-tâche</li><li>Une session fraîche ou un cron reprend sans rien perdre</li></ul></div>
+    </div>
+    <div class="terme"><div class="t-label">Terme à retenir</div><div class="t-term">Benchmark-first</div><div class="t-def">Toute proposition part de « voici comment X fait, comment Y fait, voici la version adaptée » — jamais « voici mon idée ».</div></div>
+    <div class="loop">Concrètement, ça donne quoi comme fichiers ? Premier livrable.</div>
+  </section>
+
+  <!-- 6 · BEAT 1 -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>Le cœur · SKILL.md <span class="chap">· 06</span></div>
+    <h2>Le cerveau de la mission : six phases, un seul arrêt possible</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Le skill s'auto-déclenche sur « lance une mission » ou « fais-moi toute la stratégie X tout seul ». Il enchaîne six phases et ne s'arrête qu'aux lignes rouges.</div>
+    <div class="grid-2">
+      <div class="box"><span class="box-tag">Objectif</span><h3>Transformer un objectif en dossier de livrables fini</h3><p>Cadrage → recherche → débats → production → audit → livraison. Copier-coller-ready, zéro placeholder.</p></div>
+      <div class="box"><span class="box-tag">Comment</span><h3>Brainstorming puis build direct</h3><ul><li>Skill superpowers:brainstorming pour cadrer l'archi</li><li>9 décisions tranchées en cartes cliquables</li><li>Écriture directe — pas d'empilement spec + plan</li></ul></div>
+    </div>
+    <div class="io-card">
+      <div class="io-label"><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg>Rendu</div>
+      <div class="io-body">~/.claude/skills/maestro/SKILL.md — 171 lignes. Le skill apparaît dans la liste des skills détectés de Claude Code (vérifiable : « maestro » listé après création).</div>
+    </div>
+    <div class="loop">Mais un agent autonome sans garde-fou, c'est un danger. D'où le fichier suivant.</div>
+  </section>
+
+  <!-- 7 · BEAT 2 -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7z"/></svg>Les garde-fous · constitution.md <span class="chap">· 07</span></div>
+    <h2 class="display">Ce que MAESTRO ne fait jamais sans te demander</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Dépenser, publier, envoyer un email, toucher à la prod, une action irréversible : arrêt net, question précise, il attend. Tout le reste — recherche, fichiers, brouillons — il avance sans demander.</div>
+    <div class="terme"><div class="t-label">Terme à retenir</div><div class="t-term">Constitution par cas</div><div class="t-def">Le fichier de règles part quasi vide et se remplit à chaque arrêt réel : la situation rencontrée devient une règle datée. Prêt en 3-4 missions.</div></div>
+    <div class="loop">Reste la promesse forte : « tu convoques les experts qu'il faut ». Comment ?</div>
+  </section>
+
+  <!-- 8 · BEAT 3 -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M14 19c.5-2 2.5-3 5-3s4 1 4.5 3"/></svg>Le panel · expert-convocation.md <span class="chap">· 08</span></div>
+    <h2>Pas « fais comme Hormozi ». Une fonction incarnée, avec sa secret sauce.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Pour chaque tâche, MAESTRO évalue si un expert est justifié via des règles claires : standard métier non trivial, secret sauce réelle, un mauvais choix qui se paie cher, écoles opposées. Deux conditions sur quatre suffisent.</div>
+    <div class="grid-2">
+      <div class="box"><span class="box-tag">Ce qu'un expert apporte</span><h3>Six choses, écrites avant qu'il « parle »</h3><ul><li>École de pensée, méthodes éprouvées</li><li>Angle unique, hacks à fort rendement</li><li>Secret sauce, et ses biais à corriger</li></ul></div>
+      <div class="box"><span class="box-tag">Le débat</span><h3>Contradictoire sur les décisions lourdes</h3><ul><li>Positions → attaques croisées → convergence</li><li>Une page par décision, sinon c'est du théâtre</li><li>Tracé dans decisions.md avec ce qui a été écarté</li></ul></div>
+    </div>
+    <div class="io-card">
+      <div class="io-label"><svg class="icon" style="width:13px;height:13px" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg>Rendu</div>
+      <div class="io-body">references/expert-convocation.md — règles de convocation + méthode de débat. Les experts sont une synthèse incarnée de praticiens réels, sourcée par le benchmark, pas des personnages.</div>
+    </div>
+    <div class="loop">Un expert, c'est bien. Mais avec quel outil il exécute ?</div>
+  </section>
+
+  <!-- 9 · BEAT 4 -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M14 7l-1.5-1.5a3.5 3.5 0 0 0-5 5L4 14M10 17l1.5 1.5a3.5 3.5 0 0 0 5-5L20 10"/></svg>Les outils · tooling.md <span class="chap">· 09</span></div>
+    <h2>Open source d'abord. n8n avant Zapier. Un repo GitHub avant d'écrire from scratch.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Pour chaque sous-tâche, MAESTRO découvre en échelle les outils capables, les note sur une grille, et tranche. Si un MCP manque, il te le remonte au cadrage — il ne bricole pas de contournement fragile.</div>
+    <div class="grid-2">
+      <div class="box"><span class="box-tag">L'échelle</span><h3>On s'arrête au premier niveau fiable</h3><ul><li>Natif Claude Code</li><li>Open source / self-hosté : n8n, repo GitHub, lib libre</li><li>MCP configuré, puis MCP à ajouter</li><li>Sinon : ligne rouge, tu tranches</li></ul></div>
+      <div class="box"><span class="box-tag">La grille</span><h3>Six critères pondérés sur 100</h3><ul><li>Fiabilité 25, déjà en place 20, ouvert / sans lock-in 20</li><li>Réversibilité 15, coût 12, effort 8</li><li>Égalité serrée : on prend le plus ouvert</li></ul></div>
+    </div>
+    <div class="terme"><div class="t-label">Terme à retenir</div><div class="t-term">Lock-in</div><div class="t-def">Dépendance à un service propriétaire dont on ne peut plus sortir sans tout reconstruire. n8n et les repos GitHub y échappent.</div></div>
+    <div class="loop">Et entre deux sessions, quand le laptop se ferme ? Le fichier suivant.</div>
+  </section>
+
+  <!-- 10 · BEAT 5 -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9M3 4v5h5"/></svg>La reprise · cron + etat.md <span class="chap">· 10</span></div>
+    <h2 class="display">Une mission de six heures ne meurt pas parce que tu as fermé l'écran</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Chaque décision, chaque pattern, chaque choix est écrit sur le disque au moment où il est pris. Un cron scanne les missions non finies et relance une session headless qui reprend à la prochaine sous-tâche, sans re-cadrer.</div>
+    <div class="terme"><div class="t-label">Terme à retenir</div><div class="t-term">Session headless</div><div class="t-def">Claude Code lancé sans interface (claude -p), piloté par un script — ici, le cron de reprise.</div></div>
+    <div class="loop">Sauf qu'il y a un grain de sable. Un vrai. On l'a rencontré aujourd'hui.</div>
+  </section>
+
+  <!-- 11 · LE GRAIN DE SABLE -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>Le grain de sable <span class="chap">· 11</span></div>
+    <h2 class="display">Le conteneur ChromeOS se met en veille. Le vrai 24/7 n'existe pas ici.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>On voulait de l'always-on. Mais quand ChromeOS suspend le conteneur Linux, le service cron ne tourne plus — donc pas de reprise. C'est documenté dans ta propre mémoire, c'est la cause de trous récurrents sur d'autres crons.</div>
+    <div class="case-steps">
+      <div class="case-step"><div class="case-num">1</div><div class="case-title">Ambition : reprise automatique 24/7</div><div class="case-desc">Un cron qui relance seul les missions inachevées, à toute heure.</div></div>
+      <div class="case-step"><div class="case-num">2</div><div class="case-title">Réalité : conteneur suspendu = cron muet</div><div class="case-desc">Aucune exécution tant que tu n'as pas rouvert la session. Trou silencieux.</div></div>
+      <div class="case-step"><div class="case-num">3</div><div class="case-title">Décision : ne pas mentir sur la capacité</div><div class="case-desc">Le cron reste, mais présenté comme « best effort » — utile après une pause d'une heure, pas pour du vrai non-stop.</div></div>
+      <div class="case-step resolved"><div class="case-num"><svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M5 12l5 5L20 6"/></svg></div><div class="case-title">Résolu : limite écrite noir sur blanc</div><div class="case-desc">install-cron.md et ARCHITECTURE.md disent que le vrai always-on = un VPS, noté comme évolution, pas fait.</div></div>
+    </div>
+    <div class="loop">Au final, ça donne quoi en chiffres qu'on peut vérifier ?</div>
+  </section>
+
+  <!-- 12 · LES CHIFFRES -->
+  <section class="slide light">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Les chiffres <span class="chap">· 12</span></div>
+    <h2>1 h 17 de construction. Pas une estimation — la naissance du dossier et le dernier fichier écrit.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Dossier maestro/ créé à 00 h 23, dernier fichier modifié à 01 h 40. La discussion de cadrage et les décisions ont précédé cette fenêtre.</div>
+    <div class="stat-grid">
+      <div class="stat-card time"><div class="stat-value">1 h 17</div><div class="stat-label">construction du skill (horodatages fichiers : 00 h 23 → 01 h 40)</div></div>
+      <div class="stat-card"><div class="stat-value good">19</div><div class="stat-label">fichiers écrits</div></div>
+      <div class="stat-card"><div class="stat-value">~880</div><div class="stat-label">lignes de skill + références</div></div>
+      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">décisions d'archi verrouillées</div></div>
+      <div class="stat-card"><div class="stat-value">6</div><div class="stat-label">phases de mission</div></div>
+      <div class="stat-card"><div class="stat-value">7</div><div class="stat-label">fichiers de référence bundlés</div></div>
+      <div class="stat-card"><div class="stat-value good">1</div><div class="stat-label">skill installé et détecté</div></div>
+      <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">mission réelle lancée à ce stade</div></div>
+    </div>
+    <div class="loop">Reste la question qui fâche : qui a vraiment décidé quoi ?</div>
+  </section>
+
+  <!-- 13 · QUI DÉCIDE QUOI -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Le partage des rôles <span class="chap">· 13</span></div>
+    <h2 class="display">~15 % toi. ~85 % l'IA. Mais tes 15 % ont tout orienté.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Le volume — écrire les 19 fichiers, structurer les phases, rédiger les grilles — c'est l'IA. Mais le nom, la philosophie, l'exemple ARTEASY qui a recadré tout le projet : c'est toi.</div>
+    <div class="control-split">
+      <div class="control-col" style="border:1px solid var(--night-accent);">
+        <h3><svg class="icon" viewBox="0 0 24 24" style="color:var(--night-accent)"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Toi</h3>
+        <ul><li>Le nom : MAESTRO</li><li>Constitution par cas, dossiers hybrides</li><li>« Privilégie n8n, l'open source, GitHub »</li><li>L'exemple ARTEASY qui a tué l'idée « framework »</li><li>Le GO final sur le build</li></ul>
+      </div>
+      <div class="control-col" style="border:1px solid var(--night-line);">
+        <h3><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>L'IA</h3>
+        <ul><li>Les 6 phases et leur enchaînement</li><li>Les 7 fichiers de référence</li><li>Grille outils, grilles qualité, routage modèles</li><li>Le script cron + sa doc</li><li>Ce deck et le logo</li></ul>
+      </div>
+    </div>
+    <div class="ratio-bar"><div class="r-you" style="width:15%"></div><div class="r-ia" style="width:85%"></div></div>
+    <div class="ratio-legend"><span><b>~15 %</b> toi · les décisions</span><span><b>~85 %</b> IA · la production</span></div>
+    <div class="loop">Concrètement, il te reste quoi à faire ?</div>
+  </section>
+
+  <!-- 14 · TA CHECKLIST -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg>Ta checklist <span class="chap">· 14</span></div>
+    <h2>Ce qui est fait. Ce qui dépend de toi maintenant.</h2>
+    <ul class="checklist">
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span><b>Fait</b> — skill MAESTRO dans ~/.claude/skills/maestro/ (SKILL.md, soul.md, ARCHITECTURE.md, 7 références, 6 templates, cron)</span></li>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span><b>Fait</b> — mémoire mise à jour (project_maestro_skill.md + index)</span></li>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span><b>Fait</b> — ce deck + logo_maestro.svg dans PLAYBOOK_IA/Systeme_IA_MAESTRO/</span></li>
+      <li><svg class="icon todo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/></svg><span><b>À toi</b> — installer le cron de reprise si tu le veux : voir cron/install-cron.md</span></li>
+      <li><svg class="icon todo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/></svg><span><b>À toi</b> — régénérer le token Telegram exposé en clair dans hermesagent-workspace/05-profil-hermes/config.yaml</span></li>
+      <li><svg class="icon todo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/></svg><span><b>À toi</b> — donner le brief de la 1re mission : la stratégie de distribution ARTEASY</span></li>
+    </ul>
+    <div class="loop">Et là, le truc que personne ne te dit sur l'autonomie.</div>
+  </section>
+
+  <!-- 15 · LE VRAI INSIGHT -->
+  <section class="slide dark">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Le vrai insight <span class="chap">· 15</span></div>
+    <h2 class="display">L'autonomie ne vient pas d'un meilleur modèle. Elle vient d'un cadrage qui ne laisse rien à deviner.</h2>
+    <div class="vo"><span class="vo-tag">Narration</span>Tout ce qu'on a construit — experts, benchmark, grilles, cron — sert une seule chose : que le moment où tu valides le cadrage contienne déjà toutes les décisions. Un cadrage vague, et l'agent le plus puissant du monde dérive quand même.</div>
+    <div class="terme"><div class="t-label">Terme à retenir</div><div class="t-term">Gate de cadrage</div><div class="t-def">Le seul checkpoint : un fichier CADRAGE.md que tu annotes une fois. Après, MAESTRO court jusqu'à la livraison.</div></div>
+    <div class="loop">Rappelle-toi le chiffre du début : tu intervenais quatre ou cinq fois.</div>
+  </section>
+
+  <!-- 16 · CLÔTURE -->
+  <section class="slide dark">
+    <div class="eyebrow">
+      <svg class="icon" viewBox="0 0 128 128" style="stroke-width:6"><path d="M26 102 A52 52 0 0 1 78 50" opacity=".55"/><path d="M26 102 A70 70 0 0 1 96 32"/><line x1="26" y1="102" x2="104" y2="24"/><circle cx="26" cy="102" r="7" fill="currentColor" stroke="none"/></svg>
+      MAESTRO · le système <span class="chap">· 16</span>
+    </div>
+    <h1 class="display">Quatre ou cinq interventions par mission. Maintenant : une phrase, un cadrage à valider, et le reste est à moi.</h1>
+    <div class="vo"><span class="vo-tag">Narration</span>Le skill est installé et se déclenche sur « lance une mission » ou « fais-moi toute la stratégie X ». Pour reprendre : tu déposes un brief, je te réponds avec CADRAGE.md.</div>
+    <p class="ink-soft mono" style="margin-top:20px;font-size:.82rem;">Prochain épisode : première mission réelle — la stratégie de distribution ARTEASY, du titre au copier-coller.</p>
+  </section>
+
+</div>
+
+<div class="rail" id="rail"></div>
+<div class="counter" id="counter">01 / 16</div>
+<div class="nav-buttons">
+  <button class="nav-btn" id="prev">← préc.</button>
+  <button class="nav-btn" id="next">suiv. →</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const rail = document.getElementById('rail');
+  const counter = document.getElementById('counter');
+  let i = 0;
+  slides.forEach((_, idx) => {
+    const t = document.createElement('div');
+    t.className = 'tick' + (idx === 0 ? ' active' : '');
+    t.addEventListener('click', () => go(idx));
+    rail.appendChild(t);
+  });
+  const ticks = Array.from(rail.children);
+  counter.textContent = '01 / ' + String(slides.length).padStart(2, '0');
+  function go(n) {
+    if (n < 0 || n >= slides.length || n === i) return;
+    slides[i].classList.remove('active'); ticks[i].classList.remove('active');
+    i = n;
+    const incoming = slides[i];
+    incoming.classList.remove('active'); void incoming.offsetWidth; incoming.classList.add('active');
+    ticks[i].classList.add('active');
+    counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === slides.length - 1;
+    incoming.scrollTop = 0;
+  }
+  document.getElementById('next').addEventListener('click', () => go(i + 1));
+  document.getElementById('prev').addEventListener('click', () => go(i - 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+    if (e.key === 'ArrowLeft') go(i - 1);
+  });
+  document.getElementById('prev').disabled = true;
+</script>
+
+</body></html>

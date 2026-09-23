@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Factory Playbook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+    <style>
+        :root {
+            --color-primary: #1E3A5F;
+            --color-accent: #E8691B;
+            --color-accent-light: #F5E6D3;
+            --color-text: #2C2C28;
+            --color-text-secondary: #8B8680;
+            --color-border: #E8E6E0;
+            --color-bg: #FAFAF6;
+            --color-bg-light: #F5F3F0;
+            --color-success: #2D7A4A;
+            --color-info: #3B82B8;
+            --color-warning: #D97B0A;
+            --color-error: #C53030;
+
+            --font-display: 'Playfair Display', 'Noto Serif', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'IBM Plex Mono', 'Monaco', monospace;
+
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --color-primary: #B8D4F1;
+                --color-accent: #F5A855;
+                --color-accent-light: #3A2812;
+                --color-text: #E8E6E0;
+                --color-text-secondary: #A99B92;
+                --color-border: #4A4640;
+                --color-bg: #1A1816;
+                --color-bg-light: #2A261F;
+                --color-success: #5FA878;
+                --color-info: #6BA4D8;
+                --color-warning: #F5A855;
+                --color-error: #F87171;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --color-primary: #B8D4F1;
+            --color-accent: #F5A855;
+            --color-accent-light: #3A2812;
+            --color-text: #E8E6E0;
+            --color-text-secondary: #A99B92;
+            --color-border: #4A4640;
+            --color-bg: #1A1816;
+            --color-bg-light: #2A261F;
+            --color-success: #5FA878;
+            --color-info: #6BA4D8;
+            --color-warning: #F5A855;
+            --color-error: #F87171;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        body { background: var(--color-bg); }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        h1 { font-size: 3.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 2.5rem; letter-spacing: -0.01em; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.25rem; }
+
+        p { margin-bottom: var(--spacing-md); max-width: 70ch; }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid currentColor;
+            transition: opacity 0.2s;
+        }
+
+        a:hover { opacity: 0.7; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: var(--spacing-lg); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%);
+            color: white;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            text-align: left;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .hero h1 { color: white; margin-bottom: var(--spacing-md); }
+        .hero p { color: rgba(255, 255, 255, 0.9); font-size: 1.2rem; max-width: 60ch; }
+        .hero small { display: block; color: rgba(255, 255, 255, 0.75); font-size: 0.95rem; margin-top: var(--spacing-md); font-weight: 500; }
+
+        .section { margin-bottom: var(--spacing-2xl); }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-badge {
+            background: var(--color-accent);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        .section h2 { margin: 0; }
+
+        .block {
+            background: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            border-radius: 8px;
+        }
+
+        .block.accent {
+            background: var(--color-accent-light);
+            border-color: var(--color-accent);
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .block.success {
+            background: rgba(45, 122, 74, 0.1);
+            border-color: var(--color-success);
+            border-left: 4px solid var(--color-success);
+        }
+
+        .block.info {
+            background: rgba(59, 130, 184, 0.1);
+            border-color: var(--color-info);
+            border-left: 4px solid var(--color-info);
+        }
+
+        .block.warning {
+            background: rgba(217, 123, 10, 0.1);
+            border-color: var(--color-warning);
+            border-left: 4px solid var(--color-warning);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .block.accent { background: rgba(229, 110, 27, 0.15); border-color: var(--color-accent); }
+            .block.success { background: rgba(95, 168, 120, 0.15); border-color: var(--color-success); }
+            .block.info { background: rgba(107, 164, 216, 0.15); border-color: var(--color-info); }
+            .block.warning { background: rgba(245, 168, 85, 0.15); border-color: var(--color-warning); }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card {
+            background: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+        }
+
+        .card h4 { color: var(--color-primary); margin-top: 0; }
+
+        .card.stat {
+            text-align: center;
+            padding: var(--spacing-xl);
+            border-top: 4px solid var(--color-accent);
+        }
+
+        .card.stat .number {
+            font-size: 3rem;
+            font-family: var(--font-display);
+            color: var(--color-accent);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .card.stat .label {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .card.stat small {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .workflow {
+            background: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+        }
+
+        .workflow svg { min-width: 100%; }
+
+        .phase-box {
+            background: var(--color-accent-light);
+            border: 2px solid var(--color-accent);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .phase-box h4 {
+            color: var(--color-accent);
+            margin-top: 0;
+        }
+
+        .phase-duration {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: var(--spacing-sm) 0;
+            padding-left: var(--spacing-lg);
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--spacing-lg);
+            font-family: var(--font-body);
+        }
+
+        thead {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        th {
+            padding: var(--spacing-md);
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: top;
+        }
+
+        tr:hover { background: var(--color-bg-light); }
+
+        .badge {
+            display: inline-block;
+            background: var(--color-accent-light);
+            color: var(--color-primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .badge { background: rgba(229, 110, 27, 0.25); color: var(--color-accent); }
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .component-item {
+            background: white;
+            border: 2px solid var(--color-accent);
+            border-radius: 6px;
+            padding: var(--spacing-sm);
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .component-item { background: var(--color-bg-light); }
+        }
+
+        .infographic {
+            background: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .infographic svg { max-width: 100%; height: auto; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .kpi-card { background: var(--color-bg-light); }
+        }
+
+        .kpi-card .value {
+            font-size: 2rem;
+            font-family: var(--font-display);
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        .kpi-card .label {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .footer { margin-top: var(--spacing-2xl); padding-top: var(--spacing-xl); border-top: 2px solid var(--color-border); text-align: center; color: var(--color-text-secondary); font-size: 0.95rem; }
+
+        .footnote { font-size: 0.9rem; color: var(--color-text-secondary); font-style: italic; margin-top: var(--spacing-md); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.75rem; }
+            .container { padding: var(--spacing-md); }
+            .section-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <h1>Blog Factory</h1>
+            <p>Système autonome de production d'articles blog qualité production. Zéro intervention utilisateur, 4-6h par article, 23 articles publiés depuis mai 2026.</p>
+            <small>Playbook opérationnel — Processus, Skills, KPI, et guide de mise en place</small>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Vue d'ensemble -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Vue d'ensemble</span>
+                <h2>Architecture du système</h2>
+            </div>
+
+            <p>Blog Factory est un pipeline de production d'articles blog qui conjugue <strong>recherche réelle</strong>, <strong>rédaction guidée</strong> et <strong>audit qualité</strong> en 4 phases autonomes. Le système génère des articles de 4000+ mots avec <strong>16 composants obligatoires</strong>, scores >= 80/100, et maillage SEO complet.</p>
+
+            <div class="block accent">
+                <strong>🎯 Objectif global :</strong> Livrer un article publié directement, sans relecture manuelle, avec données vérifiées et format standardisé.
+            </div>
+
+            <!-- KPI Summary -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="value">23</div>
+                    <div class="label">Articles publiés</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">89</div>
+                    <div class="label">Score moyen</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">5h</div>
+                    <div class="label">Temps par article</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">16/16</div>
+                    <div class="label">Composants</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">100%</div>
+                    <div class="label">Maillage interne</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">5</div>
+                    <div class="label">Clusters actifs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processus visuel -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Flux</span>
+                <h2>Le pipeline 4 phases en action</h2>
+            </div>
+
+            <div class="infographic">
+                <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Phase 0 -->
+                    <rect x="20" y="40" width="180" height="120" fill="#E8691B" rx="8" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="110" y="85" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Phase 0</text>
+                    <text x="110" y="110" font-size="14" fill="white" text-anchor="middle">Questions</text>
+                    <text x="110" y="130" font-size="14" fill="white" text-anchor="middle">Mining</text>
+                    <text x="110" y="155" font-size="12" fill="white" text-anchor="middle">30-45 min</text>
+
+                    <!-- Arrow 1 -->
+                    <path d="M 210 100 L 250 100" stroke="#1E3A5F" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Phase 1 -->
+                    <rect x="260" y="40" width="180" height="120" fill="#3B82B8" rx="8" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="350" y="85" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Phase 1</text>
+                    <text x="350" y="110" font-size="14" fill="white" text-anchor="middle">Recherche</text>
+                    <text x="350" y="130" font-size="14" fill="white" text-anchor="middle">Web</text>
+                    <text x="350" y="155" font-size="12" fill="white" text-anchor="middle">1-2h</text>
+
+                    <!-- Arrow 2 -->
+                    <path d="M 450 100 L 490 100" stroke="#1E3A5F" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Phase 2 -->
+                    <rect x="500" y="40" width="180" height="120" fill="#2D7A4A" rx="8" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="590" y="85" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Phase 2</text>
+                    <text x="590" y="110" font-size="14" fill="white" text-anchor="middle">Rédaction</text>
+                    <text x="590" y="130" font-size="14" fill="white" text-anchor="middle">(16 composants)</text>
+                    <text x="590" y="155" font-size="12" fill="white" text-anchor="middle">2-3h</text>
+
+                    <!-- Arrow 3 -->
+                    <path d="M 690 100 L 730 100" stroke="#1E3A5F" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Phase 3 -->
+                    <rect x="740" y="40" width="180" height="120" fill="#C53030" rx="8" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="830" y="85" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Phase 3-4</text>
+                    <text x="830" y="110" font-size="14" fill="white" text-anchor="middle">Audit QA +</text>
+                    <text x="830" y="130" font-size="14" fill="white" text-anchor="middle">Publication</text>
+                    <text x="830" y="155" font-size="12" fill="white" text-anchor="middle">1.5h</text>
+
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#1E3A5F"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="block info">
+                <strong>⏱️ Temps total :</strong> 4-6 heures pour un article complet (questions mining + recherche + rédaction + audit + publication).
+            </div>
+        </div>
+
+        <!-- Détail des phases -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Détail</span>
+                <h2>Chaque phase expliquée</h2>
+            </div>
+
+            <!-- Phase 0 -->
+            <div class="phase-box">
+                <span class="phase-duration">30-45 minutes</span>
+                <h4>🔍 Phase 0️⃣ : Questions Mining</h4>
+                <p><strong>Objectif :</strong> Identifier les 10-15 vraies questions que l'audience se pose sur le sujet.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Qu'est-ce qu'on cherche</th>
+                            <th>Nombre requis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Google PAA</strong></td>
+                            <td>People Also Ask — questions suggérées par Google</td>
+                            <td>5+ questions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reddit</strong></td>
+                            <td>Posts authentiques avec vraies questions utilisateurs</td>
+                            <td>5+ questions (avec upvotes)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Angles manqués</strong></td>
+                            <td>Questions non répondues par les articles existants</td>
+                            <td>3+ angles</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="block success">
+                    <strong>✓ Output requis :</strong> Fichier <code>PHASE0_questions_[date].md</code> avec liste structurée des questions.
+                </div>
+            </div>
+
+            <!-- Phase 1 -->
+            <div class="phase-box">
+                <span class="phase-duration">1-2 heures</span>
+                <h4>🔗 Phase 1️⃣ : Recherche Web Réelle</h4>
+                <p><strong>Objectif :</strong> Extraire UNIQUEMENT les données vérifiées de sources authentiques (pas d'invention).</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de recherche</th>
+                            <th>Sources recommandées</th>
+                            <th>Données à extraire</th>
+                            <th>Requis par outil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pricing</strong></td>
+                            <td>Site officiel + documentation pricing</td>
+                            <td>Free, Pro, Enterprise, add-ons, annual discount</td>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ratings</strong></td>
+                            <td>G2 + Capterra</td>
+                            <td>Note, nombre reviews, points récurrents</td>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retours terrain</strong></td>
+                            <td>Reddit (r/webdev, r/marketing, etc)</td>
+                            <td>Citations authentiques + upvotes</td>
+                            <td>2+ par outil</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Limitations</strong></td>
+                            <td>Reddit + G2 reviews</td>
+                            <td>Vrais problèmes + contexte</td>
+                            <td>2+ par outil</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="block warning">
+                    <strong>⚠️ Règle stricte :</strong> Zéro donnée inventée. Si tu trouves pas = l'article ne peut pas l'inclure.
+                </div>
+
+                <div class="block success">
+                    <strong>✓ Output requis :</strong> Fichier <code>PHASE1_recherche_[date].md</code> avec toutes sources documentées.
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-box">
+                <span class="phase-duration">2-3 heures</span>
+                <h4>✍️ Phase 2️⃣ : Rédaction (16 composants obligatoires)</h4>
+                <p><strong>Objectif :</strong> Rédiger l'article en respectant la structure stricte de 16 composants.</p>
+
+                <h4 style="margin-top: var(--spacing-lg); font-size: 1.1rem;">Les 16 composants obligatoires</h4>
+                <div class="component-grid">
+                    <div class="component-item">📊 Reading-bar</div>
+                    <div class="component-item">📄 Article-header</div>
+                    <div class="component-item">💭 Introduction</div>
+                    <div class="component-item">⭐ Highlight-box</div>
+                    <div class="component-item">📋 TOC-box</div>
+                    <div class="component-item">🎯 Needs-framework</div>
+                    <div class="component-item">🔤 H2 sections (3+)</div>
+                    <div class="component-item">💬 Pullquotes (2+)</div>
+                    <div class="component-item">🗨️ Reddit-quotes (2+)</div>
+                    <div class="component-item">💎 Gem-box</div>
+                    <div class="component-item">⛔ Redflag-box</div>
+                    <div class="component-item">📊 Verdict-table</div>
+                    <div class="component-item">❓ FAQ + JSON-LD</div>
+                    <div class="component-item">👣 Article-footer</div>
+                    <div class="component-item">🛠️ Tool-cards</div>
+                    <div class="component-item">💰 Pricing-blocks</div>
+                </div>
+
+                <div class="block">
+                    <strong>Format obligatoire :</strong>
+                    <ul class="checklist" style="margin-top: var(--spacing-md);">
+                        <li>Fichier <code>.md</code> avec frontmatter <code>charte: rich</code></li>
+                        <li>Zéro CSS inline, zéro blocks <code>&lt;style&gt;</code></li>
+                        <li>HTML pur uniquement (composants = divs + classes)</li>
+                        <li>Header généré par Astro (pas dans le markdown)</li>
+                    </ul>
+                </div>
+
+                <div class="block success">
+                    <strong>✓ Output requis :</strong> Fichier <code>article_[slug].md</code> avec 16 composants validés.
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-box">
+                <span class="phase-duration">1 heure</span>
+                <h4>✅ Phase 3️⃣ : Audit QA</h4>
+                <p><strong>Objectif :</strong> Vérifier la conformité, qualité, lisibilité avant publication.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critère</th>
+                            <th>Standard</th>
+                            <th>Comment vérifier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Composants</strong></td>
+                            <td>16/16 présents et bien placés</td>
+                            <td>Checklist manuelle ou audit automatisé</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Score article</strong></td>
+                            <td>≥ 80/100</td>
+                            <td>Audit détaillé (contenu, format, données)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maillage interne</strong></td>
+                            <td>3+ liens Reflex IA en contexte</td>
+                            <td>Grep ou inspection manuelle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anti-IA patterns</strong></td>
+                            <td>Zéro patterns IA détectés</td>
+                            <td>Scan transitions génériques + clustering adjectifs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Données sources</strong></td>
+                            <td>100% documentées et traçables</td>
+                            <td>Vérifier chaque donnée chiffrée</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liens externes</strong></td>
+                            <td>Outils cités linkés (première mention)</td>
+                            <td>Vérifier vers sites officiels</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="block success">
+                    <strong>✓ Go/No-go :</strong> Si tous les critères ✓, article prêt pour Phase 4 (publication).
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="phase-box">
+                <span class="phase-duration">30 minutes</span>
+                <h4>🚀 Phase 4️⃣ : Publication</h4>
+                <p><strong>Objectif :</strong> Déployer l'article live sur le blog Reflex IA.</p>
+
+                <ul class="checklist">
+                    <li>Copier fichier dans <code>REFLEX IA/src/content/blog/</code></li>
+                    <li>Git commit avec ID CSV + titre + date</li>
+                    <li>Mettre à jour <code>production_log.md</code> (ID, titre, date, statut)</li>
+                    <li>Mettre à jour CSV source (passer statut à « Publié »)</li>
+                    <li>Build Astro validé (zéro erreur, 40+ pages)</li>
+                    <li>Déploiement Cloudflare Pages (live)</li>
+                </ul>
+
+                <div class="block success">
+                    <strong>✓ Article LIVE :</strong> URL accessible, indexé, prêt pour le SEO.
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Toolbox</span>
+                <h2>Les 4 skills Blog Factory</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <span class="badge">SKILL_RESEARCH</span>
+                    <h4>📊 Recherche web réelle</h4>
+                    <p>Guide multi-canaux pour extraire données vérifiées. Couvre pricing, G2/Capterra, Reddit, limitations, alternatives.</p>
+                    <p style="margin-top: var(--spacing-md); font-size: 0.9rem; color: var(--color-text-secondary);"><strong>Phase :</strong> Phase 1</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">SKILL_ARTICLE_LAYOUT</span>
+                    <h4>🎯 Structure d'article</h4>
+                    <p>Dicte position et fonction de chaque composant. Placement précis des 16 éléments (intro → FAQ).</p>
+                    <p style="margin-top: var(--spacing-md); font-size: 0.9rem; color: var(--color-text-secondary);"><strong>Phase :</strong> Phase 2</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">SKILL_HUMAN_WRITING</span>
+                    <h4>✍️ Voix & rédaction</h4>
+                    <p>Assure rédaction authentique, anti-IA. Pas de transitions générées, pas de clustering adjectifs.</p>
+                    <p style="margin-top: var(--spacing-md); font-size: 0.9rem; color: var(--color-text-secondary);"><strong>Phase :</strong> Phase 2</p>
+                </div>
+
+                <div class="card">
+                    <span class="badge">SKILL_SEO_GEO</span>
+                    <h4>🔍 SEO & maillage</h4>
+                    <p>Optimise titre, URL, metas, maillage interne. 3+ liens contextuels Reflex IA requis.</p>
+                    <p style="margin-top: var(--spacing-md); font-size: 0.9rem; color: var(--color-text-secondary);"><strong>Phase :</strong> Phase 2-3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Détaillé -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Métriques</span>
+                <h2>KPI depuis mai 2026</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h4>📊 Quantitatif</h4>
+                    <ul class="checklist">
+                        <li>23 articles publiés</li>
+                        <li>Temps moyen : 5h par article</li>
+                        <li>~45k tokens par pipeline</li>
+                        <li>100% composants (16/16)</li>
+                        <li>100% maillage interne</li>
+                        <li>5 clusters thématiques</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>⭐ Qualitatif</h4>
+                    <ul class="checklist">
+                        <li>Score moyen : 89/100</li>
+                        <li>3 articles à 100/100</li>
+                        <li>Zéro article &lt; 80</li>
+                        <li>Format unique « rich »</li>
+                        <li>Zéro lien cassé</li>
+                        <li>Données 100% vérifiées</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Distribution des scores</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plage</th>
+                        <th>Nombre</th>
+                        <th>Pourcentage</th>
+                        <th>Exemples d'articles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>100/100</strong></td>
+                        <td>3</td>
+                        <td>13%</td>
+                        <td>Writesonic + Make, Taskade freelances, Make vs n8n</td>
+                    </tr>
+                    <tr>
+                        <td><strong>95-99</strong></td>
+                        <td>4</td>
+                        <td>17%</td>
+                        <td>Zapier débutant, Copy.ai vs Jasper, Voiceflow vs Botpress</td>
+                    </tr>
+                    <tr>
+                        <td><strong>90-94</strong></td>
+                        <td>9</td>
+                        <td>39%</td>
+                        <td>Comparatif LLM 2026, n8n vs Zapier vs Make, Notion AI équipe</td>
+                    </tr>
+                    <tr>
+                        <td><strong>85-89</strong></td>
+                        <td>6</td>
+                        <td>26%</td>
+                        <td>Copy.ai 2026, Prospection LinkedIn, Copywriting IA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>80-84</strong></td>
+                        <td>1</td>
+                        <td>4%</td>
+                        <td>Système content marketing</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top: var(--spacing-xl);">Clusters thématiques</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cluster</th>
+                        <th>Articles</th>
+                        <th>Thème central</th>
+                        <th>Maillage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Clay & Prospection B2B</strong></td>
+                        <td>4</td>
+                        <td>Clay, Waterfall, n8n, ABM</td>
+                        <td>Mesh complet (4-way)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Automatisations</strong></td>
+                        <td>6</td>
+                        <td>Make, Zapier, n8n, emailing</td>
+                        <td>Dense (3-4 liens)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Assistants IA</strong></td>
+                        <td>4</td>
+                        <td>ChatGPT, Claude, Gemini, Ollama</td>
+                        <td>Complet (4-way)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Copywriting IA</strong></td>
+                        <td>3</td>
+                        <td>Copy.ai, Jasper, Writesonic</td>
+                        <td>Dense (3-way)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Productivité & PKM</strong></td>
+                        <td>2</td>
+                        <td>Notion AI, Taskade, Mem.ai</td>
+                        <td>Réciproque (2-way)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Timeline -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Historique</span>
+                <h2>Mise en place (30 avril — 1 août 2026)</h2>
+            </div>
+
+            <div class="infographic">
+                <svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Timeline line -->
+                    <line x1="100" y1="40" x2="100" y2="460" stroke="#E8691B" stroke-width="3"/>
+
+                    <!-- Event 1 -->
+                    <circle cx="100" cy="60" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="55" font-size="14" font-weight="bold" fill="#1E3A5F">30-04 : Fondations</text>
+                    <text x="130" y="75" font-size="12" fill="#8B8680">BLOG_FACTORY_PROCESSUS.md + Astro</text>
+
+                    <!-- Event 2 -->
+                    <circle cx="100" cy="140" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="135" font-size="14" font-weight="bold" fill="#1E3A5F">15-05 : Leçon 1</text>
+                    <text x="130" y="155" font-size="12" fill="#8B8680">Pas de skills parasites → exécution directe</text>
+
+                    <!-- Event 3 -->
+                    <circle cx="100" cy="220" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="215" font-size="14" font-weight="bold" fill="#1E3A5F">15-16-05 : Premiers articles</text>
+                    <text x="130" y="235" font-size="12" fill="#8B8680">5 articles en 2 jours, scores 84-86</text>
+
+                    <!-- Event 4 -->
+                    <circle cx="100" cy="300" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="295" font-size="14" font-weight="bold" fill="#1E3A5F">26-07 : Batch Clay</text>
+                    <text x="130" y="315" font-size="12" fill="#8B8680">4 articles Clay + clustering thématique</text>
+
+                    <!-- Event 5 -->
+                    <circle cx="100" cy="380" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="375" font-size="14" font-weight="bold" fill="#1E3A5F">01-08 : Consolidation</text>
+                    <text x="130" y="395" font-size="12" fill="#8B8680">Format unique + maillage complet</text>
+
+                    <!-- Event 6 -->
+                    <circle cx="100" cy="460" r="8" fill="#E8691B" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="130" y="455" font-size="14" font-weight="bold" fill="#1E3A5F">02-15-08 : Production continue</text>
+                    <text x="130" y="475" font-size="12" fill="#8B8680">12 articles, skill autonome mise en place</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Mode d'emploi -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Mode d'emploi</span>
+                <h2>Lancer une production d'article</h2>
+            </div>
+
+            <div class="block info">
+                <strong>📢 Déclencheur :</strong><br>
+                « Crée un article sur [sujet] » ou « Lance [N] articles »
+            </div>
+
+            <h4>Workflow de lancement</h4>
+            <div class="infographic">
+                <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Step 1 -->
+                    <rect x="10" y="20" width="120" height="80" fill="#E8691B" rx="6" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="70" y="55" font-size="16" font-weight="bold" fill="white" text-anchor="middle">Demande</text>
+                    <text x="70" y="80" font-size="12" fill="white" text-anchor="middle">Article sur X</text>
+
+                    <!-- Arrow -->
+                    <path d="M 140 60 L 180 60" stroke="#1E3A5F" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+                    <!-- Step 2 -->
+                    <rect x="190" y="20" width="120" height="80" fill="#3B82B8" rx="6" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="250" y="55" font-size="16" font-weight="bold" fill="white" text-anchor="middle">Charge</text>
+                    <text x="250" y="80" font-size="12" fill="white" text-anchor="middle">SKILL</text>
+
+                    <!-- Arrow -->
+                    <path d="M 320 60 L 360 60" stroke="#1E3A5F" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+                    <!-- Step 3 -->
+                    <rect x="370" y="20" width="120" height="80" fill="#2D7A4A" rx="6" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="430" y="55" font-size="16" font-weight="bold" fill="white" text-anchor="middle">Phases</text>
+                    <text x="430" y="80" font-size="12" fill="white" text-anchor="middle">0-4 (4-6h)</text>
+
+                    <!-- Arrow -->
+                    <path d="M 500 60 L 540 60" stroke="#1E3A5F" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+                    <!-- Step 4 -->
+                    <rect x="550" y="20" width="120" height="80" fill="#C53030" rx="6" stroke="#1E3A5F" stroke-width="2"/>
+                    <text x="610" y="55" font-size="16" font-weight="bold" fill="white" text-anchor="middle">Article</text>
+                    <text x="610" y="80" font-size="12" fill="white" text-anchor="middle">LIVE ✓</text>
+
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#1E3A5F"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <h4 style="margin-top: var(--spacing-lg);">Checklist de lancement</h4>
+            <ul class="checklist">
+                <li>Sujet bien défini (outil, feature, comparatif, tutorial)</li>
+                <li>SKILL_BLOG_FACTORY.md chargée</li>
+                <li>CSV sources consultées (ID, priorité, niveau)</li>
+                <li>WebSearch et Reddit disponibles (Phase 1 obligatoire)</li>
+            </ul>
+
+            <div class="block success" style="margin-top: var(--spacing-lg);">
+                <strong>✓ À partir d'août 2026 :</strong> Phases 0-4 exécutées automatiquement sans validation intermédiaire. Seul le résultat final est montré à l'utilisateur.
+            </div>
+        </div>
+
+        <!-- Lessons learned -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-badge">Lessons</span>
+                <h2>Erreurs évitées et apprentissages clés</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="block warning">
+                    <h4>❌ Empiler les skills</h4>
+                    <p>Brainstorming + writing-plans + subagent = paralysie. Solution : exécution directe du processus 4 phases.</p>
+                </div>
+
+                <div class="block warning">
+                    <h4>❌ Inventer des données</h4>
+                    <p>Phase 1 stricte = WebSearch ou rien. Pas de généralités.</p>
+                </div>
+
+                <div class="block warning">
+                    <h4>❌ Multiplier les charte</h4>
+                    <p>4 formats (rich, visual, html-native, editorial) = bugs. Solution : charte unique « rich ».</p>
+                </div>
+
+                <div class="block warning">
+                    <h4>❌ Isoler articles</h4>
+                    <p>Articles non maillés = faibles signaux SEO. Solution : clusters obligatoires, 3+ liens par article.</p>
+                </div>
+
+                <div class="block success">
+                    <h4>✅ Mesure par KPI</h4>
+                    <p>Suivi score, composants, temps, clusters. Production_log versionnée permet d'identifier tendances.</p>
+                </div>
+
+                <div class="block success">
+                    <h4>✅ Réinvention itérative</h4>
+                    <p>Chaque batch révèle améliorations. Feedback incorporé → articles meilleurs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Blog Factory Playbook</strong></p>
+            <p>Documenté sur 23 articles publiés (mai-août 2026). Processus vivant, améliorations continues.<br>Dernière mise à jour : 23 août 2026.</p>
+        </div>
+    </div>
+</body>
+</html>

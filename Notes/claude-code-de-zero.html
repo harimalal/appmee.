@@ -1,0 +1,334 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Claude Code de zéro : premier site, première app, GitHub, déploiement</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f7f7f8;
+  --text: #1a1a1a;
+  --text-dim: #555555;
+  --border: #e0e0e0;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --warning: #ea580c;
+  --error: #dc2626;
+  --verdict-bg: #f0fdf4;
+  --verdict-border: #16a34a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1a1a;
+    --bg-alt: #232323;
+    --text: #f5f5f5;
+    --text-dim: #aaaaaa;
+    --border: #333333;
+    --accent: #60a5fa;
+    --success: #22c55e;
+    --warning: #fb923c;
+    --error: #ef4444;
+    --verdict-bg: #16261a;
+    --verdict-border: #22c55e;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --bg-alt: #232323;
+  --text: #f5f5f5;
+  --text-dim: #aaaaaa;
+  --border: #333333;
+  --accent: #60a5fa;
+  --success: #22c55e;
+  --warning: #fb923c;
+  --error: #ef4444;
+  --verdict-bg: #16261a;
+  --verdict-border: #22c55e;
+}
+
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif; line-height: 1.6; max-width: 920px; margin: 0 auto; padding: 20px; }
+
+h1 { font-size: 26px; margin: 20px 0 6px; color: var(--accent); }
+h2 { font-size: 21px; margin: 34px 0 12px; color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+h3 { font-size: 16px; margin: 18px 0 8px; font-weight: 700; }
+h4 { font-size: 14px; margin: 12px 0 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--text-dim); }
+
+.verdict-box { background: var(--verdict-bg); border: 2px solid var(--verdict-border); border-radius: 8px; padding: 20px 22px; margin: 20px 0 30px; }
+.verdict-box h2 { border: none; margin-top: 0; color: var(--success); }
+
+.timestamp { display: inline-block; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; background: var(--accent); color: white; padding: 1px 7px; border-radius: 4px; margin-right: 6px; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg-alt); font-weight: 700; }
+tr:nth-child(even) td { background: var(--bg-alt); }
+
+.section { margin: 16px 0; padding: 14px 16px; border-left: 3px solid var(--border); background: var(--bg-alt); border-radius: 0 6px 6px 0; }
+
+.quote { border-left: 3px solid var(--accent); padding: 8px 14px; margin: 10px 0; font-style: italic; color: var(--text-dim); background: var(--bg-alt); }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: .3px; }
+.badge-high { background: var(--success); color: white; }
+.badge-medium { background: var(--warning); color: white; }
+
+.score { display: inline-block; background: var(--success); color: white; padding: 3px 10px; border-radius: 4px; font-size: 13px; font-weight: 700; margin: 3px 6px 3px 0; }
+
+ul, ol { margin: 8px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+
+.divider { border-top: 1px solid var(--border); margin: 30px 0; }
+
+.checklist-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.checklist-item .num { font-weight: 700; color: var(--accent); min-width: 22px; }
+
+.toc { background: var(--bg-alt); padding: 16px 20px; border-radius: 8px; margin: 20px 0; }
+.toc ol { margin: 0; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+.tag { background: var(--bg-alt); border: 1px solid var(--border); color: var(--text-dim); font-size: 12px; padding: 3px 10px; border-radius: 12px; }
+.yt-link { display: inline-block; margin: 4px 0 14px; font-size: 13px; }
+
+.tool-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin: 12px 0; background: var(--bg-alt); }
+.tool-card h4 { margin: 0 0 6px; color: var(--accent); text-transform: none; letter-spacing: 0; font-size: 15px; }
+.tool-meta { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+
+.profil-contenu { margin: 24px 0 30px; padding: 20px 22px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+.pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 640px) { .pc-grid { grid-template-columns: 1fr; } }
+.pc-col-title { font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px; }
+.pc-metric { margin-bottom: 12px; }
+.pc-metric-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.pc-metric-sub { font-weight: 400; color: var(--text-dim); font-size: 11px; }
+.pc-bar { height: 8px; background: var(--bg-alt); border-radius: 4px; overflow: hidden; }
+.pc-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.pc-chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px; background: var(--bg-alt); border: 1px solid var(--border); }
+.pc-text { font-size: 13px; color: var(--text-dim); font-style: italic; }
+.pc-flags { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+.pc-flags-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.pc-flag { font-size: 13px; padding: 4px 0; }
+.pc-flag-warn { color: var(--warning); }
+.pc-flag-ok { color: var(--success); }
+</style>
+
+<h1>🧞 Claude Code de zéro : premier site, première app, GitHub, déploiement</h1>
+<a class="yt-link" href="https://youtu.be/_pW-kUBo7AU" target="_blank">▶ Source YouTube — Shubham Sharma · Guide débutant enregistré · ~63 min</a>
+<div class="tags">
+<span class="tag">Claude Code pour non-développeurs</span>
+<span class="tag">mode auto vs plan</span>
+<span class="tag">GitHub + Vercel déploiement</span>
+<span class="tag">CLAUDE.md</span>
+<span class="tag">skills (Impeccable)</span>
+<span class="tag">connecteurs MCP</span>
+<span class="tag">limites d'usage et modèles</span>
+<span class="tag">sécurité clés API</span>
+</div>
+
+<div class="verdict-box">
+<h2>Évaluation finale</h2>
+<p><span class="score">Utilité du contenu : 88%</span></p>
+<p><span class="score">Applicabilité : 92/100</span></p>
+<p><span class="score">Fiabilité : haute — créateur identifié et vérifié indépendamment</span></p>
+<p>Pourquoi ce score : Shubham Sharma est vérifiable indépendamment via son propre site (shubham-sharma.fr), où l'on retrouve un article au titre quasi identique à cette vidéo ("Claude Code pour débutant : guide complet, même sans coder") ainsi qu'un guide dédié aux skills Claude Code — signe d'une expertise cohérente et documentée, pas d'un one-shot opportuniste. Chaque outil cité a été vérifié indépendamment et confirmé exact : le skill "Impeccable" existe réellement (dépôt GitHub pbakaus/impeccable, installation via <code>npx impeccable install</code>, 23 commandes, langage de design anti-"AI slop"), l'éditeur "Z" est bien Zed (éditeur en Rust, très rapide, alternative à VS Code), et Vercel/GitHub/DVF (Demandes de Valeurs Foncières, jeu de données public de l'État français) sont tous réels et correctement décrits. La quasi-totalité de la vidéo est une démonstration à l'écran en temps réel avec deux projets construits de A à Z (portfolio, puis application immobilière avec carte interactive) — très peu de remplissage, à l'exception d'une mention de ses propres ressources (page skills, pack de skills) en toute fin de vidéo, clairement identifiée comme telle.</p>
+<p>Verdict : ce playbook remplace la vidéo pour quiconque veut comprendre et reproduire le processus. Regarder la vidéo reste utile uniquement pour voir les clics et les interfaces en temps réel (utile la première fois qu'on ouvre Claude Code).</p>
+</div>
+
+<div class="profil-contenu">
+<h2 style="border:none;margin:0 0 14px">📋 Profil de contenu</h2>
+<div class="pc-grid">
+<div class="pc-col">
+<h4 class="pc-col-title">Fond</h4>
+<div class="pc-metric"><div class="pc-metric-label">Couverture <span class="pc-metric-sub">(large ↔ narrow)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:90%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Profondeur <span class="pc-metric-sub">(surface ↔ expert)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:55%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Niveau requis</div><div class="pc-chip">Débutant absolu (zéro code)</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Applicabilité immédiate</div><div class="pc-bar"><div class="pc-bar-fill" style="width:92%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Prérequis</div><div class="pc-text">"Aucun — un compte Claude payant (Pro minimum) requis pour accéder à Claude Code, un ordinateur Mac ou Windows"</div></div>
+</div>
+<div class="pc-col">
+<h4 class="pc-col-title">Forme</h4>
+<div class="pc-metric"><div class="pc-metric-label">Format tuto <span class="pc-metric-sub">(step-by-step)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:92%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Format deep-dive <span class="pc-metric-sub">(analyse)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:35%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Format story <span class="pc-metric-sub">(narration)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:15%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Rythme</div><div class="pc-chip">Progressif, très pédagogue</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Personnalité / énergie</div><div class="pc-chip">Enthousiaste, vulgarisation constante</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Navigabilité</div><div class="pc-text">Timestamps absents sur la vidéo source, reconstitués ici</div></div>
+</div>
+</div>
+<div class="pc-flags">
+<div class="pc-flags-title">⚑ Flags de vigilance</div>
+<div class="pc-flag pc-flag-warn">⚠ Mention de ses propres ressources (page skills dédiée, pack de skills) en toute fin de vidéo — auto-promotion mineure, clairement identifiée, ne pollue pas le contenu technique</div>
+<div class="pc-flag pc-flag-ok">✓ Aucune survente détectée — les limites réelles sont expliquées (fenêtre de contexte à surveiller sous 40%, coût des abonnements, mode "ignorer les permissions" explicitement déconseillé)</div>
+</div>
+</div>
+
+<div class="toc">
+<h2 style="border:none;margin-top:0">Sommaire</h2>
+<ol>
+<li>Pourquoi Claude Code n'est pas réservé aux développeurs</li>
+<li>Premiers pas : installer l'application (pas la version web)</li>
+<li>Exemple 1 — Créer un portfolio en mode auto</li>
+<li>Déployer sur internet : GitHub puis Vercel</li>
+<li>Exemple 2 — Une app immobilière en mode plan</li>
+<li>Tokens, contexte et limites d'usage</li>
+<li>Les modèles : Haiku, Sonnet, Opus</li>
+<li>Les skills : donner une compétence à l'agent</li>
+<li>Le fichier CLAUDE.md</li>
+<li>Connecteurs et MCP</li>
+<li>Les 4 modes de permission et la sécurité</li>
+<li>Outils identifiés et vérifiés</li>
+<li>Pièges à éviter</li>
+<li>Checklist actionnable</li>
+</ol>
+</div>
+
+<div class="divider"></div>
+
+<h2>1. Pourquoi Claude Code n'est pas réservé aux développeurs</h2>
+<div class="quote"><span class="timestamp">0:00</span> "Même si vous n'avez jamais codé de votre vie, vous allez pouvoir utiliser aujourd'hui Claude Code [...] je dirais même que les gens qui en profitent le plus, c'est les non-développeurs."</div>
+<div class="quote"><span class="timestamp">6:31</span> "Il faut imaginer Claude Code comme un génie qui fait des choses sur votre ordinateur, qui écrit du code à votre place et vous, vous avez juste à lui parler en langage naturel français."</div>
+<p>Argument central de la vidéo : les modèles comme Claude ont été entraînés sur énormément de code en plus du texte — puisqu'internet est majoritairement fait de code (sites, applications, systèmes d'exploitation). Claude Code ajoute une couche d'abstraction : on parle en français, l'IA traduit en langage informatique, qui est ensuite compilé en binaire. Résultat : plus besoin d'être développeur pour transformer une idée en prototype fonctionnel.</p>
+
+<h2>2. Premiers pas : installer l'application (pas la version web)</h2>
+<div class="quote"><span class="timestamp">7:57</span> "Il y a un piège dans lequel tout le monde tombe [...] il y a une version de Cloud Code qui est sur le web. Et bien, c'est pas celle-là qu'il faut utiliser [...] le fait d'être sur GitHub, ça m'enlève plein de fonctionnalités."</div>
+<div class="quote"><span class="timestamp">9:11</span> "Cloud Code n'est pas disponible dans la version gratuite [...] uniquement accessible à partir du plan Pro Max et Max 20."</div>
+<p>Piège n°1 identifié dans la vidéo : ne pas utiliser la version Claude Code accessible depuis GitHub dans le navigateur — elle est limitée. Il faut télécharger l'application desktop Claude depuis le site officiel. Trois onglets apparaissent une fois connecté : Chat, Cork (co-écriture), et Code — c'est ce dernier qu'il faut utiliser. Accès à Claude Code réservé aux abonnements payants (Pro minimum).</p>
+
+<h2>3. Exemple 1 — Créer un portfolio en mode auto</h2>
+<div class="quote"><span class="timestamp">11:32</span> "Ce génie-là [...] il va avoir besoin d'un dossier [...] pour pouvoir bien écrire du code [...] il a besoin d'un dossier de référence, on appelle ça son dossier de travail."</div>
+<div class="quote"><span class="timestamp">14:00</span> "On va s'assurer que c'est bien sur auto [...] on va le laisser en mode auto pour pas à chaque fois devoir lui dire oui, oui, oui."</div>
+<div class="quote"><span class="timestamp">14:29</span> "Mon objectif est de me créer un portfolio et donc j'aimerais bien que tu ailles regarder mon LinkedIn ainsi que ma chaîne YouTube pour pouvoir me créer mon premier portfolio. Il faut que ça soit une page simple et que ça soit faisable assez rapidement."</div>
+<p>Étapes concrètes : créer un dossier de travail dédié (ex. Documents/code/mon-premier-site-web), ouvrir ce dossier dans Claude Code, activer le mode auto, puis donner un premier prompt avec des liens réels (LinkedIn, chaîne YouTube) à analyser. L'agent va chercher les informations, écrit un fichier HTML (~500 lignes dans l'exemple), consomme des tokens en le faisant (~4000 tokens pour cette première tâche).</p>
+<div class="quote"><span class="timestamp">19:24</span> "Il a modifié mon HTML et en fait il a ajouté des lignes [...] on se rend bien compte qu'il a oublié quelque chose [...] on va devoir guider Cloud Code petit à petit."</div>
+<p>Point réaliste : le premier résultat n'est jamais parfait — il faut itérer en donnant des retours précis (via le chat ou l'outil crayon pour cibler un élément visuel précis).</p>
+
+<h2>4. Déployer sur internet : GitHub puis Vercel</h2>
+<div class="quote"><span class="timestamp">21:36</span> "Le site web, il est sous un format fichier HTML. Il faut bien aller le publier quelque part si on veut que nos utilisateurs aient accès à ça."</div>
+<div class="quote"><span class="timestamp">23:20</span> "GitHub est un genre de répertoire [...] dans lequel on va venir uploader nos fichiers [...] ils vont être quelque part où tout le monde peut y accéder [...] mais ce répertoire, il peut être privé."</div>
+<p>Trois étapes expliquées et démontrées : (1) créer un dépôt GitHub privé — Claude Code peut le faire lui-même et installer les outils nécessaires (CLI GitHub) si absents ; (2) pousser le code (<code>git push</code>) vers ce dépôt ; (3) connecter Vercel au dépôt GitHub pour qu'il déploie automatiquement.</p>
+<div class="quote"><span class="timestamp">24:57</span> "Un des avantages avec Versel, c'est que une fois qu'on modifie ce fichier dans GitHub, et bien Versel l'autodéploie et ça c'est magique. Ça veut dire qu'on a pas de mise à jour à faire."</div>
+<div class="quote"><span class="timestamp">28:44</span> "Dès qu'on est sur https quelque chose, ça veut dire qu'on est sur internet. Si ce lien-là vous l'envoyez à un ami, ça ne fonctionnera pas [si c'est un chemin local] [...] pour qu'il fonctionne, il faut un https."</div>
+<p>Résultat obtenu dans la vidéo : un site accessible publiquement en quelques minutes sur un sous-domaine Vercel gratuit (ex. mon-premier-siteweb.vercel.app). Étape suivante optionnelle mentionnée : acheter un nom de domaine personnalisé (~5€/an) et le connecter.</p>
+
+<h2>5. Exemple 2 — Une app immobilière en mode plan</h2>
+<div class="quote"><span class="timestamp">31:32</span> "J'aimerais bien créer une application [...] pour Paris, avoir une app qui selon les quartiers [...] puisse m'afficher une espèce de map avec les prix de vente par quartier."</div>
+<div class="quote"><span class="timestamp">32:20</span> "Souvent c'est toujours mieux à notre génie [...] de lui dire : fais un peu le plan de ce que tu veux faire avant de commencer à bosser et écrire du code."</div>
+<div class="quote"><span class="timestamp">33:52</span> "Surtout, j'ai envie que tu me poses des questions avec l'outil ask user question tool tant que tu n'as pas compris mon besoin complètement."</div>
+<p>Différence clé avec l'exemple 1 : mode plan plutôt que mode auto direct. Le prompt inclut explicitement une demande de clarification via l'outil de questions ("ask user question tool") — l'agent pose plusieurs questions précises (granularité géographique : arrondissements ou quartiers, données à afficher : prix/surface/type, usage local ou en ligne) avant d'agir. Argument donné : la majorité des projets échouent non pas par manque de compétence technique mais par manque de communication claire du besoin.</p>
+<div class="quote"><span class="timestamp">36:54</span> "Voici ce que source de données [...] DVF, c'est les demandes de valeur foncière, qui est un site de l'État dans lequel [...] on peut avoir département, quartier par quartier, exactement quelles ont été les dernières ventes."</div>
+<p>L'agent identifie lui-même une source de données publique pertinente (DVF, dataset officiel de l'État français), construit un plan détaillé (architecture des fichiers), attend validation, puis exécute en mode automatique une fois le plan approuvé — téléchargement de 34 000 ventes immobilières, construction d'une carte interactive avec filtres par prix/surface.</p>
+<div class="quote"><span class="timestamp">37:31</span> "C'est très important de faire la planification avant le code, parce que sinon [...] les agents commencent à poser des briques parce qu'ils veulent vous montrer le premier résultat le plus rapidement possible [...] le fait de d'abord créer l'architecture, c'est beaucoup plus efficace."</div>
+<p>Résultat : application complète avec carte interactive, filtres dynamiques (surface, prix), zoom par adresse — obtenue en une seule passe ("one shot") grâce à la planification préalable.</p>
+
+<h2>6. Tokens, contexte et limites d'usage</h2>
+<div class="quote"><span class="timestamp">46:23</span> "La fenêtre de contexte [...] c'est un peu la mémoire vive avec laquelle votre Cloud Code travaille. Plus sa fenêtre de contexte va se remplir, moins il va être efficace [...] je vous inviterai à surveiller que ça va pas au-delà de 40%."</div>
+<div class="quote"><span class="timestamp">47:03</span> "Cette fenêtre de contexte, elle a pas juste vos messages [...] elle a aussi tous les skills, tous les outils MCP [...] plus vous allez connecter des outils, plus votre contexte sera rempli et moins votre modèle va être efficace."</div>
+<p>Règle pratique donnée : ne jamais dépasser ~40% de remplissage de la fenêtre de contexte, sous peine de dégradation de la qualité des réponses. Chaque skill et connecteur MCP activé consomme du contexte en permanence, même sans être utilisé activement.</p>
+<div class="quote"><span class="timestamp">40:53</span> "La première limite qu'il y a, c'est la limite du nombre de messages envoyés [...] dans une fenêtre de 5h [...] et on a une limite hebdomadaire [...] selon si on est en pro ou en max."</div>
+<div class="quote"><span class="timestamp">42:43</span> "Si vous êtes en pro, vous allez avoir un carré d'utilisation. Si vous êtes en max, vous allez avoir 5 carrés [...] et avec le Max 20, vous allez avoir quatre fois l'utilisation de Max [...] c'est le plan qui coûte 200 dollars."</div>
+<p>Structure des limites : quota sur 5h glissantes + quota hebdomadaire, qui varient selon l'abonnement (Pro < Max < Max 20 à ~200$/mois). Au-delà, passage en facturation à l'usage (API), nettement plus cher.</p>
+
+<h2>7. Les modèles : Haiku, Sonnet, Opus</h2>
+<div class="quote"><span class="timestamp">41:40</span> "Haiku, ça va être le plus rapide, pas du tout adapté pour du code [...] Sonnet qui va être meilleur pour écrire du texte, peut écrire du code mais c'est pas le meilleur. Et puis Opus qui est le meilleur en ce moment [...] mais c'est aussi celui qui coûte le plus cher."</div>
+<p>Hiérarchie donnée dans la vidéo : Haiku (rapide, économique, peu adapté au code complexe), Sonnet (bon compromis texte/code), Opus (meilleures performances, coût le plus élevé). Le choix du modèle affecte directement la vitesse à laquelle le quota d'usage se remplit.</p>
+
+<h2>8. Les skills : donner une compétence à l'agent</h2>
+<div class="quote"><span class="timestamp">48:29</span> "Il y a un skill que j'adore qui s'appelle Impeccable Style [...] qui nous permet de créer des applications web et des sites web vraiment très qualitatifs [...] au lieu d'avoir ce que j'appelle du AI slop."</div>
+<div class="quote"><span class="timestamp">49:56</span> "Vous pouvez directement aller mettre ça dans le chat et dire : installe ce skill et ensuite utilise-le pour faire un meilleur design [...] au lieu d'utiliser le terminal."</div>
+<p>Un skill est une compétence réutilisable, packagée et installable, qui donne à l'agent une méthode structurée pour une tâche précise (ici : le design visuel). Deux façons de l'installer : via le terminal (<code>npx impeccable install</code>) ou, plus simple pour un débutant, en demandant directement à Claude Code de l'installer et de l'utiliser en langage naturel.</p>
+
+<h2>9. Le fichier CLAUDE.md</h2>
+<div class="quote"><span class="timestamp">51:35</span> "Ce fichier cloud.md, il va être hyper important parce que c'est le premier fichier lu par un agent Cloud Code [...] on va venir donner le pourquoi du comment de ce projet."</div>
+<div class="quote"><span class="timestamp">53:52</span> "Vous allez pouvoir vous-même faire générer ce cloud.md par Cloud [...] et personne pense à faire ça alors que ça nous fait gagner des performances et de la clarté."</div>
+<div class="quote"><span class="timestamp">54:03</span> "Un des moyens de forcer ça, c'est d'aller ici et de taper slash init [...] ça va initialiser votre fichier avec Cloud Code."</div>
+<p>CLAUDE.md est le fichier de contexte central : identité de l'utilisateur (ex. "je ne suis pas développeur, parle-moi comme à un enfant de 5 ans"), objectif du projet, structure du code. Tout nouvel agent qui arrive sur le projet le lit en premier, ce qui évite qu'il relise inutilement toute la base de code (économie de tokens et de contexte). Se génère automatiquement via la commande <code>/init</code>, et peut être mis à jour à la demande.</p>
+
+<h2>10. Connecteurs et MCP</h2>
+<div class="quote"><span class="timestamp">57:36</span> "Cloud peut se connecter à plein d'applications tierces comme ça. Tout ça, techniquement, c'est les MCP [...] typiquement Conto, Winzor, N8N, Clay, ou alors Interactive Brokers."</div>
+<div class="quote"><span class="timestamp">58:56</span> "Le modèle, ça va être un peu le cerveau de votre génie. Les connecteurs, ça va être un peu les mains [...] et les skills, c'est les recettes de comment il utilise les outils. [...] Un outil qu'il sait pas utiliser, ça sert à rien."</div>
+<p>Métaphore retenue de la vidéo pour comprendre l'architecture : modèle = cerveau, connecteurs (MCP) = mains, skills = recettes d'utilisation des outils. Démonstration concrète avec le connecteur Tally (formulaires) : Claude Code crée directement un formulaire fonctionnel sur la plateforme sans intervention manuelle.</p>
+
+<h2>11. Les 4 modes de permission et la sécurité</h2>
+<div class="quote"><span class="timestamp">59:41</span> "Il y en a un [...] demander les autorisations [...] c'est un peu le mode prudent pour débuter [...] accepter les modifications [...] Cloud modifie les fichiers tout seul mais demande pour des actions un peu risquées."</div>
+<div class="quote"><span class="timestamp">60:38</span> "Le mode automatique, ça c'est un peu le bon compromis [...] il avance sans vous demander mais un second modèle vérifie chaque action et bloque ce qui sort du cadre."</div>
+<div class="quote"><span class="timestamp">60:59</span> "Le dernier [...] il exécute tout et celui-là il est vraiment déconseillé [...] aujourd'hui il vaut mieux utiliser le mode auto."</div>
+<p>Quatre modes classés du plus prudent au plus risqué : demander les autorisations (chaque action confirmée manuellement) → accepter les modifications (auto sauf actions risquées) → mode automatique (un second modèle vérifie et bloque les dérives, coût token légèrement supérieur) → ignorer les permissions (tout exécuté sans vérification, explicitement déconseillé depuis l'arrivée du mode auto).</p>
+<div class="quote"><span class="timestamp">61:47</span> "Faites très attention à vos points env [...] les clés API [...] si vous mettez ce fichier sur GitHub, tout est compromis [...] il y a plein de gens qui se font pirater comme ça à cause de leur point env qui est poussé sur GitHub."</div>
+<div class="quote"><span class="timestamp">62:15</span> "Faites attention à ce que vous mettez dans Cloud [...] les modèles utilisent vos données pour pouvoir être entraînés [...] si vous mettez des données très sensibles dans la conversation, ça pourra ressortir un jour."</div>
+<p>Trois règles de sécurité explicites : (1) dépôts GitHub toujours privés par défaut ; (2) ne jamais laisser un fichier <code>.env</code> (contenant les clés API) être poussé sur GitHub — c'est la cause la plus fréquente de piratage citée dans la vidéo ; (3) ne jamais partager de données très sensibles dans une conversation avec un LLM, car elles peuvent réapparaître via l'entraînement futur du modèle.</p>
+
+<h2>12. Outils identifiés et vérifiés</h2>
+
+<div class="tool-card">
+<h4>Claude Code</h4>
+<div class="tool-meta">Anthropic · Accès à partir du plan Pro (payant, pas de version gratuite) · Application desktop, pas la version web</div>
+<p><strong>Fonction :</strong> agent capable d'écrire, lire et modifier du code directement sur l'ordinateur de l'utilisateur, à partir d'instructions en langage naturel.</p>
+<p><strong>Pourquoi il est cité :</strong> sujet central de la vidéo — outil expliqué de bout en bout pour un public non-développeur.</p>
+</div>
+
+<div class="tool-card">
+<h4>Zed</h4>
+<div class="tool-meta">Éditeur de code, écrit en Rust · Gratuit</div>
+<p><strong>Fonction :</strong> éditeur de code léger et rapide, utilisé pour visualiser les fichiers générés par Claude Code (alternative à VS Code, jugé plus lent par le créateur).</p>
+<p><strong>Pourquoi il est cité :</strong> vérifié réel et confirmé : GPU-accéléré, ~180 Mo de RAM au repos contre ~650 Mo pour VS Code, latence d'entrée très basse.</p>
+</div>
+
+<div class="tool-card">
+<h4>GitHub</h4>
+<div class="tool-meta">Microsoft · Gratuit pour dépôts privés/publics de base</div>
+<p><strong>Fonction :</strong> hébergement du code sous forme de "dépôts" (repositories), pont indispensable entre l'ordinateur local et les plateformes de déploiement.</p>
+<p><strong>Pourquoi il est cité :</strong> étape obligatoire du pipeline de déploiement démontré dans la vidéo.</p>
+</div>
+
+<div class="tool-card">
+<h4>Vercel</h4>
+<div class="tool-meta">Plateforme de déploiement · Offre gratuite disponible</div>
+<p><strong>Fonction :</strong> déploie automatiquement un site/app web à chaque modification poussée sur GitHub (déploiement continu).</p>
+<p><strong>Pourquoi il est cité :</strong> plateforme choisie pour la démo (le créateur précise utiliser personnellement Dokploy, une alternative open source, au quotidien).</p>
+</div>
+
+<div class="tool-card">
+<h4>Impeccable <span class="badge badge-medium">Mentionné, pas de conflit d'intérêt détecté</span></h4>
+<div class="tool-meta">pbakaus (GitHub open source) · Gratuit, installation via npx</div>
+<p><strong>Fonction :</strong> skill de design qui donne à l'agent un véritable langage de design (23 commandes, typographie fluide, couleurs OKLCH) pour éviter l'esthétique générique "IA".</p>
+<p><strong>Pourquoi il est cité :</strong> vérifié réel indépendamment — dépôt GitHub actif, description cohérente avec la démonstration de la vidéo.</p>
+</div>
+
+<div class="tool-card">
+<h4>DVF (Demandes de Valeurs Foncières)</h4>
+<div class="tool-meta">Data.gouv.fr · Dataset public gratuit</div>
+<p><strong>Fonction :</strong> base de données officielle de l'État français recensant les transactions immobilières (prix, surface, localisation).</p>
+<p><strong>Pourquoi il est cité :</strong> source de données trouvée et utilisée par l'agent lui-même pour construire l'application immobilière de l'exemple 2, sans intervention de recherche manuelle de l'utilisateur.</p>
+</div>
+
+<div class="tool-card">
+<h4>Tally</h4>
+<div class="tool-meta">Créateur de formulaires en ligne · Offre gratuite disponible</div>
+<p><strong>Fonction :</strong> outil de création de formulaires, connecté à Claude Code via MCP pour générer un formulaire fonctionnel directement depuis une conversation.</p>
+<p><strong>Pourquoi il est cité :</strong> démonstration concrète d'un connecteur MCP en action dans la vidéo.</p>
+</div>
+
+<h2>13. Pièges à éviter</h2>
+<ul>
+<li><strong>Utiliser la version web de Claude Code depuis GitHub</strong> — fonctionnalités réduites par rapport à l'application desktop.</li>
+<li><strong>Se lancer sans dossier de travail dédié</strong> — l'agent doit écrire ses fichiers quelque part de structuré, sinon le système de fichiers devient rapidement le chaos.</li>
+<li><strong>Sauter l'étape de planification sur un projet complexe</strong> — sans plan préalable, l'agent construit trop vite pour montrer un résultat rapide, au détriment de l'architecture.</li>
+<li><strong>Laisser la fenêtre de contexte dépasser 40%</strong> — dégrade la qualité des réponses ; chaque skill et connecteur actif consomme du contexte en continu.</li>
+<li><strong>Utiliser le mode "ignorer les permissions"</strong> — explicitement déconseillé, remplacé par le mode automatique qui offre une vérification de sécurité pour un coût token minime.</li>
+<li><strong>Pousser un fichier .env sur GitHub</strong> — cause la plus fréquente de fuite de clés API et de piratage selon la vidéo.</li>
+<li><strong>Partager des données très sensibles dans une conversation</strong> — elles peuvent être réutilisées dans l'entraînement futur du modèle.</li>
+</ul>
+
+<h2>14. Checklist actionnable</h2>
+<div class="checklist-item"><span class="num">1</span> Télécharger l'application desktop Claude depuis le site officiel (pas la version web GitHub)</div>
+<div class="checklist-item"><span class="num">2</span> Vérifier son abonnement — Claude Code nécessite un plan Pro minimum</div>
+<div class="checklist-item"><span class="num">3</span> Créer un dossier de travail dédié (ex. Documents/code/mon-projet) avant de lancer une session</div>
+<div class="checklist-item"><span class="num">4</span> Pour un premier projet simple, activer le mode auto et donner un prompt précis avec du contexte réel (liens, contenu existant)</div>
+<div class="checklist-item"><span class="num">5</span> Pour un projet plus complexe, utiliser le mode plan et demander explicitement à l'agent de poser des questions de clarification avant d'agir</div>
+<div class="checklist-item"><span class="num">6</span> Une fois le plan proposé, le valider avant de repasser en mode automatique</div>
+<div class="checklist-item"><span class="num">7</span> Pour déployer : demander à l'agent de créer un dépôt GitHub privé, pousser le code, puis connecter une plateforme comme Vercel</div>
+<div class="checklist-item"><span class="num">8</span> Lancer /init dès le début d'un projet pour générer un fichier CLAUDE.md avec le contexte du projet et vos préférences</div>
+<div class="checklist-item"><span class="num">9</span> Surveiller la jauge de fenêtre de contexte — ne jamais dépasser ~40% sans y prêter attention</div>
+<div class="checklist-item"><span class="num">10</span> Utiliser le mode automatique par défaut plutôt que le mode "ignorer les permissions"</div>
+<div class="checklist-item"><span class="num">11</span> Ne jamais pousser un fichier .env (clés API) sur GitHub — vérifier le .gitignore</div>
+<div class="checklist-item"><span class="num">12</span> Explorer les connecteurs MCP disponibles pour les outils déjà utilisés (formulaires, CRM, automatisation) avant de tout reconstruire à la main</div>
+<div class="checklist-item"><span class="num">13</span> Installer un skill de design (ex. Impeccable) avant de demander une interface visuelle soignée, pour éviter l'esthétique générique "IA"</div>
+
+</body></html>

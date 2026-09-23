@@ -1,0 +1,305 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Hermes Agent sur VPS : installation & configuration</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f7f7f8;
+  --text: #1a1a1a;
+  --text-dim: #555555;
+  --border: #e0e0e0;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --warning: #ea580c;
+  --error: #dc2626;
+  --verdict-bg: #f0fdf4;
+  --verdict-border: #16a34a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1a1a;
+    --bg-alt: #232323;
+    --text: #f5f5f5;
+    --text-dim: #aaaaaa;
+    --border: #333333;
+    --accent: #60a5fa;
+    --success: #22c55e;
+    --warning: #fb923c;
+    --error: #ef4444;
+    --verdict-bg: #16261a;
+    --verdict-border: #22c55e;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --bg-alt: #232323;
+  --text: #f5f5f5;
+  --text-dim: #aaaaaa;
+  --border: #333333;
+  --accent: #60a5fa;
+  --success: #22c55e;
+  --warning: #fb923c;
+  --error: #ef4444;
+  --verdict-bg: #16261a;
+  --verdict-border: #22c55e;
+}
+
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif; line-height: 1.6; max-width: 920px; margin: 0 auto; padding: 20px; }
+
+h1 { font-size: 26px; margin: 20px 0 6px; color: var(--accent); }
+h2 { font-size: 21px; margin: 34px 0 12px; color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+h3 { font-size: 16px; margin: 18px 0 8px; font-weight: 700; }
+h4 { font-size: 14px; margin: 12px 0 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--text-dim); }
+
+.subtitle { color: var(--text-dim); margin-bottom: 20px; }
+
+.verdict-box { background: var(--verdict-bg); border: 2px solid var(--verdict-border); border-radius: 8px; padding: 20px 22px; margin: 20px 0 30px; }
+.verdict-box h2 { border: none; margin-top: 0; color: var(--success); }
+
+.timestamp { display: inline-block; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; background: var(--accent); color: white; padding: 1px 7px; border-radius: 4px; margin-right: 6px; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg-alt); font-weight: 700; }
+tr:nth-child(even) td { background: var(--bg-alt); }
+
+.section { margin: 16px 0; padding: 14px 16px; border-left: 3px solid var(--border); background: var(--bg-alt); border-radius: 0 6px 6px 0; }
+
+.quote { border-left: 3px solid var(--accent); padding: 8px 14px; margin: 10px 0; font-style: italic; color: var(--text-dim); background: var(--bg-alt); }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: .3px; }
+.badge-high { background: var(--success); color: white; }
+.badge-medium { background: var(--warning); color: white; }
+
+.score { display: inline-block; background: var(--success); color: white; padding: 3px 10px; border-radius: 4px; font-size: 13px; font-weight: 700; margin: 3px 6px 3px 0; }
+
+ul, ol { margin: 8px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+
+.divider { border-top: 1px solid var(--border); margin: 30px 0; }
+
+.checklist-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.checklist-item .num { font-weight: 700; color: var(--accent); min-width: 22px; }
+
+.toc { background: var(--bg-alt); padding: 16px 20px; border-radius: 8px; margin: 20px 0; }
+.toc ol { margin: 0; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+.tag { background: var(--bg-alt); border: 1px solid var(--border); color: var(--text-dim); font-size: 12px; padding: 3px 10px; border-radius: 12px; }
+.yt-link { display: inline-block; margin: 4px 0 14px; font-size: 13px; }
+
+.scorecard { display: flex; flex-wrap: wrap; gap: 14px; margin: 4px 0 18px; }
+.score-tile { flex: 1; min-width: 150px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
+.score-tile .big { font-size: 26px; font-weight: 800; line-height: 1.1; }
+.score-tile .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--text-dim); margin-top: 2px; }
+.score-tile.good .big { color: var(--success); }
+
+.profil-contenu { margin: 24px 0 30px; padding: 20px 22px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+.pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 640px) { .pc-grid { grid-template-columns: 1fr; } }
+.pc-col-title { font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px; }
+.pc-metric { margin-bottom: 12px; }
+.pc-metric-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.pc-metric-sub { font-weight: 400; color: var(--text-dim); font-size: 11px; }
+.pc-bar { height: 8px; background: var(--bg-alt); border-radius: 4px; overflow: hidden; }
+.pc-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.pc-chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 10px; background: var(--bg-alt); border: 1px solid var(--border); }
+.pc-text { font-size: 13px; color: var(--text-dim); font-style: italic; }
+.pc-flags { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+.pc-flags-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.pc-flag { font-size: 13px; padding: 4px 0; }
+.pc-flag-warn { color: var(--warning); }
+.pc-flag-ok { color: var(--success); }
+</style>
+
+<h1>🤖 Hermes Agent sur VPS : installation & configuration</h1>
+<a class="yt-link" href="https://youtu.be/KlMJGkZ00f4" target="_blank">▶ Source YouTube — Tutoriel technique · 54 min</a>
+<div class="tags">
+<span class="tag">Hermes Agent</span>
+<span class="tag">VPS installation</span>
+<span class="tag">architecture agents</span>
+<span class="tag">skills autocréés</span>
+<span class="tag">configuration étape-par-étape</span>
+<span class="tag">sécurité 24/7</span>
+<span class="tag">Web UI</span>
+</div>
+
+<div class="verdict-box">
+<h2>⚡ Verdict</h2>
+<div class="scorecard">
+<div class="score-tile good"><div class="big">78%</div><div class="lbl">actionnable</div></div>
+<div class="score-tile good"><div class="big">87/100</div><div class="lbl">applicabilité</div></div>
+<div class="score-tile good"><div class="big">haute — structuré</div><div class="lbl">fiabilité</div></div>
+</div>
+<p><strong>Tutorial technique dense, procédural.</strong> Créateur non identifié (pas de présentation explicite) mais clarté du contenu élevée : pourquoi VPS (24/7 uptime, bas coût) → cinq fondamentaux (Memory, Skills autocréés, Curator agent, System prompt, plugins) → architecture cible → installation guidée étape-par-étape → sécurité → pièges à éviter → Web UI/dashboard. Comparaison explicite avec Open Claw sur chaque fondamental. Très peu de digressions.</p>
+</div>
+
+<div class="profil-contenu">
+<h2 style="border:none;margin:0 0 14px">📋 Profil de contenu</h2>
+<div class="pc-grid">
+<div class="pc-col">
+<h4 class="pc-col-title">Fond</h4>
+<div class="pc-metric"><div class="pc-metric-label">Couverture <span class="pc-metric-sub">(large ↔ narrow)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:75%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Profondeur <span class="pc-metric-sub">(surface ↔ expert)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:65%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Niveau requis</div><div class="pc-chip">Intermédiaire</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Applicabilité immédiate</div><div class="pc-bar"><div class="pc-bar-fill" style="width:87%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Prérequis</div><div class="pc-text">"Notions de VPS, ligne de commande Linux, gestion basique de services (systemd)"</div></div>
+</div>
+<div class="pc-col">
+<h4 class="pc-col-title">Forme</h4>
+<div class="pc-metric"><div class="pc-metric-label">Format tuto <span class="pc-metric-sub">(step-by-step)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:85%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Format deep-dive <span class="pc-metric-sub">(analyse)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:55%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Format story <span class="pc-metric-sub">(narration)</span></div><div class="pc-bar"><div class="pc-bar-fill" style="width:10%"></div></div></div>
+<div class="pc-metric"><div class="pc-metric-label">Rythme</div><div class="pc-chip">Dense / rapide</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Personnalité / énergie</div><div class="pc-chip">Neutre-technique</div></div>
+<div class="pc-metric"><div class="pc-metric-label">Navigabilité</div><div class="pc-text">Timestamps : partiels (citations clés repérables, découpage entre 8-9 min dense)</div></div>
+</div>
+</div>
+<div class="pc-flags">
+<div class="pc-flags-title">⚑ Flags de vigilance</div>
+<div class="pc-flag pc-flag-warn">⚠ Créateur non identifié — pas de présentation, impossible de vérifier son expérience réelle avec Hermes en production</div>
+<div class="pc-flag pc-flag-warn">⚠ Comparaison Hermes vs Open Claw systématiquement favorable à Hermes — source potentiellement partiale, pas de contre-point tiers</div>
+<div class="pc-flag pc-flag-ok">✓ Pas de survente détectée, contenu procédural sans promesse irréaliste</div>
+</div>
+</div>
+
+<div class="toc">
+<h2 style="border:none;margin-top:0">Sommaire</h2>
+<ol>
+<li>Pourquoi VPS pour Hermes Agent</li>
+<li>Les cinq fondamentaux de Hermes</li>
+<li>Différences avec Open Claw</li>
+<li>Architecture cible expliquée</li>
+<li>Installation sur VPS : étapes clés</li>
+<li>Configuration : Memory, Skills, System prompt</li>
+<li>Sécurité et meilleures pratiques</li>
+<li>Web UI / Dashboard / Plugins</li>
+<li>Pièges à éviter</li>
+<li>Checklist actionnable</li>
+<li>Évaluation finale</li>
+</ol>
+</div>
+
+<div class="divider"></div>
+
+<h2>1. Pourquoi VPS pour Hermes Agent</h2>
+<div class="quote"><span class="timestamp">1:01</span> "Pour ce type d'outil, il doit tourner 24/7. Quelle est la meilleure architecture pour faire tourner ce type d'outil 24/7 ? Un VPS — parce que ça coûte très peu cher et en même temps tu as un outil qui est disponible 24/7."</div>
+<p>Deux critères clés : (1) disponibilité permanente — les agents autonomes doivent tourner sans interruption, pas juste quand tu les utilises ; (2) coût bas — un VPS standard coûte moins cher qu'une instance cloud permanente tout en étant suffisant. Alternativement : ton ordinateur personnel (mais tu dois le laisser allumé) ou une instance cloud (plus cher). Le VPS est le sweet spot pour un agent de production 24/7 léger.</p>
+
+<h2>2. Les cinq fondamentaux de Hermes</h2>
+<div class="quote"><span class="timestamp">6:31</span> "Je vais te présenter les cinq fondamentaux. Pourquoi un VPS, l'architecture cible, ce que moi j'ai mis en place et enfin les pièges à éviter."</div>
+
+<h3>Memory (Mémoire persistante)</h3>
+<div class="quote"><span class="timestamp">6:31</span> "L'idée c'est de te dire : tu peux lui dire par exemple 'toi, moi, PNPM uniquement'. L'idée c'est vraiment tu lui dis ce que tu veux et il s'en souvient. Par exemple, 'arrête de faire des réponses trop longues'. Tout ça c'est important et en gros ça se base sur les préférences, les faits et les projets."</div>
+<p>La mémoire n'est pas juste une conversation passée — c'est une base de données de préférences (PNPM is my tool), règles (answers short), faits (données sur tes projets), et historique. Hermes peut y accéder à chaque nouvelle interaction.</p>
+
+<h3>Skills (Capacités auto-créées)</h3>
+<div class="quote"><span class="timestamp">7:02</span> "Il a un système de skills autocréé et raffiné par l'agent lui-même. Avec Hermes, les skills sont autocréés. Par exemple si tu fais régulièrement quelque chose... si tu publies sur les réseaux sociaux... il va voir que tu le fais souvent et il va se dire 'Bon, on va créer un skill'."</div>
+<p>Différence clé avec Open Claw : dans Open Claw tu dois créer tes skills manuellement, ils sont statiques. Avec Hermes, l'agent détecte que tu fais une action 2-3 fois et il crée automatiquement un skill pour l'automatiser. Plus tu fais une action, plus Hermes l'optimise.</p>
+
+<h3>Curator Agent</h3>
+<div class="quote"><span class="timestamp">8:01</span> "On a un curator agent, lui qui va détecter des skills qui sont pas performants."</div>
+<p>Niveau de surveillance supplémentaire : le curator observe tes skills existants et signale ceux qui ne fonctionnent pas bien, proposant des refactos ou améliorations — automatiquement.</p>
+
+<h3>System Prompt (Identité & Règles)</h3>
+<div class="quote"><span class="timestamp">8:34</span> "L'identité de ton agent, les règles. Ne fais pas ceci, ne fais pas cela, le ton, valeurs, le style, la langue. Tu peux lui dire 'réponds-moi en français', 'entrepreneur reasoning', 'pas de blabla'."</div>
+<p>Définir la personnalité et le comportement de l'agent : langage, style d'interaction, principes éthiques, priorités (entrepreneur vs. conservative vs. creative). C'est la "constitution" de l'agent.</p>
+
+<h3>Plugins & Intégrations</h3>
+<p>Au lancement, tu peux configurer quels outils/APIs l'agent peut accéder (Slack, GitHub, n8n, Notion remplacé par Hermes dans ce workflow, etc.).</p>
+
+<h2>3. Différences avec Open Claw</h2>
+
+<table>
+<tr><th>Aspect</th><th>Open Claw</th><th>Hermes Agent</th></tr>
+<tr><td>Skills</td><td>Statiques (tu les crées, elles arrêtent là)</td><td>Autocréés et continuellement raffinés par l'agent</td></tr>
+<tr><td>Mises à jour</td><td>Tu dis explicitement "mets à jour ce skill"</td><td>L'agent propose et exécute des refactos automatiquement</td></tr>
+<tr><td>Apprentissage</td><td>L'agent suit tes instructions mais ne s'améliore pas seul</td><td>L'agent détecte les patterns et s'auto-optimise</td></tr>
+<tr><td>Mises à jour logiciel</td><td>Souvent compliquées, problématiques rapportés par l'utilisateur</td><td>Système de mises à jour plus fluide intégré</td></tr>
+</table>
+
+<h2>4. Architecture cible expliquée</h2>
+
+<p>Structure générale : VPS (Linux) → Hermes Agent (processus principal) → Plugins/APIs (Slack, GitHub, n8n optionnel, etc.) + Web UI (interface visuelle) + Dashboard (monitoring). L'agent tourne en arrière-plan, capable de communiquer via plusieurs canaux (CLI, Web UI, plugins) et d'orchestrer des outils externes.</p>
+
+<h2>5. Installation sur VPS : étapes clés</h2>
+
+<p>Procédure generale couverte dans la vidéo étape-par-étape :</p>
+<ol>
+<li>Louer un VPS (Linux recommandé)</li>
+<li>Installer l'environnement de base (Python/Node selon config)</li>
+<li>Cloner/installer Hermes Agent</li>
+<li>Configurer la mémoire et les skills initiaux</li>
+<li>Configurer les plugins (Slack, GitHub, etc.)</li>
+<li>Installer Web UI (séparé, pas intégré nativement)</li>
+<li>Démarrer l'agent en mode daemon (systemd ou similaire)</li>
+<li>Vérifier les logs et les accès</li>
+</ol>
+
+<h2>6. Configuration : Memory, Skills, System prompt</h2>
+
+<h3>Memory</h3>
+<p>Fichier de config contenant : préférences utilisateur, règles comportementales, historique de projets. Format : YAML ou JSON selon la version de Hermes. Hermes la lit au démarrage et y ajoute des entrées au fil du temps.</p>
+
+<h3>Skills</h3>
+<p>Initiales : tu peux fournir quelques skills d'amorce (ex. "publier sur Twitter", "mettre à jour le backlog GitHub"). Hermes en crée d'autres automatiquement basées sur tes patterns. Chaque skill = une procédure que l'agent peut exécuter.</p>
+
+<h3>System Prompt</h3>
+<p>Fichier config court mais puissant : exemple donné "toi-moi direct", "entrepreneur reasoning", "français only". Cela teinte toutes les réponses et décisions de l'agent.</p>
+
+<h2>7. Sécurité et meilleures pratiques</h2>
+
+<p>La vidéo couvre la sécurité en détail (spécifique à ce contexte). Points généraux :</p>
+<ul>
+<li>Limiter les accès des plugins (ne pas donner tous les droits à GitHub, par exemple)</li>
+<li>Chiffrer la mémoire si elle contient des secrets</li>
+<li>Monitorer les logs pour détecter les comportements anormaux</li>
+<li>Faire des backups réguliers de la config et la mémoire</li>
+<li>Mettre à jour Hermes régulièrement</li>
+</ul>
+
+<h2>8. Web UI / Dashboard / Plugins</h2>
+
+<p>Web UI n'est pas intégré nativement — tu dois l'installer séparément. Permet de : voir l'état de l'agent, lire les logs en temps réel, déclencher manuellement des skills, ajuster la config sans redémarrage.</p>
+
+<p>Dashboard : monitoring basique (uptime, utilisation CPU/mémoire, erreurs récentes).</p>
+
+<p>Plugins : interface pour ajouter de nouveaux outils. Hermes en embarque quelques-uns (Slack, GitHub, etc.), mais tu peux en écrire des custom.</p>
+
+<h2>9. Pièges à éviter</h2>
+
+<ul>
+<li><strong>Confondre "skills" avec "plugins"</strong> — skills = procédures que l'agent exécute, plugins = outils externes que l'agent peut appeler</li>
+<li><strong>Ne pas monitorer les logs</strong> — sans logs, tu ne sais pas ce que l'agent fait ni pourquoi il échoue</li>
+<li><strong>Oublier les mises à jour</strong> — Hermes reçoit des correctifs de sécurité réguliers</li>
+<li><strong>Donner trop de permissions aux plugins</strong> — commencer petit, escalader au besoin</li>
+<li><strong>Ne pas tester en staging d'abord</strong> — lancer directement en production sans essai peut mener à des désastres</li>
+</ul>
+
+<h2>10. Checklist actionnable</h2>
+
+<div class="checklist-item"><span class="num">1</span> Louer un VPS Linux (2 CPU minimum, 2 GB RAM minimum pour Hermes)</div>
+<div class="checklist-item"><span class="num">2</span> Installer Hermes Agent via le script official ou pip/npm selon la distribution</div>
+<div class="checklist-item"><span class="num">3</span> Créer un fichier memory.yaml avec tes préférences initiales (langage, priorités, règles)</div>
+<div class="checklist-item"><span class="num">4</span> Créer un fichier system_prompt.txt avec ton système prompt (identité, ton)</div>
+<div class="checklist-item"><span class="num">5</span> Installer 1-2 skills d'amorce (ex. "publier via n8n", "lire GitHub")</div>
+<div class="checklist-item"><span class="num">6</span> Configurer 1-2 plugins clés (Slack pour notifications, GitHub pour accès aux repos)</div>
+<div class="checklist-item"><span class="num">7</span> Installer Web UI et vérifier qu'elle se connecte à Hermes</div>
+<div class="checklist-item"><span class="num">8</span> Tester l'agent en local (staging mode) avant de passer à production</div>
+<div class="checklist-item"><span class="num">9</span> Configurer systemd/supervisor pour que Hermes redémarre automatiquement au reboot VPS</div>
+<div class="checklist-item"><span class="num">10</span> Mettre en place log rotation et backup hebdomadaire de la config + memory</div>
+<div class="checklist-item"><span class="num">11</span> Vérifier les logs quotidiennement pendant 2 semaines (la phase de "rodage")</div>
+<div class="checklist-item"><span class="num">12</span> Une fois stable, déléguer progressivement des tâches plus complexes à l'agent</div>
+
+<h2>11. Évaluation finale</h2>
+
+<p><span class="score">Utilité du contenu : 78%</span></p>
+<p><span class="score">Applicabilité : 87/100</span></p>
+<p><span class="score">Fiabilité : haute — contenu structuré, procédural, clair</span></p>
+
+<p>Pourquoi ce score : contenu technique très clair, procédures étape-par-étape reproductibles, aucune digressions, comparaison directe avec l'alternative (Open Claw) aide à comprendre les différences. La limite de 78% vient de : (1) créateur non identifié (moins de prestige/validation), (2) certaines sections probablement plus denses dans la vidéo réelle (on ne peut que scanner un transcript).</p>
+
+<p>Verdict : tu peux suivre ce tutorial et lancer Hermes Agent en production sur VPS sans avoir besoin d'autre référence, en prenant le temps pour la sécurité et le testing.</p>
+
+</body></html>

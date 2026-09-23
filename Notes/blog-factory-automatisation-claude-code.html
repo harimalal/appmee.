@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Factory — Automatisation Claude Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F0E0A;
+    --surface: #FFFFFF;
+    --text: #FFFFFF;
+    --text-soft: #D4D1C5;
+    --accent: #F5A855;
+    --border: #2A2620;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', -apple-system, sans-serif; overflow: hidden; }
+  .display { font-family: 'Fraunces', Georgia, serif; font-weight: 700; }
+  .mono { font-family: 'IBM Plex Mono', 'Courier New', monospace; }
+
+  .deck { width: 100%; height: 100%; position: relative; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
+    padding: 8vh 10vw; opacity: 0; transform: translateY(10px) scale(.995);
+    transition: opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1);
+    min-height: 75vh;
+    background: var(--bg);
+  }
+  .slide.active { display: flex; opacity: 1; transform: none; z-index: 5; }
+
+  .slide.title-slide { align-items: center; text-align: center; }
+  .slide.title-slide h1 { max-width: 100%; margin: 0 0 20px; }
+
+  @keyframes riseIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .slide.active h1, .slide.active h2 { animation: riseIn .55s cubic-bezier(.2,.8,.3,1) .07s both; }
+  .slide.active > p, .slide.active .section { animation: riseIn .5s cubic-bezier(.2,.8,.3,1) .14s both; }
+
+  h1 { font-family: 'Fraunces', Georgia, serif; font-size: 2.4rem; font-weight: 700; line-height: 1.1; margin: 0; white-space: nowrap; }
+  h2 { font-family: 'Fraunces', Georgia, serif; font-size: 2rem; font-weight: 700; line-height: 1.1; margin: 0 0 16px; }
+  p { font-size: 1rem; line-height: 1.6; margin: 0 0 12px; color: var(--text-soft); }
+  svg.icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; }
+
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+  .rail { position: fixed; left: 28px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 50; }
+  .rail .tick { width: 4px; height: 20px; border-radius: 3px; background: rgba(255,255,255,.15); cursor: pointer; transition: background .25s; }
+  .rail .tick.active { background: var(--accent); }
+  .nav-buttons { position: fixed; bottom: 24px; right: 28px; display: flex; gap: 8px; z-index: 60; }
+  .nav-btn { font-family: 'IBM Plex Mono', monospace; font-size: .75rem; letter-spacing: .04em; background: transparent; border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 999px; cursor: pointer; transition: border-color .2s; }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
+  .counter { position: fixed; bottom: 26px; left: 50px; font-family: 'IBM Plex Mono', monospace; font-size: .75rem; color: var(--text-soft); }
+
+  .encart { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--surface); color: var(--bg); }
+  .encart h3 { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; font-weight: 700; margin: 0 0 8px; }
+  .encart p { font-size: 0.9rem; margin: 0; color: #2C2C28; line-height: 1.5; }
+  .encart ul { list-style: none; padding: 0; margin: 0; }
+  .encart li { font-size: 0.9rem; padding: 4px 0; color: #2C2C28; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat-card { border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; background: var(--surface); }
+  .stat-card .value { font-family: 'Fraunces', Georgia, serif; font-size: 2rem; font-weight: 700; color: var(--bg); margin-bottom: 4px; }
+  .stat-card .label { font-size: 0.8rem; color: #2C2C28; line-height: 1.3; font-weight: 500; }
+
+  .skill-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+  .skill-objective { border: 1.5px solid var(--accent); border-radius: 12px; padding: 14px; background: var(--surface); }
+  .skill-objective h3 { font-family: 'Fraunces', Georgia, serif; font-size: 0.9rem; font-weight: 700; color: var(--bg); margin: 0 0 8px; }
+  .skill-objective p { font-size: 0.9rem; margin: 0; color: #2C2C28; line-height: 1.5; }
+
+  .skill-visual { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--surface); display: flex; align-items: center; justify-content: center; min-height: 140px; }
+  .skill-visual svg { width: 100%; height: auto; max-width: 100%; }
+
+  .infrastructure { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--surface); }
+  .infrastructure svg { width: 100%; height: auto; }
+
+  .article-list { font-size: 0.85rem; max-height: 120px; overflow-y: auto; }
+  .article-row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .article-row:last-child { border-bottom: none; }
+  .article-title { color: var(--bg); font-weight: 500; }
+  .article-date { color: #555; text-align: right; }
+
+  .checklist { list-style: none; padding: 0; margin: 8px 0 0; }
+  .checklist li { display: flex; gap: 8px; padding: 6px 0; font-size: 0.9rem; color: #2C2C28; }
+  .checklist .icon { color: #1E8E5A; flex-shrink: 0; }
+
+  .benefit-box { border: 1px solid var(--accent); border-radius: 12px; padding: 16px; background: var(--surface); border-left: 4px solid var(--accent); }
+  .benefit-box h3 { font-family: 'Fraunces', Georgia, serif; font-size: 0.95rem; font-weight: 700; color: var(--bg); margin: 0 0 6px; }
+  .benefit-box p { font-size: 0.9rem; margin: 0; color: #2C2C28; line-height: 1.5; }
+
+  @media (max-width: 1024px) {
+    .skill-layout { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1. TITRE -->
+  <section class="slide title-slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Automatisation Claude Code</div>
+    <h1 class="display">Blog Factory — Un article complet en 10 minutes</h1>
+    <p style="font-size: 1.05rem; margin-top: 20px; color: var(--text-soft); max-width: 80%;">Système entièrement automatisé qui génère des articles blog de qualité professionnelle. Zéro intervention humaine. Données vérifiées. 16 composants obligatoires. 4 heures de production + 10 minutes de publication.</p>
+    <p class="foot-note" style="margin-top: 40px; font-size: .85rem; color: var(--text-soft);">23 août 2026 · Documentation système</p>
+  </section>
+
+  <!-- 2. PRÉ-REQUIS -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>Outils nécessaires et optionnels</div>
+    <h2>Tout ce qu'il faut (et ce dont on n'a PAS besoin)</h2>
+    <div class="grid-2" style="margin-top: 14px;">
+      <div class="encart">
+        <h3>✅ Pré-requis (5 outils)</h3>
+        <ul class="checklist">
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Claude API + WebSearch</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Git + GitHub</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Astro framework</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Cloudflare Pages</span></li>
+        </ul>
+      </div>
+      <div class="encart">
+        <h3>❌ Zéro besoin de</h3>
+        <ul class="checklist">
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Intervention humaine</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Outil rédaction tiers</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Relecture manuelle</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Rédacteur</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. INFRASTRUCTURE -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>Infrastructure complète</div>
+    <h2>Base de données → Cron → Workflow → Site LIVE (10 minutes)</h2>
+    <div class="infrastructure">
+      <svg viewBox="0 0 1000 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="40" width="140" height="80" fill="#F5A855" rx="8" stroke="#0F0E0A" stroke-width="2"/>
+        <text x="90" y="70" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">📊 BASE DE</text>
+        <text x="90" y="88" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">DONNÉES</text>
+        <text x="90" y="110" font-size="9" fill="#0F0E0A" text-anchor="middle">150+ sujets</text>
+
+        <path d="M 170 80 L 210 80" stroke="#F5A855" stroke-width="3" marker-end="url(#arr)"/>
+
+        <rect x="220" y="40" width="140" height="80" fill="#F5A855" rx="8" stroke="#0F0E0A" stroke-width="2"/>
+        <text x="290" y="70" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">⏰ CRON</text>
+        <text x="290" y="88" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">PROGRAMMATION</text>
+        <text x="290" y="110" font-size="9" fill="#0F0E0A" text-anchor="middle">2/jour 7j/7</text>
+
+        <path d="M 370 80 L 410 80" stroke="#F5A855" stroke-width="3" marker-end="url(#arr)"/>
+
+        <rect x="420" y="40" width="140" height="80" fill="#F5A855" rx="8" stroke="#0F0E0A" stroke-width="2"/>
+        <text x="490" y="70" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">🔄 PIPELINE</text>
+        <text x="490" y="88" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">PRODUCTION</text>
+        <text x="490" y="110" font-size="9" fill="#0F0E0A" text-anchor="middle">4 phases</text>
+
+        <path d="M 570 80 L 610 80" stroke="#F5A855" stroke-width="3" marker-end="url(#arr)"/>
+
+        <rect x="620" y="40" width="140" height="80" fill="#F5A855" rx="8" stroke="#0F0E0A" stroke-width="2"/>
+        <text x="690" y="70" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">🌐 SITE</text>
+        <text x="690" y="88" font-size="13" font-weight="bold" fill="#0F0E0A" text-anchor="middle">LIVE</text>
+        <text x="690" y="110" font-size="9" fill="#0F0E0A" text-anchor="middle">10 min</text>
+
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#F5A855"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <p style="font-size: 0.9rem; margin-top: 12px; color: var(--text-soft);">Derniers articles publiés</p>
+    <div class="article-list">
+      <div class="article-row"><div class="article-title">Make vs n8n 2026 : lequel choisir</div><div class="article-date">7 août</div></div>
+      <div class="article-row"><div class="article-title">Zapier débutant : premier Zap en 15 min</div><div class="article-date">7 août</div></div>
+      <div class="article-row"><div class="article-title">Reporting SEO auto : Semrush + Make</div><div class="article-date">8 août</div></div>
+      <div class="article-row"><div class="article-title">Copy.ai vs Jasper : match publicités 2026</div><div class="article-date">9 août</div></div>
+      <div class="article-row"><div class="article-title">Claude Projects vs Notion AI équipe</div><div class="article-date">11 août</div></div>
+    </div>
+  </section>
+
+  <!-- 4. SKILL RESEARCH -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Moteur 1 : Chercher les vraies données</div>
+    <h2>RESEARCH — Extraire et vérifier (phase 1)</h2>
+    <div class="skill-layout">
+      <div class="skill-objective">
+        <h3>Objectif du moteur</h3>
+        <p>Trouver UNIQUEMENT données vérifiées. Pricing officielles, ratings, citations Reddit, limitations documentées. Zéro invention.</p>
+        <p style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">Structure : 4 sections de recherche — Pricing 2026 • G2/Capterra • Reddit quotes • Limitations</p>
+      </div>
+      <div class="skill-visual">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="40" r="25" fill="#F5A855"/>
+          <text x="60" y="48" font-size="28" text-anchor="middle">📊</text>
+          <line x1="60" y1="70" x2="60" y2="90" stroke="#F5A855" stroke-width="2"/>
+          <circle cx="20" cy="110" r="12" fill="#F5A855"/>
+          <text x="20" y="115" font-size="12" text-anchor="middle" fill="#0F0E0A" font-weight="bold">G2</text>
+          <circle cx="60" cy="110" r="12" fill="#F5A855"/>
+          <text x="60" y="115" font-size="12" text-anchor="middle" fill="#0F0E0A" font-weight="bold">$</text>
+          <circle cx="100" cy="110" r="12" fill="#F5A855"/>
+          <text x="100" y="115" font-size="12" text-anchor="middle" fill="#0F0E0A" font-weight="bold">R</text>
+          <circle cx="140" cy="110" r="12" fill="#F5A855"/>
+          <text x="140" y="115" font-size="12" text-anchor="middle" fill="#0F0E0A" font-weight="bold">⚠</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SKILL LAYOUT -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/></svg>Moteur 2 : Placer 16 composants obligatoires</div>
+    <h2>LAYOUT — Structure garantie (phase 2)</h2>
+    <div class="skill-layout">
+      <div class="skill-objective">
+        <h3>Objectif du moteur</h3>
+        <p>Placer exactement 16 composants dans l'ordre. Header, intro, needs-framework, H2 sections, verdict-table, FAQ, footer. Aucune exception.</p>
+        <p style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">Structure : Template rigide avec 16 slots — Position = fonction, ordre immuable</p>
+      </div>
+      <div class="skill-visual">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="180" height="120" fill="none" stroke="#F5A855" stroke-width="2" stroke-dasharray="5,5" rx="4"/>
+          <rect x="20" y="20" width="160" height="14" fill="#F5A855" rx="2"/>
+          <rect x="20" y="40" width="160" height="10" fill="#F5A855" rx="2"/>
+          <rect x="20" y="56" width="160" height="10" fill="#F5A855" rx="2"/>
+          <rect x="20" y="72" width="160" height="10" fill="#F5A855" rx="2"/>
+          <rect x="20" y="88" width="160" height="10" fill="#F5A855" rx="2"/>
+          <rect x="20" y="104" width="160" height="14" fill="#F5A855" rx="2"/>
+          <text x="100" y="60" font-size="20" fill="#F5A855" text-anchor="middle" opacity="0.3">16/16 ✓</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SKILL WRITING -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Moteur 3 : Rédiger avec voix authentique</div>
+    <h2>WRITING — Anti-IA, ton direct (phase 2)</h2>
+    <div class="skill-layout">
+      <div class="skill-objective">
+        <h3>Objectif du moteur</h3>
+        <p>Voix vraie, zéro patterns IA. Impératif > conditionnel. Citations Reddit authentiques. Transitions naturelles. Pas de clustering adjectifs.</p>
+        <p style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">Structure : Rédaction par section LAYOUT — Intro → H2 sections → FAQ, données Phase 1 uniquement</p>
+      </div>
+      <div class="skill-visual">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <text x="100" y="30" font-size="12" text-anchor="middle" fill="#F5A855" font-weight="bold">Voix authentique</text>
+          <circle cx="100" cy="70" r="45" fill="none" stroke="#F5A855" stroke-width="2"/>
+          <text x="100" y="50" font-size="14" text-anchor="middle" fill="#F5A855">✓ Direct</text>
+          <text x="70" y="75" font-size="12" text-anchor="middle" fill="#F5A855">✓ Real</text>
+          <text x="130" y="75" font-size="12" text-anchor="middle" fill="#F5A855">✓ Pure</text>
+          <text x="100" y="105" font-size="12" text-anchor="middle" fill="#F5A855">Zéro IA</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SKILL SEO_GEO -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Moteur 4 : Maillage et optimisation</div>
+    <h2>SEO_GEO — Connecter et optimiser (phase 3)</h2>
+    <div class="skill-layout">
+      <div class="skill-objective">
+        <h3>Objectif du moteur</h3>
+        <p>Connecter l'article au reste du blog. 3+ liens internes Reflex IA en contexte. Liens externes vers outils officiels. SEO optimisé.</p>
+        <p style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">Structure : 3 couches — Titre SEO + URL slug • Liens internes (3+) • Liens externes (outils)</p>
+      </div>
+      <div class="skill-visual">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="20" fill="#F5A855" stroke="#0F0E0A" stroke-width="2"/>
+          <text x="50" y="58" font-size="20" text-anchor="middle" fill="#0F0E0A">📄</text>
+          <circle cx="150" cy="50" r="20" fill="#F5A855" stroke="#0F0E0A" stroke-width="2"/>
+          <text x="150" y="58" font-size="20" text-anchor="middle" fill="#0F0E0A">🔗</text>
+          <line x1="70" y1="50" x2="130" y2="50" stroke="#F5A855" stroke-width="2" marker-mid="url(#dot1)" marker-end="url(#dot2)"/>
+          <circle cx="100" cy="100" r="20" fill="#F5A855" stroke="#0F0E0A" stroke-width="2"/>
+          <text x="100" y="108" font-size="20" text-anchor="middle" fill="#0F0E0A">🌐</text>
+          <line x1="85" y1="65" x2="92" y2="85" stroke="#F5A855" stroke-width="2"/>
+          <line x1="115" y1="65" x2="108" y2="85" stroke="#F5A855" stroke-width="2"/>
+          <defs>
+            <marker id="dot1" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5"><circle cx="2.5" cy="2.5" r="1.5" fill="#F5A855"/></marker>
+            <marker id="dot2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#F5A855"/></marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CONTRÔLE ET LIVRABLES -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Qui fait quoi et ce qu'on récupère</div>
+    <h2>Vous demandez → Système livre (10 minutes après production)</h2>
+    <div class="grid-2" style="margin-top: 14px;">
+      <div class="encart">
+        <h3>Vous décidez</h3>
+        <ul class="checklist">
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Choisir le sujet</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Dire « Crée un article »</span></li>
+        </ul>
+      </div>
+      <div class="encart">
+        <h3>Vous recevez</h3>
+        <ul class="checklist">
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Article LIVE sur reflexia.com</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>16/16 composants ✓ + score >= 80</span></li>
+          <li><svg class="icon" viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg><span>Maillage complet + tous les liens</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. RÉSULTATS -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Les chiffres réels</div>
+    <h2>Résultats mesurés depuis mai 2026</h2>
+    <div class="stat-grid" style="margin-top: 14px;">
+      <div class="stat-card"><div class="value">23</div><div class="label">articles en 3 mois</div></div>
+      <div class="stat-card"><div class="value">89</div><div class="label">score moyen /100</div></div>
+      <div class="stat-card"><div class="value">16/16</div><div class="label">composants toujours</div></div>
+      <div class="stat-card"><div class="value">100%</div><div class="label">maillés internes</div></div>
+      <div class="stat-card"><div class="value">5h</div><div class="label">pipeline complet</div></div>
+      <div class="stat-card"><div class="value">0%</div><div class="label">intervention humaine</div></div>
+    </div>
+  </section>
+
+  <!-- 10. BÉNÉFICES FINAUX -->
+  <section class="slide">
+    <div class="eyebrow"><svg class="icon" viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/></svg>Bénéfices du système automatisé</div>
+    <h2>Ce que les 4 moteurs produisent ensemble</h2>
+    <div class="grid-2" style="margin-top: 14px;">
+      <div class="benefit-box">
+        <h3>⚙️ Automatisation complète</h3>
+        <p>De la demande au LIVE en 10 minutes. Zéro clic manuel. Zéro relectures. Zéro intervention.</p>
+      </div>
+      <div class="benefit-box">
+        <h3>✅ Qualité garantie</h3>
+        <p>Composants toujours présents. Données vérifiées. Voix authentique. Score 80-100. Aucune exception.</p>
+      </div>
+      <div class="benefit-box">
+        <h3>🔄 Reproductibilité</h3>
+        <p>23 articles = même processus. La 24e suivra identique. Pas de dérive, pas d'improvisation.</p>
+      </div>
+      <div class="benefit-box">
+        <h3>📈 Scalabilité</h3>
+        <p>Cron 2/jour, 7j/7. 10 articles par mois sans effort. Base 150+ sujets prêts. Croissance infinie.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="rail" id="rail"></div>
+<div class="counter" id="counter">01 / 10</div>
+<div class="nav-buttons">
+  <button class="nav-btn" id="prev">← préc.</button>
+  <button class="nav-btn" id="next">suiv. →</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const rail = document.getElementById('rail');
+  const counter = document.getElementById('counter');
+  let i = 0;
+  slides.forEach((_, idx) => {
+    const t = document.createElement('div');
+    t.className = 'tick' + (idx === 0 ? ' active' : '');
+    t.addEventListener('click', () => go(idx));
+    rail.appendChild(t);
+  });
+  const ticks = Array.from(rail.children);
+  function go(n) {
+    if (n < 0 || n >= slides.length || n === i) return;
+    slides[i].classList.remove('active'); ticks[i].classList.remove('active');
+    i = n;
+    const incoming = slides[i];
+    incoming.classList.remove('active'); void incoming.offsetWidth; incoming.classList.add('active');
+    ticks[i].classList.add('active');
+    counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === slides.length - 1;
+  }
+  document.getElementById('next').addEventListener('click', () => go(i + 1));
+  document.getElementById('prev').addEventListener('click', () => go(i - 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+    if (e.key === 'ArrowLeft') go(i - 1);
+  });
+  document.getElementById('prev').disabled = true;
+</script>
+</body>
+</html>
