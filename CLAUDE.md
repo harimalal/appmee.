@@ -6,7 +6,7 @@ Le tableau de bord de Hari est l'artefact **Cockpit Projets** : https://claude.a
 Ses données sont dans la base de l'artefact (outil `ArtifactData`, `url` = le lien ci-dessus). Hari ne tape presque rien :
 c'est à Claude de proposer et de tenir à jour les objectifs et les étapes. Hari coche, archive, supprime, et écrit des idées.
 
-Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`. Les autres (`dropit`, `yoitubesum`, `lyonjarrive`, `unclassified`)
+Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`, `dropit`. Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`)
 ont `hidden: true` et ne s'affichent pas.
 
 **Collections**
