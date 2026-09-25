@@ -483,10 +483,11 @@
     send('PATCH', `${table}/${encodeURIComponent(id)}`, body);
   }
 
-  function removeItem(id) {
+  async function removeItem(id) {
     const it = item(id); if (!it) return;
     const desc = descendants(id);
-    if ((desc.length || (it.notes || '').length > 40) && !confirm(`Supprimer « ${it.title} »${desc.length ? ` et ses ${desc.length} sous-tâche(s)` : ''} ?`)) return;
+    if ((desc.length || (it.notes || '').length > 40) &&
+      !(await ask({ title: `Supprimer « ${it.title} » ?`, text: desc.length ? `Ses ${desc.length} sous-tâche(s) seront supprimées aussi.` : '', ok: 'Supprimer', danger: true }))) return;
     const gone = new Set([id, ...desc.map(d => d.id)]);
     S.items = S.items.filter(i => !gone.has(i.id));
     S.activity.unshift({ project_id: it.project_id, item_id: id, action: 'delete', label: it.title, source: 'moi', at: now() });
@@ -506,8 +507,8 @@
     patch('items', id, { priority: { 0: 1, 1: 2, 2: 3, 3: 0 }[it.priority || 0] });
   }
 
-  function newProject() {
-    const name = prompt('Nom du nouveau projet ?');
+  async function newProject() {
+    const name = await ask({ title: 'Nouveau projet', input: true, placeholder: 'Nom du projet', ok: 'Créer' });
     if (!name || !name.trim()) return;
     const ts = now();
     const colors = ['#33587A', '#BF5B44', '#D97B0A', '#2D7A6E', '#4739A8', '#2563EB', '#16A34A', '#DC2626', '#8B5CF6', '#0E7490'];
@@ -518,8 +519,8 @@
     go(p.id, 'plan');
   }
 
-  function newTheme(pid) {
-    const title = prompt('Nom de la thématique ? (ex. Onboarding, Commercial, Bugs…)');
+  async function newTheme(pid) {
+    const title = await ask({ title: 'Nouvelle thématique', input: true, placeholder: 'Ex. Onboarding, Commercial, Bugs…', ok: 'Créer' });
     if (!title || !title.trim()) return;
     const ts = now();
     const t = { id: newId(), project_id: pid, title: title.trim().slice(0, 200), description: '', collapsed: 0,
@@ -530,14 +531,37 @@
     send('POST', 'themes', t);
   }
 
-  function deleteTheme(id) {
+  async function deleteTheme(id) {
     const t = theme(id); if (!t) return;
     const n = S.items.filter(i => i.theme_id === id).length;
-    if (!confirm(`Supprimer la thématique « ${t.title} » ?${n ? `\nSes ${n} élément(s) sont conservés et passent dans « Sans thématique ».` : ''}`)) return;
+    if (!(await ask({ title: `Supprimer la thématique « ${t.title} » ?`, text: n ? `Ses ${n} élément(s) sont conservés et passent dans « Sans thématique ».` : '', ok: 'Supprimer', danger: true }))) return;
     S.themes = S.themes.filter(x => x.id !== id);
     S.items.forEach(i => { if (i.theme_id === id) i.theme_id = null; });
     render();
     send('DELETE', `themes/${encodeURIComponent(id)}`);
+  }
+
+  // Boîte de dialogue intégrée à la page (remplace prompt/confirm, bloqués dans certains cadres).
+  function ask({ title, text = '', input = false, placeholder = '', ok = 'OK', danger = false }) {
+    return new Promise(resolve => {
+      const back = document.createElement('div');
+      back.className = 'dialog-backdrop';
+      back.innerHTML = `<form class="dialog" role="dialog" aria-modal="true">
+          <h2>${esc(title)}</h2>${text ? `<p>${esc(text)}</p>` : ''}
+          ${input ? `<input id="dialogInput" type="text" maxlength="200" placeholder="${esc(placeholder)}" autocomplete="off">` : ''}
+          <div class="foot"><button type="button" class="btn ghost" data-dlg="cancel">Annuler</button>
+          <button type="submit" class="btn ${danger ? 'danger' : 'primary'}">${esc(ok)}</button></div></form>`;
+      document.body.appendChild(back);
+      const form = back.querySelector('form');
+      const field = back.querySelector('input');
+      editing = true;
+      const done = v => { editing = false; back.remove(); document.removeEventListener('keydown', onKey, true); resolve(v); };
+      const onKey = e => { if (e.key === 'Escape') { e.stopPropagation(); done(input ? null : false); } };
+      document.addEventListener('keydown', onKey, true);
+      form.addEventListener('submit', e => { e.preventDefault(); e.stopPropagation(); if (input && !field.value.trim()) return field.focus(); done(input ? field.value.trim() : true); });
+      back.addEventListener('click', e => { if (e.target === back || e.target.dataset.dlg === 'cancel') done(input ? null : false); });
+      (field || form.querySelector('[type=submit]')).focus();
+    });
   }
 
   // ---------------------------------------------------------------- édition en ligne
@@ -714,7 +738,7 @@
       case 'focus-add': { const sec = a.closest('.theme'); if (sec.dataset.themeId) { const th = theme(sec.dataset.themeId); if (th && th.collapsed) { patch('themes', th.id, { collapsed: 0 }); } }
         const inp = $(`.theme${sec.dataset.themeId ? `[data-theme-id="${CSS.escape(sec.dataset.themeId)}"]` : '.loose'} .add-inline input`); if (inp) inp.focus(); break; }
       case 'toggle-done': { const it = item(id); if (it) patch('items', id, { status: it.status === 'done' ? 'todo' : 'done' }); break; }
-      case 'idea-to-task': { const it = item(id); if (it && confirm(`Transformer l'idée « ${it.title} » en tâche ?`)) patch('items', id, { kind: 'task' }); break; }
+      case 'idea-to-task': { const it = item(id); if (it) ask({ title: 'Transformer en tâche ?', text: it.title, ok: 'Transformer' }).then(ok => { if (ok) patch('items', id, { kind: 'task' }); }); break; }
       case 'cycle-status': cycleStatus(id); break;
       case 'cycle-prio': cyclePrio(id); break;
       case 'toggle-kids': prefs.openKids[id] = prefs.openKids[id] === false; savePrefs(); render(); break;
@@ -725,12 +749,14 @@
       case 'delete-project': {
         const p = project(id); if (!p) break;
         const n = S.items.filter(i => i.project_id === id).length;
-        if (!confirm(`Supprimer définitivement le projet « ${p.name} » et ses ${n} élément(s) ?\n(Pour juste le masquer, utilise « Archiver ».)`)) break;
+        ask({ title: `Supprimer le projet « ${p.name} » ?`, text: `Ses ${n} élément(s) seront supprimés définitivement. Pour seulement le masquer, utilise « Archiver ».`, ok: 'Supprimer', danger: true }).then(ok => {
+        if (!ok) return;
         S.projects = S.projects.filter(x => x.id !== id);
         S.items = S.items.filter(i => i.project_id !== id);
         S.themes = S.themes.filter(x => x.project_id !== id);
         closeDrawer(); go('overview');
         send('DELETE', `projects/${encodeURIComponent(id)}`);
+        });
         break;
       }
     }

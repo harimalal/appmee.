@@ -286,3 +286,9 @@ a{color:var(--accent)}
 
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 .list.children{min-height:0}
+.dialog-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:70;display:grid;place-items:center;padding:16px}
+.dialog{background:var(--surface);border-radius:14px;box-shadow:var(--shadow-lg);padding:20px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px}
+.dialog h2{margin:0;font-size:1.05rem;overflow-wrap:anywhere}
+.dialog p{margin:0;color:var(--ink-soft);font-size:.9rem}
+.dialog input{border:1px solid var(--line-strong);background:var(--surface-2);border-radius:9px;padding:10px 12px;width:100%}
+.dialog .foot{display:flex;gap:8px;justify-content:flex-end}
