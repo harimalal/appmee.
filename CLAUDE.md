@@ -1,41 +1,29 @@
 # Consignes pour Claude
 
-## Cockpit projets — le tenir à jour
+## Cockpit Projets — le tenir à jour
 
-Le cockpit (`/cockpit/`, Cloudflare Pages + D1) est le tableau de bord de tous les projets de Hari.
-Ses données vivent dans la base D1 **`cockpit-db`** (id `6c0e61f0-271c-43bc-998e-d01e6e4485f0`).
-Écris-y avec l'outil Cloudflare `d1_database_query` (une seule instruction SQL par appel si tu passes des `params`).
+Le tableau de bord de Hari est l'artefact **Cockpit Projets** : https://claude.ai/artifact/9wYVLBBGwL521kfMMgAiVu
+Ses données sont dans la base de l'artefact (outil `ArtifactData`, `url` = le lien ci-dessus). Hari ne tape presque rien :
+c'est à Claude de proposer et de tenir à jour les objectifs et les étapes. Hari coche, archive, supprime, et écrit des idées.
 
-**Quand le faire, sans qu'on te le demande :**
-- Un artefact, un article ou un document a été publié → ajoute un livrable (`kind='artifact'`).
-- Une tâche est terminée → passe-la en `done` et journalise-la.
-- Hari demande « les prochaines choses à faire », un plan d'action, ou lâche une idée → crée les tâches / idées
-  dans la bonne thématique (crée la thématique si elle n'existe pas), avec les sous-tâches (`parent_id`).
+Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`. Les autres (`dropit`, `yoitubesum`, `lyonjarrive`, `unclassified`)
+ont `hidden: true` et ne s'affichent pas.
 
-Toujours `source='claude'`. Dates au format ISO UTC (`2026-09-25T20:00:00Z`). Identifiants : courts, uniques (ex. `ck-` + 10 caractères aléatoires).
+**Collections**
+- `goals/<projet>__<horizon>` : `{projectId, horizon, objective, source:'claude', updated_at}` — une phrase par horizon.
+- `steps/<id>` : `{projectId, horizon, domain, title, detail, status, order, ref, source:'claude', created_at, updated_at, done_at}`
+  - `horizon` : `court` (2 semaines) | `moyen` (1 à 3 mois) | `long` (6 à 12 mois)
+  - `domain` : `produit` | `marketing` | `vente` | `strategie`
+  - `status` : `todo` | `doing` | `done` | `archived` ; `done_at` = date ISO quand `done`, sinon `""`
+  - `title` : une ligne courte, lisible d'un coup d'œil. Le reste va dans `detail`. `ref` : lien https direct (artefact, doc) ou `""`.
+  - id : `<projet>-<horizon>-<nn>`
+- `artifacts/<id artefact>` : `{projectId, title, url, created_at (AAAA-MM-JJ), status, note}` — tous les artefacts, avec lien direct.
+- `ideas/<id>` : écrites par Hari depuis la page `{projectId, text, status:'new', created_at}`.
 
-```sql
--- Lire l'existant d'abord (projets, thématiques)
-SELECT id, name FROM projects ORDER BY position;
-SELECT id, project_id, title FROM themes WHERE project_id = 'arteasy' ORDER BY position;
-
--- Nouvelle thématique (le « grand pavé » dépliable)
-INSERT INTO themes (id, project_id, title, position, created_at, updated_at)
-VALUES ('th-xxxx', 'dropit', 'Onboarding', (SELECT COALESCE(MAX(position),0)+1 FROM themes WHERE project_id='dropit'), ?1, ?1);
-
--- Tâche (kind = task | idea), éventuellement sous-tâche via parent_id ; priority 1 haute, 2 moyenne, 3 basse
-INSERT INTO items (id, project_id, theme_id, parent_id, kind, title, notes, status, priority, position, source, created_at, updated_at)
-VALUES ('it-xxxx', 'dropit', 'th-xxxx', NULL, 'task', 'Titre', 'Contexte', 'todo', 2, 99, 'claude', ?1, ?1);
-
--- Livrable (artefact / article) + journal
-INSERT INTO items (id, project_id, kind, title, notes, status, url, source, created_at, updated_at, done_at)
-VALUES ('a-<id artefact>', 'reflexia', 'artifact', 'Titre', 'Résumé en une phrase', 'done', 'https://claude.ai/artifact/…', 'claude', ?1, ?1, ?1);
-INSERT INTO activity (project_id, item_id, action, label, source, at) VALUES ('reflexia', 'a-<id>', 'artifact', 'Titre', 'claude', ?1);
-
--- Tâche terminée + journal
-UPDATE items SET status='done', done_at=?1, updated_at=?1 WHERE id='it-xxxx';
-INSERT INTO activity (project_id, item_id, action, label, source, at) VALUES ('dropit', 'it-xxxx', 'done', 'Titre', 'claude', ?1);
-```
-
-Valeurs : `status` ∈ todo | doing | blocked | done ; `activity.action` ∈ create | idea | start | done | reopen | artifact | delete.
-Projet inconnu → `unclassified` (onglet « À classer »). Ne supprime jamais rien sans que Hari le demande.
+**Quand agir, sans qu'on le demande**
+- Au début d'une conversation sur un projet : lire `ideas` où `status == 'new'`, les transformer en étapes (ou ajuster les objectifs),
+  puis passer l'idée en `status:'triaged'` avec une `claude_note` d'une phrase.
+- Un artefact ou un article est publié → ajouter un doc `artifacts`.
+- Une étape est terminée pendant la session → `status:'done'`, `done_at`.
+- Hari demande « les prochaines choses à faire » ou un plan → créer ou modifier `goals` et `steps`.
+Toujours passer `if_version` quand on modifie un document déjà lu. Ne jamais supprimer sans que Hari le demande (archiver à la place).
