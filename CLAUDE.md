@@ -23,6 +23,10 @@ ont `hidden = 1`.
 - `deliverables (id, project_id, kind, title, url, note, created_at)` — `kind` : `artefact` | `article` | `doc`.
   `created_at` au format `AAAA-MM-JJ`. id = l'id de l'artefact, ou `art-<slug>` pour un article.
 - `ideas (id, project_id, text, status, claude_note, created_at)` — écrites par Hari. `status` : `new` | `triaged`.
+- `substeps (id, step_id, section, title, status, position)` — le plan pas-à-pas d'une étape, ouvert depuis le bouton
+  « Plan » de la ligne. `status` : `todo` | `done`. `section` groupe les actions (ex. « Préparer », « Soumettre », « Suivre »).
+  Quand Hari demande de détailler une étape, ou quand on scanne/analyse un dépôt pour en tirer un plan d'action,
+  Claude écrit ce plan ici (plusieurs `INSERT INTO substeps` groupés par `section`), pas seulement dans `detail`.
 
 **Quand agir, sans qu'on le demande**
 - Au début d'une conversation sur un projet : lire `SELECT * FROM ideas WHERE status='new'`, transformer chaque idée en étapes

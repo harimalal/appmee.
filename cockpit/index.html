@@ -97,7 +97,8 @@
   .title-btn{flex:1; min-width:0; border:0; background:none; text-align:left; cursor:pointer; padding:0; display:flex; align-items:center; gap:8px;}
   .title-btn .t{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.92rem;}
   .row.open .title-btn .t{white-space:normal;}
-  .row.done .t{color:var(--ink-faint); text-decoration:line-through;}
+  .row.done .t{color:var(--ink-faint);}
+  .list .row.done .t{text-decoration:line-through;}
   .tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; border-radius:5px; padding:2px 6px; flex:none; background:var(--line-soft); color:var(--ink-soft);}
   .tag.doing{background:var(--amber-soft); color:var(--amber);}
   .tag.art{background:var(--accent-soft); color:var(--accent-ink);}
@@ -151,6 +152,46 @@
   .login .btn{padding:10px 16px;}
   .login .err{color:var(--bad);}
   .tag.article{background:var(--good-soft); color:var(--good);}
+
+  /* ajout d'une étape */
+  .add-step{margin:2px 6px 0;}
+  .add-step input{
+    width:100%; border:1px dashed var(--line); background:transparent; border-radius:9px; padding:7px 10px;
+    font:inherit; font-size:.86rem; color:var(--ink-soft);
+  }
+  .add-step input:focus{border-style:solid; border-color:var(--accent); color:var(--ink);}
+  .add-step input::placeholder{color:var(--ink-faint);}
+
+  /* bouton Plan */
+  .go.plan{background:var(--line-soft); color:var(--ink-soft);}
+  .go.plan:hover{color:var(--ink);}
+
+  /* panneau de plan pas-à-pas */
+  .drawer-backdrop{position:fixed; inset:0; background:rgba(0,0,0,.28); z-index:40;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0; width:min(420px,100vw); background:var(--surface); z-index:41;
+    box-shadow:-8px 0 32px rgba(0,0,0,.18); overflow-y:auto; padding:20px 18px 40px;
+    padding-top:max(20px, env(safe-area-inset-top)); display:flex; flex-direction:column; gap:14px;
+  }
+  .drawer[hidden], .drawer-backdrop[hidden]{display:none;}
+  .drawer-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+  .drawer-head h3{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.15rem; margin:0; line-height:1.3;}
+  .icon-btn{border:0; background:none; cursor:pointer; color:var(--ink-faint); font-size:16px; padding:2px 4px; flex:none;}
+  .icon-btn:hover{color:var(--ink);}
+  .drawer-detail{font-size:.85rem; color:var(--ink-soft); margin:0; line-height:1.5;}
+  .drawer-progress{display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint);}
+  .drawer-progress .bar{flex:1; height:5px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+  .drawer-progress .bar i{display:block; height:100%; background:var(--good);}
+  .drawer-section h4{font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 6px;}
+  .sub-row{display:flex; align-items:center; gap:9px; padding:5px 2px;}
+  .sub-row .t{flex:1; min-width:0; font-size:.9rem; overflow-wrap:anywhere;}
+  .sub-row.done .t{color:var(--ink-faint); text-decoration:line-through;}
+  .check.small{width:17px; height:17px;}
+  .act.tiny{border:0; background:none; color:var(--ink-faint); padding:2px 6px; font-size:.8rem;}
+  .act.tiny:hover{color:var(--bad);}
+  .add-sub{margin-top:2px;}
+  .add-sub input{width:100%; border:1px dashed var(--line); background:transparent; border-radius:8px; padding:6px 9px; font:inherit; font-size:.84rem; color:var(--ink-soft);}
+  .add-sub input:focus{border-style:solid; border-color:var(--accent); color:var(--ink);}
 </style>
 </head>
 <body>
@@ -161,6 +202,8 @@
   <main id="root"><div class="empty">Chargement…</div></main>
   <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
 </div>
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="drawer" class="drawer" hidden aria-label="Plan de l'étape"></aside>
 <script>
 (function(){
   'use strict';
@@ -169,7 +212,7 @@
     { id:'moyen', label:'Moyen terme', when:'1 à 3 mois' },
     { id:'long',  label:'Long terme',  when:'6 à 12 mois' }
   ];
-  var RANK = { doing:0, todo:1 };
+  var RANK = { doing:0, todo:1, done:2 };
   var MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
   var MOIS_L = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
   var TOKEN_KEY = 'cockpit.token', UI_KEY = 'cockpit.ui';
@@ -205,7 +248,7 @@
   }
   function load(force){
     return api('GET', 'state').then(function(data){
-      var sig = JSON.stringify([data.projects, data.axes, data.goals, data.steps, data.deliverables, data.ideas]);
+      var sig = JSON.stringify([data.projects, data.axes, data.goals, data.steps, data.deliverables, data.ideas, data.substeps]);
       note('Synchro : ' + new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }));
       if (!force && sig === lastSig) return;
       lastSig = sig; D = data;
@@ -230,6 +273,7 @@
   function goal(pid, h){ var g = D.goals.find(function(x){ return x.project_id === pid && x.horizon === h; }); return g && g.objective; }
   function axesFor(pid){ return D.axes.filter(function(a){ return !a.project_id || a.project_id === pid; }); }
   function axisLabel(id){ var a = D.axes.find(function(x){ return x.id === id; }); return a ? a.label : (id || ''); }
+  function subsOf(stepId){ return (D.substeps || []).filter(function(x){ return x.step_id === stepId; }); }
 
   // ------------------------------------------------------------ rendu
   function render(){
@@ -277,16 +321,18 @@
     var steps = stepsOf(p.id).filter(function(s){ return !axis || s.axis === axis; });
     return HORIZONS.map(function(hz){
       var obj = goal(p.id, hz.id);
-      var list = steps.filter(function(s){ return s.horizon === hz.id && (s.status === 'todo' || s.status === 'doing'); })
+      var list = steps.filter(function(s){ return s.horizon === hz.id && s.status !== 'archived'; })
         .sort(function(a,b){ return (RANK[a.status] - RANK[b.status]) || ((a.position || 0) - (b.position || 0)); });
       var arch = steps.filter(function(s){ return s.horizon === hz.id && s.status === 'archived'; });
-      var doneN = steps.filter(function(s){ return s.horizon === hz.id && s.status === 'done'; }).length;
+      var doneN = list.filter(function(s){ return s.status === 'done'; }).length;
       var key = p.id + hz.id;
       var h = '<section class="horizon"><div class="h-label"><span>' + hz.label + '</span><span class="when">· ' + hz.when + '</span><span class="rule"></span>' +
         (doneN ? '<span>' + doneN + ' fait' + (doneN > 1 ? 's' : '') + '</span>' : '') + '</div>';
       h += obj ? '<div class="objective">' + esc(obj) + '</div>' : '<div class="h-empty">Pas encore d\'objectif. Demande-le à Claude.</div>';
       h += list.map(stepRow).join('');
-      if (!list.length && obj) h += '<div class="h-empty">Rien à faire ici pour l\'instant.</div>';
+      if (!list.length) h += '<div class="h-empty">Rien ici pour l\'instant.</div>';
+      h += '<form class="add-step" data-add-project="' + esc(p.id) + '" data-add-horizon="' + hz.id + '">' +
+        '<input type="text" placeholder="+ Ajouter une étape…" maxlength="500"></form>';
       if (arch.length){
         h += '<button class="archived-toggle" data-archived="' + esc(key) + '">' + (ui.archived[key] ? 'Masquer' : 'Voir') + ' ' + arch.length + ' archivée' + (arch.length > 1 ? 's' : '') + '</button>';
         if (ui.archived[key]) h += arch.map(stepRow).join('');
@@ -305,6 +351,10 @@
     if (st === 'done' && s.done_at) h += '<span class="tag ok">' + day(s.done_at) + '</span>';
     if (s.axis) h += '<span class="tag dom">' + esc(axisLabel(s.axis)) + '</span>';
     h += '<span class="chev" aria-hidden="true">›</span></button>';
+    if (st !== 'archived'){
+      var subs = subsOf(s.id), subDone = subs.filter(function(x){ return x.status === 'done'; }).length;
+      h += '<button class="go plan" data-opendrawer="' + id + '">Plan' + (subs.length ? ' ' + subDone + '/' + subs.length : '') + ' ›</button>';
+    }
     if (link) h += '<a class="go" href="' + esc(link) + '" target="_blank" rel="noopener">Ouvrir ↗</a>';
     h += '</div>';
     if (open){
@@ -369,6 +419,71 @@
     }).join('') + '</div>';
   }
 
+  // ------------------------------------------------------------ ajout d'étape
+  function addStep(pid, horizon, title){
+    var axis = ui.axis[pid] || '';
+    var maxPos = stepsOf(pid).filter(function(s){ return s.horizon === horizon; })
+      .reduce(function(m, s){ return Math.max(m, s.position || 0); }, 0);
+    api('POST', 'steps', { project_id: pid, horizon: horizon, axis: axis, title: title, status: 'todo', position: maxPos + 1, source: 'moi' })
+      .then(function(row){ D.steps.push(row); lastSig = ''; render(); })
+      .catch(function(e){ if (e.message !== '401') note('Ajout impossible : ' + e.message); });
+  }
+
+  // ------------------------------------------------------------ plan pas-à-pas (panneau)
+  var drawerStep = null;
+  function openDrawer(stepId){ drawerStep = stepId; renderDrawer(); document.getElementById('drawerBackdrop').hidden = false; document.getElementById('drawer').hidden = false; }
+  function closeDrawer(){ drawerStep = null; document.getElementById('drawerBackdrop').hidden = true; document.getElementById('drawer').hidden = true; }
+  function renderDrawer(){
+    var s = D.steps.find(function(x){ return x.id === drawerStep; });
+    var drawer = document.getElementById('drawer');
+    if (!s){ closeDrawer(); return; }
+    var subs = subsOf(s.id);
+    var sections = [];
+    subs.forEach(function(x){ var sec = x.section || 'Actions'; if (sections.indexOf(sec) === -1) sections.push(sec); });
+    if (!sections.length) sections.push('Actions');
+    var doneN = subs.filter(function(x){ return x.status === 'done'; }).length;
+    var h = '<div class="drawer-head"><h3>' + esc(s.title) + '</h3><button class="icon-btn" id="drawerClose" aria-label="Fermer">✕</button></div>';
+    if (s.detail) h += '<p class="drawer-detail">' + esc(s.detail) + '</p>';
+    if (subs.length) h += '<div class="drawer-progress"><div class="bar"><i style="width:' + Math.round(doneN / subs.length * 100) + '%"></i></div><span>' + doneN + '/' + subs.length + '</span></div>';
+    sections.forEach(function(sec){
+      var items = subs.filter(function(x){ return (x.section || 'Actions') === sec; }).sort(function(a,b){ return (a.position || 0) - (b.position || 0); });
+      h += '<div class="drawer-section"><h4>' + esc(sec) + '</h4>' + items.map(subRow).join('') +
+        '<form class="add-sub" data-sub-step="' + esc(s.id) + '" data-sub-section="' + esc(sec) + '"><input type="text" placeholder="+ Ajouter une action…" maxlength="300"></form></div>';
+    });
+    h += '<button class="linkbtn" id="addSectionBtn">+ Nouvelle section</button>';
+    drawer.innerHTML = h;
+    document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+    document.getElementById('addSectionBtn').addEventListener('click', function(){
+      var name = prompt('Nom de la nouvelle section ?');
+      if (!name || !name.trim()) return;
+      var first = prompt('Première action de « ' + name.trim() + ' » ?');
+      if (!first || !first.trim()) return;
+      addSubstep(s.id, name.trim(), first.trim());
+    });
+  }
+  function subRow(x){
+    var id = esc(x.id);
+    return '<div class="sub-row' + (x.status === 'done' ? ' done' : '') + '"><button class="check small" data-subcheck="' + id + '" aria-label="Cocher">✓</button>' +
+      '<span class="t">' + esc(x.title) + '</span><button class="act tiny" data-subdel="' + id + '" aria-label="Supprimer">✕</button></div>';
+  }
+  function addSubstep(stepId, section, title){
+    var maxPos = subsOf(stepId).filter(function(x){ return (x.section || 'Actions') === section; })
+      .reduce(function(m, x){ return Math.max(m, x.position || 0); }, 0);
+    api('POST', 'substeps', { step_id: stepId, section: section, title: title, status: 'todo', position: maxPos + 1 })
+      .then(function(row){ D.substeps.push(row); lastSig = ''; renderDrawer(); render(); })
+      .catch(function(e){ if (e.message !== '401') note('Ajout impossible : ' + e.message); });
+  }
+  function toggleSub(id){
+    var x = (D.substeps || []).find(function(y){ return y.id === id; }); if (!x) return;
+    var status = x.status === 'done' ? 'todo' : 'done';
+    x.status = status; renderDrawer(); render();
+    send('PATCH', 'substeps/' + encodeURIComponent(id), { status: status });
+  }
+  function deleteSub(id){
+    D.substeps = D.substeps.filter(function(x){ return x.id !== id; }); renderDrawer(); render();
+    send('DELETE', 'substeps/' + encodeURIComponent(id));
+  }
+
   // ------------------------------------------------------------ actions
   function setStatus(id, status){
     var s = D.steps.find(function(x){ return x.id === id; }); if (!s) return;
@@ -379,14 +494,17 @@
   document.addEventListener('click', function(e){
     var b = e.target.closest('button'); if (!b || !D) return;
     var d = b.dataset;
-    if (d.project){ ui.project = d.project; save(); render(); return; }
-    if (d.view){ ui.view[ui.project] = d.view; save(); render(); return; }
+    if (d.project){ ui.project = d.project; save(); closeDrawer(); render(); return; }
+    if (d.view){ ui.view[ui.project] = d.view; save(); closeDrawer(); render(); return; }
     if (d.axis !== undefined){ ui.axis[ui.project] = d.axis; save(); render(); return; }
     if (d.filter){ ui.filter = d.filter; render(); return; }
     if (d.expand){ ui.open[d.expand] = !ui.open[d.expand]; render(); return; }
     if (d.archived){ ui.archived[d.archived] = !ui.archived[d.archived]; render(); return; }
     if (d.check){ var s = D.steps.find(function(x){ return x.id === d.check; }); if (s) setStatus(d.check, s.status === 'done' ? 'todo' : 'done'); return; }
     if (d.status){ setStatus(d.id, d.status); return; }
+    if (d.opendrawer){ openDrawer(d.opendrawer); return; }
+    if (d.subcheck){ toggleSub(d.subcheck); return; }
+    if (d.subdel){ deleteSub(d.subdel); return; }
     if (d.askdel){ ui.confirm = d.askdel; render(); clearTimeout(confirmTimer); confirmTimer = setTimeout(function(){ ui.confirm = null; render(); }, 4000); return; }
     if (d.delete){
       ui.confirm = null; D.steps = D.steps.filter(function(x){ return x.id !== d.delete; }); render();
@@ -402,6 +520,22 @@
   root.addEventListener('keydown', function(e){
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && e.target.dataset.draft){ e.preventDefault(); sendIdea(e.target.dataset.draft); }
   });
+  document.addEventListener('submit', function(e){
+    var f = e.target;
+    if (f.dataset.addProject !== undefined){
+      e.preventDefault();
+      var i1 = f.querySelector('input'), title1 = i1.value.trim();
+      if (!title1) return;
+      addStep(f.dataset.addProject, f.dataset.addHorizon, title1); i1.value = '';
+    } else if (f.dataset.subStep !== undefined){
+      e.preventDefault();
+      var i2 = f.querySelector('input'), title2 = i2.value.trim();
+      if (!title2) return;
+      addSubstep(f.dataset.subStep, f.dataset.subSection, title2); i2.value = '';
+    }
+  });
+  document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawerStep) closeDrawer(); });
   var sending = false;
   function sendIdea(pid){
     var text = (ui.draft[pid] || '').trim();

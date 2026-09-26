@@ -14,10 +14,12 @@ const TABLES = {
   steps: ['project_id', 'horizon', 'axis', 'title', 'detail', 'status', 'position', 'ref', 'source'],
   deliverables: ['project_id', 'kind', 'title', 'url', 'note', 'created_at'],
   ideas: ['project_id', 'text', 'status', 'claude_note'],
+  substeps: ['step_id', 'section', 'title', 'status', 'position'],
 };
 const STAMPED = new Set(['projects', 'steps']); // tables avec created_at / updated_at
 const HORIZONS = ['court', 'moyen', 'long'];
 const STATUSES = ['todo', 'doing', 'done', 'archived'];
+const SUB_STATUSES = ['todo', 'done'];
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -52,6 +54,7 @@ function pick(table, body) {
     let v = body[col];
     if (typeof v === 'string') v = v.slice(0, ['detail', 'note', 'text', 'description', 'claude_note'].includes(col) ? 20000 : 500);
     if (col === 'status' && table === 'steps' && !STATUSES.includes(v)) throw new Error('status invalide');
+    if (col === 'status' && table === 'substeps' && !SUB_STATUSES.includes(v)) throw new Error('status invalide');
     if (col === 'horizon' && !HORIZONS.includes(v)) throw new Error('horizon invalide');
     if (['position', 'hidden'].includes(col)) v = Number(v) || 0;
     out[col] = v;
@@ -60,17 +63,18 @@ function pick(table, body) {
 }
 
 async function readState(db) {
-  const [projects, axes, goals, steps, deliverables, ideas] = await db.batch([
+  const [projects, axes, goals, steps, deliverables, ideas, substeps] = await db.batch([
     db.prepare('SELECT * FROM projects ORDER BY position, name'),
     db.prepare('SELECT * FROM axes ORDER BY position, label'),
     db.prepare('SELECT * FROM goals'),
     db.prepare('SELECT * FROM steps ORDER BY position, created_at'),
     db.prepare('SELECT * FROM deliverables ORDER BY created_at DESC'),
     db.prepare('SELECT * FROM ideas ORDER BY created_at DESC'),
+    db.prepare('SELECT * FROM substeps ORDER BY step_id, position'),
   ]);
   return {
     projects: projects.results, axes: axes.results, goals: goals.results, steps: steps.results,
-    deliverables: deliverables.results, ideas: ideas.results, at: now(),
+    deliverables: deliverables.results, ideas: ideas.results, substeps: substeps.results, at: now(),
   };
 }
 

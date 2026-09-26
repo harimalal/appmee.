@@ -38,4 +38,11 @@ CREATE TABLE IF NOT EXISTS ideas (
   claude_note TEXT DEFAULT '', created_at TEXT NOT NULL
 );
 
+-- Plan pas-à-pas d'une étape, groupé en sections. status : todo | done.
+CREATE TABLE IF NOT EXISTS substeps (
+  id TEXT PRIMARY KEY, step_id TEXT NOT NULL, section TEXT DEFAULT '', title TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'todo', position REAL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_substeps_step ON substeps(step_id);
+
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
