@@ -1,9 +1,5 @@
 # AppMétier Platform — Guide de déploiement Cloudflare Pages
 
-## Cockpit projets
-
-Tableau de bord personnel de suivi de projets sous `/cockpit/` (Pages Functions + D1). Voir `cockpit/README.md`.
-
 ## Structure des fichiers
 
 ```
