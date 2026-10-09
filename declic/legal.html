@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informations légales — Déclic</title>
+<link rel="stylesheet" href="css/declic.css">
+</head>
+<body class="public">
+<header class="pub-top"><div class="pub-in"><a class="brand-name" href="index.html">Déclic</a><nav><a href="index.html">Accueil</a></nav></div></header>
+<main class="sec"><div class="pub-in narrow doc md" id="legal"></div></main>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  // Les pages se remplissent avec les informations saisies dans Réglages. Modèle à faire relire par un juriste.
+  const s = Store.load() && Store.get().settings;
+  const v = (x, ph) => (x && String(x).trim()) || '<mark>[' + ph + ' — à compléter dans Réglages]</mark>';
+  const e = UI.esc;
+  document.getElementById('legal').innerHTML = `
+  <section id="mentions"><h1>Mentions légales</h1>
+  <p><strong>Éditrice :</strong> ${e(s.owner)}, ${e(s.status)}<br>SIRET : ${v(e(s.siret), 'SIRET')}<br>Adresse : ${v(e(s.address), 'adresse')}<br>Contact : ${e(s.email)}${s.phone ? ' · ' + e(s.phone) : ''}</p>
+  <p><strong>Hébergement :</strong> ${'<mark>[hébergeur, ex. Cloudflare Inc., 101 Townsend St, San Francisco, CA 94107, USA]</mark>'}</p>
+  <p><strong>Propriété intellectuelle :</strong> les contenus de ce site sont protégés. Toute reproduction sans autorisation est interdite.</p>
+  <p><strong>Nature du service :</strong> le coaching n’est ni une thérapie, ni un conseil médical, psychologique, juridique ou financier.</p></section>
+  <section id="cgv"><h1>Conditions générales de vente</h1>
+  <p>Prestations de coaching individuel proposées par ${e(s.owner)}. Les conditions détaillées (objet, obligations, tarifs, annulation, rétractation, garantie satisfaction, confidentialité) figurent dans le contrat signé en ligne par chaque cliente avant tout règlement.</p>
+  <ul><li>Report de séance sans frais jusqu’à 24 h avant.</li><li>Droit de rétractation de 14 jours, sauf renonciation pour les séances déjà effectuées.</li><li>Garantie satisfaction après la séance 2 (programmes DÉCLIC et TRANSFORMATION).</li><li>${e(s.tva)}</li></ul></section>
+  <section id="rgpd"><h1>Politique de confidentialité</h1>
+  <p><strong>Responsable du traitement :</strong> ${e(s.owner)} (${e(s.email)}).</p>
+  <p><strong>Données collectées :</strong> identité, email, réponses aux questionnaires, historique de parcours, factures. <strong>Finalités :</strong> gérer ton accompagnement, te contacter, facturer. <strong>Base légale :</strong> exécution du contrat et ton consentement pour les emails.</p>
+  <p><strong>Conservation :</strong> durée de la relation + 3 ans (prospection) ; factures : 10 ans. <strong>Tes droits :</strong> accès, rectification, effacement, opposition, portabilité — écris à ${e(s.email)}. Réclamation possible auprès de la CNIL.</p>
+  <p><strong>Confidentialité :</strong> ce que tu partages en séance et dans tes questionnaires n’est jamais publié sans ton accord explicite.</p></section>`;
+</script>
+</body>
+</html>
