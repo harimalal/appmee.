@@ -8,8 +8,9 @@ Claude y écrit avec l'outil Cloudflare `d1_database_query` (une seule instructi
 Hari ne tape presque rien : c'est à Claude de proposer et de tenir à jour les objectifs et les étapes.
 Hari coche, archive, supprime, et écrit des idées depuis la page.
 
-Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`, `dropit`. Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`)
-ont `hidden = 1`.
+Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`, `dropit`, `declic` (CoachSystem, dépôt `harimalal/COACHINGSYSTEM`),
+`masterai` (catalogue des skills/agents/workflows IA déjà en routine), `aiguy4cosmetic` (cas d'usage IA pour l'industrie
+cosmétique). Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`) ont `hidden = 1`.
 
 **Tables**
 - `projects (id, name, icon, color, description, repo, position, hidden, created_at, updated_at)`
