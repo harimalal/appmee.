@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Showcase</title>
+<!-- Diaporama animé, tout format : une seule source pour
+       · une vidéo (MP4, GIF) avec transitions entre les diapositives et entrées animées de chaque élément,
+       · un carrousel ou un diaporama statique (une image par diapositive, + PDF),
+       · un post unique (une seule diapositive),
+     dans n'importe quel format : scene.html?format=1080x1350 (défaut), 1080x1920, 1080x1080, 1920x1080, 1200x627…
+     Le corps reçoit la classe portrait, paysage ou carre selon le format : écrire les variantes de mise en page avec ces classes.
+     Unité de taille : var(--u) = 1 % du plus petit côté (10,8 px en 1080 de large). Tout dimensionner en calc(var(--u) * N).
+
+     Écriture des diapositives :
+       <section class="slide" data-duree="3" data-transition="glisse">   durée en s ; transition d'entrée : fondu, glisse, glisse-haut, pousse, zoom, rideau, flou, coupe
+         <h1 data-entree="monte" data-delai=".2">…</h1>                 entrée d'un élément : monte, descend, gauche, droite, fondu, zoom, pop, masque, machine (lettre par lettre)
+         <div class="ph" style="--w:calc(var(--u)*46)" data-entree="monte" data-delai=".4">
+           <div class="s"><img src="captures/01.png"><img src="captures/02.png" data-a="1.6"></div>   écrans successifs : data-a = instant d'apparition dans la diapositive
+         </div>
+         <b data-compte="70" data-suffixe="%" data-delai=".8">0%</b>      compteur animé
+         <img class="photo" data-kb src="medias/photo.jpg">               lent zoom (« Ken Burns ») pendant toute la diapositive
+       </section>
+     Contrat avec scripts/rendre.cjs : window.DUREE, window.render(t), window.ready, window.DIAPOS (instants où chaque diapositive est complète). -->
+<style>
+/* ===== MARQUE (à remplacer) ===== */
+/* @font-face{font-family:Marque;font-weight:800;src:url(medias/police-800.woff2) format("woff2");} */
+:root{--ink:#0B1020;--soft:#4A5266;--accent:#E6264A;--grad:linear-gradient(135deg,#FF6A4F,#E6264A);--mark:#FFE45C;--bg:#F8F8F9;
+  --c1:#FFE7ED;--c2:#EEE9FF;--c3:#E3EEFF;--c4:#DDF5EA;--c5:#FFEBDC}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow:hidden;background:var(--bg)}
+body{font-family:Marque,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:relative;overflow:hidden;background:var(--bg)}
+.slide{position:absolute;inset:0;overflow:hidden;opacity:0;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*8);gap:calc(var(--u)*3)}
+body.paysage .slide{padding:calc(var(--u)*8) calc(var(--u)*10)}
+/* typographie */
+h1,h2{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+h1{font-size:calc(var(--u)*9)} h2{font-size:calc(var(--u)*7)}
+p.lead{font-size:calc(var(--u)*3.6);font-weight:600;line-height:1.35;color:var(--soft)}
+.mk{background:linear-gradient(transparent 58%,var(--mark) 58% 92%,transparent 92%);padding:0 .06em}
+.acc{color:var(--accent)}
+.pill{align-self:flex-start;font-weight:800;font-size:calc(var(--u)*2.4);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--ink);border-radius:999px;padding:calc(var(--u)*1) calc(var(--u)*2.2)}
+.chip{display:inline-flex;align-items:center;gap:calc(var(--u)*1);background:#fff;border-radius:999px;padding:calc(var(--u)*1.4) calc(var(--u)*2.4);font-weight:700;font-size:calc(var(--u)*2.8);box-shadow:0 calc(var(--u)*1.5) calc(var(--u)*3) calc(var(--u)*-1.5) rgba(43,36,32,.45)}
+.badge{display:inline-block;background:#fff;border-radius:calc(var(--u)*2.4);padding:calc(var(--u)*1.8) calc(var(--u)*3);font-weight:800;font-size:calc(var(--u)*3.4);box-shadow:0 calc(var(--u)*2) calc(var(--u)*4) calc(var(--u)*-2) rgba(43,36,32,.45)}
+/* téléphone : largeur --w, écran au rapport 390×844 ; plusieurs <img> dans .s = écrans successifs (data-a) */
+.ph{position:relative;flex:none;background:#0E1016;border-radius:calc(var(--w) * .15);padding:calc(var(--w) * .036);width:var(--w);
+  box-shadow:0 calc(var(--u)*5) calc(var(--u)*9) calc(var(--u)*-3) rgba(43,36,32,.5),inset 0 0 0 2px #2A2D36}
+.ph .s{position:relative;border-radius:calc(var(--w) * .115);overflow:hidden;aspect-ratio:390/844;background:#fff}
+.ph .s img{position:absolute;left:0;top:0;width:100%;height:100%}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.fond-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(11,16,32,.65));z-index:-1}
+/* mises en page utiles */
+.rang{display:flex;align-items:center;gap:calc(var(--u)*5)}
+body.portrait .rang{flex-direction:column}
+.centre{align-items:center;text-align:center}
+.fin{justify-content:flex-end}
+</style></head>
+<body><div id="stage">
+
+<!-- ======== DIAPOSITIVES (exemple à remplacer : accroche, problème, promesse, 3 fonctionnalités, appel à l'action) ======== -->
+<section class="slide fond-photo" data-duree="3">
+  <img class="photo" data-kb src="medias/accroche.jpg">
+  <h1 style="color:#fff" data-entree="monte" data-delai=".2">The goal.</h1>
+  <p class="lead" style="color:#fff" data-entree="monte" data-delai=".6">Where do you even start?</p>
+</section>
+
+<section class="slide" style="background:var(--c1)" data-duree="3" data-transition="glisse">
+  <span class="pill" data-entree="fondu">The problem</span>
+  <h2 data-entree="monte" data-delai=".2">Five apps.<br><span class="acc">Still no plan.</span></h2>
+</section>
+
+<section class="slide centre" style="background:var(--grad);color:#fff" data-duree="3" data-transition="zoom">
+  <h2 data-entree="machine" data-delai=".1">The promise of the landing.</h2>
+</section>
+
+<section class="slide" style="background:var(--c2)" data-duree="3.5" data-transition="pousse">
+  <div class="rang">
+    <div style="flex:1;display:flex;flex-direction:column;gap:calc(var(--u)*2.5)">
+      <span class="pill" data-entree="fondu">01</span>
+      <h2 data-entree="monte" data-delai=".15">Feature one,<br><span class="mk">its benefit.</span></h2>
+    </div>
+    <div class="ph" style="--w:calc(var(--u)*42)" data-entree="monte" data-delai=".35"><div class="s"><img src="captures/01-accueil.png"><img src="captures/02-saisie.png" data-a="1.8"></div></div>
+  </div>
+</section>
+
+<section class="slide centre" style="background:var(--c4)" data-duree="3" data-transition="rideau">
+  <h1><b data-compte="70" data-suffixe="%" data-delai=".3">0%</b></h1>
+  <p class="lead" data-entree="monte" data-delai=".5">of your plan, done in 3 weeks.</p>
+</section>
+
+<section class="slide centre" style="background:var(--grad);color:#fff" data-duree="3.5" data-transition="flou">
+  <h2 data-entree="pop" data-delai=".2">Slogan of the landing.</h2>
+  <span class="chip" style="color:var(--ink);align-self:center" data-entree="monte" data-delai=".6">example.com</span>
+</section>
+
+</div>
+<script>
+// ================= format =================
+const q = new URLSearchParams(location.search);
+const [FW, FH] = (q.get('format') || window.FORMAT_DEFAUT || '1080x1350').split('x').map(Number);
+window.FORMAT = { w: FW, h: FH };
+const U = Math.min(FW, FH) / 100, R = FH / FW;
+document.documentElement.style.setProperty('--u', U + 'px');
+document.body.classList.add(R > 1.15 ? 'portrait' : R < 0.87 ? 'paysage' : 'carre');
+const ST = document.getElementById('stage'); ST.style.width = FW + 'px'; ST.style.height = FH + 'px';
+document.body.style.width = FW + 'px'; document.body.style.height = FH + 'px';
+
+// ================= outils =================
+const C = s => Math.max(0, Math.min(1, s)), seg = (t, a, b) => C((t - a) / (b - a)), lerp = (a, b, k) => a + (b - a) * k;
+const eio = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, eout = k => 1 - Math.pow(1 - k, 3);
+const eback = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+const T = .6;                                                     // durée d'une transition entre diapositives
+
+// ================= transitions (k de 0 à 1) : [entrée de la nouvelle, sortie de l'ancienne] =================
+const TR = {
+  coupe:         [k => ({ o: k >= 1 ? 1 : 0 }), k => ({ o: k >= 1 ? 0 : 1 })],
+  fondu:         [k => ({ o: k }), k => ({ o: 1 - k })],
+  glisse:        [k => ({ tf: `translateX(${(1 - k) * 100}%)`, o: 1 }), k => ({ tf: `translateX(${-k * 25}%)`, o: 1 - k * .6 })],
+  'glisse-haut': [k => ({ tf: `translateY(${(1 - k) * 100}%)`, o: 1 }), k => ({ tf: `translateY(${-k * 25}%)`, o: 1 - k * .6 })],
+  pousse:        [k => ({ tf: `translateX(${(1 - k) * 100}%)`, o: 1 }), k => ({ tf: `translateX(${-k * 100}%)`, o: 1 })],
+  zoom:          [k => ({ tf: `scale(${lerp(1.18, 1, k)})`, o: k }), k => ({ tf: `scale(${lerp(1, .9, k)})`, o: 1 - k })],
+  rideau:        [k => ({ clip: `inset(0 ${(1 - k) * 100}% 0 0)`, o: 1 }), k => ({ o: 1 })],
+  flou:          [k => ({ f: `blur(${(1 - k) * 30}px)`, o: k }), k => ({ f: `blur(${k * 30}px)`, o: 1 - k })],
+};
+// ================= entrées des éléments (k de 0 à 1) =================
+const D = U * 6;
+const EN = {
+  monte:  k => ({ o: k, tf: `translateY(${(1 - eout(k)) * D}px)` }),
+  descend:k => ({ o: k, tf: `translateY(${-(1 - eout(k)) * D}px)` }),
+  gauche: k => ({ o: k, tf: `translateX(${-(1 - eout(k)) * D * 1.5}px)` }),
+  droite: k => ({ o: k, tf: `translateX(${(1 - eout(k)) * D * 1.5}px)` }),
+  fondu:  k => ({ o: k }),
+  zoom:   k => ({ o: k, tf: `scale(${lerp(.85, 1, eout(k))})` }),
+  pop:    k => ({ o: C(k * 3), tf: `scale(${lerp(.5, 1, eback(k))})` }),
+  masque: k => ({ o: 1, clip: `inset(0 ${(1 - eout(k)) * 100}% 0 0)` }),
+};
+function appliquer(e, s) { e.style.opacity = s.o ?? 1; e.style.transform = s.tf || ''; e.style.clipPath = s.clip || ''; e.style.filter = s.f || ''; }
+
+// ================= chronologie =================
+const SL = [...document.querySelectorAll('.slide')].map((el, i) => ({ el, d: +(el.dataset.duree || 3), tr: el.dataset.transition || 'fondu' }));
+let acc = 0; SL.forEach(s => { s.a = acc; acc += s.d; });
+window.DUREE = acc + (SL.length > 1 ? 0 : 0);
+// instant où chaque diapositive est complète (export image / PDF) : juste avant la transition suivante
+window.DIAPOS = SL.map(s => +(s.a + s.d - .02).toFixed(3));
+SL.forEach(s => {
+  s.items = [...s.el.querySelectorAll('[data-entree],[data-compte]')].map(e => ({ e, fx: e.dataset.entree || 'fondu', a: +(e.dataset.delai || 0), d: +(e.dataset.duree || .6),
+    machine: e.dataset.entree === 'machine' ? e.textContent : null, html: e.innerHTML, compte: e.dataset.compte != null ? +e.dataset.compte : null, suf: e.dataset.suffixe || '' }));
+  s.kb = [...s.el.querySelectorAll('[data-kb]')];
+  s.ecrans = [...s.el.querySelectorAll('.ph .s img[data-a]')].map(e => ({ e, a: +e.dataset.a }));
+});
+
+window.render = function (t) {
+  SL.forEach((s, i) => {
+    const n = SL[i + 1], debut = i === 0 ? 0 : s.a, finVisible = n ? n.a + T : Infinity;
+    if (t < debut || t >= finVisible) { s.el.style.opacity = 0; return; }
+    const kin = i === 0 ? 1 : eio(seg(t, s.a, s.a + T)), kout = n ? eio(seg(t, n.a, n.a + T)) : 0;
+    const a = (TR[s.tr] || TR.fondu)[0](kin), b = n && kout > 0 ? (TR[n.tr] || TR.fondu)[1](kout) : {};
+    appliquer(s.el, { o: (a.o ?? 1) * (b.o ?? 1), tf: [a.tf, b.tf].filter(Boolean).join(' '), clip: a.clip, f: [a.f, b.f].filter(Boolean).join(' ') });
+    s.el.style.zIndex = i;
+    const lt = t - s.a - (i === 0 ? 0 : T * .5);                 // temps local : les éléments entrent pendant la fin de la transition
+    for (const it of s.items) {
+      const k = seg(lt, it.a, it.a + it.d);
+      if (it.machine != null) { const n2 = Math.round(seg(lt, it.a, it.a + Math.max(it.d, it.machine.length * .045)) * it.machine.length); it.e.textContent = it.machine.slice(0, n2); it.e.style.opacity = 1; }
+      else if (it.compte != null && !it.e.dataset.entree) { it.e.textContent = Math.round(eout(seg(lt, it.a, it.a + 1.2)) * it.compte) + it.suf; }
+      else appliquer(it.e, (EN[it.fx] || EN.fondu)(k));
+      if (it.compte != null && it.e.dataset.entree) it.e.textContent = Math.round(eout(seg(lt, it.a, it.a + 1.2)) * it.compte) + it.suf;
+    }
+    for (const e of s.kb) e.style.transform = `scale(${lerp(1, 1.08, seg(t, s.a, s.a + s.d + T))})`;
+    for (const sc of s.ecrans) sc.e.style.opacity = seg(lt, sc.a, sc.a + .3);
+  });
+};
+window.ready = document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
+window.ready.then(() => {
+  if (q.has('play')) { const t0 = performance.now(); const f = () => { render(((performance.now() - t0) / 1000) % DUREE); requestAnimationFrame(f); }; f(); }
+  else render(parseFloat(q.get('t') || '0'));
+});
+</script></body></html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Showcase board</title>
+<!-- Planche de visuels uniques, chacun à sa taille exacte : chaque bloc [data-out] est exporté tel quel par scripts/exporter-planche.cjs.
+     Pour un carrousel, un diaporama ou un même visuel décliné en plusieurs formats, préférer assets/diaporama-modele.html.
+     Exemples ci-dessous : galerie Product Hunt (1270×760, exportée ×2), miniature YouTube, image de partage (OG), vignette animée (GIF). -->
+<style>
+/* ===== MARQUE (à remplacer) ===== */
+:root{--ink:#0B1020;--soft:#4A5266;--accent:#E6264A;--grad:linear-gradient(135deg,#FF6A4F,#E6264A);--mark:#FFE45C;
+  --c1:#FFE7ED;--c2:#EEE9FF;--c3:#E3EEFF;--c4:#DDF5EA;--c5:#FFEBDC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#888;font-family:Marque,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;padding:20px;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.f{position:relative;overflow:hidden;flex:none}
+h1,h2{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.mk{background:linear-gradient(transparent 58%,var(--mark) 58% 92%,transparent 92%);padding:0 .06em}
+.acc{color:var(--accent)}
+.chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:12px 20px;font:700 21px Marque,system-ui;box-shadow:0 14px 30px -16px rgba(43,36,32,.45)}
+/* téléphone : largeur --w, écran au rapport 390×844 */
+.ph{position:absolute;background:#0E1016;border-radius:calc(var(--w) * .15);padding:calc(var(--w) * .036);width:var(--w);
+  box-shadow:0 50px 90px -30px rgba(43,36,32,.5),0 16px 30px -18px rgba(43,36,32,.4),inset 0 0 0 2px #2A2D36}
+.ph .s{position:relative;border-radius:calc(var(--w) * .115);overflow:hidden;aspect-ratio:390/844;background:#fff}
+.ph .s img{position:absolute;left:0;top:0;width:100%;height:100%}
+.bub{position:absolute;background:#fff;border-radius:18px;padding:14px 18px;font:700 19px/1.3 Marque,system-ui;box-shadow:0 20px 40px -18px rgba(43,36,32,.45)}
+</style></head><body>
+
+<!-- Galerie Product Hunt n° 1 : la promesse (mots de la landing) + le téléphone entier -->
+<div class="f" data-out="ph-galerie-1-promesse.jpg" data-echelle="2" style="width:1270px;height:760px;background:var(--grad)">
+  <h1 style="position:absolute;left:78px;top:170px;font-size:62px;color:#fff;line-height:1.08">Headline of<br>the landing,<br>in three beats.</h1>
+  <p style="position:absolute;left:80px;top:440px;font:800 34px Marque,system-ui;color:#fff"><span style="background:#fff;color:var(--accent);border-radius:12px;padding:4px 14px">Second slogan.</span></p>
+  <div style="position:absolute;left:80px;top:560px;display:flex;gap:12px"><span class="chip">✨ Key benefit</span><span class="chip">Free · No ads</span></div>
+  <div class="ph" style="--w:300px;left:880px;top:60px;transform:rotate(3deg)"><div class="s"><img src="captures/01-accueil.png"></div></div>
+</div>
+
+<!-- Galerie n° 2 : une fonctionnalité = un bénéfice + l'écran + une bulle qui pointe le détail -->
+<div class="f" data-out="ph-galerie-2-fonction.jpg" data-echelle="2" style="width:1270px;height:760px;background:var(--c2)">
+  <h2 style="position:absolute;left:80px;top:220px;font-size:64px">Feature one,<br><span class="mk">its benefit.</span></h2>
+  <p style="position:absolute;left:82px;top:420px;width:520px;font:600 25px/1.4 Marque,system-ui;color:var(--soft)">One sentence that explains what happens, in the user's words.</p>
+  <div class="ph" style="--w:290px;left:780px;top:70px"><div class="s"><img src="captures/02-saisie.png"></div></div>
+  <div class="bub" style="left:640px;top:520px">← the detail that matters</div>
+</div>
+
+<!-- Miniature YouTube 1280×720 : gros texte (3 à 5 mots), téléphone entier, contraste fort -->
+<div class="f" data-out="youtube-miniature-1280x720.jpg" style="width:1280px;height:720px;background:var(--grad)">
+  <h1 style="position:absolute;left:70px;top:190px;font-size:96px;color:#fff">Three to<br>five words.</h1>
+  <div class="ph" style="--w:280px;left:900px;top:40px;transform:rotate(4deg)"><div class="s"><img src="captures/01-accueil.png"></div></div>
+</div>
+
+<!-- Image de partage (Open Graph, aperçu de lien) 1200×630 -->
+<div class="f" data-out="og-1200x630.jpg" style="width:1200px;height:630px;background:var(--c1)">
+  <h1 style="position:absolute;left:70px;top:200px;font-size:70px">Headline<br><span class="mk">of the landing.</span></h1>
+  <div class="ph" style="--w:250px;left:860px;top:60px"><div class="s"><img src="captures/01-accueil.png"></div></div>
+</div>
+
+<!-- Vignette Product Hunt (affichée 240×240, exportée 480×480) : PNG fixe + GIF animé ; la première image du GIF doit être la plus lisible -->
+<div class="f" data-out="ph-vignette-480.png" data-gif="anim:40:15" id="vignette" style="width:480px;height:480px;background:var(--c1)">
+  <div id="v-logo" style="position:absolute;left:90px;top:190px;width:300px;height:100px;border-radius:24px;background:var(--grad);color:#fff;font:800 54px/100px Marque,system-ui;text-align:center">App</div>
+</div>
+
+<script>
+// Animation de la vignette : k de 0 à 1, boucle (anim(1) = image fixe exportée en PNG)
+window.anim = k => { const e = document.getElementById('v-logo'); const s = 1 + .06 * Math.sin(k * Math.PI * 2); e.style.transform = `scale(${s})`; };
+window.ready = document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
+</script>
+</body></html>
