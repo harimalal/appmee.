@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Launch film</title>
+<!-- Film de lancement (1920×1080). Chaque image est calculée par render(t) : aucune minuterie, aucun aléa, donc rendu image par image fidèle.
+     Aperçu d'un instant : scene.html?t=12.5 — lecture en temps réel : scene.html?play
+     Contrat avec scripts/rendre.cjs : window.DUREE (s), window.render(t), window.ready (promesse résolue quand polices et images sont chargées).
+     Mode d'emploi : remplir MARQUE, ÉCRANS, SEQ, CAM, les légendes et les actes ; écrire les scènes sur mesure dans « ACTES ».
+     Catalogue des scènes types : references/scenes.md du skill film-lancement-app. -->
+<style>
+/* ===== MARQUE : polices locales et couleurs (à remplacer) ===== */
+/* @font-face{font-family:Marque;font-weight:800;src:url(medias/police-800.woff2) format("woff2");} */
+:root{--ink:#0B1020;--soft:#4A5266;--accent:#E6264A;--grad:linear-gradient(135deg,#FF6A4F,#E6264A);--mark:#FFE45C;--bg:#F8F8F9;
+  --blob1:#FDE3EC;--blob2:#E2ECFC;--blob3:#FFEBDC;--blob4:#DDF5EA}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+body{font-family:Marque,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.9}
+/* téléphone : écran 390×844 (repère des captures et de boites.json) */
+#phone{position:absolute;left:0;top:0;width:422px;height:876px;border-radius:64px;background:#0E1016;padding:16px;opacity:0;
+  box-shadow:0 60px 120px -30px rgba(43,36,32,.45),0 20px 40px -20px rgba(43,36,32,.35),inset 0 0 0 2px #2A2D36;transform-origin:0 0}
+#screen{position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:#fff}
+#screen img.sc{position:absolute;left:0;top:0;width:390px;height:844px;opacity:0}
+.ov{position:absolute;pointer-events:none}
+.ripple{width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(11,16,32,.18);border:2px solid rgba(255,255,255,.9);opacity:0}
+.ring{border:4px solid var(--accent);border-radius:22px;opacity:0;box-shadow:0 0 0 8px rgba(230,38,74,.12)}
+.pts{font:800 22px Marque,system-ui;color:#fff;background:var(--grad);border-radius:999px;padding:6px 14px;white-space:nowrap;opacity:0}
+/* légendes */
+.cap{position:absolute;font-weight:800;letter-spacing:-.035em;line-height:1.04;opacity:0;white-space:nowrap}
+.cap .mk{background:linear-gradient(transparent 58%,var(--mark) 58% 92%,transparent 92%);padding:0 .08em}
+.cap .acc{color:var(--accent)}
+.step{display:inline-block;font-size:26px;letter-spacing:.06em;color:#fff;background:var(--ink);border-radius:999px;padding:8px 18px;margin-bottom:22px}
+/* bulles : .q = question posée à l'app ; .f = fonction (badge blanc, droit, pastille de couleur) */
+.stk{position:absolute;opacity:0;font:800 30px/1.2 Marque,system-ui;letter-spacing:-.02em;color:var(--ink);border-radius:26px;padding:18px 26px;white-space:nowrap;background:#fff;
+  box-shadow:0 22px 40px -18px rgba(43,36,32,.45)}
+.stk.q{font-weight:700;font-size:27px;border-radius:26px 26px 26px 8px}
+.stk.q b{color:var(--accent)}
+.stk.f{font-size:38px;border-radius:22px;padding:20px 32px 20px 64px}
+.stk.f::before{content:"";position:absolute;left:28px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;background:var(--accent)}
+/* accroche : vraie photo */
+#hook{position:absolute;width:760px;height:450px;border-radius:28px;overflow:hidden;opacity:0;box-shadow:0 60px 110px -30px rgba(43,36,32,.55)}
+#hook img{width:100%;height:100%;object-fit:cover}
+/* cartes du chaos */
+.card{position:absolute;left:0;top:0;background:#fff;border-radius:22px;box-shadow:0 30px 60px -20px rgba(43,36,32,.35),0 0 0 1px rgba(43,36,32,.06);overflow:hidden;opacity:0}
+.card .bar{height:44px;display:flex;align-items:center;padding:0 16px;font:700 15px Marque,system-ui;color:#fff}
+.card li{list-style:none;padding:11px 16px;border-bottom:1px solid #EEF0F4;font:600 15px Marque,system-ui;color:#30364A}
+/* récapitulatif : trois téléphones */
+.mini{position:absolute;left:0;top:0;width:300px;height:649px;border-radius:44px;background:#0E1016;padding:12px;box-shadow:0 40px 80px -30px rgba(43,36,32,.5);opacity:0;transform-origin:0 0}
+.mini img{width:276px;height:597px;border-radius:34px;display:block}
+.ttl{position:absolute;left:0;top:0;transform-origin:0 0;opacity:0;white-space:nowrap}
+.ttl-v{display:inline-block;font:800 44px Marque,system-ui;letter-spacing:-.02em;color:var(--ink);background:#fff;border-radius:999px;padding:14px 32px;margin-bottom:16px;box-shadow:0 18px 40px -16px rgba(43,36,32,.45)}
+.ttl-b{display:block;font:800 58px/1.05 Marque,system-ui;letter-spacing:-.035em;color:var(--ink);padding-left:8px}
+/* logo et fin */
+#logo{position:absolute;opacity:0;transform-origin:50% 50%}
+#logo img{display:block;width:100%}
+#later{position:absolute;opacity:0;background:var(--ink);color:#fff;border-radius:999px;padding:18px 34px;font:800 34px Marque,system-ui}
+#endurl{position:absolute;opacity:0;font:800 40px Marque,system-ui;color:#fff;background:var(--grad);border-radius:999px;padding:18px 40px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style></head>
+<body><div id="stage">
+ <div class="blob" id="b1" style="width:900px;height:900px;background:var(--blob1)"></div>
+ <div class="blob" id="b2" style="width:800px;height:800px;background:var(--blob2)"></div>
+ <div class="blob" id="b3" style="width:700px;height:700px;background:var(--blob3)"></div>
+ <div class="blob" id="b4" style="width:600px;height:600px;background:var(--blob4)"></div>
+ <div id="hook"><img src="medias/accroche.jpg"></div>
+ <div id="chaos"></div>
+ <div id="logo"><img src="medias/logo.png"></div>
+ <div id="phone"><div id="screen"><div id="layers"></div><div id="ovs"></div></div></div>
+ <div id="minis"></div>
+ <div id="caps"></div>
+ <div id="stks"></div>
+ <div id="later">3 weeks later</div>
+ <div id="endurl">example.com</div>
+ <div id="flash"></div>
+</div>
+<script>
+// ================= outils =================
+const C = s => Math.max(0, Math.min(1, s));
+const seg = (t, a, b) => C((t - a) / (b - a));                         // 0 avant a, 1 après b
+const fade = (t, a, b, c, d) => seg(t, a, b) * (1 - seg(t, c, d));     // apparaît a→b, disparaît c→d
+const lerp = (a, b, k) => a + (b - a) * k;
+const eio = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+const eout = k => 1 - Math.pow(1 - k, 3);
+const eback = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+const $ = id => document.getElementById(id);
+const mk = (tag, cls, html, parent, style) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; if (style) e.setAttribute('style', style); (parent || document.body).appendChild(e); return e; };
+const CAP = 'captures/';            // dossier des captures, relatif à scene.html
+let BOX = {};                       // positions mesurées (captures/boites.json), repère 390×844
+window.DUREE = 100;                 // durée totale du film long, en secondes
+
+// ================= écrans du téléphone =================
+// Liste des captures utilisées, puis [instant, capture, durée du fondu] dans l'ordre du film.
+const ECRANS = ['01-accueil', '02-saisie', '03-resultat'];
+const SEQ = [[0, '01-accueil', 0], [24.9, '03-resultat', .3]];
+const IMG = {};
+ECRANS.forEach(k => { IMG[k] = mk('img', 'sc', null, $('layers')); IMG[k].src = CAP + k + '.png'; });
+function screens(t) {
+  let i = 0; for (let j = 0; j < SEQ.length; j++) if (SEQ[j][0] <= t) i = j;
+  const cur = SEQ[i], prev = i > 0 ? SEQ[i - 1] : null, k = cur[2] ? C((t - cur[0]) / cur[2]) : 1;
+  for (const s of ECRANS) IMG[s].style.opacity = 0;
+  if (prev && k < 1) IMG[prev[1]].style.opacity = 1;
+  IMG[cur[1]].style.opacity = prev && k < 1 ? k : 1;
+}
+
+// ================= caméra =================
+// Plan : le point (sx,sy) de l'écran 390×844 est placé au point (cx,cy) de l'image 1920×1080, à l'échelle z.
+// Deux plans consécutifs identiques = arrêt ; deux plans différents = mouvement (ease in-out, zoom logarithmique).
+const P = $('phone'), BZ = 16;
+const PLEIN = { sx: 195, sy: 422, z: 1, cx: 1300, cy: 540 };          // téléphone entier, à droite, texte à gauche
+const CAM = [
+  [0, { ...PLEIN, cy: 1700 }], [18.2, { ...PLEIN, cy: 1700 }], [19.2, PLEIN],   // entrée par le bas
+  [20.0, PLEIN], [21.0, { sx: 195, sy: 756, z: 2.3, cx: 1180, cy: 610 }],        // zoom sur la barre de saisie (exemple)
+  [24.2, { sx: 195, sy: 756, z: 2.3, cx: 1180, cy: 610 }], [25.0, PLEIN],
+  [78.6, PLEIN], [79.4, { ...PLEIN, cy: 1800 }]];                               // sortie par le bas
+const PHONE_ON = [18.2, 79.6];
+// En gros plan, garder le bord gauche du téléphone à droite de 850 px pour ne pas recouvrir la légende de gauche.
+function fit(e) { const c = Object.assign({}, e[1]); if (c.cy < 1200 && c.z > 1.01) c.cx = Math.max(c.cx, 850 + c.z * (BZ + c.sx)); return c; }
+function camera(t) {
+  let i = 0; for (let j = 0; j < CAM.length; j++) if (CAM[j][0] <= t) i = j;
+  const a = fit(CAM[i]), b = fit(CAM[i + 1] || CAM[i]), ta = CAM[i][0], tb = (CAM[i + 1] || CAM[i])[0];
+  const k = tb > ta ? eio(C((t - ta) / (tb - ta))) : 0;
+  const z = Math.exp(lerp(Math.log(a.z), Math.log(b.z), k));
+  const sx = lerp(a.sx, b.sx, k), sy = lerp(a.sy, b.sy, k), cx = lerp(a.cx, b.cx, k), cy = lerp(a.cy, b.cy, k);
+  P.style.transform = `translate(${cx - z * (BZ + sx)}px,${cy - z * (BZ + sy)}px) scale(${z})`;
+  P.style.opacity = (t >= PHONE_ON[0] && t < PHONE_ON[1]) ? 1 : 0;
+}
+
+// ================= calques sur l'écran (repère 390×844) =================
+const ovs = $('ovs');
+const ripples = [0, 1].map(() => mk('div', 'ov ripple', null, ovs));
+const ring = mk('div', 'ov ring', null, ovs);
+const pts = mk('div', 'ov pts', '+2 pts', ovs);
+function ripple(r, t, at, x, y) { const k = seg(t, at, at + .5); r.style.left = x + 'px'; r.style.top = y + 'px'; r.style.opacity = k > 0 && k < 1 ? (1 - k) : 0; r.style.transform = `scale(${.4 + k * 1.3})`; }
+function ringOn(t, b, a, d, pad = 6) { if (!b || t < a || t > d + .5) return; ring.style.left = (b.x - pad) + 'px'; ring.style.top = (b.y - pad) + 'px'; ring.style.width = (b.w + 2 * pad) + 'px'; ring.style.height = (b.h + 2 * pad) + 'px'; ring.style.opacity = fade(t, a, a + .3, d, d + .4); }
+
+// ================= légendes =================
+// cap(html, x, y, taille, a, b, c, d) : apparaît de a à b (en montant), disparaît de c à d.
+const caps = $('caps'), CAPS = [], L = 150, CENTER = 'width:1920px;text-align:center';
+const PILL = 'left:50%;margin-left:-560px;width:1120px;text-align:center;background:rgba(255,255,255,.92);border-radius:999px;padding:22px 0 26px;box-shadow:0 20px 50px -20px rgba(43,36,32,.35)';
+function cap(html, x, y, size, a, b, c, d, opts) { const e = mk('div', 'cap', html, caps, `left:${x}px;top:${y}px;font-size:${size}px;` + ((opts && opts.style) || '')); e._t = [a, b, c, d]; e._dy = (opts && opts.dy) || 30; CAPS.push(e); return e; }
+function captions(t) { for (const e of CAPS) { const [a, b, c, d] = e._t; e.style.opacity = fade(t, a, b, c, d); e.style.transform = `translateY(${(1 - eout(seg(t, a, b))) * e._dy}px)`; } }
+// --- textes du film (à remplacer par ceux du storyboard ; mots de la landing pour la promesse) ---
+cap('The goal.', L, 380, 96, .3, .7, 2.5, 2.8);
+cap('Where do you<br><span class="mk">even start?</span>', L, 500, 72, 1.1, 1.5, 2.5, 2.8, { style: 'color:var(--soft)' });
+cap('Your work lives in <span class="mk">five different tools.</span>', 0, 880, 60, 3.3, 3.7, 8.0, 8.25, { style: PILL });
+cap('Still <span class="acc">no plan.</span>', 0, 430, 150, 8.3, 8.7, 10.0, 10.4, { style: CENTER });
+cap('Not another <s style="text-decoration-thickness:8px;text-decoration-color:var(--accent)">all-in-one app.</s>', 0, 640, 70, 13.6, 14.0, 15.8, 16.2, { style: CENTER });
+cap('The <span class="mk">promise of the landing.</span>', 0, 610, 84, 16.1, 16.5, 18.0, 18.4, { style: CENTER });
+cap('<span class="step">01</span><br>First feature,<br><span class="mk">its benefit.</span>', L, 330, 96, 18.8, 19.3, 24.7, 25.1);
+cap('Slogan of the landing.', 0, 570, 84, 96.4, 96.9, 999, 999, { style: CENTER });
+
+// ================= bulles =================
+const stks = $('stks'), STK = [];
+function sticker(html, cls, x, y, rot, a, d) { const e = mk('div', 'stk ' + cls, html, stks, `left:${x}px;top:${y}px`); e._s = { rot, a, d }; STK.push(e); return e; }
+function stickers(t) { for (const e of STK) { const s = e._s, k = seg(t, s.a, s.a + .45); e.style.opacity = fade(t, s.a, s.a + .2, s.d, s.d + .3); e.style.transform = `rotate(${s.rot}deg) scale(${lerp(.5, 1, eback(k))})`; } }
+
+// ================= récapitulatif : trois téléphones =================
+// [capture, titre de la vue, bénéfice, fonctions] ; groupe de G0 à G1, puis gros plan sur chacun (titre gardé, bénéfice et bulles en plus).
+const MINIS = [['01-accueil', 'View one', 'Its benefit', ['Feature A', 'Feature B', 'Feature C']],
+               ['02-saisie', 'View two', 'Its benefit', ['Feature A', 'Feature B', 'Feature C']],
+               ['03-resultat', 'View three', 'Its benefit', ['Feature A', 'Feature B', 'Feature C']]];
+const G0 = 79.6, G1 = 95.6, ZOOM = [[80.6, 84.0], [84.8, 88.2], [89.0, 92.4]].map(([a, b], i) => ({ a, b, side: i === 1 ? 'left' : 'right' }));
+const zk = (t, z) => eio(seg(t, z.a, z.a + .7)) * (1 - eio(seg(t, z.b, z.b + .7)));
+const minis = MINIS.map(([k, view, benefit, feats], i) => {
+  const m = mk('div', 'mini', `<img src="${CAP + k}.png">`, $('minis')), z = ZOOM[i], colX = z.side === 'right' ? 960 : 120;
+  m._ttl = mk('div', 'ttl', `<span class="ttl-v">${view}</span><span class="ttl-b">${benefit}</span>`, $('minis'));
+  feats.forEach((f, j) => sticker(f, 'f', colX, 400 + j * 125, 0, z.a + .7 + j * .38, z.b - .1));
+  m._zx = z.side === 'right' ? 330 : 1110; m._colX = colX; return m;
+});
+function trio(t) {
+  const groupIn = eout(seg(t, G0, G0 + .8)), out = seg(t, G1, G1 + .4), GY = 300;
+  minis.forEach((m, i) => {
+    const gx = 960 - 150 + (i - 1) * 420, k = zk(t, ZOOM[i]), others = Math.max(...ZOOM.map((o, j) => j !== i ? zk(t, o) : 0));
+    const s = lerp(1, 1.55, k), x = lerp(gx, m._zx, k), y = lerp(GY + (1 - groupIn) * 700, (1080 - 649 * 1.55) / 2, k);
+    const o = C(groupIn) * (1 - others) * (1 - out) * (t >= G0 ? 1 : 0);
+    m.style.transform = `translate(${x}px,${y}px) scale(${s})`; m.style.opacity = o;
+    const T = m._ttl, V = T.firstChild, ts = lerp(.72, 1, k), vw = V.offsetWidth;
+    T.style.transform = `translate(${lerp(gx + 150 - vw * ts / 2, m._colX, k)}px,${lerp(GY - 66 + (1 - groupIn) * 700, 180, k)}px) scale(${ts})`; T.style.opacity = o;
+    T.lastChild.style.opacity = C((k - .5) * 2);          // le bénéfice n'apparaît qu'en gros plan
+  });
+}
+
+// ================= ACTES (scènes sur mesure, voir references/scenes.md) =================
+function hook(t) {                                       // accroche : la vraie photo entre et respire
+  const h = $('hook'), k = eout(seg(t, .1, .8));
+  h.style.left = (1250 - 380) + 'px'; h.style.top = (540 - 225) + 'px';
+  h.style.transform = `scale(${lerp(.9, 1, k) * (1 + seg(t, .8, 2.8) * .05)}) rotate(${lerp(-3, 0, k)}deg)`;
+  h.style.opacity = fade(t, .1, .5, 2.55, 2.85);
+  $('flash').style.opacity = fade(t, 2.72, 2.82, 2.82, 3.05) * .9;
+}
+const CH = [];                                           // problème : cartes des outils actuels, puis effondrement
+function chaosEl(el, x, y, r, at, from) { el._c = { x, y, r, at, from }; CH.push(el); return el; }
+chaosEl(mk('div', 'card', '<div class="bar" style="background:#1F7A4A">plan_FINAL_v7.xlsx</div><ul><li>#REF!</li><li>TODO ??</li><li>ask Mike</li></ul>', $('chaos'), 'width:420px'), 150, 140, -6, 2.9, [-500, -200]);
+chaosEl(mk('div', 'card', '<div class="bar" style="background:#2F6FEB">Inbox · 214 unread</div><ul><li>Re: Fwd: Fwd: …</li><li>Reminder …</li><li>Weekend?</li></ul>', $('chaos'), 'width:420px'), 1360, 110, 5, 3.4, [2300, -200]);
+function chaosRender(t) {
+  const collapse = eio(seg(t, 9.6, 10.6));
+  for (const el of CH) { const c = el._c, k = eout(seg(t, c.at, c.at + .7)), w = el.offsetWidth, h = el.offsetHeight;
+    let x = lerp(c.from[0], c.x, k) + Math.sin(t * 1.7 + c.x) * 6, y = lerp(c.from[1], c.y, k) + Math.cos(t * 1.3 + c.y) * 6, s = 1, r = c.r + Math.sin(t + c.x) * 1.2;
+    if (collapse > 0) { x = lerp(x, 960 - w / 2, collapse); y = lerp(y, 420 - h / 2, collapse); s = lerp(1, .02, collapse); r += collapse * 160; }
+    el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`;
+    el.style.opacity = t < 2.8 ? 0 : C(seg(t, c.at, c.at + .3) * (1 - seg(t, 10.3, 10.6))); }
+}
+function logoRender(t) {                                 // révélation (10,6 s) puis fin (95,9 s) : remplacer par l'animation propre à la marque
+  const end = t > 95.8, w = end ? 640 : 760, lg = $('logo');
+  lg.style.width = w + 'px'; lg.style.left = (960 - w / 2) + 'px'; lg.style.top = (end ? 300 : 400) + 'px';
+  const show = end ? seg(t, 96.0, 96.4) : fade(t, 10.6, 11.0, 13.3, 13.6), k = eback(end ? seg(t, 96.0, 96.7) : seg(t, 10.6, 11.4));
+  lg.style.opacity = show; lg.style.transform = `scale(${lerp(.7, 1, k)})`;
+}
+function demo(t) {                                       // gestes sur l'écran : touchers, anneaux, points qui s'envolent
+  ripple(ripples[0], t, 24.0, 359, 756);
+  ringOn(t, BOX.exemple, 30, 33);
+}
+function endRender(t) {
+  const u = $('endurl'); u.style.top = '730px'; u.style.left = (960 - u.offsetWidth / 2) + 'px';
+  u.style.opacity = seg(t, 97.2, 97.6); u.style.transform = `scale(${lerp(.85, 1, eback(seg(t, 97.2, 97.8)))})`;
+  const lt = $('later'); lt.style.left = (960 - lt.offsetWidth / 2) + 'px'; lt.style.top = '480px'; lt.style.opacity = 0;   // « 3 weeks later » : régler fade(...)
+}
+function bg(t) {
+  [['b1', -200, -260, 80, 60], ['b2', 1250, -200, -60, 70], ['b3', -150, 560, 70, -50], ['b4', 1350, 600, -80, -60]].forEach(([id, x, y, dx, dy], i) => {
+    $(id).style.transform = `translate(${x + Math.sin(t * .25 + i) * dx}px,${y + Math.cos(t * .2 + i) * dy}px)`; });
+}
+
+// ================= rendu =================
+window.render = function (t) { bg(t); hook(t); chaosRender(t); logoRender(t); screens(t); camera(t); demo(t); trio(t); captions(t); stickers(t); endRender(t); };
+window.ready = fetch(CAP + 'boites.json').then(r => r.json()).then(j => { BOX = j.boxes || {}; }).catch(() => {})
+  .then(() => document.fonts.ready)
+  .then(() => Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
+const q = new URLSearchParams(location.search);
+window.ready.then(() => {
+  if (q.has('play')) { const t0 = performance.now(); const f = () => { render(((performance.now() - t0) / 1000) % DUREE); requestAnimationFrame(f); }; f(); }
+  else render(parseFloat(q.get('t') || '0'));
+});
+</script></body></html>
