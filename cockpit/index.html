@@ -294,7 +294,8 @@
     var nDone = stepsOf(p.id).filter(function(s){ return s.status === 'done'; }).length + delivOf(p.id).length;
     var nIdeas = D.ideas.filter(function(i){ return i.project_id === p.id; }).length;
 
-    var h = '<div class="phead"><h2>' + esc(p.name) + '</h2>' + (p.repo ? '<span class="repo">' + esc(p.repo) + '</span>' : '') + '</div>';
+    var h = '<div class="phead"><h2>' + esc(p.name) + '</h2>' + (p.repo ? '<span class="repo">' + esc(p.repo) + '</span>' : '') +
+      (p.live_url ? '<a class="go" href="' + esc(p.live_url) + '" target="_blank" rel="noopener">Ouvrir le site ↗</a>' : '') + '</div>';
     h += '<div class="vtabs" role="tablist">' + vtab('plan', 'Objectifs', null, view) + vtab('fait', 'Fait & livrables', nDone, view) + vtab('idees', 'Mes idées', nIdeas, view) + '</div>';
     if (view === 'fait') h += historyHtml(p);
     else if (view === 'idees') h += ideasHtml(p, true);

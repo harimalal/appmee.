@@ -9,7 +9,7 @@
 // PUT    /api/goals/{projet}/{horizon}   { objective }           crée ou remplace l'objectif
 
 const TABLES = {
-  projects: ['name', 'icon', 'color', 'description', 'repo', 'position', 'hidden'],
+  projects: ['name', 'icon', 'color', 'description', 'repo', 'live_url', 'position', 'hidden'],
   axes: ['label', 'project_id', 'position'],
   steps: ['project_id', 'horizon', 'axis', 'title', 'detail', 'status', 'position', 'ref', 'source'],
   deliverables: ['project_id', 'kind', 'title', 'url', 'note', 'created_at'],

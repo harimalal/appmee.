@@ -2,8 +2,8 @@
 
 CREATE TABLE IF NOT EXISTS projects (
   id TEXT PRIMARY KEY, name TEXT NOT NULL, icon TEXT DEFAULT '', color TEXT DEFAULT '#33587A',
-  description TEXT DEFAULT '', repo TEXT DEFAULT '', position REAL DEFAULT 0, hidden INTEGER DEFAULT 0,
-  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+  description TEXT DEFAULT '', repo TEXT DEFAULT '', live_url TEXT DEFAULT '', position REAL DEFAULT 0,
+  hidden INTEGER DEFAULT 0, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
 );
 
 -- Axes de travail (produit, marketing, vente, stratégie… et tout nouvel axe). project_id NULL = axe commun.
