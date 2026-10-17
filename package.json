@@ -1,0 +1,17 @@
+{
+  "name": "appmee",
+  "private": true,
+  "type": "module",
+  "description": "AppMétier Platform + Master IA (Cloudflare Pages + Functions + D1)",
+  "scripts": {
+    "master-ia:dev": "wrangler pages dev . --d1=MASTER_IA_DB --compatibility-date=2026-01-01",
+    "master-ia:migrate": "wrangler d1 execute master-ia --file=master-ia/schema.sql",
+    "master-ia:test": "node --test master-ia/tests/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
