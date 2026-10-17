@@ -1,0 +1,11 @@
+# Projet Cloudflare Pages dédié « master-ia » (déploiement direct : npm run deploy).
+# Les secrets (MASTER_IA_TOKEN, ANTHROPIC_API_KEY, YOUTUBE_API_KEY) ne vont pas ici :
+#   npx wrangler pages secret put NOM --project-name=master-ia
+name = "master-ia"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "MASTER_IA_DB"
+database_name = "master-ia-db"
+database_id = "152d19f8-91e8-4994-b919-d461f266e4ae"

@@ -1,0 +1,7 @@
+# Copier en .dev.vars pour le développement local (npm run dev). Ne jamais committer .dev.vars.
+MASTER_IA_TOKEN=choisis-un-long-secret
+ANTHROPIC_API_KEY=sk-ant-...
+# Optionnel : durée, vues et description complète des vidéos YouTube (YouTube Data API v3)
+# YOUTUBE_API_KEY=
+# Optionnel : autre modèle (par défaut claude-opus-5-5) ou niveau d'effort (low|medium|high)
+# ANTHROPIC_MODEL=claude-sonnet-5-5

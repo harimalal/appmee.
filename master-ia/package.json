@@ -1,0 +1,16 @@
+{
+  "name": "master-ia",
+  "private": true,
+  "type": "module",
+  "description": "Master IA — bibliothèque de ressources IA (Cloudflare Pages + Functions + D1)",
+  "scripts": {
+    "dev": "npx wrangler pages dev . --compatibility-date=2026-01-01",
+    "migrate:local": "npx wrangler d1 execute master-ia-db --local --file=schema.sql",
+    "migrate:remote": "npx wrangler d1 execute master-ia-db --remote --file=schema.sql",
+    "deploy": "npx wrangler pages deploy . --project-name=master-ia",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0"
+  }
+}

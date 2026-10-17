@@ -1,5 +1,7 @@
 # AppMétier Platform — Guide de déploiement Cloudflare Pages
 
+> **Master IA** (bibliothèque de ressources d'apprentissage IA avec notes /10) : voir [`master-ia/README.md`](master-ia/README.md) (projet Cloudflare Pages dédié, déployé séparément).
+
 ## Structure des fichiers
 
 ```
