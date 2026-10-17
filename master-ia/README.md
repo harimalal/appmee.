@@ -2,7 +2,7 @@
 
 Tu colles un lien (ou tu demandes à Claude d'en chercher) ; la plateforme crée la fiche : **titre, catégorie, tags, description et note de pertinence /10** par rapport à ton profil d'apprentissage.
 
-Accessible sur `/master-ia/` une fois déployé avec le reste d'AppMétier (Cloudflare Pages).
+Projet Cloudflare Pages dédié : https://master-ia-qd7.pages.dev
 
 ## Ce que ça fait
 
@@ -21,25 +21,33 @@ Claude reçoit les métadonnées de la page + ton profil, et note selon une gril
 
 ## Mise en route
 
-Prérequis : compte Cloudflare, clé API Anthropic.
+Master IA est un projet Cloudflare Pages **autonome** (dossier `master-ia/` : interface, `functions/`, `package.json`, `wrangler.toml`), indépendant du reste d'AppMétier.
+
+Déjà en place sur le compte Cloudflare : projet Pages `master-ia` (https://master-ia-qd7.pages.dev), base D1 `master-ia-db` avec le schéma appliqué, secret `MASTER_IA_TOKEN`.
+
+**Reste à faire une fois : la clé Anthropic** (sans elle, ajout et recherche répondent « ANTHROPIC_API_KEY manquante ») :
 
 ```bash
-npm install
-npx wrangler d1 create master-ia                 # note le database_id retourné
-cp master-ia/wrangler.example.toml wrangler.toml # colle le database_id
-cp .dev.vars.example .dev.vars                   # renseigne MASTER_IA_TOKEN et ANTHROPIC_API_KEY
-npx wrangler d1 execute master-ia --local --file=master-ia/schema.sql
-npm run master-ia:dev                            # http://localhost:8788/master-ia/
+cd master-ia
+npx wrangler pages secret put ANTHROPIC_API_KEY --project-name=master-ia
+# optionnel : npx wrangler pages secret put YOUTUBE_API_KEY --project-name=master-ia
 ```
 
-Production (Cloudflare Pages) :
+(ou Cloudflare → Workers & Pages → master-ia → Settings → Variables and Secrets). Les secrets s'appliquent au déploiement suivant : relance `npm run deploy`.
 
-1. `npx wrangler d1 execute master-ia --remote --file=master-ia/schema.sql`
-2. Pages → Settings → **Bindings** : D1 database, variable `MASTER_IA_DB` → la base `master-ia`.
-3. Pages → Settings → **Variables and Secrets** (type Secret) : `MASTER_IA_TOKEN`, `ANTHROPIC_API_KEY`, et en option `YOUTUBE_API_KEY`.
-4. Déploie via Git (Cloudflare installe `@anthropic-ai/sdk` d'après `package.json` et compile `functions/`) ou avec `wrangler pages deploy`. Le glisser-déposer du dossier ne compile pas les dépendances.
+Redéployer après une modification : `cd master-ia && npm install && npm run deploy` (nécessite `CLOUDFLARE_API_TOKEN` et `CLOUDFLARE_ACCOUNT_ID`).
 
-`MASTER_IA_TOKEN` protège toute l'API (`/api/master-ia/*`) ; l'interface le demande une fois et le garde dans le navigateur. Sans jeton configuré, l'API refuse tout. C'est un outil mono-utilisateur : pas de comptes.
+Développement local :
+
+```bash
+cd master-ia && npm install
+cp .dev.vars.example .dev.vars          # MASTER_IA_TOKEN, ANTHROPIC_API_KEY
+npm run migrate:local && npm run dev    # http://localhost:8788/
+```
+
+Créer l'environnement sur un autre compte : `npx wrangler d1 create master-ia-db`, reporter le `database_id` dans `wrangler.toml`, `npm run migrate:remote`, `npx wrangler pages project create master-ia`, les secrets, puis `npm run deploy`.
+
+`MASTER_IA_TOKEN` protège toute l'API (`/api/master-ia/*`) ; l'interface le demande une fois et le garde dans le navigateur. Sans jeton configuré, l'API refuse tout. Outil mono-utilisateur : pas de comptes.
 
 ## Réglages (variables d'environnement)
 
@@ -54,7 +62,7 @@ Coût : un appel Claude par lien ajouté, et un appel avec recherche web par rec
 ## Architecture
 
 ```
-master-ia/                 interface (HTML/CSS/JS sans dépendance) + schema.sql (D1)
+index.html, css/, js/      interface (HTML/CSS/JS sans dépendance) · schema.sql (D1)
 functions/api/master-ia/   API (Cloudflare Pages Functions)
   resources/               GET liste+filtres · POST ajout · [id] PATCH/DELETE · [id]/rescore
   discover.js              recherche Claude + web_search
@@ -88,7 +96,7 @@ D'où `web_search` / `web_fetch` plutôt qu'un scraping fragile et contraire aux
 ## Tests
 
 ```bash
-npm run master-ia:test
+cd master-ia && npm test
 ```
 
 Couvre la normalisation d'URL, l'anti-SSRF, l'analyse HTML/JSON-LD, l'extraction JSON et la validation des fiches. Les appels réels à Claude et aux plateformes ne sont pas couverts par des tests automatiques.

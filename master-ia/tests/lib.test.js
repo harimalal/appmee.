@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { canonicalize, detectSource, parseHtmlMeta, parseUrl, isoDurationToMinutes } from '../../functions/_lib/master-ia/sources.js';
-import { extractJson, normalize } from '../../functions/_lib/master-ia/claude.js';
+import { canonicalize, detectSource, parseHtmlMeta, parseUrl, isoDurationToMinutes } from '../functions/_lib/master-ia/sources.js';
+import { extractJson, normalize } from '../functions/_lib/master-ia/claude.js';
 
 test('canonicalize : YouTube toutes formes -> même clé', () => {
   const want = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';

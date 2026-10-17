@@ -1,4 +1,4 @@
-# Copier en .dev.vars pour le développement local (npm run master-ia:dev). Ne jamais committer .dev.vars.
+# Copier en .dev.vars pour le développement local (npm run dev). Ne jamais committer .dev.vars.
 MASTER_IA_TOKEN=choisis-un-long-secret
 ANTHROPIC_API_KEY=sk-ant-...
 # Optionnel : durée, vues et description complète des vidéos YouTube (YouTube Data API v3)
