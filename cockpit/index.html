@@ -51,21 +51,29 @@
   a{color:inherit;}
   :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px;}
   .mono{font-family:'IBM Plex Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums;}
-  .page{max-width:880px; margin:0 auto; padding:28px 16px 90px;}
+  .shell{max-width:1180px; margin:0 auto; padding:0 16px;}
+  .app{display:flex; align-items:flex-start; gap:28px;}
+  .page{flex:1; min-width:0; max-width:760px; padding:28px 0 90px;}
 
   .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px;}
   h1{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.7rem; line-height:1.1; margin:0 0 18px;}
 
-  /* onglets projets */
-  .ptabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;}
+  /* bandeau projets, à gauche sur grand écran */
+  .ptabs{display:flex; flex-direction:column; gap:8px; flex:0 0 208px; padding:28px 0; position:sticky; top:0; max-height:100vh; overflow-y:auto;}
   .ptab{
-    display:flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); border-radius:12px;
-    padding:9px 14px; cursor:pointer; font-weight:600; font-size:.92rem; box-shadow:var(--shadow-sm);
+    display:flex; align-items:center; gap:8px; width:100%; border:1px solid var(--line); background:var(--surface); border-radius:12px;
+    padding:9px 14px; cursor:grab; font-weight:600; font-size:.92rem; box-shadow:var(--shadow-sm);
   }
   .ptab:hover{border-color:var(--ink-faint);}
+  .ptab.dragging{opacity:.4;}
   .ptab[aria-selected="true"]{border-color:var(--pc); box-shadow:0 0 0 1px var(--pc), var(--shadow-sm);}
   .ptab .dot{width:9px; height:9px; border-radius:50%; background:var(--pc); flex:none;}
-  .ptab .n{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--ink-faint); font-weight:500;}
+  .ptab .n{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--ink-faint); font-weight:500; margin-left:auto;}
+  @media (max-width:760px){
+    .app{flex-direction:column; gap:0;}
+    .ptabs{flex-direction:row; flex-wrap:wrap; flex:none; width:100%; position:static; max-height:none; padding:16px 0 0;}
+    .ptab{width:auto;}
+  }
 
   .phead{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
   .phead h2{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.35rem; margin:0;}
@@ -192,16 +200,33 @@
   .add-sub{margin-top:2px;}
   .add-sub input{width:100%; border:1px dashed var(--line); background:transparent; border-radius:8px; padding:6px 9px; font:inherit; font-size:.84rem; color:var(--ink-soft);}
   .add-sub input:focus{border-style:solid; border-color:var(--accent); color:var(--ink);}
+
+  /* édition d'un objectif */
+  .goal-edit{margin:4px 6px 10px;}
+  .goal-edit textarea{
+    width:100%; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:9px;
+    padding:9px 11px; font:inherit; font-size:.95rem; min-height:64px; resize:vertical;
+  }
+  .goal-edit .acts{margin-top:8px;}
+  .goal-row{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin:0 6px 10px;}
+  .goal-row .objective{margin:0; flex:1; min-width:0;}
+
+  /* panneau d'aperçu de lien (artefacts, livrables) */
+  .link-kinds{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .link-note{font-size:.85rem; color:var(--ink-soft); line-height:1.5; margin:0;}
+  .btn-link{display:block; text-align:center; text-decoration:none; padding:10px 16px; margin-top:4px;}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="topline"><div class="eyebrow">Cockpit personnel</div><button class="linkbtn" id="logout">Se déconnecter</button></div>
-  <h1>Cockpit Projets</h1>
+<div class="shell"><div class="app">
   <nav class="ptabs" id="ptabs" role="tablist" aria-label="Projets"></nav>
-  <main id="root"><div class="empty">Chargement…</div></main>
-  <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
-</div>
+  <div class="page">
+    <div class="topline"><div class="eyebrow">Cockpit personnel</div><button class="linkbtn" id="logout">Se déconnecter</button></div>
+    <h1>Cockpit Projets</h1>
+    <main id="root"><div class="empty">Chargement…</div></main>
+    <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
+  </div>
+</div></div>
 <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
 <aside id="drawer" class="drawer" hidden aria-label="Plan de l'étape"></aside>
 <script>
@@ -220,7 +245,7 @@
   var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
   var token = read(TOKEN_KEY) || '';
   var D = null, lastSig = '';
-  var ui = { project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{} };
+  var ui = { project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
   try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; } catch(e){}
 
   function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
@@ -274,6 +299,7 @@
   function axesFor(pid){ return D.axes.filter(function(a){ return !a.project_id || a.project_id === pid; }); }
   function axisLabel(id){ var a = D.axes.find(function(x){ return x.id === id; }); return a ? a.label : (id || ''); }
   function subsOf(stepId){ return (D.substeps || []).filter(function(x){ return x.step_id === stepId; }); }
+  function kindLabel(k){ return k === 'article' ? 'Article' : k === 'doc' ? 'Doc' : 'Artefact'; }
 
   // ------------------------------------------------------------ rendu
   function render(){
@@ -284,7 +310,7 @@
 
     ptabs.innerHTML = ps.map(function(p){
       var n = stepsOf(p.id).filter(function(s){ return s.status === 'todo' || s.status === 'doing'; }).length;
-      return '<button class="ptab" role="tab" data-project="' + esc(p.id) + '" aria-selected="' + (p.id === ui.project) + '" style="--pc:' + esc(p.color || 'var(--accent)') + '">' +
+      return '<button class="ptab" role="tab" draggable="true" data-project="' + esc(p.id) + '" aria-selected="' + (p.id === ui.project) + '" style="--pc:' + esc(p.color || 'var(--accent)') + '">' +
         '<span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) + (n ? ' <span class="n">' + n + '</span>' : '') + '</button>';
     }).join('');
 
@@ -329,7 +355,7 @@
       var key = p.id + hz.id;
       var h = '<section class="horizon"><div class="h-label"><span>' + hz.label + '</span><span class="when">· ' + hz.when + '</span><span class="rule"></span>' +
         (doneN ? '<span>' + doneN + ' fait' + (doneN > 1 ? 's' : '') + '</span>' : '') + '</div>';
-      h += obj ? '<div class="objective">' + esc(obj) + '</div>' : '<div class="h-empty">Pas encore d\'objectif. Demande-le à Claude.</div>';
+      h += goalHtml(p, hz, obj, key);
       h += list.map(stepRow).join('');
       if (!list.length) h += '<div class="h-empty">Rien ici pour l\'instant.</div>';
       h += '<form class="add-step" data-add-project="' + esc(p.id) + '" data-add-horizon="' + hz.id + '">' +
@@ -342,6 +368,17 @@
     }).join('');
   }
 
+  function goalHtml(p, hz, obj, key){
+    if (ui.editGoal[key]){
+      return '<form class="goal-edit" data-goal-project="' + esc(p.id) + '" data-goal-horizon="' + hz.id + '" data-goal-key="' + esc(key) + '">' +
+        '<textarea id="goaledit-' + esc(key) + '" maxlength="600" placeholder="Objectif de ' + esc(hz.label.toLowerCase()) + '…">' + esc(obj || '') + '</textarea>' +
+        '<div class="acts"><button class="btn" type="submit">Enregistrer</button><button type="button" class="act" data-canceledit="' + esc(key) + '">Annuler</button></div></form>';
+    }
+    if (obj){
+      return '<div class="goal-row"><div class="objective">' + esc(obj) + '</div><button class="linkbtn" data-editgoal="' + esc(key) + '">Modifier</button></div>';
+    }
+    return '<div class="goal-row"><div class="h-empty">Pas encore d\'objectif.</div><button class="linkbtn" data-editgoal="' + esc(key) + '">+ Définir l\'objectif</button></div>';
+  }
   function stepRow(s){
     var id = esc(s.id), st = s.status, open = !!ui.open[s.id], link = url(s.ref);
     var h = '<div class="row ' + st + (open ? ' open' : '') + '"><div class="row-line">';
@@ -356,7 +393,7 @@
       var subs = subsOf(s.id), subDone = subs.filter(function(x){ return x.status === 'done'; }).length;
       h += '<button class="go plan" data-opendrawer="' + id + '">Plan' + (subs.length ? ' ' + subDone + '/' + subs.length : '') + ' ›</button>';
     }
-    if (link) h += '<a class="go" href="' + esc(link) + '" target="_blank" rel="noopener">Ouvrir ↗</a>';
+    if (link) h += '<a class="go openlink" href="' + esc(link) + '" target="_blank" rel="noopener" data-link-title="' + esc(s.title) + '" data-link-note="' + esc(s.detail || '') + '">Ouvrir ↗</a>';
     h += '</div>';
     if (open){
       h += '<div class="more">' + (s.detail ? '<p>' + esc(s.detail) + '</p>' : '') + '<div class="acts">';
@@ -389,10 +426,10 @@
       var m = monthKey(i.at);
       if (m !== cur){ h += '<div class="month">' + m + '</div>'; cur = m; }
       if (i.kind === 'step'){ h += stepRow(i.s); return; }
-      var a = i.a, link = url(a.url), kind = a.kind === 'article' ? 'Article' : a.kind === 'doc' ? 'Doc' : 'Artefact';
+      var a = i.a, link = url(a.url), kind = kindLabel(a.kind);
       var inner = '<span class="date">' + day(a.created_at) + '</span><span class="t" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem">' + esc(a.title) + '</span><span class="tag ' + (a.kind === 'article' ? 'article' : 'art') + '">' + kind + '</span>';
       h += link
-        ? '<div class="row"><a class="row-line" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(a.note || a.title) + '">' + inner + '<span class="go">Ouvrir ↗</span></a></div>'
+        ? '<div class="row"><a class="row-line openlink" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(a.note || a.title) + '" data-link-title="' + esc(a.title) + '" data-link-note="' + esc(a.note || '') + '" data-link-kind="' + esc(a.kind || '') + '" data-link-date="' + esc(day(a.created_at)) + '">' + inner + '<span class="go">Ouvrir ↗</span></a></div>'
         : '<div class="row"><div class="row-line">' + inner + '</div></div>';
     });
     return h + '</div>';
@@ -430,12 +467,16 @@
       .catch(function(e){ if (e.message !== '401') note('Ajout impossible : ' + e.message); });
   }
 
-  // ------------------------------------------------------------ plan pas-à-pas (panneau)
-  var drawerStep = null;
-  function openDrawer(stepId){ drawerStep = stepId; renderDrawer(); document.getElementById('drawerBackdrop').hidden = false; document.getElementById('drawer').hidden = false; }
-  function closeDrawer(){ drawerStep = null; document.getElementById('drawerBackdrop').hidden = true; document.getElementById('drawer').hidden = true; }
+  // ------------------------------------------------------------ panneau latéral (plan pas-à-pas, ou aperçu de lien)
+  var drawerState = null; // { kind:'step', id } ou { kind:'link', data }
+  function openDrawer(stepId){ drawerState = { kind:'step', id:stepId }; showDrawer(); }
+  function openLinkDrawer(data){ drawerState = { kind:'link', data:data }; showDrawer(); }
+  function showDrawer(){ renderDrawer(); document.getElementById('drawerBackdrop').hidden = false; document.getElementById('drawer').hidden = false; }
+  function closeDrawer(){ drawerState = null; document.getElementById('drawerBackdrop').hidden = true; document.getElementById('drawer').hidden = true; }
   function renderDrawer(){
-    var s = D.steps.find(function(x){ return x.id === drawerStep; });
+    if (!drawerState) return;
+    if (drawerState.kind === 'link'){ renderLinkDrawer(drawerState.data); return; }
+    var s = D.steps.find(function(x){ return x.id === drawerState.id; });
     var drawer = document.getElementById('drawer');
     if (!s){ closeDrawer(); return; }
     var subs = subsOf(s.id);
@@ -461,6 +502,16 @@
       if (!first || !first.trim()) return;
       addSubstep(s.id, name.trim(), first.trim());
     });
+  }
+  function renderLinkDrawer(data){
+    var drawer = document.getElementById('drawer');
+    var h = '<div class="drawer-head"><h3>' + esc(data.title || 'Lien') + '</h3><button class="icon-btn" id="drawerClose" aria-label="Fermer">✕</button></div>';
+    h += '<div class="link-kinds">' + (data.kind ? '<span class="tag art">' + esc(kindLabel(data.kind)) + '</span>' : '') + (data.date ? '<span class="mono" style="font-size:.78rem;color:var(--ink-faint)">' + esc(data.date) + '</span>' : '') + '</div>';
+    if (data.note) h += '<p class="link-note">' + esc(data.note) + '</p>';
+    h += '<p class="hint" style="margin:0">Cette page ne peut pas s\'afficher dans ce panneau : claude.ai, GitHub et les sites déployés bloquent l\'intégration en iframe (sécurité anti-clickjacking). Clic droit sur « Ouvrir ↗ » marche aussi pour l\'ouvrir dans un nouvel onglet.</p>';
+    h += '<a class="btn btn-link" href="' + esc(data.url) + '" target="_blank" rel="noopener">Ouvrir dans un nouvel onglet ↗</a>';
+    drawer.innerHTML = h;
+    document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   }
   function subRow(x){
     var id = esc(x.id);
@@ -493,6 +544,18 @@
   }
   var confirmTimer;
   document.addEventListener('click', function(e){
+    var link = e.target.closest('a.openlink');
+    if (link && D){
+      e.preventDefault();
+      openLinkDrawer({
+        url: link.getAttribute('href'),
+        title: link.dataset.linkTitle || '',
+        note: link.dataset.linkNote || '',
+        kind: link.dataset.linkKind || '',
+        date: link.dataset.linkDate || ''
+      });
+      return;
+    }
     var b = e.target.closest('button'); if (!b || !D) return;
     var d = b.dataset;
     if (d.project){ ui.project = d.project; save(); closeDrawer(); render(); return; }
@@ -504,6 +567,8 @@
     if (d.check){ var s = D.steps.find(function(x){ return x.id === d.check; }); if (s) setStatus(d.check, s.status === 'done' ? 'todo' : 'done'); return; }
     if (d.status){ setStatus(d.id, d.status); return; }
     if (d.opendrawer){ openDrawer(d.opendrawer); return; }
+    if (d.editgoal){ ui.editGoal[d.editgoal] = true; render(); var ta = document.getElementById('goaledit-' + d.editgoal); if (ta){ ta.focus(); var v = ta.value; ta.setSelectionRange(v.length, v.length); } return; }
+    if (d.canceledit){ ui.editGoal[d.canceledit] = false; render(); return; }
     if (d.subcheck){ toggleSub(d.subcheck); return; }
     if (d.subdel){ deleteSub(d.subdel); return; }
     if (d.askdel){ ui.confirm = d.askdel; render(); clearTimeout(confirmTimer); confirmTimer = setTimeout(function(){ ui.confirm = null; render(); }, 4000); return; }
@@ -533,10 +598,53 @@
       var i2 = f.querySelector('input'), title2 = i2.value.trim();
       if (!title2) return;
       addSubstep(f.dataset.subStep, f.dataset.subSection, title2); i2.value = '';
+    } else if (f.dataset.goalProject !== undefined){
+      e.preventDefault();
+      saveGoal(f.dataset.goalProject, f.dataset.goalHorizon, f.dataset.goalKey, f.querySelector('textarea').value.trim());
     }
   });
+  function saveGoal(pid, horizon, key, objective){
+    if (!objective) return;
+    var now = new Date().toISOString();
+    var g = D.goals.find(function(x){ return x.project_id === pid && x.horizon === horizon; });
+    if (g) g.objective = objective; else D.goals.push({ project_id: pid, horizon: horizon, objective: objective, updated_at: now });
+    ui.editGoal[key] = false; render();
+    send('PUT', 'goals/' + encodeURIComponent(pid) + '/' + encodeURIComponent(horizon), { objective: objective });
+  }
   document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawerStep) closeDrawer(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawerState) closeDrawer(); });
+
+  // ------------------------------------------------------------ réordonner les projets (glisser-déposer)
+  var dragProjectId = null;
+  ptabs.addEventListener('dragstart', function(e){
+    var b = e.target.closest('.ptab'); if (!b) return;
+    dragProjectId = b.dataset.project; b.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  ptabs.addEventListener('dragend', function(e){
+    var b = e.target.closest('.ptab'); if (b) b.classList.remove('dragging');
+    dragProjectId = null;
+  });
+  ptabs.addEventListener('dragover', function(e){ if (dragProjectId) e.preventDefault(); });
+  ptabs.addEventListener('drop', function(e){
+    e.preventDefault();
+    var b = e.target.closest('.ptab'); if (!b || !dragProjectId || !D) return;
+    var targetId = b.dataset.project;
+    if (targetId !== dragProjectId) reorderProjects(dragProjectId, targetId);
+    dragProjectId = null;
+  });
+  function reorderProjects(draggedId, targetId){
+    var ps = visibleProjects();
+    var from = ps.findIndex(function(p){ return p.id === draggedId; });
+    var to = ps.findIndex(function(p){ return p.id === targetId; });
+    if (from === -1 || to === -1) return;
+    var item = ps.splice(from, 1)[0];
+    ps.splice(to, 0, item);
+    ps.forEach(function(p, i){
+      if (p.position !== i){ p.position = i; send('PATCH', 'projects/' + encodeURIComponent(p.id), { position: i }); }
+    });
+    render();
+  }
   var sending = false;
   function sendIdea(pid){
     var text = (ui.draft[pid] || '').trim();
