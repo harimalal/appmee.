@@ -10,7 +10,7 @@ Version : 2026-10-28.
 Né le 28 octobre 2026 avec « Démo Veille YouTube » (20 slides, 94 étapes) : comment on a construit l'analyseur de vidéos YouTube avec Claude. Le modèle `assets/demo-modele.html` **est** cette démo, sans ses images. Elle tourne telle quelle et sert de point de départ à toute nouvelle démo.
 
 Trois idées :
-- **Le résultat d'abord.** On montre ce qu'on obtient (ou le blocage, ou la corvée) avant de montrer comment.
+- **Le problème d'abord.** On ouvre sur le problème vécu, puis le titre (la solution illustrée, floutée en fond), puis le bénéfice immédiat, avant de montrer comment.
 - **Le vrai.** Vraies captures du résultat, vraies images, vrais chiffres de la conversation. Interfaces reproduites au plus près ; logos laissés en repères.
 - **L'oral explique, l'écran montre.** Un titre, une structure par slide, une note d'oral par slide.
 
@@ -19,8 +19,8 @@ Trois idées :
 ## Déroulé
 
 1. **Rassemble la matière** sans rien demander d'abord : la conversation (ce qui a été construit, les étapes réelles, le prompt, les chiffres), le ou les artefacts du résultat (relis-les), les images disponibles (miniatures, captures). Ne pose ensuite que ce qui manque (chaîne, ton, durée visée), groupé, avec une option recommandée.
-2. **Écris le déroulé** en texte, une ligne par slide : titre, structure, effets, phrase d'oral. Suis l'arc de `references/narration.md` (résultat → blocage → piège → bénéfices → pour qui → à la main → autres solutions → pivot → outil → étapes → résultat détaillé → bilan → appel à l'action), adapté au sujet. Montre-le avant de coder si la vidéo est longue ou si le sujet est nouveau.
-3. **Copie le modèle** `assets/demo-modele.html` et réécris les slides : textes, données (`assets`), notes (`NOTES`), caméras. Vocabulaire des animations : `references/moteur.md`. Interfaces et règles sur les logos et les images : `references/interfaces.md`.
+2. **Écris le déroulé** en texte, une ligne par slide : titre, ce qu'on voit (structure et animation), phrase d'oral. Les trois premières slides sont fixes (accroche-problème, titre, bénéfice) ; le reste se compose pour ce sujet à partir des sections de `references/narration.md`, sans recopier le plan ni les animations du modèle. **Montre-le et fais-le valider avant de coder.**
+3. **Pars du modèle** `assets/demo-modele.html` pour le moteur, le style et le kit d'interfaces, puis écris tes propres slides : textes, données (`assets`), notes (`NOTES`), caméras, et les animations propres au sujet. Vocabulaire des animations : `references/moteur.md`. Interfaces et règles sur les logos et les images : `references/interfaces.md`.
 4. **Capture le vrai résultat** :
    ```
    NODE_PATH=$(npm root -g) node <skill>/scripts/capturer-page.cjs <page-du-résultat.html|url> capture.jpg --boites boites.json

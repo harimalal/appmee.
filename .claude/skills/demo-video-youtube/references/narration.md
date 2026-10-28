@@ -1,54 +1,47 @@
 # Narration : la démo qui mène à un résultat
 
-Ce n'est pas un « how to ». C'est une démonstration qui part d'un **résultat recherché** et montre comment on l'obtient, avec le contraste entre la façon fastidieuse et la façon Claude. L'oral porte l'explication : à l'écran, **un titre et une structure par slide**, le reste se voit.
+Ce n'est pas un « how to ». C'est une démonstration qui part d'un **problème vécu**, montre ce qu'on a construit pour le régler, puis comment. L'oral porte l'explication : à l'écran, **un titre et une structure par slide**, le reste se voit.
 
-## Ouverture : trois portes possibles
+**Chaque sujet a son récit.** Le modèle (`assets/demo-modele.html`) fournit le moteur, le kit d'interfaces et un exemple de ton. Il ne fournit pas un plan à remplir. Ne recopie ni ses 20 slides, ni leur ordre, ni leurs titres, ni leurs animations : choisis les sections, leur nombre et leur ordre pour ce sujet, et invente les animations et les encarts qui montrent *ce* sujet (une boucle pour un processus, des barres qui se remplissent pour un avancement, un mur de titres pour une dispersion…).
 
-Toujours commencer par l'une des trois, jamais par une présentation :
-1. **Le résultat** (effet « waouh ») : la vraie page finale, zoom sur le détail le plus fort (le point n°1, le chiffre clé), puis recul sur l'ensemble. Titre : ce que ça fait, en une ligne, et ce que ça évite (« 51 vidéos classées. Zéro copier-coller. »).
-2. **La façon fastidieuse** : l'interface à la main, la répétition, le temps qui passe.
-3. **Le blocage** : la question sans réponse (« Quelle vidéo faire ? »), l'écran plein de choix.
+## Les trois premières slides : toujours dans cet ordre
 
-Le résultat est l'ouverture la plus forte quand il existe vraiment : prends-la par défaut.
+1. **L'accroche : le problème, montré.** Une scène où l'on vit le problème, sans titre ni explication : une vraie interface qui déborde, une question tapée qui reste sans réponse, une corvée qui se répète. C'est le moment « c'est exactement moi ». La slide « Quelle vidéo faire ? » de la démo Veille est le bon modèle.
+2. **Le titre.** Le nom de la solution en très grand, avec derrière **la solution illustrée** : redessinée, simplifiée, pas forcément à l'identique, **floutée et très transparente** (opacité 10 à 20 %, flou 6 à 12 px). Un sous-titre d'une ligne.
+3. **Le bénéfice immédiat.** Ce que ça apporte, sans effort et sans coût en plus (pas d'outil à payer, pas de saisie, pas de technique), avec l'interface en fond légèrement floutée ou sous un dégradé. Trois promesses courtes, chacune vraie et vérifiable. Un appel à l'action léger peut y apparaître en bandeau (s'abonner, liker), plutôt qu'une slide entière.
 
-## L'arc type (20 slides, ≈ 8 à 12 min d'oral)
+## Ensuite : les sections, à choisir et à ordonner selon le sujet
 
-| # | Slide | Rôle | Effets typiques |
-|---|---|---|---|
-| 1 | Résultat | Accroche | Vraie capture, zoom sur le n°1 puis recul |
-| 2 | Appel à l'action | Abonne-toi, like, commente ton sujet | Pointeur qui clique, bouton qui bascule, commentaire tapé |
-| 3 | Blocage | La question de départ | Recherche tapée dans la vraie interface, résultats qui tombent, zoom |
-| 4 | Le piège | L'idée reçue qui trompe (vues brutes) | Deux cartes face à face, compteurs, verdict qui se renverse |
-| 5 | Pourquoi | Les bénéfices clés (la jungle) | Mur de vraies images en fond, 5 bénéfices un par un |
-| 6 | Pour qui | 3 profils | 3 cartes, une phrase chacune |
-| 7 | À la main | La méthode classique, **au moins 10 lignes** remplies | Saisie lente des 2 premières lignes avec zoom, puis rapide ; formule tapée ; temps estimé ; tampon « et toujours aucune analyse » |
-| 8 | Les autres solutions | Outils gratuits et payants **en liste**, chacun avec ses limites en rouge | Apparition ligne par ligne ; **pas de graphique** ; conclusion « Il manque : … » |
-| 9 | Pivot | « Et si on donnait la mission à Claude ? » | Titre en flou → net, la demande tapée |
-| 10 | L'outil | Claude Desktop + extension Claude in Chrome (ou Claude Code) | Deux fenêtres, liseré orange, flux animé, pointeur |
-| 11 | Étape 1 : le prompt | Écrit une fois, puis une ligne par sujet | Saisie dans la vraie interface, étiquettes « le filtre / l'indicateur / le livrable » |
-| 12 | Étape 2 : collecte | Ce que fait Claude | Onglet piloté, appels d'outils qui s'empilent, compteur |
-| 13 | Étape 3 : calcul | Les règles fixes, un exemple | **Zoom sur l'encart de calcul**, compteur jusqu'au chiffre |
-| 14 | Étape 4 : classement | L'ordre qui se renverse | Tri animé, **zoom sur le top 3**, gros plan final |
-| 15 | Pourquoi ça marche | Les vraies miniatures du top 5, l'élément repris de chacune, 3 mécanismes | Zoom sur une miniature |
-| 16 | Ce que l'outil donne | L'analyse dans la vraie page | Zooms dans la capture : un mécanisme, le pattern |
-| 17 | Rendu final | La vraie page défile | Caméra qui descend, étiquettes par zone |
-| 18 | Les encarts | Encart par encart, tel qu'il est dans l'artefact | Zoom sur chaque encart |
-| 19 | Avant / après | Le bilan | Deux colonnes qui se remplissent en miroir |
-| 20 | À toi + appel à l'action | Donne-lui un sujet ; abonne-toi, like, commente | Sujets qui se tapent en boucle, boutons, « le prompt est dans la description » |
+| Section | Ce qu'elle dit | Idées de mise en scène |
+|---|---|---|
+| À quoi ça sert | Les questions auxquelles ça répond, ou les tâches que ça fait | Question → réponse qui pointe la zone de l'interface |
+| Pourquoi le faire | Le coût de ne rien faire | Une boucle qui se répète, un compteur qui monte |
+| Pour qui | 2 à 3 profils concrets | Chaque profil avec *son* exemple (ses projets, ses clients) |
+| Les méthodes fastidieuses | Ce qu'on fait à la main, avec ses **plus et ses moins** | Interface remplie à la main (au moins 10 lignes), encart + / − |
+| Les méthodes à la mode | Ce qu'on conseille partout et qui ne règle pas le fond, avec **plus et moins** | Liste avec plus en vert et moins en rouge ; **pas de graphique** |
+| La solution | Le principe, en une image | Schéma animé du mécanisme (boucle, flux, avant → après) |
+| Ce que ça facilite | 3 à 5 points concrets | Une micro-animation par point dans l'interface |
+| Le détail de la solution | Structure, prompt, étapes réelles, vraie page encart par encart | Saisie dans la vraie interface, zooms dans la vraie capture |
+| Le bilan | Ce que ça a donné, en vrais chiffres | Compteurs, avant / après |
+| L'appel à l'action | S'abonner, liker, commenter avec une demande utile | Boutons, saisie en boucle, « le prompt est dans la description » |
 
-Adapter à un autre sujet : garde l'ordre **résultat → blocage → piège → bénéfices → pour qui → à la main → autres solutions → pivot → outil → étapes → résultat détaillé → bilan → appel à l'action**. Les étapes Claude (11 à 14) deviennent les vraies étapes du sujet (3 à 6), dans l'ordre où elles se sont passées dans la conversation.
+Longueur indicative : 12 à 18 slides. Une section peut tenir en deux slides si elle le mérite, ou disparaître si elle n'apporte rien au sujet.
 
 ## Règles d'écriture
 
-- **Un titre par slide**, court, en majuscules condensées, un seul mot en couleur d'accent. Un surtitre (« Étape 3 », « Le piège ») au-dessus.
-- **Une structure par slide** : deux cartes, une liste, une interface, un tableau. Pas de mélange.
+- **Un titre par slide**, court, en majuscules condensées, un seul mot en couleur d'accent. Un surtitre au-dessus.
+- **Une structure par slide** : deux cartes, une liste, une interface, un schéma. Pas de mélange.
 - **L'oral dit le reste** : chaque slide a sa note (touche N) de 1 à 3 phrases, écrite pour être dite.
-- **Vrais chiffres, vraies images** : ceux de la conversation et de l'artefact. Une estimation est écrite comme telle à l'écran (« ≈ 2 min × 51 vidéos (estimation) »).
+- **Vrais chiffres, vraies images** : ceux de la conversation et de l'artefact. Une estimation est écrite comme telle à l'écran.
+- **Ne pas inventer l'histoire** : si tu n'as pas la conversation d'origine, présente le prompt et les étapes comme la méthode à suivre, pas comme ce qui s'est dit.
 - **Pas de prix d'outils** : ils changent. Classe en gratuit, freemium, payant.
-- **Appels à l'action** : en slide 2 (tôt, sans attendre la fin) et en dernière slide. Le commentaire demandé est utile (« donne ton sujet »), pas un « like si tu aimes ».
-- **Bénéfices avant méthode** : on dit à quoi ça sert et pour qui avant de montrer comment.
+- **Appels à l'action** : tôt (bandeau ou slide, après le bénéfice) et à la fin. Le commentaire demandé est utile, pas un « like si tu aimes ».
 - Pendant un zoom, masque le titre (`data-hudoff`) pour ne pas recouvrir l'interface.
 
-## Le script
+## Le script, toujours d'abord
 
-Pour une démo longue, écris d'abord le **déroulé en texte** (une ligne par slide : titre, structure, effets, phrase d'oral) et fais-le valider. C'est là que se jouent les retours. Ensuite seulement, code.
+Écris le **déroulé en texte** avant tout code : une ligne par slide, avec le titre, ce qu'on voit (structure et animation) et la phrase d'oral. Fais-le valider : c'est là que se jouent les retours. Ensuite seulement, rends-le concret, en slides explicatives et animées.
+
+## Exemple : « Démo Veille YouTube » (20 slides)
+
+Résultat → appel à l'action → blocage (« Quelle vidéo faire ? ») → piège (les vues brutes mentent) → la jungle (5 bénéfices) → pour qui → à la main (12 lignes) → autres solutions → pivot → Claude Desktop + Chrome → prompt → collecte → calcul → classement → pourquoi ça marche → ce que l'outil donne → rendu final → encarts → avant / après → appel à l'action. C'est un récit parmi d'autres, propre à ce sujet-là.
