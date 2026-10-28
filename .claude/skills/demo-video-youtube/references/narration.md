@@ -8,7 +8,7 @@ Ce n'est pas un « how to ». C'est une démonstration qui part d'un **problème
 
 1. **L'accroche : le problème, montré.** Une scène où l'on vit le problème, sans titre ni explication : une vraie interface qui déborde, une question tapée qui reste sans réponse, une corvée qui se répète. C'est le moment « c'est exactement moi ». La slide « Quelle vidéo faire ? » de la démo Veille est le bon modèle.
 2. **Le titre.** Le nom de la solution en très grand, avec derrière **la solution illustrée** : redessinée, simplifiée, pas forcément à l'identique, **floutée et très transparente** (opacité 10 à 20 %, flou 6 à 12 px). Un sous-titre d'une ligne.
-3. **Le bénéfice immédiat.** Ce que ça apporte, sans effort et sans coût en plus (pas d'outil à payer, pas de saisie, pas de technique), avec l'interface en fond légèrement floutée ou sous un dégradé. Trois promesses courtes, chacune vraie et vérifiable. Un appel à l'action léger peut y apparaître en bandeau (s'abonner, liker), plutôt qu'une slide entière.
+3. **Le bénéfice immédiat.** Ce que ça apporte, sans effort et sans coût en plus (pas d'outil à payer, pas de saisie, pas de technique), avec l'interface en fond légèrement floutée ou sous un dégradé. Trois promesses courtes, chacune vraie et vérifiable. Pas d'appel à l'action ici.
 
 ## Ensuite : les sections, à choisir et à ordonner selon le sujet
 
@@ -35,7 +35,10 @@ Longueur indicative : 12 à 18 slides. Une section peut tenir en deux slides si 
 - **Vrais chiffres, vraies images** : ceux de la conversation et de l'artefact. Une estimation est écrite comme telle à l'écran.
 - **Ne pas inventer l'histoire** : si tu n'as pas la conversation d'origine, présente le prompt et les étapes comme la méthode à suivre, pas comme ce qui s'est dit.
 - **Pas de prix d'outils** : ils changent. Classe en gratuit, freemium, payant.
-- **Appels à l'action** : tôt (bandeau ou slide, après le bénéfice) et à la fin. Le commentaire demandé est utile, pas un « like si tu aimes ».
+- **Appels à l'action** : jamais en entrée. Le premier est un **petit bandeau en bas de l'écran** (avatar, S'abonner qui passe à Abonné, J'aime), sur la slide « Pour qui » ou juste après. Le second, complet, à la fin. Le commentaire demandé est utile, pas un « like si tu aimes ».
+- **La voix** : « je » quand le créateur raconte son expérience (ce qu'il a essayé, ce qu'il a construit), « tu » seulement pour s'adresser au spectateur (« si tu mènes plusieurs projets… »). Demande-le si ce n'est pas clair.
+- **Ce qu'il a vraiment essayé** : demande quels outils il a utilisés avant, et raconte cet essai à la première personne, avec ses vrais plus et ses vrais moins.
+- **Rien ne se perd** : quand une nouvelle version retire des slides, garde-les **en réserve** après la fin (une slide intercalaire « Slides en réserve », ids préfixés `r-`), pour le montage.
 - Pendant un zoom, masque le titre (`data-hudoff`) pour ne pas recouvrir l'interface.
 
 ## Le script, toujours d'abord
