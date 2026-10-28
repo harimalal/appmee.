@@ -53,6 +53,9 @@ def main():
     if not m:
         sys.exit('bloc <script id="assets"> introuvable')
     A = json.loads(m.group(2))
+    # données d'abord : une clé vide dans le JSON ne doit pas écraser une image passée en --img
+    for f in a.json:
+        A.update(json.load(open(f, encoding="utf-8")))
     for kv in a.img:
         k, f = kv.split("=", 1)
         page = k.startswith("page") or k == "apercu"
@@ -60,8 +63,6 @@ def main():
     if a.mur:
         fs = sorted(f for f in glob.glob(os.path.join(a.mur, "*")) if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")))
         A["wall"] = [uri(f, 240, 135) for f in fs]
-    for f in a.json:
-        A.update(json.load(open(f, encoding="utf-8")))
     if a.geo:
         A["geo"] = json.load(open(a.geo, encoding="utf-8"))
     blob = json.dumps(A, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
