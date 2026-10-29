@@ -5,7 +5,7 @@ description: Transforme un résultat construit avec Claude (veille YouTube, tabl
 
 # Démo vidéo YouTube
 
-Version : 2026-10-29 (v6, après la démo Carrousels IA).
+Version : 2026-10-29 (v7, après la démo Carrousels IA v2).
 
 Né le 28 octobre 2026 avec « Démo Veille YouTube » (20 slides, 94 étapes) : comment on a construit l'analyseur de vidéos YouTube avec Claude. Le modèle `assets/demo-modele.html` **est** cette démo, sans ses images. Elle tourne telle quelle et sert de point de départ à toute nouvelle démo.
 
@@ -43,6 +43,8 @@ Trois idées :
 - Si le sujet tourne autour d'une plateforme ou d'une notion peu connue : l'expliquer (c'est quoi, références, pourquoi c'est important, objectifs) avant la méthode.
 - **Une vidéo, un sujet.** Ce qui relève d'un autre chantier (monter le site, traduire l'app, décliner en posts) devient une slide teaser, avec un appel au commentaire précis (« écris SITE en commentaire si tu veux cette vidéo »), repris dans le bilan.
 - **Le temps, en gros** : à la main (durées du process × volume, écrit « estimation ») face au temps réel, sur le seul périmètre de la vidéo. Puis la croissance, tirée des vraies dates.
+- **Le visuel d'abord** : montrer beaucoup de vrais résultats (plusieurs exemples, bandes, murs, avant/après). Chercher l'artefact le plus riche du sujet dans le Cockpit et dans toutes les branches du dépôt.
+- **Un angle « pourquoi » chiffré** quand le sujet est un format ou une pratique : des études publiées, sourcées à l'écran, avec leurs nuances.
 - **Mesurer plutôt qu'estimer** : si l'outil se relance (un script de rendu, un build), relance-le dans une copie de travail, chronomètre-le et montre sa vraie sortie à l'écran.
 - Montrer **tout ce qui a été livré** : une slide inventaire numérotée, puis le détail.
 - Si le créateur a un produit : une courte pub de 3 ou 4 slides avec de vrais exemples, sur un fond distinct, après « Pour qui ».
@@ -63,7 +65,7 @@ Trois idées :
 - `Démo Cockpit Projets` : https://claude.ai/artifact/TE6Q2c1W7WgZq2yo4J3YkV. Récit adapté, au « je », base de données simulée pour la capture, interface redessinée, projecteurs : voir `references/exemple-cockpit.md`.
 - `Démo Lancement Product Hunt` : https://claude.ai/artifact/7b5nNfWtk62rr6b4FmxdaC. Planche de design puis thème pastel, contexte de la plateforme, inventaire de 30 livrables, pub du produit avec la landing qui défile : voir `references/exemple-product-hunt.md`.
 - `Démo Blog Factory` : https://claude.ai/artifact/TiVRxcMY6qtqaNoSsTz4iN. Même thème pastel, violet pâle en couleur secondaire ; pub = revue du site (fiches d'articles, diversité, angle, newsletter) ; le temps en gros et la croissance ; le site renvoyé à une autre vidéo par un appel au commentaire : voir `references/exemple-blog-factory.md`.
-- `Démo Carrousels IA` : https://claude.ai/artifact/5eHFmxcW2WrdrFKthYrRmN. La série pastel choisie sur planche ; ce que le créateur a essayé (GPT Image, Manus, SaaS) ; le rendu relancé et chronométré (18 s) ; une bande des 8 slides parcourue par la caméra : voir `references/exemple-carrousels.md`.
+- `Démo Carrousels IA` : https://claude.ai/artifact/5eHFmxcW2WrdrFKthYrRmN. v2 : pourquoi des carrousels (études sourcées), 6 carrousels IA et leurs 62 slides, le tâtonnement, les modèles, l'arbitrage et les coûts (4,94 €) : voir `references/exemple-carrousels.md`.
 
 ## Prompt type
 
