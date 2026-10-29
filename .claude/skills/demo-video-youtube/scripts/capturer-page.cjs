@@ -3,7 +3,7 @@
 //
 // Usage :
 //   NODE_PATH=$(npm root -g) node capturer-page.cjs <url-ou-fichier.html> <sortie.jpg> \
-//     [--largeur 1720] [--boites boites.json] [--clic "#bouton"] [--attente 1500]
+//     [--largeur 1720] [--boites boites.json] [--clic "#bouton"] [--attente 1500] [--defiler]
 // boites.json : {"chart":"#chart", "angle":".synth .angle", "v":[".vrow:nth-child(1)", ".vrow:nth-child(2)"]}
 // Écrit <sortie>.geo.json : chaque clé -> [x, y, largeur, hauteur] en pixels de la capture, et H (hauteur totale).
 // Ces coordonnées sont celles de l'image affichée à sa taille (classe .pageimg, 1720 px de large).
@@ -25,6 +25,12 @@ const boites = opt('--boites') ? JSON.parse(fs.readFileSync(opt('--boites'), 'ut
   await p.goto(url, { waitUntil: 'networkidle' });
   if (opt('--clic')) await p.click(opt('--clic'));
   await p.waitForTimeout(+opt('--attente', 1500));
+  // --defiler (à mettre en dernier) : parcourt la page pour déclencher les apparitions au défilement
+  if (args[args.length - 1] === '--defiler') {
+    const h = await p.evaluate(() => document.documentElement.scrollHeight);
+    for (let y = 0; y < h; y += 400) { await p.evaluate((y) => scrollTo(0, y), y); await p.waitForTimeout(120); }
+    await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(800);
+  }
   const geo = { H: await p.evaluate(() => document.documentElement.scrollHeight) };
   for (const [k, sel] of Object.entries(boites)) {
     const one = async (s) => {
