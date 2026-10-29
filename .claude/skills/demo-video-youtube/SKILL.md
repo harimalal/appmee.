@@ -5,7 +5,7 @@ description: Transforme un résultat construit avec Claude (veille YouTube, tabl
 
 # Démo vidéo YouTube
 
-Version : 2026-10-28 (v3, après la démo Cockpit Projets).
+Version : 2026-10-29 (v4, après la démo Lancement Product Hunt).
 
 Né le 28 octobre 2026 avec « Démo Veille YouTube » (20 slides, 94 étapes) : comment on a construit l'analyseur de vidéos YouTube avec Claude. Le modèle `assets/demo-modele.html` **est** cette démo, sans ses images. Elle tourne telle quelle et sert de point de départ à toute nouvelle démo.
 
@@ -21,7 +21,7 @@ Trois idées :
 1. **Rassemble la matière** sans rien demander d'abord : la conversation (ce qui a été construit, les étapes réelles, le prompt, les chiffres), le ou les artefacts du résultat (relis-les), les images disponibles (miniatures, captures). Ne pose ensuite que ce qui manque (chaîne, ton, durée visée), groupé, avec une option recommandée.
 2. **Écris le déroulé** en texte, une ligne par slide : titre, ce qu'on voit (structure et animation), phrase d'oral. Les trois premières slides sont fixes (accroche-problème, titre, bénéfice) ; le reste se compose pour ce sujet à partir des sections de `references/narration.md`, sans recopier le plan ni les animations du modèle. **Montre-le et fais-le valider avant de coder.**
 3. **Pars du modèle** `assets/demo-modele.html` pour le moteur, le style et le kit d'interfaces, puis écris tes propres slides : textes, données (`assets`), notes (`NOTES`), caméras, et les animations propres au sujet. Vocabulaire des animations : `references/moteur.md`. Interfaces et règles sur les logos et les images : `references/interfaces.md`.
-4. **Capture le vrai résultat** :
+4. **Fais la planche de design** (voir `references/narration.md`), publie-la, fais choisir. Puis **capture le vrai résultat** :
    ```
    NODE_PATH=$(npm root -g) node <skill>/scripts/capturer-page.cjs <page-du-résultat.html|url> capture.jpg --boites boites.json
    python3 -I <skill>/scripts/integrer-images.py demo.html --img page=capture.jpg --geo capture.geo.json \
@@ -39,6 +39,10 @@ Trois idées :
 ## Règles
 
 - Un récit propre à chaque sujet : pas de copie du plan, des titres ni des animations d'une démo précédente.
+- **Un style propre à chaque sujet** : après le déroulé, une planche de 2 ou 3 directions de design sur 4 slides, tirées de l'univers du sujet (couleurs du produit ou de la marque). Fais choisir avant de construire. Jamais le thème sombre du modèle par défaut.
+- Si le sujet tourne autour d'une plateforme ou d'une notion peu connue : l'expliquer (c'est quoi, références, pourquoi c'est important, objectifs) avant la méthode.
+- Montrer **tout ce qui a été livré** : une slide inventaire numérotée, puis le détail.
+- Si le créateur a un produit : une courte pub de 3 ou 4 slides avec de vrais exemples, sur un fond distinct, après « Pour qui ».
 - Ouverture : accroche sur le problème, titre avec la solution illustrée et floutée en fond, bénéfice immédiat.
 - Un titre et une structure par slide. Pas de graphique pour comparer des outils : une liste avec leurs plus en vert et leurs moins en rouge.
 - Appel à l'action jamais en entrée : petit bandeau en bas après « Pour qui », puis complet à la fin.
@@ -54,6 +58,7 @@ Trois idées :
 
 - `Démo Veille YouTube` : https://claude.ai/artifact/Pn2hNDHRa2NmW8LKDM9p62 (avec ses images). La recherche qu'elle met en scène vient du skill `veille-youtube`.
 - `Démo Cockpit Projets` : https://claude.ai/artifact/TE6Q2c1W7WgZq2yo4J3YkV. Récit adapté, au « je », base de données simulée pour la capture, interface redessinée, projecteurs : voir `references/exemple-cockpit.md`.
+- `Démo Lancement Product Hunt` : https://claude.ai/artifact/7b5nNfWtk62rr6b4FmxdaC. Planche de design puis thème pastel, contexte de la plateforme, inventaire de 30 livrables, pub du produit avec la landing qui défile : voir `references/exemple-product-hunt.md`.
 
 ## Prompt type
 
