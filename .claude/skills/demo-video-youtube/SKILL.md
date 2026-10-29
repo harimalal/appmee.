@@ -5,7 +5,7 @@ description: Transforme un résultat construit avec Claude (veille YouTube, tabl
 
 # Démo vidéo YouTube
 
-Version : 2026-10-29 (v7, après la démo Carrousels IA v2).
+Version : 2026-10-29 (v8, détecteur de chevauchements).
 
 Né le 28 octobre 2026 avec « Démo Veille YouTube » (20 slides, 94 étapes) : comment on a construit l'analyseur de vidéos YouTube avec Claude. Le modèle `assets/demo-modele.html` **est** cette démo, sans ses images. Elle tourne telle quelle et sert de point de départ à toute nouvelle démo.
 
@@ -30,6 +30,7 @@ Trois idées :
    Un artefact claude.ai : relis-le (`Artifact` read avec `path: "index.html"`), garde son HTML en local, capture ce fichier. S'il lit sa base de données (capacité db), il ne s'affiche pas hors de claude.ai : lis ses collections avec ArtifactData (`list` avec `out_dir`), puis `python3 -I <skill>/scripts/simuler-base.py page.html donnees/ capturable.html --etat "…"` avant de capturer.
    Une interface **redessinée** en HTML (plus lisible) peut compléter la capture, en particulier pour le fond flouté du titre et pour les projecteurs (voir `references/exemple-cockpit.md`).
 5. **Vérifie** chaque étape en headless (`window.__S`, `window.__go(i, étape)`) : zéro erreur console, captures de la première et de la dernière étape de chaque slide et de chaque zoom, regarde-les. Vérifie aussi le mobile.
+   Puis lance `NODE_PATH=$(npm root -g) node <skill>/scripts/chevauchements.cjs $PWD/demo.html` : il liste, étape par étape, les images, graphiques et cartes qui se chevauchent ou sortent du cadre. Corrige tout ce qui n'est pas voulu (une image empilée, une bande sous le titre, un libellé de graphique qui déborde) avant de publier.
 6. **Publie** en artefact (ou rends le fichier), et si demandé, **enregistre** :
    ```
    NODE_PATH=$(npm root -g) node <skill>/scripts/enregistrer.cjs demo.html demo.mp4 --temps temps.json
