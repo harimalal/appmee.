@@ -26,3 +26,20 @@ Les objectifs chiffrés (plancher, cible, ambition), le jour J heure par heure e
 - Titres : « J'ai préparé tout mon lancement avec 1 seule demande à Claude » / « Lancer son app sans budget : 30 livrables en 2 jours avec l'IA ».
 
 Résultats réels YouTube : à ajouter après publication.
+
+## Deuxième simulation, sur la v4 (protocole v2, 100 nouveaux spectateurs)
+v4 : 4 min 20, 21 slides, ouverture sur le résultat, demande montrée à 0:46, Product Hunt en une slide, pub et abonnement après la méthode, sous-titres, musique discrète. Panel tiré au sort (graine 20261030), 10 agents × 10 spectateurs, impression puis points de contrôle. Le protocole a changé : comparer avec prudence.
+
+| | 15 s | 30 s | 1:00 | 2:00 | fin |
+|---|---|---|---|---|---|
+| v3 (1re simulation) | 84 % | 70 % | 56 % | 42 % | 18 % |
+| v4 (2e simulation) | 96 % (94–99) | 84 % (79–89) | 70 % (66–74) | 49 % (46–52) | 17 % (13–21) |
+
+Durée moyenne 2:08, soit 49 % de la vidéo (38 % pour la v3). Clic spontané sur l'impression : 71 %. 39 likes, 32 commentaires, 18 abonnements, 26 clics sur la description. Notes /5 : valeur 2,6, originalité 2,9, voix 2,4, crédibilité 2,6. Analyste : 5,3/10 (4,7 pour la v3) ; meilleurs critères : musique et sous-titres, titre et miniature, pub placée après le contenu.
+
+Fuites restantes, citées par plusieurs panels :
+1. 0:15 « Mais d'abord… le terrain » repousse la demande promise ; l'inventaire d'ouverture est illisible sur mobile ; « 30 livrables, 0 € » répété.
+2. 0:46–1:15 : la demande, seule, paraît banale sans l'écran de Claude ; « trois agents en parallèle » perd les non-techniciens.
+3. 2:05 : « Il a fallu quatre versions » contredit le titre « 1 seule demande » (crédibilité).
+4. 3:30–4:00 : « pour qui », puis la pub Dropit prise pour la fin ; la fin empile 4 appels à l'action.
+Ce qui retient : le jour J heure par heure (Pacifique et Paris), les objectifs plancher/cible/ambition, les objections prêtes, l'ordre « étudier puis produire », les retours précis.

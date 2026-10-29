@@ -45,12 +45,13 @@ Né de la vidéo « lancement Product Hunt de Dropit » (octobre 2026) : la simu
 - Une voix de synthèse est repérée vite : compenser par la preuve à l'écran dès la première seconde ; proposer la voix de l'auteur quand c'est possible.
 
 ## 3. Le banc d'essai : 100 spectateurs simulés
-Protocole complet et consignes des agents : `references/simulation.md`.
-1. **Dossier** : `python3 -I <skill>/scripts/dossier.py script.txt slides.json minutage.json fiche.md dossier.md` — texte minuté slide par slide, écran, fiche technique (durée, voix, débit, musique, sous-titres, titre visé).
-2. **6 agents en parallèle** (outil Agent, en arrière-plan), sur ce seul dossier : 5 profils × 20 spectateurs (makers, curieux du sujet, tout-venant, experts sceptiques, débutants — à adapter au sujet) et 1 analyste YouTube qui ne voit pas les spectateurs. Chaque agent écrit un JSON dans `simu/`.
-3. **Agrégat** : `python3 -I <skill>/scripts/agreger.py simu/ <durée en s>` — rétention à 5 s, 15 s, 30 s, 1 min… fin, durée moyenne, engagement, résultats par profil, départs par tranche de 30 s.
-4. **Lecture** : les causes de départ citées par plusieurs profils au même moment sont à corriger en priorité ; ce qui retient ceux qui restent est à avancer dans la vidéo.
-5. **Corriger le script**, relancer la simulation (même protocole) et comparer les deux courbes.
+Protocole v2 (consigne commune des spectateurs : `references/protocole-spectateur.md` ; consigne de l'analyste et lecture : `references/simulation.md`).
+1. **Dossier** : `python3 -I <skill>/scripts/dossier.py script.txt slides.json minutage.json fiche.md simu/dossier.md` — texte minuté slide par slide, écran, fiche technique (durée, voix, débit, musique, sous-titres, **titre et miniature visés**). Le dossier ne dit jamais que c'est une version corrigée ni ce qu'une simulation précédente a trouvé (à l'aveugle).
+2. **Panel tiré au sort** : `python3 -I <skill>/scripts/panel.py simu/personas.json <graine>` — 5 profils × 2 panels × 10, attributs stratifiés (métier, âge, source, appareil, contexte, expertise, patience). Nouvelle graine = 100 nouveaux spectateurs ; même graine = même panel rejoué sur une autre version (comparaison plus juste).
+3. **11 agents en parallèle** (outil Agent, en arrière-plan) : un par panel (`« lis protocole.md puis dossier.md, suis le protocole pour la clé "A1" de personas.json, écris panel-A1.json »`), plus 1 analyste YouTube qui ne lit que le dossier et note 12 critères fixes. Deux agents par profil : leur écart mesure l'incertitude. Chaque spectateur passe l'**impression** (aurait-il cliqué ?) puis regarde par **points de contrôle** (0:15, 0:30, 1:00, chaque slide) en citant la phrase qui le fait partir.
+4. **Agrégat** : `python3 -I <skill>/scripts/agreger.py simu/ <durée> [--avant ancien/ <durée>]` — rétention en temps absolu et en % de la durée, avec intervalle à 90 % (tirage sur les panels), durée moyenne, clic, engagement, notes (dont crédibilité), profils, départs par 30 s, et comparaison à la simulation précédente.
+5. **Lecture** : les causes de départ citées par plusieurs panels au même moment sont à corriger en priorité ; ce qui retient ceux qui restent est à avancer. Un écart n'est réel que si les intervalles ne se chevauchent pas ; signaler tout changement de protocole entre deux simulations.
+6. **Corriger le script**, relancer (nouvelle graine pour un regard neuf, même graine pour mesurer l'effet d'une correction) et comparer.
 
 À dire à l'utilisateur, toujours : c'est une simulation par IA, pas des données YouTube ; elle sert à trouver les faiblesses avant de publier, pas à prédire des vues. Après publication, comparer avec la vraie courbe de YouTube Studio et noter les écarts dans `references/exemple-*.md`.
 
