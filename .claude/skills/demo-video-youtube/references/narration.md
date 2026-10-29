@@ -22,6 +22,9 @@ Ce n'est pas un « how to ». C'est une démonstration qui part d'un **problème
 | La solution | Le principe, en une image | Schéma animé du mécanisme (boucle, flux, avant → après) |
 | Ce que ça facilite | 3 à 5 points concrets | Une micro-animation par point dans l'interface |
 | Le détail de la solution | Structure, prompt, étapes réelles, vraie page encart par encart | Saisie dans la vraie interface, zooms dans la vraie capture |
+| Le temps, en gros | Combien de temps à la main (estimation) face au temps réel, sur le seul périmètre de la vidéo | Deux colonnes rouge / accent, gros chiffres, compteur |
+| La croissance | Comment le résultat a grandi | Courbe cumulée tirée des vraies dates, qui se dessine, un repère sur le décollage |
+| Le teaser | Un sujet voisin, gardé pour une autre vidéo | Une bulle de commentaire YouTube : « écris SITE en commentaire » |
 | Le bilan | Ce que ça a donné, en vrais chiffres | Compteurs, avant / après |
 | L'appel à l'action | S'abonner, liker, commenter avec une demande utile | Boutons, saisie en boucle, « le prompt est dans la description » |
 
@@ -46,6 +49,8 @@ Longueur indicative : 12 à 18 slides. Une section peut tenir en deux slides si 
 Ne reprends pas d'office le thème du modèle (bleu nuit et jaune) : il est jugé trop sombre et trop basique. Une fois le déroulé validé, fais une **planche de design** : 2 ou 3 directions claires, chacune avec une vraie signature (palette, typographie, surfaces, un détail reconnaissable), montrées sur les 4 mêmes slides (titre, bénéfice, liste plus/moins, une slide de chiffres). Mets les vraies images du sujet en fond. Publie la planche, fais choisir, puis seulement construis.
 
 Le choix qui a plu pour la démo Product Hunt (28 octobre 2026) : **pastel produit** (dégradés rose, lilas, pêche ; cartes en verre dépoli ; ombres colorées ; accent corail ; surligneur jaune) **avec l'impact de la v1** (grands titres condensés en capitales, gros chiffres). Il s'applique par-dessus le modèle avec `assets/theme-pastel.css` (à ajouter après les autres styles) : variables de couleur, `.slide`, `.title`, `.eyebrow`, surfaces, et remplacement des couleurs écrites en dur pour le fond sombre.
+
+Ce thème se décline sans refaire de planche quand le créateur dit « même style, mais… » : changer `--vio` (la couleur secondaire) et le fond de la pub suffit. Démo Blog Factory : `--vio:#B39DF5` (violet pâle), pub sur un dégradé lilas clair avec texte foncé.
 
 ## Le script, toujours d'abord
 

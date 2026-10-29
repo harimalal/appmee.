@@ -5,7 +5,7 @@ description: Transforme un résultat construit avec Claude (veille YouTube, tabl
 
 # Démo vidéo YouTube
 
-Version : 2026-10-29 (v4, après la démo Lancement Product Hunt).
+Version : 2026-10-29 (v5, après la démo Blog Factory).
 
 Né le 28 octobre 2026 avec « Démo Veille YouTube » (20 slides, 94 étapes) : comment on a construit l'analyseur de vidéos YouTube avec Claude. Le modèle `assets/demo-modele.html` **est** cette démo, sans ses images. Elle tourne telle quelle et sert de point de départ à toute nouvelle démo.
 
@@ -41,6 +41,8 @@ Trois idées :
 - Un récit propre à chaque sujet : pas de copie du plan, des titres ni des animations d'une démo précédente.
 - **Un style propre à chaque sujet** : après le déroulé, une planche de 2 ou 3 directions de design sur 4 slides, tirées de l'univers du sujet (couleurs du produit ou de la marque). Fais choisir avant de construire. Jamais le thème sombre du modèle par défaut.
 - Si le sujet tourne autour d'une plateforme ou d'une notion peu connue : l'expliquer (c'est quoi, références, pourquoi c'est important, objectifs) avant la méthode.
+- **Une vidéo, un sujet.** Ce qui relève d'un autre chantier (monter le site, traduire l'app, décliner en posts) devient une slide teaser, avec un appel au commentaire précis (« écris SITE en commentaire si tu veux cette vidéo »), repris dans le bilan.
+- **Le temps, en gros** : à la main (durées du process × volume, écrit « estimation ») face au temps réel, sur le seul périmètre de la vidéo. Puis la croissance, tirée des vraies dates.
 - Montrer **tout ce qui a été livré** : une slide inventaire numérotée, puis le détail.
 - Si le créateur a un produit : une courte pub de 3 ou 4 slides avec de vrais exemples, sur un fond distinct, après « Pour qui ».
 - Ouverture : accroche sur le problème, titre avec la solution illustrée et floutée en fond, bénéfice immédiat.
@@ -59,6 +61,7 @@ Trois idées :
 - `Démo Veille YouTube` : https://claude.ai/artifact/Pn2hNDHRa2NmW8LKDM9p62 (avec ses images). La recherche qu'elle met en scène vient du skill `veille-youtube`.
 - `Démo Cockpit Projets` : https://claude.ai/artifact/TE6Q2c1W7WgZq2yo4J3YkV. Récit adapté, au « je », base de données simulée pour la capture, interface redessinée, projecteurs : voir `references/exemple-cockpit.md`.
 - `Démo Lancement Product Hunt` : https://claude.ai/artifact/7b5nNfWtk62rr6b4FmxdaC. Planche de design puis thème pastel, contexte de la plateforme, inventaire de 30 livrables, pub du produit avec la landing qui défile : voir `references/exemple-product-hunt.md`.
+- `Démo Blog Factory` : https://claude.ai/artifact/TiVRxcMY6qtqaNoSsTz4iN. Même thème pastel, violet pâle en couleur secondaire ; pub = revue du site (fiches d'articles, diversité, angle, newsletter) ; le temps en gros et la croissance ; le site renvoyé à une autre vidéo par un appel au commentaire : voir `references/exemple-blog-factory.md`.
 
 ## Prompt type
 
