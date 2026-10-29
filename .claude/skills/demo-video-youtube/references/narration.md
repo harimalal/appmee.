@@ -41,6 +41,12 @@ Longueur indicative : 12 à 18 slides. Une section peut tenir en deux slides si 
 - **Rien ne se perd** : quand une nouvelle version retire des slides, garde-les **en réserve** après la fin (une slide intercalaire « Slides en réserve », ids préfixés `r-`), pour le montage.
 - Pendant un zoom, masque le titre (`data-hudoff`) pour ne pas recouvrir l'interface.
 
+## Le design, avant de tout construire
+
+Ne reprends pas d'office le thème du modèle (bleu nuit et jaune) : il est jugé trop sombre et trop basique. Une fois le déroulé validé, fais une **planche de design** : 2 ou 3 directions claires, chacune avec une vraie signature (palette, typographie, surfaces, un détail reconnaissable), montrées sur les 4 mêmes slides (titre, bénéfice, liste plus/moins, une slide de chiffres). Mets les vraies images du sujet en fond. Publie la planche, fais choisir, puis seulement construis.
+
+Le choix qui a plu pour la démo Product Hunt (28 octobre 2026) : **pastel produit** (dégradés rose, lilas, pêche ; cartes en verre dépoli ; ombres colorées ; accent corail ; surligneur jaune) **avec l'impact de la v1** (grands titres condensés en capitales, gros chiffres). Il s'applique par-dessus le modèle avec `assets/theme-pastel.css` (à ajouter après les autres styles) : variables de couleur, `.slide`, `.title`, `.eyebrow`, surfaces, et remplacement des couleurs écrites en dur pour le fond sombre.
+
 ## Le script, toujours d'abord
 
 Écris le **déroulé en texte** avant tout code : une ligne par slide, avec le titre, ce qu'on voit (structure et animation) et la phrase d'oral. Fais-le valider : c'est là que se jouent les retours. Ensuite seulement, rends-le concret, en slides explicatives et animées.
