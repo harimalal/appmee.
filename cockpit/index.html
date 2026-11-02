@@ -215,6 +215,30 @@
   .link-kinds{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
   .link-note{font-size:.85rem; color:var(--ink-soft); line-height:1.5; margin:0;}
   .btn-link{display:block; text-align:center; text-decoration:none; padding:10px 16px; margin-top:4px;}
+
+  /* recherche par mots-clés */
+  .search{position:relative; margin:-4px 0 18px;}
+  .search input{
+    width:100%; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:11px;
+    padding:10px 38px 10px 36px; font:inherit; font-size:.92rem; box-shadow:var(--shadow-sm);
+  }
+  .search input::placeholder{color:var(--ink-faint);}
+  .search input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+  .search input::-webkit-search-cancel-button{display:none;}
+  .search[hidden]{display:none;}
+  .search .ico{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink-faint); pointer-events:none; display:flex;}
+  .search .clear{position:absolute; right:6px; top:50%; transform:translateY(-50%);}
+  .search .clear[hidden]{display:none;}
+  .search-meta{font-size:.8rem; color:var(--ink-faint); margin:-8px 2px 14px;}
+  .sgroup{margin-bottom:14px;}
+  .sgroup-head{display:flex; align-items:center; gap:8px; margin:0 4px 6px; font-weight:600; font-size:.92rem;}
+  .sgroup-head .dot{width:9px; height:9px; border-radius:50%; background:var(--pc); flex:none;}
+  .sgroup-head .n{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--ink-faint); font-weight:500;}
+  .sgroup-head .linkbtn{margin-left:auto;}
+  .skind{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:8px 6px 2px;}
+  .sgoal{font-family:'Fraunces',Georgia,serif; font-size:.98rem; line-height:1.35; padding:4px 6px 6px;}
+  .sgoal .tag{font-family:'IBM Plex Mono',monospace; margin-right:6px; vertical-align:2px;}
+  mark{background:var(--amber-soft); color:inherit; border-radius:3px; padding:0 1px; box-shadow:0 0 0 1px var(--amber-soft);}
 </style>
 </head>
 <body>
@@ -223,6 +247,11 @@
   <div class="page">
     <div class="topline"><div class="eyebrow">Cockpit personnel</div><button class="linkbtn" id="logout">Se déconnecter</button></div>
     <h1>Cockpit Projets</h1>
+    <div class="search" id="searchBox" role="search" hidden>
+      <span class="ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.6"/><path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Rechercher dans tous les projets…  ( / )" aria-label="Rechercher par mots-clés dans tous les projets">
+      <button class="icon-btn clear" id="searchClear" type="button" aria-label="Effacer la recherche" hidden>✕</button>
+    </div>
     <main id="root"><div class="empty">Chargement…</div></main>
     <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
   </div>
@@ -245,7 +274,7 @@
   var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
   var token = read(TOKEN_KEY) || '';
   var D = null, lastSig = '';
-  var ui = { project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
+  var ui = { q:'', project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
   try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; } catch(e){}
 
   function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
@@ -256,6 +285,30 @@
   function day(s){ var d = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return d ? parseInt(d[3],10) + ' ' + MOIS[parseInt(d[2],10)-1] : ''; }
   function monthKey(s){ var d = /^(\d{4})-(\d{2})/.exec(s || ''); return d ? MOIS_L[parseInt(d[2],10)-1] + ' ' + d[1] : 'Sans date'; }
   function note(msg){ fresh.textContent = msg; }
+
+  // ------------------------------------------------------------ recherche (insensible à la casse et aux accents)
+  function fold(s){ return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function terms(){ return fold(ui.q).split(/\s+/).filter(Boolean); }
+  function matches(text, ts){ var f = fold(text); return ts.every(function(t){ return f.indexOf(t) !== -1; }); }
+  // échappe le texte et entoure de <mark> les mots cherchés (si une recherche est en cours)
+  function hl(text){
+    text = String(text == null ? '' : text);
+    var ts = terms(); if (!ts.length) return esc(text);
+    var norm = '', map = [];
+    for (var i = 0; i < text.length; i++){ var c = fold(text[i]); for (var k = 0; k < c.length; k++){ norm += c[k]; map.push(i); } }
+    var on = new Array(text.length + 1);
+    ts.forEach(function(t){
+      var from = 0, at;
+      while ((at = norm.indexOf(t, from)) !== -1){ for (var j = at; j < at + t.length; j++) on[map[j]] = true; from = at + t.length; }
+    });
+    var out = '', open = false;
+    for (var x = 0; x < text.length; x++){
+      if (on[x] && !open){ out += '<mark>'; open = true; }
+      if (!on[x] && open){ out += '</mark>'; open = false; }
+      out += esc(text[x]);
+    }
+    return out + (open ? '</mark>' : '');
+  }
 
   // ------------------------------------------------------------ API
   function api(method, path, body){
@@ -304,6 +357,7 @@
   // ------------------------------------------------------------ rendu
   function render(){
     if (!D) return;
+    document.getElementById('searchBox').hidden = false;
     var ps = visibleProjects();
     if (!ps.length){ root.innerHTML = '<div class="empty">Aucun projet.</div>'; return; }
     if (!ui.project || !ps.some(function(p){ return p.id === ui.project; })) ui.project = ps[0].id;
@@ -315,6 +369,7 @@
     }).join('');
 
     var focusId = document.activeElement && document.activeElement.id;
+    if (terms().length){ root.innerHTML = searchHtml(ps); restoreFocus(focusId); return; }
     var p = project(ui.project);
     var view = ui.view[p.id] || 'plan';
     var nDone = stepsOf(p.id).filter(function(s){ return s.status === 'done'; }).length + delivOf(p.id).length;
@@ -327,8 +382,37 @@
     else if (view === 'idees') h += ideasHtml(p, true);
     else h += axisBar(p) + planHtml(p) + ideasHtml(p, false);
     root.innerHTML = h;
+    restoreFocus(focusId);
+  }
+  function restoreFocus(focusId){
+    if (!focusId || focusId === 'search') return;
+    var el = document.getElementById(focusId); if (el){ el.focus(); var v = el.value || ''; try { el.setSelectionRange(v.length, v.length); } catch(e){} }
+  }
 
-    if (focusId){ var el = document.getElementById(focusId); if (el){ el.focus(); var v = el.value || ''; try { el.setSelectionRange(v.length, v.length); } catch(e){} } }
+  function searchHtml(ps){
+    var ts = terms(), total = 0, h = '';
+    ps.forEach(function(p){
+      var subsTxt = {};
+      (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
+      var goals = HORIZONS.map(function(hz){ return { hz:hz, obj:goal(p.id, hz.id) }; }).filter(function(g){ return g.obj && matches(g.obj, ts); });
+      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); })
+        .sort(function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); });
+      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, kindLabel(a.kind)].join(' '), ts); })
+        .sort(function(a,b){ return String(b.created_at).localeCompare(String(a.created_at)); });
+      var ideas = D.ideas.filter(function(i){ return i.project_id === p.id && matches([i.text, i.claude_note].join(' '), ts); });
+      var n = goals.length + steps.length + delivs.length + ideas.length;
+      if (!n) return;
+      total += n;
+      h += '<section class="sgroup"><div class="sgroup-head" style="--pc:' + esc(p.color || 'var(--accent)') + '"><span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) +
+        ' <span class="n">' + n + '</span><button class="linkbtn" data-project="' + esc(p.id) + '">Ouvrir le projet ›</button></div><div class="list">';
+      if (goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
+      if (steps.length){ h += '<div class="skind">Étapes</div>' + steps.map(stepRow).join(''); }
+      if (delivs.length){ h += '<div class="skind">Livrables</div>' + delivs.map(delivRow).join(''); }
+      if (ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
+      h += '</div></section>';
+    });
+    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + esc(ui.q.trim()) + ' » dans tous les projets' : '') + '</div>';
+    return meta + (total ? h : '<div class="empty">Aucun résultat pour « ' + esc(ui.q.trim()) + ' ».</div>');
   }
   function vtab(id, label, n, cur){
     return '<button class="vtab" role="tab" data-view="' + id + '" aria-selected="' + (cur === id) + '">' + label + (n ? '<span class="n">' + n + '</span>' : '') + '</button>';
@@ -384,7 +468,8 @@
     var h = '<div class="row ' + st + (open ? ' open' : '') + '"><div class="row-line">';
     if (st === 'archived') h += '<span style="width:19px;flex:none"></span>';
     else h += '<button class="check" data-check="' + id + '" title="' + (st === 'done' ? 'Rouvrir' : 'Marquer comme fait') + '" aria-label="' + (st === 'done' ? 'Rouvrir' : 'Marquer comme fait') + '">✓</button>';
-    h += '<button class="title-btn" data-expand="' + id + '" aria-expanded="' + open + '"><span class="t">' + esc(s.title) + '</span>';
+    h += '<button class="title-btn" data-expand="' + id + '" aria-expanded="' + open + '"><span class="t">' + hl(s.title) + '</span>';
+    if (st === 'archived') h += '<span class="tag">Archivée</span>';
     if (st === 'doing') h += '<span class="tag doing">En cours</span>';
     if (st === 'done' && s.done_at) h += '<span class="tag ok">' + day(s.done_at) + '</span>';
     if (s.axis) h += '<span class="tag dom">' + esc(axisLabel(s.axis)) + '</span>';
@@ -396,7 +481,7 @@
     if (link) h += '<a class="go openlink" href="' + esc(link) + '" target="_blank" rel="noopener" data-link-title="' + esc(s.title) + '" data-link-note="' + esc(s.detail || '') + '">Ouvrir ↗</a>';
     h += '</div>';
     if (open){
-      h += '<div class="more">' + (s.detail ? '<p>' + esc(s.detail) + '</p>' : '') + '<div class="acts">';
+      h += '<div class="more">' + (s.detail ? '<p>' + hl(s.detail) + '</p>' : '') + '<div class="acts">';
       if (st === 'todo') h += '<button class="act" data-status="doing" data-id="' + id + '">Je m\'y mets</button>';
       if (st === 'doing') h += '<button class="act" data-status="todo" data-id="' + id + '">Remettre à faire</button>';
       if (st === 'archived') h += '<button class="act" data-status="todo" data-id="' + id + '">Restaurer</button>';
@@ -425,14 +510,16 @@
     items.forEach(function(i){
       var m = monthKey(i.at);
       if (m !== cur){ h += '<div class="month">' + m + '</div>'; cur = m; }
-      if (i.kind === 'step'){ h += stepRow(i.s); return; }
-      var a = i.a, link = url(a.url), kind = kindLabel(a.kind);
-      var inner = '<span class="date">' + day(a.created_at) + '</span><span class="t" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem">' + esc(a.title) + '</span><span class="tag ' + (a.kind === 'article' ? 'article' : 'art') + '">' + kind + '</span>';
-      h += link
-        ? '<div class="row"><a class="row-line openlink" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(a.note || a.title) + '" data-link-title="' + esc(a.title) + '" data-link-note="' + esc(a.note || '') + '" data-link-kind="' + esc(a.kind || '') + '" data-link-date="' + esc(day(a.created_at)) + '">' + inner + '<span class="go">Ouvrir ↗</span></a></div>'
-        : '<div class="row"><div class="row-line">' + inner + '</div></div>';
+      h += i.kind === 'step' ? stepRow(i.s) : delivRow(i.a);
     });
     return h + '</div>';
+  }
+  function delivRow(a){
+    var link = url(a.url), kind = kindLabel(a.kind);
+    var inner = '<span class="date">' + day(a.created_at) + '</span><span class="t" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem">' + hl(a.title) + '</span><span class="tag ' + (a.kind === 'article' ? 'article' : 'art') + '">' + kind + '</span>';
+    return link
+      ? '<div class="row"><a class="row-line openlink" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(a.note || a.title) + '" data-link-title="' + esc(a.title) + '" data-link-note="' + esc(a.note || '') + '" data-link-kind="' + esc(a.kind || '') + '" data-link-date="' + esc(day(a.created_at)) + '">' + inner + '<span class="go">Ouvrir ↗</span></a></div>'
+      : '<div class="row"><div class="row-line">' + inner + '</div></div>';
   }
 
   function ideasHtml(p, full){
@@ -443,18 +530,19 @@
     if (!full) return h;
     var list = D.ideas.filter(function(i){ return i.project_id === p.id; });
     if (!list.length) return h + '<div class="empty">Aucune idée envoyée pour l\'instant.</div>';
-    return h + '<div class="list" style="margin-top:14px">' + list.map(function(i){
+    return h + '<div class="list" style="margin-top:14px">' + list.map(ideaRow).join('') + '</div>';
+  }
+  function ideaRow(i){
       var open = !!ui.open[i.id];
       var r = '<div class="row' + (open ? ' open' : '') + '"><div class="row-line"><span class="date">' + day(i.created_at) + '</span>' +
-        '<button class="title-btn" data-expand="' + esc(i.id) + '"><span class="t">' + esc(i.text) + '</span>' +
+        '<button class="title-btn" data-expand="' + esc(i.id) + '"><span class="t">' + hl(i.text) + '</span>' +
         '<span class="tag ' + (i.status === 'triaged' ? 'ok' : 'doing') + '">' + (i.status === 'triaged' ? 'Traitée' : 'En attente') + '</span><span class="chev">›</span></button></div>';
       if (open){
-        r += '<div class="more">' + (i.claude_note ? '<p>Claude : ' + esc(i.claude_note) + '</p>' : '') + '<div class="acts">' +
+        r += '<div class="more">' + (i.claude_note ? '<p>Claude : ' + hl(i.claude_note) + '</p>' : '') + '<div class="acts">' +
           (ui.confirm === i.id ? '<button class="act warn" data-delidea="' + esc(i.id) + '">Confirmer la suppression</button>' : '<button class="act" data-askdel="' + esc(i.id) + '">Supprimer</button>') +
           '</div></div>';
       }
       return r + '</div>';
-    }).join('') + '</div>';
   }
 
   // ------------------------------------------------------------ ajout d'étape
@@ -558,7 +646,7 @@
     }
     var b = e.target.closest('button'); if (!b || !D) return;
     var d = b.dataset;
-    if (d.project){ ui.project = d.project; save(); closeDrawer(); render(); return; }
+    if (d.project){ ui.project = d.project; setQuery(''); save(); closeDrawer(); render(); return; }
     if (d.view){ ui.view[ui.project] = d.view; save(); closeDrawer(); render(); return; }
     if (d.axis !== undefined){ ui.axis[ui.project] = d.axis; save(); render(); return; }
     if (d.filter){ ui.filter = d.filter; render(); return; }
@@ -611,6 +699,15 @@
     ui.editGoal[key] = false; render();
     send('PUT', 'goals/' + encodeURIComponent(pid) + '/' + encodeURIComponent(horizon), { objective: objective });
   }
+  var searchEl = document.getElementById('search'), searchClear = document.getElementById('searchClear');
+  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; }
+  searchEl.addEventListener('input', function(){ setQuery(searchEl.value); render(); });
+  searchEl.addEventListener('keydown', function(e){ if (e.key === 'Escape' && ui.q){ e.stopPropagation(); setQuery(''); render(); } });
+  searchClear.addEventListener('click', function(){ setQuery(''); render(); searchEl.focus(); });
+  document.addEventListener('keydown', function(e){
+    var a = document.activeElement, typing = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable);
+    if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey && D){ e.preventDefault(); searchEl.focus(); searchEl.select(); }
+  });
   document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawerState) closeDrawer(); });
 
@@ -657,7 +754,7 @@
 
   // ------------------------------------------------------------ connexion
   function showLogin(msg){
-    ptabs.innerHTML = '';
+    ptabs.innerHTML = ''; document.getElementById('searchBox').hidden = true;
     root.innerHTML = '<div class="login"><form id="loginForm"><h2>Connexion</h2><p>Entre ton jeton d\'accès. Il reste mémorisé sur cet appareil.</p>' +
       '<input id="tokenInput" type="password" autocomplete="current-password" placeholder="Jeton d\'accès" required>' +
       '<button class="btn" type="submit">Entrer</button>' + (msg ? '<p class="err">' + esc(msg) + '</p>' : '') + '</form></div>';
