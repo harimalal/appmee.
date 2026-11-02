@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Cockpit Projets</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --canvas:#F6F5F1; --surface:#FFFFFF;
+    --ink:#1E1D1A; --ink-soft:#6E6A61; --ink-faint:#A6A196;
+    --line:#E6E2D8; --line-soft:#EFECE3; --hover:#F1EFE9;
+    --accent:#33587A; --accent-ink:#1F3D57; --accent-soft:#E4EBF1;
+    --good:#2D7A4A; --good-soft:#E4F3EB;
+    --amber:#B4700F; --amber-soft:#FBF0DD;
+    --bad:#B23A2E; --bad-soft:#F7E7E2;
+    --shadow-sm: 0 1px 2px rgba(30,29,26,.05), 0 4px 12px -6px rgba(30,29,26,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --canvas:#171613; --surface:#201F1B;
+      --ink:#EDEAE2; --ink-soft:#A9A499; --ink-faint:#716C63;
+      --line:#332F28; --line-soft:#2A2721; --hover:#272520;
+      --accent:#7FA6C9; --accent-ink:#A9C7E3; --accent-soft:#213041;
+      --good:#5FBE85; --good-soft:#17301F;
+      --amber:#DDAE55; --amber-soft:#332A15;
+      --bad:#E17A6C; --bad-soft:#3B231F;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.3), 0 4px 12px -6px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --canvas:#171613; --surface:#201F1B;
+    --ink:#EDEAE2; --ink-soft:#A9A499; --ink-faint:#716C63;
+    --line:#332F28; --line-soft:#2A2721; --hover:#272520;
+    --accent:#7FA6C9; --accent-ink:#A9C7E3; --accent-soft:#213041;
+    --good:#5FBE85; --good-soft:#17301F;
+    --amber:#DDAE55; --amber-soft:#332A15;
+    --bad:#E17A6C; --bad-soft:#3B231F;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.3), 0 4px 12px -6px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--canvas); color:var(--ink); font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size:15px; line-height:1.5;}
+  button{font:inherit; color:inherit;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+  .shell{max-width:1180px; margin:0 auto; padding:0 16px;}
+  .app{display:flex; align-items:flex-start; gap:28px;}
+  .page{flex:1; min-width:0; max-width:760px; padding:28px 0 90px;}
+
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px;}
+  h1{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.7rem; line-height:1.1; margin:0 0 18px;}
+
+  /* bandeau projets, à gauche sur grand écran */
+  .ptabs{display:flex; flex-direction:column; gap:8px; flex:0 0 208px; padding:28px 0; position:sticky; top:0; max-height:100vh; overflow-y:auto;}
+  .ptab{
+    display:flex; align-items:center; gap:8px; width:100%; border:1px solid var(--line); background:var(--surface); border-radius:12px;
+    padding:9px 14px; cursor:grab; font-weight:600; font-size:.92rem; box-shadow:var(--shadow-sm);
+  }
+  .ptab:hover{border-color:var(--ink-faint);}
+  .ptab.dragging{opacity:.4;}
+  .ptab[aria-selected="true"]{border-color:var(--pc); box-shadow:0 0 0 1px var(--pc), var(--shadow-sm);}
+  .ptab .dot{width:9px; height:9px; border-radius:50%; background:var(--pc); flex:none;}
+  .ptab .n{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--ink-faint); font-weight:500; margin-left:auto;}
+  @media (max-width:760px){
+    .app{flex-direction:column; gap:0;}
+    .ptabs{flex-direction:row; flex-wrap:wrap; flex:none; width:100%; position:static; max-height:none; padding:16px 0 0;}
+    .ptab{width:auto;}
+  }
+
+  .phead{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  .phead h2{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.35rem; margin:0;}
+  .phead .repo{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint);}
+
+  .vtabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px;}
+  .vtab{border:1px solid var(--line); background:transparent; border-radius:999px; padding:5px 13px; font-size:.82rem; font-weight:600; color:var(--ink-soft); cursor:pointer;}
+  .vtab[aria-selected="true"]{background:var(--ink); border-color:var(--ink); color:var(--canvas);}
+  .vtab .n{opacity:.7; margin-left:5px; font-family:'IBM Plex Mono',monospace; font-size:.74rem;}
+
+  /* horizons */
+  .horizon{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 12px 8px; margin-bottom:12px; box-shadow:var(--shadow-sm);}
+  .h-label{display:flex; align-items:center; gap:10px; padding:0 6px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint);}
+  .h-label .when{color:var(--ink-soft);}
+  .h-label .rule{flex:1; height:1px; background:var(--line);}
+  .objective{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:1.08rem; line-height:1.35; margin:6px 6px 10px; text-wrap:balance;}
+  .h-empty{font-size:.85rem; color:var(--ink-faint); padding:2px 6px 8px;}
+
+  /* lignes */
+  .row{border-radius:9px;}
+  .row:hover{background:var(--hover);}
+  .row-line{display:flex; align-items:center; gap:10px; padding:6px 6px; min-height:36px;}
+  .check{
+    width:19px; height:19px; border-radius:5px; border:1.6px solid var(--ink-faint); background:var(--surface);
+    cursor:pointer; flex:none; display:grid; place-items:center; padding:0; color:transparent; font-size:12px; line-height:1;
+  }
+  .check:hover{border-color:var(--good);}
+  .row.done .check{background:var(--good); border-color:var(--good); color:#fff;}
+  .title-btn{flex:1; min-width:0; border:0; background:none; text-align:left; cursor:pointer; padding:0; display:flex; align-items:center; gap:8px;}
+  .title-btn .t{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.92rem;}
+  .row.open .title-btn .t{white-space:normal;}
+  .row.done .t{color:var(--ink-faint);}
+  .list .row.done .t{text-decoration:line-through;}
+  .tag{font-family:'IBM Plex Mono',monospace; font-size:9.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; border-radius:5px; padding:2px 6px; flex:none; background:var(--line-soft); color:var(--ink-soft);}
+  .tag.doing{background:var(--amber-soft); color:var(--amber);}
+  .tag.art{background:var(--accent-soft); color:var(--accent-ink);}
+  .tag.ok{background:var(--good-soft); color:var(--good);}
+  @media (max-width:560px){ .tag.dom{display:none;} }
+  .go{
+    flex:none; display:inline-flex; align-items:center; gap:4px; text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+    color:var(--accent-ink); background:var(--accent-soft); border-radius:7px; padding:4px 9px; white-space:nowrap;
+  }
+  .go:hover{filter:brightness(.96); text-decoration:underline;}
+  .chev{flex:none; color:var(--ink-faint); font-size:12px; transition:transform .15s; width:12px; text-align:center;}
+  .row.open .chev{transform:rotate(90deg);}
+  .more{padding:0 8px 10px 35px; font-size:.84rem; color:var(--ink-soft);}
+  .more p{margin:0 0 8px; max-width:68ch; overflow-wrap:anywhere;}
+  .acts{display:flex; gap:6px; flex-wrap:wrap;}
+  .act{border:1px solid var(--line); background:var(--surface); cursor:pointer; border-radius:7px; padding:3px 10px; font-size:.78rem; font-weight:600; color:var(--ink-soft);}
+  .act:hover{color:var(--ink); border-color:var(--ink-faint);}
+  .act.warn{color:var(--bad); border-color:var(--bad); background:var(--bad-soft);}
+  .archived-toggle{border:0; background:none; color:var(--ink-faint); font-size:.76rem; cursor:pointer; padding:2px 6px 8px; text-decoration:underline;}
+
+  /* historique */
+  .filters{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;}
+  .month{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:12px 6px 4px;}
+  .date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); width:46px; flex:none;}
+  a.row-line{text-decoration:none; color:inherit;}
+  .list{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px; box-shadow:var(--shadow-sm);}
+
+  /* idées */
+  .idea-box{display:flex; gap:8px; margin-top:18px; background:var(--accent-soft); border-radius:12px; padding:10px;}
+  .idea-box textarea{
+    flex:1; min-width:0; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:9px;
+    padding:9px 11px; font:inherit; font-size:.9rem; resize:vertical; height:42px; min-height:42px;
+  }
+  .btn{border:0; border-radius:9px; background:var(--accent); color:var(--surface); font-weight:600; font-size:.84rem; padding:0 16px; cursor:pointer; flex:none;}
+  .hint{font-size:.76rem; color:var(--ink-faint); margin:6px 4px 0;}
+  .empty{color:var(--ink-faint); font-size:.9rem; padding:20px 6px; text-align:center;}
+  .foot{margin-top:36px; padding-top:14px; border-top:1px solid var(--line); font-size:11.5px; color:var(--ink-faint);}
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important;} }
+</style>
+<style>
+  /* ajouts version en ligne */
+  .axisbar{display:flex; gap:6px; flex-wrap:wrap; margin:-6px 0 14px;}
+  .axisbar .vtab{font-size:.76rem; padding:4px 11px;}
+  .topline{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .linkbtn{border:0; background:none; color:var(--ink-faint); font-size:.78rem; cursor:pointer; text-decoration:underline; padding:0;}
+  .login{min-height:70vh; display:grid; place-items:center;}
+  .login form{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow-sm); padding:26px 22px; width:100%; max-width:340px; display:flex; flex-direction:column; gap:12px;}
+  .login h2{font-family:'Fraunces',Georgia,serif; font-weight:650; margin:0; font-size:1.3rem;}
+  .login p{margin:0; font-size:.88rem; color:var(--ink-soft);}
+  .login input{border:1px solid var(--line); background:var(--canvas); color:var(--ink); border-radius:9px; padding:10px 12px; font:inherit;}
+  .login .btn{padding:10px 16px;}
+  .login .err{color:var(--bad);}
+  .tag.article{background:var(--good-soft); color:var(--good);}
+
+  /* ajout d'une étape */
+  .add-step{margin:2px 6px 0;}
+  .add-step input{
+    width:100%; border:1px dashed var(--line); background:transparent; border-radius:9px; padding:7px 10px;
+    font:inherit; font-size:.86rem; color:var(--ink-soft);
+  }
+  .add-step input:focus{border-style:solid; border-color:var(--accent); color:var(--ink);}
+  .add-step input::placeholder{color:var(--ink-faint);}
+
+  /* bouton Plan */
+  .go.plan{background:var(--line-soft); color:var(--ink-soft);}
+  .go.plan:hover{color:var(--ink);}
+
+  /* panneau de plan pas-à-pas */
+  .drawer-backdrop{position:fixed; inset:0; background:rgba(0,0,0,.28); z-index:40;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0; width:min(420px,100vw); background:var(--surface); z-index:41;
+    box-shadow:-8px 0 32px rgba(0,0,0,.18); overflow-y:auto; padding:20px 18px 40px;
+    padding-top:max(20px, env(safe-area-inset-top)); display:flex; flex-direction:column; gap:14px;
+  }
+  .drawer[hidden], .drawer-backdrop[hidden]{display:none;}
+  .drawer-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+  .drawer-head h3{font-family:'Fraunces',Georgia,serif; font-weight:650; font-size:1.15rem; margin:0; line-height:1.3;}
+  .icon-btn{border:0; background:none; cursor:pointer; color:var(--ink-faint); font-size:16px; padding:2px 4px; flex:none;}
+  .icon-btn:hover{color:var(--ink);}
+  .drawer-detail{font-size:.85rem; color:var(--ink-soft); margin:0; line-height:1.5;}
+  .drawer-progress{display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint);}
+  .drawer-progress .bar{flex:1; height:5px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+  .drawer-progress .bar i{display:block; height:100%; background:var(--good);}
+  .drawer-section h4{font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 6px;}
+  .sub-row{display:flex; align-items:center; gap:9px; padding:5px 2px;}
+  .sub-row .t{flex:1; min-width:0; font-size:.9rem; overflow-wrap:anywhere;}
+  .sub-row.done .t{color:var(--ink-faint); text-decoration:line-through;}
+  .check.small{width:17px; height:17px;}
+  .act.tiny{border:0; background:none; color:var(--ink-faint); padding:2px 6px; font-size:.8rem;}
+  .act.tiny:hover{color:var(--bad);}
+  .add-sub{margin-top:2px;}
+  .add-sub input{width:100%; border:1px dashed var(--line); background:transparent; border-radius:8px; padding:6px 9px; font:inherit; font-size:.84rem; color:var(--ink-soft);}
+  .add-sub input:focus{border-style:solid; border-color:var(--accent); color:var(--ink);}
+
+  /* édition d'un objectif */
+  .goal-edit{margin:4px 6px 10px;}
+  .goal-edit textarea{
+    width:100%; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:9px;
+    padding:9px 11px; font:inherit; font-size:.95rem; min-height:64px; resize:vertical;
+  }
+  .goal-edit .acts{margin-top:8px;}
+  .goal-row{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin:0 6px 10px;}
+  .goal-row .objective{margin:0; flex:1; min-width:0;}
+
+  /* panneau d'aperçu de lien (artefacts, livrables) */
+  .link-kinds{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .link-note{font-size:.85rem; color:var(--ink-soft); line-height:1.5; margin:0;}
+  .btn-link{display:block; text-align:center; text-decoration:none; padding:10px 16px; margin-top:4px;}
+
+  /* recherche par mots-clés */
+  .search{position:relative; margin:-4px 0 18px;}
+  .search input{
+    width:100%; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:11px;
+    padding:10px 38px 10px 36px; font:inherit; font-size:.92rem; box-shadow:var(--shadow-sm);
+  }
+  .search input::placeholder{color:var(--ink-faint);}
+  .search input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+  .search input::-webkit-search-cancel-button{display:none;}
+  .search[hidden]{display:none;}
+  .search .ico{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink-faint); pointer-events:none; display:flex;}
+  .search .clear{position:absolute; right:6px; top:50%; transform:translateY(-50%);}
+  .search .clear[hidden]{display:none;}
+  .search-meta{font-size:.8rem; color:var(--ink-faint); margin:-8px 2px 14px;}
+  .sgroup{margin-bottom:14px;}
+  .sgroup-head{display:flex; align-items:center; gap:8px; margin:0 4px 6px; font-weight:600; font-size:.92rem;}
+  .sgroup-head .dot{width:9px; height:9px; border-radius:50%; background:var(--pc); flex:none;}
+  .sgroup-head .n{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--ink-faint); font-weight:500;}
+  .sgroup-head .linkbtn{margin-left:auto;}
+  .skind{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:8px 6px 2px;}
+  .sgoal{font-family:'Fraunces',Georgia,serif; font-size:.98rem; line-height:1.35; padding:4px 6px 6px;}
+  .sgoal .tag{font-family:'IBM Plex Mono',monospace; margin-right:6px; vertical-align:2px;}
+  mark{background:var(--amber-soft); color:inherit; border-radius:3px; padding:0 1px; box-shadow:0 0 0 1px var(--amber-soft);}
+</style>
+</head>
+<body>
+<div class="shell"><div class="app">
+  <nav class="ptabs" id="ptabs" role="tablist" aria-label="Projets"></nav>
+  <div class="page">
+    <div class="topline"><div class="eyebrow">Cockpit personnel</div><button class="linkbtn" id="logout">Se déconnecter</button></div>
+    <h1>Cockpit Projets</h1>
+    <div class="search" id="searchBox" role="search" hidden>
+      <span class="ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.6"/><path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Rechercher dans tous les projets…  ( / )" aria-label="Rechercher par mots-clés dans tous les projets">
+      <button class="icon-btn clear" id="searchClear" type="button" aria-label="Effacer la recherche" hidden>✕</button>
+    </div>
+    <main id="root"><div class="empty">Chargement…</div></main>
+    <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
+  </div>
+</div></div>
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="drawer" class="drawer" hidden aria-label="Plan de l'étape"></aside>
+<script>
+(function(){
+  'use strict';
+  var HORIZONS = [
+    { id:'court', label:'Court terme', when:'2 semaines' },
+    { id:'moyen', label:'Moyen terme', when:'1 à 3 mois' },
+    { id:'long',  label:'Long terme',  when:'6 à 12 mois' }
+  ];
+  var RANK = { doing:0, todo:1, done:2 };
+  var MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  var MOIS_L = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  var TOKEN_KEY = 'cockpit.token', UI_KEY = 'cockpit.ui';
+
+  var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
+  var token = read(TOKEN_KEY) || '';
+  var D = null, lastSig = '';
+  var ui = { q:'', project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
+  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; } catch(e){}
+
+  function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function write(k, v){ try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} }
+  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis })); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function url(u){ return /^https:\/\//.test(u || '') ? u : ''; }
+  function day(s){ var d = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return d ? parseInt(d[3],10) + ' ' + MOIS[parseInt(d[2],10)-1] : ''; }
+  function monthKey(s){ var d = /^(\d{4})-(\d{2})/.exec(s || ''); return d ? MOIS_L[parseInt(d[2],10)-1] + ' ' + d[1] : 'Sans date'; }
+  function note(msg){ fresh.textContent = msg; }
+
+  // ------------------------------------------------------------ recherche (insensible à la casse et aux accents)
+  function fold(s){ return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function terms(){ return fold(ui.q).split(/\s+/).filter(Boolean); }
+  function matches(text, ts){ var f = fold(text); return ts.every(function(t){ return f.indexOf(t) !== -1; }); }
+  // échappe le texte et entoure de <mark> les mots cherchés (si une recherche est en cours)
+  function hl(text){
+    text = String(text == null ? '' : text);
+    var ts = terms(); if (!ts.length) return esc(text);
+    var norm = '', map = [];
+    for (var i = 0; i < text.length; i++){ var c = fold(text[i]); for (var k = 0; k < c.length; k++){ norm += c[k]; map.push(i); } }
+    var on = new Array(text.length + 1);
+    ts.forEach(function(t){
+      var from = 0, at;
+      while ((at = norm.indexOf(t, from)) !== -1){ for (var j = at; j < at + t.length; j++) on[map[j]] = true; from = at + t.length; }
+    });
+    var out = '', open = false;
+    for (var x = 0; x < text.length; x++){
+      if (on[x] && !open){ out += '<mark>'; open = true; }
+      if (!on[x] && open){ out += '</mark>'; open = false; }
+      out += esc(text[x]);
+    }
+    return out + (open ? '</mark>' : '');
+  }
+
+  // ------------------------------------------------------------ API
+  function api(method, path, body){
+    return fetch('/api/' + path, {
+      method: method,
+      headers: Object.assign({ Authorization: 'Bearer ' + token }, body ? { 'content-type': 'application/json' } : {}),
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function(res){
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        if (res.status === 401){ showLogin('Jeton refusé.'); throw new Error('401'); }
+        if (!res.ok) throw new Error(data.error || ('Erreur ' + res.status));
+        return data;
+      });
+    });
+  }
+  function load(force){
+    return api('GET', 'state').then(function(data){
+      var sig = JSON.stringify([data.projects, data.axes, data.goals, data.steps, data.deliverables, data.ideas, data.substeps]);
+      note('Synchro : ' + new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }));
+      if (!force && sig === lastSig) return;
+      lastSig = sig; D = data;
+      if (!isTyping()) render();
+    });
+  }
+  function send(method, path, body){
+    return api(method, path, body).then(function(r){ lastSig = ''; return r; }).catch(function(e){
+      if (e.message !== '401') note('Échec de l\'enregistrement : ' + e.message + '. Rechargement…');
+      load(true).catch(function(){});
+    });
+  }
+  function isTyping(){ var a = document.activeElement; return a && a.tagName === 'TEXTAREA' && a.value; }
+
+  // ------------------------------------------------------------ données
+  function visibleProjects(){
+    return D.projects.filter(function(p){ return !p.hidden; }).sort(function(a,b){ return (a.position || 0) - (b.position || 0); });
+  }
+  function project(id){ return D.projects.find(function(p){ return p.id === id; }); }
+  function stepsOf(pid){ return D.steps.filter(function(s){ return s.project_id === pid; }); }
+  function delivOf(pid){ return D.deliverables.filter(function(a){ return a.project_id === pid; }); }
+  function goal(pid, h){ var g = D.goals.find(function(x){ return x.project_id === pid && x.horizon === h; }); return g && g.objective; }
+  function axesFor(pid){ return D.axes.filter(function(a){ return !a.project_id || a.project_id === pid; }); }
+  function axisLabel(id){ var a = D.axes.find(function(x){ return x.id === id; }); return a ? a.label : (id || ''); }
+  function subsOf(stepId){ return (D.substeps || []).filter(function(x){ return x.step_id === stepId; }); }
+  function kindLabel(k){ return k === 'article' ? 'Article' : k === 'doc' ? 'Doc' : 'Artefact'; }
+
+  // ------------------------------------------------------------ rendu
+  function render(){
+    if (!D) return;
+    document.getElementById('searchBox').hidden = false;
+    var ps = visibleProjects();
+    if (!ps.length){ root.innerHTML = '<div class="empty">Aucun projet.</div>'; return; }
+    if (!ui.project || !ps.some(function(p){ return p.id === ui.project; })) ui.project = ps[0].id;
+
+    ptabs.innerHTML = ps.map(function(p){
+      var n = stepsOf(p.id).filter(function(s){ return s.status === 'todo' || s.status === 'doing'; }).length;
+      return '<button class="ptab" role="tab" draggable="true" data-project="' + esc(p.id) + '" aria-selected="' + (p.id === ui.project) + '" style="--pc:' + esc(p.color || 'var(--accent)') + '">' +
+        '<span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) + (n ? ' <span class="n">' + n + '</span>' : '') + '</button>';
+    }).join('');
+
+    var focusId = document.activeElement && document.activeElement.id;
+    if (terms().length){ root.innerHTML = searchHtml(ps); restoreFocus(focusId); return; }
+    var p = project(ui.project);
+    var view = ui.view[p.id] || 'plan';
+    var nDone = stepsOf(p.id).filter(function(s){ return s.status === 'done'; }).length + delivOf(p.id).length;
+    var nIdeas = D.ideas.filter(function(i){ return i.project_id === p.id; }).length;
+
+    var h = '<div class="phead"><h2>' + esc(p.name) + '</h2>' + (p.repo ? '<span class="repo">' + esc(p.repo) + '</span>' : '') +
+      (p.live_url ? '<a class="go" href="' + esc(p.live_url) + '" target="_blank" rel="noopener">Ouvrir le site ↗</a>' : '') + '</div>';
+    h += '<div class="vtabs" role="tablist">' + vtab('plan', 'Objectifs', null, view) + vtab('fait', 'Fait & livrables', nDone, view) + vtab('idees', 'Mes idées', nIdeas, view) + '</div>';
+    if (view === 'fait') h += historyHtml(p);
+    else if (view === 'idees') h += ideasHtml(p, true);
+    else h += axisBar(p) + planHtml(p) + ideasHtml(p, false);
+    root.innerHTML = h;
+    restoreFocus(focusId);
+  }
+  function restoreFocus(focusId){
+    if (!focusId || focusId === 'search') return;
+    var el = document.getElementById(focusId); if (el){ el.focus(); var v = el.value || ''; try { el.setSelectionRange(v.length, v.length); } catch(e){} }
+  }
+
+  function searchHtml(ps){
+    var ts = terms(), total = 0, h = '';
+    ps.forEach(function(p){
+      var subsTxt = {};
+      (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
+      var goals = HORIZONS.map(function(hz){ return { hz:hz, obj:goal(p.id, hz.id) }; }).filter(function(g){ return g.obj && matches(g.obj, ts); });
+      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); })
+        .sort(function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); });
+      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, kindLabel(a.kind)].join(' '), ts); })
+        .sort(function(a,b){ return String(b.created_at).localeCompare(String(a.created_at)); });
+      var ideas = D.ideas.filter(function(i){ return i.project_id === p.id && matches([i.text, i.claude_note].join(' '), ts); });
+      var n = goals.length + steps.length + delivs.length + ideas.length;
+      if (!n) return;
+      total += n;
+      h += '<section class="sgroup"><div class="sgroup-head" style="--pc:' + esc(p.color || 'var(--accent)') + '"><span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) +
+        ' <span class="n">' + n + '</span><button class="linkbtn" data-project="' + esc(p.id) + '">Ouvrir le projet ›</button></div><div class="list">';
+      if (goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
+      if (steps.length){ h += '<div class="skind">Étapes</div>' + steps.map(stepRow).join(''); }
+      if (delivs.length){ h += '<div class="skind">Livrables</div>' + delivs.map(delivRow).join(''); }
+      if (ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
+      h += '</div></section>';
+    });
+    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + esc(ui.q.trim()) + ' » dans tous les projets' : '') + '</div>';
+    return meta + (total ? h : '<div class="empty">Aucun résultat pour « ' + esc(ui.q.trim()) + ' ».</div>');
+  }
+  function vtab(id, label, n, cur){
+    return '<button class="vtab" role="tab" data-view="' + id + '" aria-selected="' + (cur === id) + '">' + label + (n ? '<span class="n">' + n + '</span>' : '') + '</button>';
+  }
+  function axisBar(p){
+    var used = {}; stepsOf(p.id).forEach(function(s){ if (s.axis) used[s.axis] = true; });
+    var axes = axesFor(p.id).filter(function(a){ return used[a.id]; });
+    if (axes.length < 2) return '';
+    var cur = ui.axis[p.id] || '';
+    return '<div class="axisbar" aria-label="Axes de travail">' +
+      '<button class="vtab" data-axis="" aria-selected="' + (!cur) + '">Tous les axes</button>' +
+      axes.map(function(a){ return '<button class="vtab" data-axis="' + esc(a.id) + '" aria-selected="' + (cur === a.id) + '">' + esc(a.label) + '</button>'; }).join('') + '</div>';
+  }
+
+  function planHtml(p){
+    var axis = ui.axis[p.id] || '';
+    var steps = stepsOf(p.id).filter(function(s){ return !axis || s.axis === axis; });
+    return HORIZONS.map(function(hz){
+      var obj = goal(p.id, hz.id);
+      var list = steps.filter(function(s){ return s.horizon === hz.id && s.status !== 'archived'; })
+        .sort(function(a,b){ return (RANK[a.status] - RANK[b.status]) || ((a.position || 0) - (b.position || 0)); });
+      var arch = steps.filter(function(s){ return s.horizon === hz.id && s.status === 'archived'; });
+      var doneN = list.filter(function(s){ return s.status === 'done'; }).length;
+      var key = p.id + hz.id;
+      var h = '<section class="horizon"><div class="h-label"><span>' + hz.label + '</span><span class="when">· ' + hz.when + '</span><span class="rule"></span>' +
+        (doneN ? '<span>' + doneN + ' fait' + (doneN > 1 ? 's' : '') + '</span>' : '') + '</div>';
+      h += goalHtml(p, hz, obj, key);
+      h += list.map(stepRow).join('');
+      if (!list.length) h += '<div class="h-empty">Rien ici pour l\'instant.</div>';
+      h += '<form class="add-step" data-add-project="' + esc(p.id) + '" data-add-horizon="' + hz.id + '">' +
+        '<input type="text" placeholder="+ Ajouter une étape…" maxlength="500"></form>';
+      if (arch.length){
+        h += '<button class="archived-toggle" data-archived="' + esc(key) + '">' + (ui.archived[key] ? 'Masquer' : 'Voir') + ' ' + arch.length + ' archivée' + (arch.length > 1 ? 's' : '') + '</button>';
+        if (ui.archived[key]) h += arch.map(stepRow).join('');
+      }
+      return h + '</section>';
+    }).join('');
+  }
+
+  function goalHtml(p, hz, obj, key){
+    if (ui.editGoal[key]){
+      return '<form class="goal-edit" data-goal-project="' + esc(p.id) + '" data-goal-horizon="' + hz.id + '" data-goal-key="' + esc(key) + '">' +
+        '<textarea id="goaledit-' + esc(key) + '" maxlength="600" placeholder="Objectif de ' + esc(hz.label.toLowerCase()) + '…">' + esc(obj || '') + '</textarea>' +
+        '<div class="acts"><button class="btn" type="submit">Enregistrer</button><button type="button" class="act" data-canceledit="' + esc(key) + '">Annuler</button></div></form>';
+    }
+    if (obj){
+      return '<div class="goal-row"><div class="objective">' + esc(obj) + '</div><button class="linkbtn" data-editgoal="' + esc(key) + '">Modifier</button></div>';
+    }
+    return '<div class="goal-row"><div class="h-empty">Pas encore d\'objectif.</div><button class="linkbtn" data-editgoal="' + esc(key) + '">+ Définir l\'objectif</button></div>';
+  }
+  function stepRow(s){
+    var id = esc(s.id), st = s.status, open = !!ui.open[s.id], link = url(s.ref);
+    var h = '<div class="row ' + st + (open ? ' open' : '') + '"><div class="row-line">';
+    if (st === 'archived') h += '<span style="width:19px;flex:none"></span>';
+    else h += '<button class="check" data-check="' + id + '" title="' + (st === 'done' ? 'Rouvrir' : 'Marquer comme fait') + '" aria-label="' + (st === 'done' ? 'Rouvrir' : 'Marquer comme fait') + '">✓</button>';
+    h += '<button class="title-btn" data-expand="' + id + '" aria-expanded="' + open + '"><span class="t">' + hl(s.title) + '</span>';
+    if (st === 'archived') h += '<span class="tag">Archivée</span>';
+    if (st === 'doing') h += '<span class="tag doing">En cours</span>';
+    if (st === 'done' && s.done_at) h += '<span class="tag ok">' + day(s.done_at) + '</span>';
+    if (s.axis) h += '<span class="tag dom">' + esc(axisLabel(s.axis)) + '</span>';
+    h += '<span class="chev" aria-hidden="true">›</span></button>';
+    if (st !== 'archived'){
+      var subs = subsOf(s.id), subDone = subs.filter(function(x){ return x.status === 'done'; }).length;
+      h += '<button class="go plan" data-opendrawer="' + id + '">Plan' + (subs.length ? ' ' + subDone + '/' + subs.length : '') + ' ›</button>';
+    }
+    if (link) h += '<a class="go openlink" href="' + esc(link) + '" target="_blank" rel="noopener" data-link-title="' + esc(s.title) + '" data-link-note="' + esc(s.detail || '') + '">Ouvrir ↗</a>';
+    h += '</div>';
+    if (open){
+      h += '<div class="more">' + (s.detail ? '<p>' + hl(s.detail) + '</p>' : '') + '<div class="acts">';
+      if (st === 'todo') h += '<button class="act" data-status="doing" data-id="' + id + '">Je m\'y mets</button>';
+      if (st === 'doing') h += '<button class="act" data-status="todo" data-id="' + id + '">Remettre à faire</button>';
+      if (st === 'archived') h += '<button class="act" data-status="todo" data-id="' + id + '">Restaurer</button>';
+      else h += '<button class="act" data-status="archived" data-id="' + id + '">Archiver</button>';
+      h += ui.confirm === s.id ? '<button class="act warn" data-delete="' + id + '">Confirmer la suppression</button>'
+                               : '<button class="act" data-askdel="' + id + '">Supprimer</button>';
+      h += '</div></div>';
+    }
+    return h + '</div>';
+  }
+
+  function historyHtml(p){
+    var items = [];
+    stepsOf(p.id).filter(function(s){ return s.status === 'done'; }).forEach(function(s){ items.push({ kind:'step', at:s.done_at || s.updated_at, s:s }); });
+    delivOf(p.id).forEach(function(a){ items.push({ kind:'deliv', at:a.created_at || '', a:a }); });
+    var f = ui.filter;
+    items = items.filter(function(i){ return f === 'all' || (f === 'deliv' ? i.kind === 'deliv' : i.kind === 'step'); })
+      .sort(function(a,b){ return String(b.at).localeCompare(String(a.at)); });
+    var h = '<div class="filters">' +
+      '<button class="vtab" data-filter="all" aria-selected="' + (f === 'all') + '">Tout</button>' +
+      '<button class="vtab" data-filter="step" aria-selected="' + (f === 'step') + '">Étapes faites</button>' +
+      '<button class="vtab" data-filter="deliv" aria-selected="' + (f === 'deliv') + '">Artefacts & articles</button></div>';
+    if (!items.length) return h + '<div class="empty">Rien pour l\'instant.</div>';
+    var cur = null;
+    h += '<div class="list">';
+    items.forEach(function(i){
+      var m = monthKey(i.at);
+      if (m !== cur){ h += '<div class="month">' + m + '</div>'; cur = m; }
+      h += i.kind === 'step' ? stepRow(i.s) : delivRow(i.a);
+    });
+    return h + '</div>';
+  }
+  function delivRow(a){
+    var link = url(a.url), kind = kindLabel(a.kind);
+    var inner = '<span class="date">' + day(a.created_at) + '</span><span class="t" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem">' + hl(a.title) + '</span><span class="tag ' + (a.kind === 'article' ? 'article' : 'art') + '">' + kind + '</span>';
+    return link
+      ? '<div class="row"><a class="row-line openlink" href="' + esc(link) + '" target="_blank" rel="noopener" title="' + esc(a.note || a.title) + '" data-link-title="' + esc(a.title) + '" data-link-note="' + esc(a.note || '') + '" data-link-kind="' + esc(a.kind || '') + '" data-link-date="' + esc(day(a.created_at)) + '">' + inner + '<span class="go">Ouvrir ↗</span></a></div>'
+      : '<div class="row"><div class="row-line">' + inner + '</div></div>';
+  }
+
+  function ideasHtml(p, full){
+    var id = 'idea-' + p.id;
+    var h = '<div class="idea-box"><textarea id="' + esc(id) + '" data-draft="' + esc(p.id) + '" maxlength="4000" aria-label="Nouvelle idée" placeholder="Une idée pour ' + esc(p.name) + ' ? Écris-la telle quelle.">' + esc(ui.draft[p.id] || '') + '</textarea>' +
+      '<button class="btn" data-send="' + esc(p.id) + '">Envoyer</button></div>' +
+      '<div class="hint">Claude la lit à la prochaine conversation et la transforme en étapes.</div>';
+    if (!full) return h;
+    var list = D.ideas.filter(function(i){ return i.project_id === p.id; });
+    if (!list.length) return h + '<div class="empty">Aucune idée envoyée pour l\'instant.</div>';
+    return h + '<div class="list" style="margin-top:14px">' + list.map(ideaRow).join('') + '</div>';
+  }
+  function ideaRow(i){
+      var open = !!ui.open[i.id];
+      var r = '<div class="row' + (open ? ' open' : '') + '"><div class="row-line"><span class="date">' + day(i.created_at) + '</span>' +
+        '<button class="title-btn" data-expand="' + esc(i.id) + '"><span class="t">' + hl(i.text) + '</span>' +
+        '<span class="tag ' + (i.status === 'triaged' ? 'ok' : 'doing') + '">' + (i.status === 'triaged' ? 'Traitée' : 'En attente') + '</span><span class="chev">›</span></button></div>';
+      if (open){
+        r += '<div class="more">' + (i.claude_note ? '<p>Claude : ' + hl(i.claude_note) + '</p>' : '') + '<div class="acts">' +
+          (ui.confirm === i.id ? '<button class="act warn" data-delidea="' + esc(i.id) + '">Confirmer la suppression</button>' : '<button class="act" data-askdel="' + esc(i.id) + '">Supprimer</button>') +
+          '</div></div>';
+      }
+      return r + '</div>';
+  }
+
+  // ------------------------------------------------------------ ajout d'étape
+  function addStep(pid, horizon, title){
+    var axis = ui.axis[pid] || '';
+    var maxPos = stepsOf(pid).filter(function(s){ return s.horizon === horizon; })
+      .reduce(function(m, s){ return Math.max(m, s.position || 0); }, 0);
+    api('POST', 'steps', { project_id: pid, horizon: horizon, axis: axis, title: title, status: 'todo', position: maxPos + 1, source: 'moi' })
+      .then(function(row){ D.steps.push(row); lastSig = ''; render(); })
+      .catch(function(e){ if (e.message !== '401') note('Ajout impossible : ' + e.message); });
+  }
+
+  // ------------------------------------------------------------ panneau latéral (plan pas-à-pas, ou aperçu de lien)
+  var drawerState = null; // { kind:'step', id } ou { kind:'link', data }
+  function openDrawer(stepId){ drawerState = { kind:'step', id:stepId }; showDrawer(); }
+  function openLinkDrawer(data){ drawerState = { kind:'link', data:data }; showDrawer(); }
+  function showDrawer(){ renderDrawer(); document.getElementById('drawerBackdrop').hidden = false; document.getElementById('drawer').hidden = false; }
+  function closeDrawer(){ drawerState = null; document.getElementById('drawerBackdrop').hidden = true; document.getElementById('drawer').hidden = true; }
+  function renderDrawer(){
+    if (!drawerState) return;
+    if (drawerState.kind === 'link'){ renderLinkDrawer(drawerState.data); return; }
+    var s = D.steps.find(function(x){ return x.id === drawerState.id; });
+    var drawer = document.getElementById('drawer');
+    if (!s){ closeDrawer(); return; }
+    var subs = subsOf(s.id);
+    var sections = [];
+    subs.forEach(function(x){ var sec = x.section || 'Actions'; if (sections.indexOf(sec) === -1) sections.push(sec); });
+    if (!sections.length) sections.push('Actions');
+    var doneN = subs.filter(function(x){ return x.status === 'done'; }).length;
+    var h = '<div class="drawer-head"><h3>' + esc(s.title) + '</h3><button class="icon-btn" id="drawerClose" aria-label="Fermer">✕</button></div>';
+    if (s.detail) h += '<p class="drawer-detail">' + esc(s.detail) + '</p>';
+    if (subs.length) h += '<div class="drawer-progress"><div class="bar"><i style="width:' + Math.round(doneN / subs.length * 100) + '%"></i></div><span>' + doneN + '/' + subs.length + '</span></div>';
+    sections.forEach(function(sec){
+      var items = subs.filter(function(x){ return (x.section || 'Actions') === sec; }).sort(function(a,b){ return (a.position || 0) - (b.position || 0); });
+      h += '<div class="drawer-section"><h4>' + esc(sec) + '</h4>' + items.map(subRow).join('') +
+        '<form class="add-sub" data-sub-step="' + esc(s.id) + '" data-sub-section="' + esc(sec) + '"><input type="text" placeholder="+ Ajouter une action…" maxlength="300"></form></div>';
+    });
+    h += '<button class="linkbtn" id="addSectionBtn">+ Nouvelle section</button>';
+    drawer.innerHTML = h;
+    document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+    document.getElementById('addSectionBtn').addEventListener('click', function(){
+      var name = prompt('Nom de la nouvelle section ?');
+      if (!name || !name.trim()) return;
+      var first = prompt('Première action de « ' + name.trim() + ' » ?');
+      if (!first || !first.trim()) return;
+      addSubstep(s.id, name.trim(), first.trim());
+    });
+  }
+  function renderLinkDrawer(data){
+    var drawer = document.getElementById('drawer');
+    var h = '<div class="drawer-head"><h3>' + esc(data.title || 'Lien') + '</h3><button class="icon-btn" id="drawerClose" aria-label="Fermer">✕</button></div>';
+    h += '<div class="link-kinds">' + (data.kind ? '<span class="tag art">' + esc(kindLabel(data.kind)) + '</span>' : '') + (data.date ? '<span class="mono" style="font-size:.78rem;color:var(--ink-faint)">' + esc(data.date) + '</span>' : '') + '</div>';
+    if (data.note) h += '<p class="link-note">' + esc(data.note) + '</p>';
+    h += '<p class="hint" style="margin:0">Cette page ne peut pas s\'afficher dans ce panneau : claude.ai, GitHub et les sites déployés bloquent l\'intégration en iframe (sécurité anti-clickjacking). Clic droit sur « Ouvrir ↗ » marche aussi pour l\'ouvrir dans un nouvel onglet.</p>';
+    h += '<a class="btn btn-link" href="' + esc(data.url) + '" target="_blank" rel="noopener">Ouvrir dans un nouvel onglet ↗</a>';
+    drawer.innerHTML = h;
+    document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  }
+  function subRow(x){
+    var id = esc(x.id);
+    return '<div class="sub-row' + (x.status === 'done' ? ' done' : '') + '"><button class="check small" data-subcheck="' + id + '" aria-label="Cocher">✓</button>' +
+      '<span class="t">' + esc(x.title) + '</span><button class="act tiny" data-subdel="' + id + '" aria-label="Supprimer">✕</button></div>';
+  }
+  function addSubstep(stepId, section, title){
+    var maxPos = subsOf(stepId).filter(function(x){ return (x.section || 'Actions') === section; })
+      .reduce(function(m, x){ return Math.max(m, x.position || 0); }, 0);
+    api('POST', 'substeps', { step_id: stepId, section: section, title: title, status: 'todo', position: maxPos + 1 })
+      .then(function(row){ D.substeps.push(row); lastSig = ''; renderDrawer(); render(); })
+      .catch(function(e){ if (e.message !== '401') note('Ajout impossible : ' + e.message); });
+  }
+  function toggleSub(id){
+    var x = (D.substeps || []).find(function(y){ return y.id === id; }); if (!x) return;
+    var status = x.status === 'done' ? 'todo' : 'done';
+    x.status = status; renderDrawer(); render();
+    send('PATCH', 'substeps/' + encodeURIComponent(id), { status: status });
+  }
+  function deleteSub(id){
+    D.substeps = D.substeps.filter(function(x){ return x.id !== id; }); renderDrawer(); render();
+    send('DELETE', 'substeps/' + encodeURIComponent(id));
+  }
+
+  // ------------------------------------------------------------ actions
+  function setStatus(id, status){
+    var s = D.steps.find(function(x){ return x.id === id; }); if (!s) return;
+    s.status = status; s.done_at = status === 'done' ? new Date().toISOString() : ''; render();
+    send('PATCH', 'steps/' + encodeURIComponent(id), { status: status });
+  }
+  var confirmTimer;
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('a.openlink');
+    if (link && D){
+      e.preventDefault();
+      openLinkDrawer({
+        url: link.getAttribute('href'),
+        title: link.dataset.linkTitle || '',
+        note: link.dataset.linkNote || '',
+        kind: link.dataset.linkKind || '',
+        date: link.dataset.linkDate || ''
+      });
+      return;
+    }
+    var b = e.target.closest('button'); if (!b || !D) return;
+    var d = b.dataset;
+    if (d.project){ ui.project = d.project; setQuery(''); save(); closeDrawer(); render(); return; }
+    if (d.view){ ui.view[ui.project] = d.view; save(); closeDrawer(); render(); return; }
+    if (d.axis !== undefined){ ui.axis[ui.project] = d.axis; save(); render(); return; }
+    if (d.filter){ ui.filter = d.filter; render(); return; }
+    if (d.expand){ ui.open[d.expand] = !ui.open[d.expand]; render(); return; }
+    if (d.archived){ ui.archived[d.archived] = !ui.archived[d.archived]; render(); return; }
+    if (d.check){ var s = D.steps.find(function(x){ return x.id === d.check; }); if (s) setStatus(d.check, s.status === 'done' ? 'todo' : 'done'); return; }
+    if (d.status){ setStatus(d.id, d.status); return; }
+    if (d.opendrawer){ openDrawer(d.opendrawer); return; }
+    if (d.editgoal){ ui.editGoal[d.editgoal] = true; render(); var ta = document.getElementById('goaledit-' + d.editgoal); if (ta){ ta.focus(); var v = ta.value; ta.setSelectionRange(v.length, v.length); } return; }
+    if (d.canceledit){ ui.editGoal[d.canceledit] = false; render(); return; }
+    if (d.subcheck){ toggleSub(d.subcheck); return; }
+    if (d.subdel){ deleteSub(d.subdel); return; }
+    if (d.askdel){ ui.confirm = d.askdel; render(); clearTimeout(confirmTimer); confirmTimer = setTimeout(function(){ ui.confirm = null; render(); }, 4000); return; }
+    if (d.delete){
+      ui.confirm = null; D.steps = D.steps.filter(function(x){ return x.id !== d.delete; }); render();
+      send('DELETE', 'steps/' + encodeURIComponent(d.delete)); return;
+    }
+    if (d.delidea){
+      ui.confirm = null; D.ideas = D.ideas.filter(function(x){ return x.id !== d.delidea; }); render();
+      send('DELETE', 'ideas/' + encodeURIComponent(d.delidea)); return;
+    }
+    if (d.send){ sendIdea(d.send); return; }
+  });
+  root.addEventListener('input', function(e){ if (e.target.dataset.draft) ui.draft[e.target.dataset.draft] = e.target.value; });
+  root.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && e.target.dataset.draft){ e.preventDefault(); sendIdea(e.target.dataset.draft); }
+  });
+  document.addEventListener('submit', function(e){
+    var f = e.target;
+    if (f.dataset.addProject !== undefined){
+      e.preventDefault();
+      var i1 = f.querySelector('input'), title1 = i1.value.trim();
+      if (!title1) return;
+      addStep(f.dataset.addProject, f.dataset.addHorizon, title1); i1.value = '';
+    } else if (f.dataset.subStep !== undefined){
+      e.preventDefault();
+      var i2 = f.querySelector('input'), title2 = i2.value.trim();
+      if (!title2) return;
+      addSubstep(f.dataset.subStep, f.dataset.subSection, title2); i2.value = '';
+    } else if (f.dataset.goalProject !== undefined){
+      e.preventDefault();
+      saveGoal(f.dataset.goalProject, f.dataset.goalHorizon, f.dataset.goalKey, f.querySelector('textarea').value.trim());
+    }
+  });
+  function saveGoal(pid, horizon, key, objective){
+    if (!objective) return;
+    var now = new Date().toISOString();
+    var g = D.goals.find(function(x){ return x.project_id === pid && x.horizon === horizon; });
+    if (g) g.objective = objective; else D.goals.push({ project_id: pid, horizon: horizon, objective: objective, updated_at: now });
+    ui.editGoal[key] = false; render();
+    send('PUT', 'goals/' + encodeURIComponent(pid) + '/' + encodeURIComponent(horizon), { objective: objective });
+  }
+  var searchEl = document.getElementById('search'), searchClear = document.getElementById('searchClear');
+  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; }
+  searchEl.addEventListener('input', function(){ setQuery(searchEl.value); render(); });
+  searchEl.addEventListener('keydown', function(e){ if (e.key === 'Escape' && ui.q){ e.stopPropagation(); setQuery(''); render(); } });
+  searchClear.addEventListener('click', function(){ setQuery(''); render(); searchEl.focus(); });
+  document.addEventListener('keydown', function(e){
+    var a = document.activeElement, typing = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable);
+    if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey && D){ e.preventDefault(); searchEl.focus(); searchEl.select(); }
+  });
+  document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && drawerState) closeDrawer(); });
+
+  // ------------------------------------------------------------ réordonner les projets (glisser-déposer)
+  var dragProjectId = null;
+  ptabs.addEventListener('dragstart', function(e){
+    var b = e.target.closest('.ptab'); if (!b) return;
+    dragProjectId = b.dataset.project; b.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  ptabs.addEventListener('dragend', function(e){
+    var b = e.target.closest('.ptab'); if (b) b.classList.remove('dragging');
+    dragProjectId = null;
+  });
+  ptabs.addEventListener('dragover', function(e){ if (dragProjectId) e.preventDefault(); });
+  ptabs.addEventListener('drop', function(e){
+    e.preventDefault();
+    var b = e.target.closest('.ptab'); if (!b || !dragProjectId || !D) return;
+    var targetId = b.dataset.project;
+    if (targetId !== dragProjectId) reorderProjects(dragProjectId, targetId);
+    dragProjectId = null;
+  });
+  function reorderProjects(draggedId, targetId){
+    var ps = visibleProjects();
+    var from = ps.findIndex(function(p){ return p.id === draggedId; });
+    var to = ps.findIndex(function(p){ return p.id === targetId; });
+    if (from === -1 || to === -1) return;
+    var item = ps.splice(from, 1)[0];
+    ps.splice(to, 0, item);
+    ps.forEach(function(p, i){
+      if (p.position !== i){ p.position = i; send('PATCH', 'projects/' + encodeURIComponent(p.id), { position: i }); }
+    });
+    render();
+  }
+  var sending = false;
+  function sendIdea(pid){
+    var text = (ui.draft[pid] || '').trim();
+    if (!text || sending) return;
+    sending = true;
+    api('POST', 'ideas', { project_id: pid, text: text }).then(function(row){
+      D.ideas.unshift(row); ui.draft[pid] = ''; sending = false; lastSig = ''; render(); note('Idée envoyée.');
+    }).catch(function(e){ sending = false; if (e.message !== '401') note('Envoi impossible : ' + e.message + '. Réessaie.'); });
+  }
+
+  // ------------------------------------------------------------ connexion
+  function showLogin(msg){
+    ptabs.innerHTML = ''; document.getElementById('searchBox').hidden = true;
+    root.innerHTML = '<div class="login"><form id="loginForm"><h2>Connexion</h2><p>Entre ton jeton d\'accès. Il reste mémorisé sur cet appareil.</p>' +
+      '<input id="tokenInput" type="password" autocomplete="current-password" placeholder="Jeton d\'accès" required>' +
+      '<button class="btn" type="submit">Entrer</button>' + (msg ? '<p class="err">' + esc(msg) + '</p>' : '') + '</form></div>';
+    var f = document.getElementById('loginForm');
+    f.addEventListener('submit', function(e){
+      e.preventDefault();
+      token = document.getElementById('tokenInput').value.trim();
+      load(true).then(function(){ write(TOKEN_KEY, token); render(); }).catch(function(err){ if (err.message !== '401') showLogin(err.message); });
+    });
+    document.getElementById('tokenInput').focus();
+  }
+  document.getElementById('logout').addEventListener('click', function(){ write(TOKEN_KEY, null); token = ''; D = null; showLogin(); });
+
+  setInterval(function(){ if (token && D && !document.hidden) load().catch(function(){}); }, 20000);
+  document.addEventListener('visibilitychange', function(){ if (token && D && !document.hidden) load().catch(function(){}); });
+
+  if (token) load(true).then(render).catch(function(e){ if (e.message !== '401') showLogin(e.message); });
+  else showLogin();
+})();
+</script>
+</body>
+</html>
