@@ -9,7 +9,7 @@ Hari ne tape presque rien : c'est à Claude de proposer et de tenir à jour les 
 Hari coche, archive, supprime, et écrit des idées depuis la page.
 
 Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`, `dropit`, `declic` (CoachSystem, dépôt `harimalal/COACHINGSYSTEM`),
-`masterai` (catalogue des skills/agents/workflows IA déjà en routine), `aiguy4cosmetic` (cas d'usage IA pour l'industrie
+`masterai` (catalogue des skills/agents/workflows IA déjà en routine), `aiguy4cosmetic` (CosmeticsAI, dépôt `harimalal/CosmeticsAI` — cas d'usage IA pour l'industrie
 cosmétique). Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`) ont `hidden = 1`.
 
 **Tables**
