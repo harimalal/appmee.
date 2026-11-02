@@ -130,7 +130,7 @@
   /* historique */
   .filters{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;}
   .month{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:12px 6px 4px;}
-  .date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); width:46px; flex:none;}
+  .date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); width:52px; flex:none; white-space:nowrap;}
   a.row-line{text-decoration:none; color:inherit;}
   .list{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px; box-shadow:var(--shadow-sm);}
 
@@ -238,6 +238,16 @@
   .skind{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:8px 6px 2px;}
   .sgoal{font-family:'Fraunces',Georgia,serif; font-size:.98rem; line-height:1.35; padding:4px 6px 6px;}
   .sgoal .tag{font-family:'IBM Plex Mono',monospace; margin-right:6px; vertical-align:2px;}
+  .scopes{border:0; margin:-8px 0 14px; padding:0; display:flex; flex-wrap:wrap; align-items:center; gap:6px;}
+  .scopes[hidden]{display:none;}
+  .scopes legend{float:left; font-size:.78rem; color:var(--ink-faint); margin-right:4px; padding:0;}
+  .scope{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:4px 11px 4px 8px; font-size:.8rem; font-weight:600; color:var(--ink-soft); cursor:pointer; user-select:none;}
+  .scope:hover{border-color:var(--ink-faint);}
+  .scope input{margin:0; accent-color:var(--accent); width:14px; height:14px; cursor:pointer;}
+  .scope:has(input:checked){border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink);}
+  .scope .n{font-family:'IBM Plex Mono',monospace; font-size:.72rem; font-weight:500; opacity:.75;}
+  .scope .n:empty{display:none;}
+  .scopes .linkbtn{font-size:.76rem; margin-left:2px;}
   mark{background:var(--amber-soft); color:inherit; border-radius:3px; padding:0 1px; box-shadow:0 0 0 1px var(--amber-soft);}
 </style>
 </head>
@@ -252,6 +262,7 @@
       <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Rechercher dans tous les projets…  ( / )" aria-label="Rechercher par mots-clés dans tous les projets">
       <button class="icon-btn clear" id="searchClear" type="button" aria-label="Effacer la recherche" hidden>✕</button>
     </div>
+    <fieldset class="scopes" id="scopes" hidden><legend>Chercher dans</legend></fieldset>
     <main id="root"><div class="empty">Chargement…</div></main>
     <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
   </div>
@@ -274,12 +285,12 @@
   var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
   var token = read(TOKEN_KEY) || '';
   var D = null, lastSig = '';
-  var ui = { q:'', project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
-  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; } catch(e){}
+  var ui = { q:'', scopes:['goals','todo','done','deliv','ideas'], project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
+  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; if (Array.isArray(s.scopes)) ui.scopes = s.scopes; } catch(e){}
 
   function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function write(k, v){ try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} }
-  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis })); }
+  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis, scopes:ui.scopes })); }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function url(u){ return /^https:\/\//.test(u || '') ? u : ''; }
   function day(s){ var d = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return d ? parseInt(d[3],10) + ' ' + MOIS[parseInt(d[2],10)-1] : ''; }
@@ -389,30 +400,49 @@
     var el = document.getElementById(focusId); if (el){ el.focus(); var v = el.value || ''; try { el.setSelectionRange(v.length, v.length); } catch(e){} }
   }
 
+  var SCOPES = [
+    { id:'goals', label:'Objectifs' },
+    { id:'todo',  label:'Étapes à faire' },
+    { id:'done',  label:'Étapes faites' },
+    { id:'deliv', label:'Artefacts & livrables' },
+    { id:'ideas', label:'Idées' }
+  ];
+  function scopeOn(id){ return ui.scopes.indexOf(id) !== -1; }
   function searchHtml(ps){
-    var ts = terms(), total = 0, h = '';
+    var ts = terms(), total = 0, found = 0, counts = {}, h = '';
+    SCOPES.forEach(function(sc){ counts[sc.id] = 0; });
+    var subsTxt = {};
+    (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
+    var bySort = function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); };
     ps.forEach(function(p){
-      var subsTxt = {};
-      (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
       var goals = HORIZONS.map(function(hz){ return { hz:hz, obj:goal(p.id, hz.id) }; }).filter(function(g){ return g.obj && matches(g.obj, ts); });
-      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); })
-        .sort(function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); });
-      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, kindLabel(a.kind)].join(' '), ts); })
+      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, s.ref, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); });
+      var todo = steps.filter(function(s){ return s.status !== 'done'; }).sort(bySort);
+      var done = steps.filter(function(s){ return s.status === 'done'; })
+        .sort(function(a,b){ return String(b.done_at || b.updated_at).localeCompare(String(a.done_at || a.updated_at)); });
+      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, a.url, kindLabel(a.kind), a.kind === 'artefact' ? 'artifact' : ''].join(' '), ts); })
         .sort(function(a,b){ return String(b.created_at).localeCompare(String(a.created_at)); });
       var ideas = D.ideas.filter(function(i){ return i.project_id === p.id && matches([i.text, i.claude_note].join(' '), ts); });
-      var n = goals.length + steps.length + delivs.length + ideas.length;
+      var all = { goals:goals, todo:todo, done:done, deliv:delivs, ideas:ideas };
+      SCOPES.forEach(function(sc){ counts[sc.id] += all[sc.id].length; found += all[sc.id].length; });
+      var n = 0; SCOPES.forEach(function(sc){ if (scopeOn(sc.id)) n += all[sc.id].length; });
       if (!n) return;
       total += n;
       h += '<section class="sgroup"><div class="sgroup-head" style="--pc:' + esc(p.color || 'var(--accent)') + '"><span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) +
         ' <span class="n">' + n + '</span><button class="linkbtn" data-project="' + esc(p.id) + '">Ouvrir le projet ›</button></div><div class="list">';
-      if (goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
-      if (steps.length){ h += '<div class="skind">Étapes</div>' + steps.map(stepRow).join(''); }
-      if (delivs.length){ h += '<div class="skind">Livrables</div>' + delivs.map(delivRow).join(''); }
-      if (ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
+      if (scopeOn('goals') && goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
+      if (scopeOn('todo') && todo.length){ h += '<div class="skind">Étapes à faire</div>' + todo.map(stepRow).join(''); }
+      if (scopeOn('done') && done.length){ h += '<div class="skind">Étapes faites</div>' + done.map(stepRow).join(''); }
+      if (scopeOn('deliv') && delivs.length){ h += '<div class="skind">Artefacts & livrables</div>' + delivs.map(delivRow).join(''); }
+      if (scopeOn('ideas') && ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
       h += '</div></section>';
     });
-    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + esc(ui.q.trim()) + ' » dans tous les projets' : '') + '</div>';
-    return meta + (total ? h : '<div class="empty">Aucun résultat pour « ' + esc(ui.q.trim()) + ' ».</div>');
+    SCOPES.forEach(function(sc){ var el = document.getElementById('scopeN-' + sc.id); if (el) el.textContent = counts[sc.id] ? counts[sc.id] : ''; });
+    var q = esc(ui.q.trim());
+    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + q + ' » dans tous les projets' : '') + '</div>';
+    if (total) return meta + h;
+    if (!ui.scopes.length) return '<div class="empty">Coche au moins une section où chercher.</div>';
+    return '<div class="empty">Aucun résultat pour « ' + q + ' » dans les sections cochées' + (found ? ' — ' + found + ' ailleurs : coche d\'autres sections.' : '.') + '</div>';
   }
   function vtab(id, label, n, cur){
     return '<button class="vtab" role="tab" data-view="' + id + '" aria-selected="' + (cur === id) + '">' + label + (n ? '<span class="n">' + n + '</span>' : '') + '</button>';
@@ -700,7 +730,17 @@
     send('PUT', 'goals/' + encodeURIComponent(pid) + '/' + encodeURIComponent(horizon), { objective: objective });
   }
   var searchEl = document.getElementById('search'), searchClear = document.getElementById('searchClear');
-  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; }
+  var scopesEl = document.getElementById('scopes');
+  scopesEl.insertAdjacentHTML('beforeend', SCOPES.map(function(sc){
+    return '<label class="scope"><input type="checkbox" value="' + sc.id + '"' + (scopeOn(sc.id) ? ' checked' : '') + '>' + sc.label + '<span class="n" id="scopeN-' + sc.id + '"></span></label>';
+  }).join('') + '<button type="button" class="linkbtn" id="scopesAll">Tout</button>');
+  function syncScopes(){ ui.scopes = [].slice.call(scopesEl.querySelectorAll('input:checked')).map(function(i){ return i.value; }); save(); render(); }
+  scopesEl.addEventListener('change', syncScopes);
+  document.getElementById('scopesAll').addEventListener('click', function(){
+    var boxes = scopesEl.querySelectorAll('input'), allOn = [].every.call(boxes, function(i){ return i.checked; });
+    [].forEach.call(boxes, function(i){ i.checked = !allOn; }); syncScopes();
+  });
+  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; scopesEl.hidden = !q.trim(); }
   searchEl.addEventListener('input', function(){ setQuery(searchEl.value); render(); });
   searchEl.addEventListener('keydown', function(e){ if (e.key === 'Escape' && ui.q){ e.stopPropagation(); setQuery(''); render(); } });
   searchClear.addEventListener('click', function(){ setQuery(''); render(); searchEl.focus(); });
