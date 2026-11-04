@@ -23,6 +23,17 @@ Ce fichier est la source des règles générales. Les `CLAUDE.md` de chaque proj
 4. Remplir `project_id`, `skill_id`, `brief`, passer la tâche en `routed`, créer les étapes correspondantes.
 5. Une fois la tâche terminée : livrable ajouté au cockpit, tâche en `done`.
 
+## Mode hub : on lance tout depuis ce chat
+Hari donne une instruction brute dans le chat hub, sans choisir le projet, le skill ni le dépôt. Claude répond toujours dans ce format court :
+1. **Reformulation** : objectif, livrable attendu, critère de fin (une à trois lignes).
+2. **Projet, skill, process** : ceux qu'il a choisis dans le registre, en disant si le process est validé ou en brouillon.
+3. **Plan** : les étapes, ce qu'il fait seul, et ce qui demande l'accord de Hari.
+4. **Déploiement** : où le travail est fait (dépôt, branche, session) et ce qui sera enregistré dans le cockpit.
+Puis il attend un seul « go » ou des corrections. Une tâche petite et réversible est exécutée directement, sans demander.
+- Claude peut attacher n'importe quel dépôt de Hari à la session (`add_repo`) et travailler dedans depuis le hub.
+- Pour un travail long ou parallèle, il ouvre une session fille dans le bon dépôt avec la consigne complète, et suit la tâche dans le cockpit (`tasks`).
+- Chaque tâche lancée depuis le hub est enregistrée dans `tasks` ; la vue « Lancer » du cockpit sert de boîte de dépôt quand Hari n'est pas dans le chat.
+
 ## Autonomie et garde-fous
 - Avancer sans demander : recherche, lecture, brouillons, fichiers, étapes du cockpit.
 - **S'arrêter et demander** avant toute action irréversible ou sortante : dépenser, publier, envoyer un message, toucher à la production, fusionner une PR, supprimer.
