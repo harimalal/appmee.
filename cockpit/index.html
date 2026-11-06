@@ -130,7 +130,7 @@
   /* historique */
   .filters{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;}
   .month{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:12px 6px 4px;}
-  .date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); width:46px; flex:none;}
+  .date{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); width:52px; flex:none; white-space:nowrap;}
   a.row-line{text-decoration:none; color:inherit;}
   .list{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px; box-shadow:var(--shadow-sm);}
 
@@ -238,7 +238,34 @@
   .skind{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); padding:8px 6px 2px;}
   .sgoal{font-family:'Fraunces',Georgia,serif; font-size:.98rem; line-height:1.35; padding:4px 6px 6px;}
   .sgoal .tag{font-family:'IBM Plex Mono',monospace; margin-right:6px; vertical-align:2px;}
+  .scopes{border:0; margin:-8px 0 14px; padding:0; display:flex; flex-wrap:wrap; align-items:center; gap:6px;}
+  .scopes[hidden]{display:none;}
+  .scopes legend{float:left; font-size:.78rem; color:var(--ink-faint); margin-right:4px; padding:0;}
+  .scope{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:4px 11px 4px 8px; font-size:.8rem; font-weight:600; color:var(--ink-soft); cursor:pointer; user-select:none;}
+  .scope:hover{border-color:var(--ink-faint);}
+  .scope input{margin:0; accent-color:var(--accent); width:14px; height:14px; cursor:pointer;}
+  .scope:has(input:checked){border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink);}
+  .scope .n{font-family:'IBM Plex Mono',monospace; font-size:.72rem; font-weight:500; opacity:.75;}
+  .scope .n:empty{display:none;}
+  .scopes .linkbtn{font-size:.76rem; margin-left:2px;}
   mark{background:var(--amber-soft); color:inherit; border-radius:3px; padding:0 1px; box-shadow:0 0 0 1px var(--amber-soft);}
+
+  /* vue « Lancer » */
+  .ptab.launch{cursor:pointer; font-weight:700;}
+  .proposal{margin-top:12px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:12px;}
+  .proposal .btn{padding:9px 16px;}
+  .prow{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:560px){ .prow{grid-template-columns:1fr;} }
+  .prow label{display:flex; flex-direction:column; gap:4px; font-size:.76rem; font-weight:600; color:var(--ink-faint);}
+  .prow select{border:1px solid var(--line); background:var(--canvas); color:var(--ink); border-radius:9px; padding:8px 10px; font:inherit; font-size:.9rem; min-width:0;}
+  .pbox{background:var(--canvas); border:1px solid var(--line-soft); border-radius:10px; padding:10px 12px; font-size:.84rem;}
+  .ptitle{font-weight:700; display:flex; gap:8px; align-items:center; margin-bottom:4px; flex-wrap:wrap;}
+  .ptxt{color:var(--ink-soft); margin-bottom:6px;}
+  .pproc{white-space:pre-wrap; overflow-wrap:anywhere; color:var(--ink);}
+  .lsec{margin-top:24px;}
+  .lsec-head{display:flex; align-items:center; gap:10px; margin:0 4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint);}
+  .lsec-head .rule{flex:1; height:1px; background:var(--line);}
+  .tasknote{font-size:.8rem; color:var(--ink-faint); padding:0 8px 4px 35px; overflow-wrap:anywhere;}
 </style>
 </head>
 <body>
@@ -252,6 +279,7 @@
       <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Rechercher dans tous les projets…  ( / )" aria-label="Rechercher par mots-clés dans tous les projets">
       <button class="icon-btn clear" id="searchClear" type="button" aria-label="Effacer la recherche" hidden>✕</button>
     </div>
+    <fieldset class="scopes" id="scopes" hidden><legend>Chercher dans</legend></fieldset>
     <main id="root"><div class="empty">Chargement…</div></main>
     <div class="foot">Objectifs et étapes tenus à jour par Claude depuis tes conversations. Tu coches, tu archives, tu supprimes, tu écris tes idées. <span id="fresh"></span></div>
   </div>
@@ -274,12 +302,12 @@
   var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
   var token = read(TOKEN_KEY) || '';
   var D = null, lastSig = '';
-  var ui = { q:'', project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
-  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; } catch(e){}
+  var ui = { launch:false, skillsOpen:false, ld:{ text:'', project:'', skill:'', pm:false, sm:false }, q:'', scopes:['goals','todo','done','deliv','ideas'], project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
+  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; if (Array.isArray(s.scopes)) ui.scopes = s.scopes; } catch(e){}
 
   function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function write(k, v){ try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} }
-  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis })); }
+  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis, scopes:ui.scopes })); }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function url(u){ return /^https:\/\//.test(u || '') ? u : ''; }
   function day(s){ var d = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return d ? parseInt(d[3],10) + ' ' + MOIS[parseInt(d[2],10)-1] : ''; }
@@ -326,7 +354,7 @@
   }
   function load(force){
     return api('GET', 'state').then(function(data){
-      var sig = JSON.stringify([data.projects, data.axes, data.goals, data.steps, data.deliverables, data.ideas, data.substeps]);
+      var sig = JSON.stringify([data.projects, data.axes, data.goals, data.steps, data.deliverables, data.ideas, data.substeps, data.skills, data.tasks]);
       note('Synchro : ' + new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }));
       if (!force && sig === lastSig) return;
       lastSig = sig; D = data;
@@ -362,14 +390,15 @@
     if (!ps.length){ root.innerHTML = '<div class="empty">Aucun projet.</div>'; return; }
     if (!ui.project || !ps.some(function(p){ return p.id === ui.project; })) ui.project = ps[0].id;
 
-    ptabs.innerHTML = ps.map(function(p){
+    ptabs.innerHTML = '<button class="ptab launch" role="tab" data-launchmode="1" aria-selected="' + ui.launch + '" style="--pc:var(--accent)"><span class="dot"></span>⚡ Lancer</button>' + ps.map(function(p){
       var n = stepsOf(p.id).filter(function(s){ return s.status === 'todo' || s.status === 'doing'; }).length;
-      return '<button class="ptab" role="tab" draggable="true" data-project="' + esc(p.id) + '" aria-selected="' + (p.id === ui.project) + '" style="--pc:' + esc(p.color || 'var(--accent)') + '">' +
+      return '<button class="ptab" role="tab" draggable="true" data-project="' + esc(p.id) + '" aria-selected="' + (p.id === ui.project && !ui.launch) + '" style="--pc:' + esc(p.color || 'var(--accent)') + '">' +
         '<span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) + (n ? ' <span class="n">' + n + '</span>' : '') + '</button>';
     }).join('');
 
     var focusId = document.activeElement && document.activeElement.id;
     if (terms().length){ root.innerHTML = searchHtml(ps); restoreFocus(focusId); return; }
+    if (ui.launch){ root.innerHTML = launchHtml(); restoreFocus(focusId); return; }
     var p = project(ui.project);
     var view = ui.view[p.id] || 'plan';
     var nDone = stepsOf(p.id).filter(function(s){ return s.status === 'done'; }).length + delivOf(p.id).length;
@@ -389,30 +418,141 @@
     var el = document.getElementById(focusId); if (el){ el.focus(); var v = el.value || ''; try { el.setSelectionRange(v.length, v.length); } catch(e){} }
   }
 
+  var SCOPES = [
+    { id:'goals', label:'Objectifs' },
+    { id:'todo',  label:'Étapes à faire' },
+    { id:'done',  label:'Étapes faites' },
+    { id:'deliv', label:'Artefacts & livrables' },
+    { id:'ideas', label:'Idées' }
+  ];
+  function scopeOn(id){ return ui.scopes.indexOf(id) !== -1; }
   function searchHtml(ps){
-    var ts = terms(), total = 0, h = '';
+    var ts = terms(), total = 0, found = 0, counts = {}, h = '';
+    SCOPES.forEach(function(sc){ counts[sc.id] = 0; });
+    var subsTxt = {};
+    (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
+    var bySort = function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); };
     ps.forEach(function(p){
-      var subsTxt = {};
-      (D.substeps || []).forEach(function(x){ subsTxt[x.step_id] = (subsTxt[x.step_id] || '') + ' ' + x.title + ' ' + (x.section || ''); });
       var goals = HORIZONS.map(function(hz){ return { hz:hz, obj:goal(p.id, hz.id) }; }).filter(function(g){ return g.obj && matches(g.obj, ts); });
-      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); })
-        .sort(function(a,b){ return ((RANK[a.status] == null ? 3 : RANK[a.status]) - (RANK[b.status] == null ? 3 : RANK[b.status])) || ((a.position || 0) - (b.position || 0)); });
-      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, kindLabel(a.kind)].join(' '), ts); })
+      var steps = stepsOf(p.id).filter(function(s){ return matches([s.title, s.detail, s.ref, axisLabel(s.axis), subsTxt[s.id] || ''].join(' '), ts); });
+      var todo = steps.filter(function(s){ return s.status !== 'done'; }).sort(bySort);
+      var done = steps.filter(function(s){ return s.status === 'done'; })
+        .sort(function(a,b){ return String(b.done_at || b.updated_at).localeCompare(String(a.done_at || a.updated_at)); });
+      var delivs = delivOf(p.id).filter(function(a){ return matches([a.title, a.note, a.url, kindLabel(a.kind), a.kind === 'artefact' ? 'artifact' : ''].join(' '), ts); })
         .sort(function(a,b){ return String(b.created_at).localeCompare(String(a.created_at)); });
       var ideas = D.ideas.filter(function(i){ return i.project_id === p.id && matches([i.text, i.claude_note].join(' '), ts); });
-      var n = goals.length + steps.length + delivs.length + ideas.length;
+      var all = { goals:goals, todo:todo, done:done, deliv:delivs, ideas:ideas };
+      SCOPES.forEach(function(sc){ counts[sc.id] += all[sc.id].length; found += all[sc.id].length; });
+      var n = 0; SCOPES.forEach(function(sc){ if (scopeOn(sc.id)) n += all[sc.id].length; });
       if (!n) return;
       total += n;
       h += '<section class="sgroup"><div class="sgroup-head" style="--pc:' + esc(p.color || 'var(--accent)') + '"><span class="dot"></span>' + esc(p.icon || '') + ' ' + esc(p.name) +
         ' <span class="n">' + n + '</span><button class="linkbtn" data-project="' + esc(p.id) + '">Ouvrir le projet ›</button></div><div class="list">';
-      if (goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
-      if (steps.length){ h += '<div class="skind">Étapes</div>' + steps.map(stepRow).join(''); }
-      if (delivs.length){ h += '<div class="skind">Livrables</div>' + delivs.map(delivRow).join(''); }
-      if (ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
+      if (scopeOn('goals') && goals.length){ h += '<div class="skind">Objectifs</div>' + goals.map(function(g){ return '<div class="sgoal"><span class="tag">' + esc(g.hz.label) + '</span>' + hl(g.obj) + '</div>'; }).join(''); }
+      if (scopeOn('todo') && todo.length){ h += '<div class="skind">Étapes à faire</div>' + todo.map(stepRow).join(''); }
+      if (scopeOn('done') && done.length){ h += '<div class="skind">Étapes faites</div>' + done.map(stepRow).join(''); }
+      if (scopeOn('deliv') && delivs.length){ h += '<div class="skind">Artefacts & livrables</div>' + delivs.map(delivRow).join(''); }
+      if (scopeOn('ideas') && ideas.length){ h += '<div class="skind">Idées</div>' + ideas.map(ideaRow).join(''); }
       h += '</div></section>';
     });
-    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + esc(ui.q.trim()) + ' » dans tous les projets' : '') + '</div>';
-    return meta + (total ? h : '<div class="empty">Aucun résultat pour « ' + esc(ui.q.trim()) + ' ».</div>');
+    SCOPES.forEach(function(sc){ var el = document.getElementById('scopeN-' + sc.id); if (el) el.textContent = counts[sc.id] ? counts[sc.id] : ''; });
+    var q = esc(ui.q.trim());
+    var meta = '<div class="search-meta">' + (total ? total + ' résultat' + (total > 1 ? 's' : '') + ' pour « ' + q + ' » dans tous les projets' : '') + '</div>';
+    if (total) return meta + h;
+    if (!ui.scopes.length) return '<div class="empty">Coche au moins une section où chercher.</div>';
+    return '<div class="empty">Aucun résultat pour « ' + q + ' » dans les sections cochées' + (found ? ' — ' + found + ' ailleurs : coche d\'autres sections.' : '.') + '</div>';
+  }
+  // ------------------------------------------------------------ vue « Lancer » : tâche → projet + skill + process
+  function skills(){ return (D && D.skills) || []; }
+  function tasks(){ return (D && D.tasks) || []; }
+  function skillOf(id){ return skills().find(function(x){ return x.id === id; }); }
+  function has(f, k){ return !!k && new RegExp('(^|[^a-z0-9])' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[^a-z0-9])').test(f); }
+  function suggest(text){
+    var f = fold(text), out = { project:'', skill:'' }, best = 0;
+    if (!f.trim()) return out;
+    visibleProjects().forEach(function(p){
+      var sc = 0;
+      [p.id, p.name].forEach(function(n){ n = fold(n); if (n.length > 2 && has(f, n)) sc += 5; });
+      fold(p.description).split(/[^a-z0-9]+/).forEach(function(w){ if (w.length >= 6 && has(f, w)) sc += 1; });
+      if (sc > best){ best = sc; out.project = p.id; }
+    });
+    best = 0;
+    skills().forEach(function(s){
+      var sc = 0;
+      String(s.keywords || '').split(',').forEach(function(k){ k = fold(k).trim(); if (has(f, k)) sc += k.length > 4 ? 2 : 1; });
+      if (has(f, fold(s.name))) sc += 3;
+      if (sc > best){ best = sc; out.skill = s.id; }
+    });
+    return out;
+  }
+  function briefOf(text, pid, sid){
+    var p = project(pid), s = skillOf(sid), l = [];
+    l.push('Projet : ' + (p ? p.name + (p.repo ? ' (' + p.repo + ')' : '') : 'à déterminer'));
+    l.push('Objectif : ' + text.trim());
+    if (s){
+      l.push('Skill : ' + s.name + ' — ' + s.location);
+      l.push((s.status === 'valide' ? 'Process validé : ' : 'Process (brouillon, à valider) : ') + s.process);
+    }
+    l.push('Consignes : lire le CLAUDE.md du projet et os-ia/CLAUDE-general.md ; tenir le cockpit à jour (étapes, livrables) ; s\'arrêter avant toute action irréversible ou sortante.');
+    return l.join('\n');
+  }
+  function opt(value, label, cur){ return '<option value="' + esc(value) + '"' + (value === cur ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+  function proposalHtml(){
+    var t = ui.ld.text.trim();
+    if (!t) return '<div class="hint">Écris une tâche ou un objectif : le projet, le skill et le process proposés apparaissent ici.</div>';
+    var s = skillOf(ui.ld.skill), ok = s && s.status === 'valide';
+    var h = '<div class="proposal"><div class="prow">' +
+      '<label>Projet<select data-launchsel="project">' + opt('', '— à choisir par Claude —', ui.ld.project) + visibleProjects().map(function(p){ return opt(p.id, (p.icon ? p.icon + ' ' : '') + p.name, ui.ld.project); }).join('') + '</select></label>' +
+      '<label>Skill<select data-launchsel="skill">' + opt('', '— aucun / à choisir par Claude —', ui.ld.skill) + skills().map(function(x){ return opt(x.id, x.name + (x.status === 'valide' ? '' : ' (brouillon)'), ui.ld.skill); }).join('') + '</select></label></div>';
+    if (s) h += '<div class="pbox"><div class="ptitle">' + esc(s.name) + '<span class="tag">' + esc(s.scope) + '</span><span class="tag ' + (ok ? 'ok' : 'doing') + '">' + (ok ? 'Process validé' : 'Process à valider') + '</span></div>' +
+      '<div class="ptxt">' + esc(s.when_to_use) + '</div><div class="pproc">' + esc(s.process) + '</div></div>';
+    return h + '<div class="acts"><button class="btn" data-sendtask="1">Envoyer au dispatch</button><button class="act" data-copy="draft">Copier la consigne</button></div></div>';
+  }
+  var TASK_TAG = { 'new':['doing','En attente'], routed:['','Dispatchée'], launched:['art','Lancée'], done:['ok','Terminée'] };
+  function taskRow(t){
+    var id = esc(t.id), p = project(t.project_id), s = skillOf(t.skill_id), tg = TASK_TAG[t.status] || ['', t.status];
+    var h = '<div class="row' + (t.status === 'done' ? ' done' : '') + '"><div class="row-line"><span class="date">' + day(t.created_at) + '</span><span class="t" style="flex:1;min-width:0;white-space:normal;font-size:.92rem">' + esc(t.text) + '</span>' +
+      (p ? '<span class="tag">' + esc(p.name) + '</span>' : '') + (s ? '<span class="tag art">' + esc(s.name) + '</span>' : '') + '<span class="tag ' + tg[0] + '">' + tg[1] + '</span></div>';
+    if (t.claude_note) h += '<div class="tasknote">Claude : ' + esc(t.claude_note) + '</div>';
+    h += '<div class="more" style="padding-top:2px"><div class="acts">';
+    if (t.brief) h += '<button class="act" data-copy="' + id + '">Copier la consigne</button>';
+    if (t.status !== 'launched' && t.status !== 'done') h += '<button class="act" data-taskstatus="launched" data-taskid="' + id + '">Marquer lancée</button>';
+    if (t.status !== 'done') h += '<button class="act" data-taskstatus="done" data-taskid="' + id + '">Terminée</button>';
+    else h += '<button class="act" data-taskstatus="routed" data-taskid="' + id + '">Rouvrir</button>';
+    h += ui.confirm === t.id ? '<button class="act warn" data-deltask="' + id + '">Confirmer la suppression</button>' : '<button class="act" data-askdel="' + id + '">Supprimer</button>';
+    return h + '</div></div></div>';
+  }
+  function launchHtml(){
+    var h = '<div class="phead"><h2>⚡ Lancer</h2><span class="repo">une tâche → le bon projet, le bon skill, le process validé</span></div>' +
+      '<div class="idea-box" style="margin-top:0"><textarea id="launch-text" maxlength="4000" aria-label="Nouvelle tâche ou objectif" placeholder="Décris la tâche ou l\'objectif, tel quel. Pas besoin de savoir où ni avec quel skill.">' + esc(ui.ld.text) + '</textarea></div>' +
+      '<div id="launchProp">' + proposalHtml() + '</div>';
+    var list = tasks().slice(0, 15);
+    h += '<div class="lsec"><div class="lsec-head"><span>Tâches</span><span class="rule"></span></div>' +
+      (list.length ? '<div class="list">' + list.map(taskRow).join('') + '</div>' : '<div class="empty">Aucune tâche pour l\'instant.</div>') + '</div>';
+    var sk = skills(), nOk = sk.filter(function(x){ return x.status === 'valide'; }).length;
+    h += '<div class="lsec"><div class="lsec-head"><span>Skills et process</span><span class="rule"></span><button class="linkbtn" data-toggleskills="1">' + (ui.skillsOpen ? 'Masquer' : 'Voir') + ' (' + nOk + '/' + sk.length + ' validés)</button></div>';
+    if (ui.skillsOpen) h += '<div class="list">' + sk.map(function(x){
+      var ok = x.status === 'valide';
+      return '<div class="row"><div class="more" style="padding:8px 10px"><div class="ptitle">' + esc(x.name) + '<span class="tag">' + esc(x.scope) + '</span><span class="tag ' + (ok ? 'ok' : 'doing') + '">' + (ok ? 'Validé' : 'Brouillon') + '</span></div>' +
+        '<p style="margin:0 0 4px">' + esc(x.when_to_use) + '</p><p style="margin:0 0 4px;color:var(--ink-faint)">' + esc(x.location) + '</p><p class="pproc" style="margin:0 0 8px">' + esc(x.process) + '</p>' +
+        '<div class="acts"><button class="act" data-skillvalid="' + esc(x.id) + '">' + (ok ? 'Remettre en brouillon' : 'Valider ce process') + '</button></div></div></div>';
+    }).join('') + '</div>';
+    return h + '</div>';
+  }
+  function legacyCopy(t){ var a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch(e){} document.body.removeChild(a); }
+  function copyBrief(id){
+    var t = id === 'draft' ? briefOf(ui.ld.text, ui.ld.project, ui.ld.skill) : ((tasks().find(function(x){ return x.id === id; }) || {}).brief || '');
+    if (!t) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).catch(function(){ legacyCopy(t); }); else legacyCopy(t);
+    note('Consigne copiée : colle-la dans une session.');
+  }
+  function sendTask(){
+    var t = ui.ld.text.trim(); if (!t || sending) return;
+    sending = true;
+    api('POST', 'tasks', { text:t, project_id:ui.ld.project, skill_id:ui.ld.skill, brief:briefOf(t, ui.ld.project, ui.ld.skill), status: ui.ld.project ? 'routed' : 'new' }).then(function(row){
+      if (!D.tasks) D.tasks = [];
+      D.tasks.unshift(row); ui.ld = { text:'', project:'', skill:'', pm:false, sm:false }; sending = false; lastSig = ''; render(); note('Tâche envoyée au dispatch.');
+    }).catch(function(e){ sending = false; if (e.message !== '401') note('Envoi impossible : ' + e.message); });
   }
   function vtab(id, label, n, cur){
     return '<button class="vtab" role="tab" data-view="' + id + '" aria-selected="' + (cur === id) + '">' + label + (n ? '<span class="n">' + n + '</span>' : '') + '</button>';
@@ -646,7 +786,25 @@
     }
     var b = e.target.closest('button'); if (!b || !D) return;
     var d = b.dataset;
-    if (d.project){ ui.project = d.project; setQuery(''); save(); closeDrawer(); render(); return; }
+    if (d.launchmode){ ui.launch = true; setQuery(''); closeDrawer(); render(); var lt = document.getElementById('launch-text'); if (lt) lt.focus(); return; }
+    if (d.sendtask){ sendTask(); return; }
+    if (d.copy){ copyBrief(d.copy); return; }
+    if (d.toggleskills){ ui.skillsOpen = !ui.skillsOpen; render(); return; }
+    if (d.skillvalid){
+      var sk = skillOf(d.skillvalid); if (!sk) return;
+      sk.status = sk.status === 'valide' ? 'draft' : 'valide'; render();
+      send('PATCH', 'skills/' + encodeURIComponent(sk.id), { status: sk.status }); return;
+    }
+    if (d.taskstatus){
+      var tk = tasks().find(function(x){ return x.id === d.taskid; }); if (!tk) return;
+      tk.status = d.taskstatus; render();
+      send('PATCH', 'tasks/' + encodeURIComponent(tk.id), { status: tk.status }); return;
+    }
+    if (d.deltask){
+      ui.confirm = null; D.tasks = tasks().filter(function(x){ return x.id !== d.deltask; }); render();
+      send('DELETE', 'tasks/' + encodeURIComponent(d.deltask)); return;
+    }
+    if (d.project){ ui.project = d.project; ui.launch = false; setQuery(''); save(); closeDrawer(); render(); return; }
     if (d.view){ ui.view[ui.project] = d.view; save(); closeDrawer(); render(); return; }
     if (d.axis !== undefined){ ui.axis[ui.project] = d.axis; save(); render(); return; }
     if (d.filter){ ui.filter = d.filter; render(); return; }
@@ -699,8 +857,31 @@
     ui.editGoal[key] = false; render();
     send('PUT', 'goals/' + encodeURIComponent(pid) + '/' + encodeURIComponent(horizon), { objective: objective });
   }
+  root.addEventListener('input', function(e){
+    if (e.target.id !== 'launch-text') return;
+    ui.ld.text = e.target.value;
+    var sg = suggest(ui.ld.text);
+    if (!ui.ld.pm) ui.ld.project = sg.project;
+    if (!ui.ld.sm) ui.ld.skill = sg.skill;
+    var box = document.getElementById('launchProp'); if (box) box.innerHTML = proposalHtml();
+  });
+  root.addEventListener('change', function(e){
+    var k = e.target.dataset.launchsel; if (!k) return;
+    ui.ld[k] = e.target.value; ui.ld[k === 'project' ? 'pm' : 'sm'] = true;
+    var box = document.getElementById('launchProp'); if (box) box.innerHTML = proposalHtml();
+  });
   var searchEl = document.getElementById('search'), searchClear = document.getElementById('searchClear');
-  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; }
+  var scopesEl = document.getElementById('scopes');
+  scopesEl.insertAdjacentHTML('beforeend', SCOPES.map(function(sc){
+    return '<label class="scope"><input type="checkbox" value="' + sc.id + '"' + (scopeOn(sc.id) ? ' checked' : '') + '>' + sc.label + '<span class="n" id="scopeN-' + sc.id + '"></span></label>';
+  }).join('') + '<button type="button" class="linkbtn" id="scopesAll">Tout</button>');
+  function syncScopes(){ ui.scopes = [].slice.call(scopesEl.querySelectorAll('input:checked')).map(function(i){ return i.value; }); save(); render(); }
+  scopesEl.addEventListener('change', syncScopes);
+  document.getElementById('scopesAll').addEventListener('click', function(){
+    var boxes = scopesEl.querySelectorAll('input'), allOn = [].every.call(boxes, function(i){ return i.checked; });
+    [].forEach.call(boxes, function(i){ i.checked = !allOn; }); syncScopes();
+  });
+  function setQuery(q){ ui.q = q; if (searchEl.value !== q) searchEl.value = q; searchClear.hidden = !q; scopesEl.hidden = !q.trim(); }
   searchEl.addEventListener('input', function(){ setQuery(searchEl.value); render(); });
   searchEl.addEventListener('keydown', function(e){ if (e.key === 'Escape' && ui.q){ e.stopPropagation(); setQuery(''); render(); } });
   searchClear.addEventListener('click', function(){ setQuery(''); render(); searchEl.focus(); });
