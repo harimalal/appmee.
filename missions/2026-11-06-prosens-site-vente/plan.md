@@ -21,15 +21,15 @@ Cocher au fil de l'eau. Mode éclair : ne garder que les phases 3, 4 et 5.
 - [x] 2.3 Décision structurante #2 : ordre et rythme des sections
 
 ## Phase 3 — Production
-- [ ] 3.1 L01 Site PROSENS -> livrables/L01-prosens/index.html
-- [ ] 3.2 L02 Guide de mise en ligne et pièces à fournir -> livrables/L02-guide-mise-en-ligne.md
+- [x] 3.1 L01 Site PROSENS -> livrables/L01-prosens/index.html
+- [x] 3.2 L02 Guide de mise en ligne et pièces à fournir -> livrables/L02-guide-mise-en-ligne.md
 
 ## Phase 4 — Auto-audit
-- [ ] 4.1 Vérification mécanique et score de chaque livrable -> audit.md
-- [ ] 4.2 Corrections (2 passes maximum)
-- [ ] 4.3 Revue finale du panel (mode complète)
+- [x] 4.1 Vérification mécanique et score de chaque livrable -> audit.md
+- [x] 4.2 Corrections (2 passes maximum)
+- [x] 4.3 Revue finale du panel (mode complète)
 
 ## Phase 5 — Livraison
-- [ ] 5.1 LIVRAISON.md
-- [ ] 5.2 check-mission.sh --phase 5 au vert
-- [ ] 5.3 Résumé dans le chat, temps réel, commit et push final
+- [x] 5.1 LIVRAISON.md
+- [x] 5.2 check-mission.sh --phase 5 au vert
+- [x] 5.3 Résumé dans le chat, temps réel, commit et push final
