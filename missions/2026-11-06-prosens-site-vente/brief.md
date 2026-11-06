@@ -4,7 +4,7 @@ mission: prosens-site-vente
 date: 2026-11-06
 mode: standard
 verdict: lancer sous condition
-verrouillé: non
+verrouillé: oui (2026-11-06)
 
 ## À retenir
 - Objectif : une page de vente PROSENS qui fait réserver un échange à des dirigeants de PME et de grands groupes qui veulent externaliser leur prospection et leur closing.

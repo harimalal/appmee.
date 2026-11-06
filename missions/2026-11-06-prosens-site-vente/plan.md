@@ -7,18 +7,18 @@ Cocher au fil de l'eau. Mode éclair : ne garder que les phases 3, 4 et 5.
 - [x] 0.2 cadrage-projet : reconnaissance, risques, dossier de choix, contradiction
 - [x] 0.3 brief.md, equipe.md, verdict
 - [x] 0.4 TOOLING.md
-- [ ] 0.5 GATE : GO de l'utilisateur, puis lock-brief.sh
+- [x] 0.5 GATE : GO de l'utilisateur, puis lock-brief.sh
 
 ## Phase 1 — Benchmark
-- [ ] 1.0 Vérifier l'état réel des outils de TOOLING.md
-- [ ] 1.1 Positionnement face à Belkins, CIENCE, SalesHive et aux offres françaises : 2-3 cas -> BENCHMARK.md
-- [ ] 1.2 Structure d'une page de vente B2B de services : 2-3 cas -> BENCHMARK.md
-- [ ] 1.3 Mouvement et accessibilité (sobriété, reduced-motion) : 2-3 cas -> BENCHMARK.md
+- [x] 1.0 Vérifier l'état réel des outils de TOOLING.md
+- [x] 1.1 Positionnement face à Belkins, CIENCE, SalesHive et aux offres françaises : 2-3 cas -> BENCHMARK.md
+- [x] 1.2 Structure d'une page de vente B2B de services : 2-3 cas -> BENCHMARK.md
+- [x] 1.3 Mouvement et accessibilité (sobriété, reduced-motion) : 2-3 cas -> BENCHMARK.md
 
 ## Phase 2 — Débat
-- [ ] 2.1 Fiches des rôles recopiées dans decisions.md, enrichissement des deux experts de domaine
-- [ ] 2.2 Décision structurante #1 : direction visuelle (palette, typographie, logotype)
-- [ ] 2.3 Décision structurante #2 : ordre et rythme des sections
+- [x] 2.1 Fiches des rôles recopiées dans decisions.md, enrichissement des deux experts de domaine
+- [x] 2.2 Décision structurante #1 : direction visuelle (palette, typographie, logotype)
+- [x] 2.3 Décision structurante #2 : ordre et rythme des sections
 
 ## Phase 3 — Production
 - [ ] 3.1 L01 Site PROSENS -> livrables/L01-prosens/index.html
