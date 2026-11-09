@@ -92,6 +92,31 @@
   .objective{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:1.08rem; line-height:1.35; margin:6px 6px 10px; text-wrap:balance;}
   .h-empty{font-size:.85rem; color:var(--ink-faint); padding:2px 6px 8px;}
 
+  /* objectifs pliables */
+  button.h-label{width:100%; border:0; background:none; cursor:pointer; text-align:left; margin:0; padding:0 6px 8px; line-height:1.2;}
+  button.h-label:hover{color:var(--ink-soft);}
+  .h-label .count{font-weight:500; letter-spacing:.04em; white-space:nowrap;}
+  .h-label .chev{font-size:13px; transition:transform .15s;}
+  .horizon:not(.folded) .h-label .chev{transform:rotate(90deg);}
+  .horizon.folded{padding-bottom:6px;}
+  .horizon.folded .goal-row{margin-bottom:6px;}
+
+  /* avancement : un segment par étape, groupés par horizon */
+  .progress{margin:0 0 16px;}
+  .pbar{display:flex; gap:10px; align-items:stretch;}
+  .pgroup{display:flex; flex-direction:column; gap:5px; min-width:84px; border:0; background:none; padding:0; cursor:pointer; text-align:left; color:inherit; font:inherit;}
+  .pseg{display:flex; gap:2px; height:10px;}
+  .pseg i{flex:1; min-width:3px; border-radius:2px; background:var(--line); transition:background .2s;}
+  .pseg i.o{background:var(--amber);}
+  .pseg i.d{background:var(--good);}
+  .pseg.none i{background:transparent; border:1px dashed var(--line);}
+  .pgroup:hover .pseg i:not(.d):not(.o){background:var(--ink-faint);}
+  .plabel{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .plabel b{color:var(--ink); font-weight:700;}
+  .plabel .ls{display:none;}
+  @media (max-width:560px){ .plabel .lf{display:none;} .plabel .ls{display:inline;} }
+  .ptotal{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:8px; font-size:.78rem; color:var(--ink-soft);}
+
   /* lignes */
   .row{border-radius:9px;}
   .row:hover{background:var(--hover);}
@@ -302,12 +327,12 @@
   var root = document.getElementById('root'), ptabs = document.getElementById('ptabs'), fresh = document.getElementById('fresh');
   var token = read(TOKEN_KEY) || '';
   var D = null, lastSig = '';
-  var ui = { launch:false, skillsOpen:false, ld:{ text:'', project:'', skill:'', pm:false, sm:false }, q:'', scopes:['goals','todo','done','deliv','ideas'], project:null, view:{}, axis:{}, open:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
-  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; if (Array.isArray(s.scopes)) ui.scopes = s.scopes; } catch(e){}
+  var ui = { launch:false, skillsOpen:false, ld:{ text:'', project:'', skill:'', pm:false, sm:false }, q:'', scopes:['goals','todo','done','deliv','ideas'], project:null, view:{}, axis:{}, open:{}, fold:{}, filter:'all', archived:{}, confirm:null, draft:{}, editGoal:{} };
+  try { var s = JSON.parse(read(UI_KEY) || '{}'); ui.project = s.project || null; ui.view = s.view || {}; ui.axis = s.axis || {}; if (Array.isArray(s.scopes)) ui.scopes = s.scopes; if (s.fold && typeof s.fold === 'object') ui.fold = s.fold; } catch(e){}
 
   function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function write(k, v){ try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} }
-  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis, scopes:ui.scopes })); }
+  function save(){ write(UI_KEY, JSON.stringify({ project:ui.project, view:ui.view, axis:ui.axis, scopes:ui.scopes, fold:ui.fold })); }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function url(u){ return /^https:\/\//.test(u || '') ? u : ''; }
   function day(s){ var d = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return d ? parseInt(d[3],10) + ' ' + MOIS[parseInt(d[2],10)-1] : ''; }
@@ -409,7 +434,7 @@
     h += '<div class="vtabs" role="tablist">' + vtab('plan', 'Objectifs', null, view) + vtab('fait', 'Fait & livrables', nDone, view) + vtab('idees', 'Mes idées', nIdeas, view) + '</div>';
     if (view === 'fait') h += historyHtml(p);
     else if (view === 'idees') h += ideasHtml(p, true);
-    else h += axisBar(p) + planHtml(p) + ideasHtml(p, false);
+    else h += axisBar(p) + progressHtml(p) + planHtml(p) + ideasHtml(p, false);
     root.innerHTML = h;
     restoreFocus(focusId);
   }
@@ -576,20 +601,47 @@
         .sort(function(a,b){ return (RANK[a.status] - RANK[b.status]) || ((a.position || 0) - (b.position || 0)); });
       var arch = steps.filter(function(s){ return s.horizon === hz.id && s.status === 'archived'; });
       var doneN = list.filter(function(s){ return s.status === 'done'; }).length;
-      var key = p.id + hz.id;
-      var h = '<section class="horizon"><div class="h-label"><span>' + hz.label + '</span><span class="when">· ' + hz.when + '</span><span class="rule"></span>' +
-        (doneN ? '<span>' + doneN + ' fait' + (doneN > 1 ? 's' : '') + '</span>' : '') + '</div>';
+      var key = p.id + hz.id, folded = !!ui.fold[key];
+      var h = '<section class="horizon' + (folded ? ' folded' : '') + '" id="hz-' + esc(key) + '">' +
+        '<button class="h-label" data-fold="' + esc(key) + '" aria-expanded="' + !folded + '" title="' + (folded ? 'Déplier' : 'Replier') + ' ' + esc(hz.label.toLowerCase()) + '">' +
+        '<span class="chev" aria-hidden="true">›</span><span>' + hz.label + '</span><span class="when">· ' + hz.when + '</span><span class="rule"></span>' +
+        (list.length ? '<span class="count">' + doneN + '/' + list.length + ' fait' + (doneN > 1 ? 's' : '') + '</span>' : '') + '</button>';
       h += goalHtml(p, hz, obj, key);
-      h += list.map(stepRow).join('');
-      if (!list.length) h += '<div class="h-empty">Rien ici pour l\'instant.</div>';
-      h += '<form class="add-step" data-add-project="' + esc(p.id) + '" data-add-horizon="' + hz.id + '">' +
-        '<input type="text" placeholder="+ Ajouter une étape…" maxlength="500"></form>';
-      if (arch.length){
-        h += '<button class="archived-toggle" data-archived="' + esc(key) + '">' + (ui.archived[key] ? 'Masquer' : 'Voir') + ' ' + arch.length + ' archivée' + (arch.length > 1 ? 's' : '') + '</button>';
-        if (ui.archived[key]) h += arch.map(stepRow).join('');
+      if (!folded){
+        h += list.map(stepRow).join('');
+        if (!list.length) h += '<div class="h-empty">Rien ici pour l\'instant.</div>';
+        h += '<form class="add-step" data-add-project="' + esc(p.id) + '" data-add-horizon="' + hz.id + '">' +
+          '<input type="text" placeholder="+ Ajouter une étape…" maxlength="500"></form>';
+        if (arch.length){
+          h += '<button class="archived-toggle" data-archived="' + esc(key) + '">' + (ui.archived[key] ? 'Masquer' : 'Voir') + ' ' + arch.length + ' archivée' + (arch.length > 1 ? 's' : '') + '</button>';
+          if (ui.archived[key]) h += arch.map(stepRow).join('');
+        }
       }
       return h + '</section>';
     }).join('');
+  }
+
+  // Avancement indicatif : un segment par étape (fait, en cours, à faire), groupés par horizon ;
+  // la largeur d'un groupe suit son nombre d'étapes, et la barre se remplit de gauche à droite.
+  var FILL = { done:0, doing:1, todo:2 };
+  function progressHtml(p){
+    var axis = ui.axis[p.id] || '';
+    var steps = stepsOf(p.id).filter(function(s){ return s.status !== 'archived' && (!axis || s.axis === axis); });
+    var tot = steps.length; if (!tot) return '';
+    var done = steps.filter(function(s){ return s.status === 'done'; }).length;
+    var allFolded = HORIZONS.every(function(hz){ return ui.fold[p.id + hz.id]; });
+    var groups = HORIZONS.map(function(hz){
+      var list = steps.filter(function(s){ return s.horizon === hz.id; })
+        .sort(function(a,b){ return (FILL[a.status] - FILL[b.status]) || ((a.position || 0) - (b.position || 0)); });
+      var d = list.filter(function(s){ return s.status === 'done'; }).length, n = list.length;
+      var segs = n ? list.map(function(s){ return '<i class="' + (s.status === 'done' ? 'd' : s.status === 'doing' ? 'o' : '') + '"></i>'; }).join('') : '<i></i>';
+      return '<button class="pgroup" style="flex:' + Math.max(n, 1) + ' 1 0" data-jump="' + hz.id + '" aria-label="' + esc(hz.label) + ' : ' + d + ' faites sur ' + n + '. Aller à cet objectif">' +
+        '<span class="pseg' + (n ? '' : ' none') + '">' + segs + '</span>' +
+        '<span class="plabel"><span class="lf">' + esc(hz.label) + '</span><span class="ls">' + esc(hz.label.split(' ')[0]) + '</span> <b>' + d + '/' + n + '</b></span></button>';
+    }).join('');
+    return '<div class="progress" aria-label="Avancement des objectifs"><div class="pbar">' + groups + '</div>' +
+      '<div class="ptotal"><span>' + done + ' fait' + (done > 1 ? 's' : '') + ' sur ' + tot + ' · ' + (tot - done) + ' à finaliser</span>' +
+      '<button class="linkbtn" data-foldall="' + (allFolded ? 'open' : 'close') + '">' + (allFolded ? 'Tout déplier' : 'Tout replier') + '</button></div></div>';
   }
 
   function goalHtml(p, hz, obj, key){
@@ -810,6 +862,14 @@
     if (d.filter){ ui.filter = d.filter; render(); return; }
     if (d.expand){ ui.open[d.expand] = !ui.open[d.expand]; render(); return; }
     if (d.archived){ ui.archived[d.archived] = !ui.archived[d.archived]; render(); return; }
+    if (d.fold){ ui.fold[d.fold] = !ui.fold[d.fold]; save(); render(); return; }
+    if (d.foldall){ HORIZONS.forEach(function(hz){ ui.fold[ui.project + hz.id] = d.foldall === 'close'; }); save(); render(); return; }
+    if (d.jump){
+      var jk = ui.project + d.jump; ui.fold[jk] = false; save(); render();
+      var jel = document.getElementById('hz-' + jk);
+      if (jel) jel.scrollIntoView({ behavior: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
     if (d.check){ var s = D.steps.find(function(x){ return x.id === d.check; }); if (s) setStatus(d.check, s.status === 'done' ? 'todo' : 'done'); return; }
     if (d.status){ setStatus(d.id, d.status); return; }
     if (d.opendrawer){ openDrawer(d.opendrawer); return; }
