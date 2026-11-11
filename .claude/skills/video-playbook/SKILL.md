@@ -1,24 +1,29 @@
 ---
 name: video-playbook
-description: Transformer une vidéo YouTube dense (masterclass, interview, podcast) en playbook de type livre à reproduire : vue d'ensemble d'abord, sections thématiques, schémas et logigrammes, "comment faire", outils, prix et alternatives recherchés, questions de l'audience, pépites, lexique, plan d'action. Livrables : page web (artefact privé) et PDF. À utiliser quand l'utilisateur donne un lien YouTube et dit "fais-en un playbook", "deep dive", "reproductible", "résume en playbook", ou colle une transcription pour la même fin.
+description: Transformer une vidéo YouTube dense (masterclass, interview, podcast) en playbook de type livre à reproduire : vue d'ensemble d'abord, sections thématiques, schémas et logigrammes, "comment faire", outils, prix et alternatives recherchés, questions de l'audience, pépites, lexique, plan d'action. Livrable : une page web en plusieurs pages (artefact privé), sans PDF. À utiliser quand l'utilisateur donne un lien YouTube et dit "fais-en un playbook", "deep dive", "reproductible", "résume en playbook", ou colle une transcription pour la même fin.
 ---
 
 # Video Playbook
 
 Statut du process : **draft** (à faire valider par Hari après un deuxième essai). Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
 
-## Ce que Hari attend (décisions déjà prises)
+## Ce que Hari attend (décisions prises, v2 du 11/11/2026)
 
-- **Entrée :** une vidéo YouTube, sans que Hari la transcrive. Le texte doit être récupéré par Claude (voir ci-dessous).
-- **Public visé :** startups, builders IA, freelances, business en ligne, profils proches de ceux des intervenants. **Rien à voir avec les projets de Hari** : ne pas ajouter d'encadrés « application à Reflexia / Dropit… » sauf demande explicite.
-- **Fond :** rester fidèle au contenu de la vidéo, retirer l'inutile (sponsor, blagues, anecdotes sans valeur), et **approfondir ce qui est survolé** (comment faire, cas d'usage, outils, prix, alternatives, retours d'utilisateurs, ce qui aide à décider).
-- **Structure :** toujours partir de la vue d'ensemble (carte), puis une partie par thème, en expliquant les liens entre thèmes. Vidéos longues ou morcelées : reconstruire l'arbre complet.
-- **Répondre aux questions que l'audience se pose** (section FAQ).
+- **But :** passer d'une restitution à une **masterclass déployable**. Le cas de la vidéo sert d'exemple ; chaque mécanisme doit pouvoir être transposé à n'importe quel métier, objectif ou structure, avec ses pièges et ses limites.
+- **Public :** startups, builders IA, freelances, business en ligne, profils proches des intervenants. Rien sur les projets de Hari.
+- **Format :** une page web découpée en **pages** (routage par `#nom`), chacune avec son titre, un sommaire « Sur cette page », et des liens page précédente / suivante. **Pas de PDF.**
+- **Accueil :** une introduction qui va droit au but et dit ce que le lecteur va apprendre. Ensuite une **vraie carte** : tous les thèmes en cartes groupées, chacune avec un résumé, un aperçu au survol, et un clic qui ouvre la page.
+- **« Comment lire » :** seulement la légende des étiquettes, sans avertissements.
+- **« Pour qui et à quel niveau » :** un public adapté au contenu, et un graphique de niveau sur 10 (stratégie, business, mindset, technique, organisation, ou d'autres axes pertinents). Critères explicites et une annotation par axe.
+- **À ne pas faire :** pas de chronologie, pas d'encart « limites de la source », pas de « retiré volontairement », pas de numérotation (5, 5.1…).
+- **Mise en page :** paragraphes sur toute la largeur. Encarts recette ou takeaway sur **fond blanc**.
+- **Page « méthode transposable » :** les éléments génériques à définir (ex. objectif, signaux, machines, agents, gates humaines, mémoire, mesures, budget et rituel). Pour chacun, la question à se poser et des exemples dans quatre métiers types (freelance, e-commerce, startup SaaS, formation en ligne). Y ajouter une matrice de priorité et un canevas à remplir.
+- **Chaque page thématique :** ce que fait le cas étudié, des schémas, une recette sur fond blanc, un tableau « Transposer à votre métier », les outils, et « Pièges et limites ».
+- **Outils et alternatives :** les classer par famille et dire en langage courant à quoi sert chaque famille et chaque outil.
+- **Termes techniques et acronymes :** surlignés, avec la définition au survol, générée automatiquement à partir du lexique. Il faut aussi une page Lexique.
 - **Pépites :** 5 à 10 maximum, chacune avec un « à faire demain ».
-- **Visuels :** schémas, logigrammes, illustrations, workflows visuels, au moins un par partie quand un mécanisme se montre mieux qu'il ne se dit.
-- **Lexique :** un lexique des acronymes et un du jargon, définitions en une ligne, avec la partie où le terme apparaît.
-- **Style (direction donnée, à ajuster) :** dark mode, ombres, dégradé vert. Sommaire latéral fixe, chapitres, mise en page de livre.
-- **Format final :** page web (artefact privé) **et** PDF de la même mise en page.
+- **Visuels :** schémas, logigrammes, illustrations et workflows visuels dès qu'un mécanisme se montre mieux qu'il ne se dit.
+- **Style :** dark mode, ombres, dégradé vert.
 
 ## Récupérer la transcription (ordre à suivre)
 
@@ -42,9 +47,9 @@ Statut du process : **draft** (à faire valider par Hari après un deuxième ess
 6. **Vérifier les chiffres entre eux** (ex. un revenu annoncé plus grand que le total) et signaler les incohérences plutôt que les lisser.
 7. **Écrire** : ne jamais deviner le genre d'une personne (tournures neutres) ; ne pas inventer ce que la vidéo ne dit pas (ex. une réponse laissée sans réponse reste signalée comme telle).
 8. **Schémas :** SVG en ligne, étiquettes sur les flèches, numérotation des figures automatique (compteur CSS). Logigramme quand il y a des décisions, chronologie pour un calendrier, couches pour une architecture.
-9. **Construire** : un fichier source unique (gabarit), un script qui produit (a) le fragment pour l'artefact, (b) un HTML complet, (c) le PDF.
-10. **Contrôler** : un coup d'œil au rendu (desktop sombre, mobile 400 px, PDF), débordements, console.
-11. **Publier** l'artefact en privé, envoyer le PDF, enregistrer dans le cockpit (livrable, étapes de suite).
+9. **Construire** : un fichier de contenu (pages), une feuille de style, un script (routage, sommaires, infobulles, mémoire locale), et un script d'assemblage qui produit le fragment pour l'artefact et un HTML complet.
+10. **Contrôler** : un coup d'œil au rendu (carte, une page, infobulle), puis console sans erreur et pas de débordement à 400 px sur chaque page.
+11. **Publier** l'artefact en privé, puis l'enregistrer dans le cockpit (livrable, étapes de suite).
 
 ## Pièges techniques déjà rencontrés
 
@@ -52,7 +57,7 @@ Statut du process : **draft** (à faire valider par Hari après un deuxième ess
 - Playwright : module dans `/opt/node-tools/node_modules` (`NODE_PATH=/opt/node-tools/node_modules node script.js`). Chromium déjà installé.
 - Dans les commandes Bash, éviter `${…}` (littéraux JavaScript) et les gros heredocs contenant du JavaScript : le contrôle de sécurité les prend pour des suppressions. Écrire le script avec l'outil d'écriture, puis l'exécuter.
 - `pip install` installe pour `python3.13` ; `python3` est la 3.11.
-- PDF : émuler le média `print`, ouvrir tous les `<details>`, `printBackground: true`, gabarit clair même si la page est sombre.
+- Script de page : appeler l'affichage de la première page **après** avoir défini le moteur d'infobulles, sinon il plante.
 - Barres ou étiquettes avec `padding` en pourcentage : risque de débordement sur mobile ; tester à 400 px.
 
 ## Fin de tâche
