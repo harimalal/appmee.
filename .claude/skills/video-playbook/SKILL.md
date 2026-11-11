@@ -5,7 +5,7 @@ description: À déclencher dès que l'utilisateur envoie un lien YouTube (youtu
 
 # Video Playbook
 
-Statut du process : **draft** ; le format v2 a été validé par Hari le 11/11/2026 (« excellent »). Passer en `valide` après le deuxième playbook. Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
+Statut du process : **valide** (format v2 validé par Hari le 11/11/2026 ; deuxième playbook produit le même jour, Trendtrack). Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
 
 ## Ce que Hari attend (décisions prises, v2 du 11/11/2026)
 
@@ -24,6 +24,8 @@ Statut du process : **draft** ; le format v2 a été validé par Hari le 11/11/2
 - **Pépites :** 5 à 10 maximum, chacune avec un « à faire demain ».
 - **Visuels :** schémas, logigrammes, illustrations et workflows visuels dès qu'un mécanisme se montre mieux qu'il ne se dit.
 - **Style :** dark mode, ombres, dégradé vert.
+- **Esprit pirate assumé :** évoquer tous les hacks de la vidéo, y compris borderline (scraping, appels sortants, données récupérées…). Les présenter comme des hacks avec la version qui reste dans les clous et un court **disclaimer** légal, sans ton moralisateur ni encart « à ne pas reproduire ». Seule limite : ne pas donner de mode opératoire pour une intrusion (accès à une base sans autorisation).
+- **Outils interactifs bienvenus** quand un calcul est au cœur de la méthode (ex. calculateur « objectif de MRR → créateurs nécessaires »).
 
 ## Récupérer le titre et la transcription
 
