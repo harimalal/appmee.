@@ -1,11 +1,11 @@
 ---
 name: video-playbook
-description: Transformer une vidéo YouTube dense (masterclass, interview, podcast) en playbook de type livre à reproduire : vue d'ensemble d'abord, sections thématiques, schémas et logigrammes, "comment faire", outils, prix et alternatives recherchés, questions de l'audience, pépites, lexique, plan d'action. Livrable : une page web en plusieurs pages (artefact privé), sans PDF. À utiliser quand l'utilisateur donne un lien YouTube et dit "fais-en un playbook", "deep dive", "reproductible", "résume en playbook", ou colle une transcription pour la même fin.
+description: À déclencher dès que l'utilisateur envoie un lien YouTube (youtube.com/watch, youtu.be), même sans autre consigne, ou colle la transcription d'une vidéo. Transforme la vidéo (masterclass, interview, podcast) en masterclass transposable : carte interactive, une page par thème, méthode en éléments à définir illustrée pour quatre métiers, schémas et logigrammes, outils classés avec prix et alternatives, pièges et limites, pépites, lexique avec définitions au survol. Livrable : une page web en plusieurs pages (artefact privé), sans PDF.
 ---
 
 # Video Playbook
 
-Statut du process : **draft** (à faire valider par Hari après un deuxième essai). Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
+Statut du process : **draft** ; le format v2 a été validé par Hari le 11/11/2026 (« excellent »). Passer en `valide` après le deuxième playbook. Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
 
 ## Ce que Hari attend (décisions prises, v2 du 11/11/2026)
 
@@ -25,13 +25,16 @@ Statut du process : **draft** (à faire valider par Hari après un deuxième ess
 - **Visuels :** schémas, logigrammes, illustrations et workflows visuels dès qu'un mécanisme se montre mieux qu'il ne se dit.
 - **Style :** dark mode, ombres, dégradé vert.
 
-## Récupérer la transcription (ordre à suivre)
+## Récupérer le titre et la transcription
 
-1. Essayer depuis l'environnement : `youtube-transcript-api` (installé pour `python3.13`, pas `python3`) et `yt-dlp`. Les langues `fr` puis `en`.
-2. **Constat du 11/11/2026 :** depuis le cloud Claude Code, YouTube répond 403 (adresse de datacenter). L'oEmbed (`/oembed?url=…`) répond bien et donne titre et chaîne. Ne pas contourner le refus.
-3. Si 403 : demander à Hari de **coller la transcription** (sous la vidéo : « ··· » puis « Afficher la transcription »), ou de lancer le workflow dans une **session locale** où YouTube répond.
-4. Piste à évaluer plus tard (non testée) : un petit Worker Cloudflare comme relais de transcription ; YouTube bloque aussi souvent ces IP, à vérifier avant d'y investir.
-5. Dernier recours, à signaler clairement dans le livrable : playbook reconstruit à partir de sources publiques seulement (moins fidèle).
+1. **Titre et chaîne : automatique.** `curl "https://www.youtube.com/oembed?url=<lien>&format=json"` fonctionne depuis le cloud.
+2. **Transcription : un seul essai automatique**, avec `python3.13` et `youtube-transcript-api` (langues `fr` puis `en`). En cas d'échec, ne pas insister.
+3. **Constat du 11/11/2026 :** depuis le cloud Claude Code, YouTube bloque l'adresse IP. La bibliothèque répond « YouTube is blocking requests from your IP » et yt-dlp « Sign in to confirm you're not a bot ». Ne pas contourner : ni proxy, ni cookies de compte.
+4. **Si c'est bloqué**, demander dans le même message, sans attendre :
+   - soit de coller la transcription (sous la vidéo : « ··· » puis « Afficher la transcription ») ;
+   - soit de lancer le skill dans une session Claude Code sur la machine de Hari, où YouTube répond normalement.
+5. Dès que le texte est là, lancer tout le process **sans redemander de « go »**. Le format est validé (v2).
+6. **Dernier recours**, à signaler dans le livrable : un playbook reconstruit à partir de sources publiques seulement, donc moins fidèle.
 
 ## Process
 
