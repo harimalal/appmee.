@@ -4,3 +4,6 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Playbooks générés (dérivés de contenus tiers) : ne pas publier via Cloudflare Pages
+playbooks/
