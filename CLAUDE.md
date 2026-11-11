@@ -1,5 +1,7 @@
 # Consignes pour Claude
 
+Règles communes à tous les projets : @os-ia/CLAUDE-general.md
+
 ## Cockpit Projets — le tenir à jour
 
 Le tableau de bord de Hari est en ligne sur Cloudflare Pages, à l'adresse `/cockpit/` du site de ce dépôt.
@@ -29,7 +31,13 @@ cosmétique). Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`) ont `hidd
   Quand Hari demande de détailler une étape, ou quand on scanne/analyse un dépôt pour en tirer un plan d'action,
   Claude écrit ce plan ici (plusieurs `INSERT INTO substeps` groupés par `section`), pas seulement dans `detail`.
 
+- `skills (id, name, scope, location, when_to_use, keywords, process, status, position)` — registre des skills que le dispatch consulte.
+  `scope` : `compte` | `projet` | `machine` ; `status` : `draft` | `valide` (process validé par Hari).
+- `tasks (id, text, project_id, skill_id, brief, status, claude_note, created_at)` — tâches lancées depuis la vue « Lancer » du cockpit.
+  `status` : `new` | `routed` | `launched` | `done`. Une tâche `new` attend que Claude choisisse le projet et le skill (voir `os-ia/CLAUDE-general.md`).
+
 **Quand agir, sans qu'on le demande**
+- Au début d'une conversation : lire aussi `SELECT * FROM tasks WHERE status='new'` et les dispatcher.
 - Au début d'une conversation sur un projet : lire `SELECT * FROM ideas WHERE status='new'`, transformer chaque idée en étapes
   (ou ajuster les objectifs), puis `UPDATE ideas SET status='triaged', claude_note='<une phrase>' WHERE id=…`.
 - Un artefact, un article ou un document est publié → `INSERT INTO deliverables …`.

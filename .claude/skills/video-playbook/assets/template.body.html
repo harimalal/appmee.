@@ -1,0 +1,249 @@
+<!--
+  GABARIT D'UN PLAYBOOK VIDÉO (format v2 validé).
+  Copier ce fichier en body.html dans le dossier de travail, puis remplacer chaque texte entre « … ».
+  Garder les classes CSS telles quelles : le moteur (engine.css, engine.js) en dépend.
+  Ordre des pages = ordre du menu de gauche (#nav). Les id de page : minuscules, sans tiret.
+  Une page thématique = une <section class="page">. Dupliquer le bloc THEME autant que nécessaire (4 à 8 thèmes).
+  Marqueurs remplacés par build.py : {{FIG:nom}} {{LEXIQUE}} {{SOURCES}} [[mm:ss]] {V} {A} {O} {Q}
+  Supprimer ce commentaire n'est pas nécessaire.
+-->
+<div class="shell">
+<nav class="side" aria-label="Pages du playbook" id="nav">
+  <a class="brand" href="#accueil"><span>Playbook</span><b>« Titre court du playbook »</b></a>
+  <ol>
+    <li><a href="#accueil">Accueil et carte</a></li>
+    <li class="sep">Déployer chez vous</li>
+    <li><a href="#methode">La méthode transposable</a></li>
+    <li><a href="#plan">Plan 30/60/90</a></li>
+    <li class="sep">Comprendre</li>
+    <li><a href="#cas">« Le cas X »</a></li>
+    <li class="sep">« Groupe de thèmes »</li>
+    <li><a href="#theme1">« Thème 1 »</a></li>
+    <li class="sep">Retenir</li>
+    <li><a href="#pepites">Pépites</a></li>
+    <li><a href="#faq">Questions fréquentes</a></li>
+    <li><a href="#lexique">Lexique</a></li>
+    <li><a href="#sources">Chapitrage et sources</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="wrap">
+<details class="toc-mobile"><summary>Toutes les pages</summary><ol id="navm"></ol></details>
+
+<!-- =============================== ACCUEIL =============================== -->
+<section class="page" id="accueil" data-title="Accueil et carte">
+  <p class="eyebrow">Playbook · masterclass</p>
+  <h1>« Titre du playbook »</h1>
+  <p class="lede">« Ce que le lecteur va savoir faire, en deux ou trois phrases. Le cas étudié et pourquoi il est intéressant. Transposé à un freelance, un e-commerce, une startup SaaS et une formation en ligne, avec les hacks, leurs risques et leurs limites. »</p>
+
+  <h3>Ce que vous allez apprendre</h3>
+  <div class="learn">
+    <div><b>« Compétence 1 »</b><span>« Une phrase concrète. »</span></div>
+    <div><b>« Compétence 2 »</b><span>« … »</span></div>
+    <!-- 4 à 6 blocs -->
+  </div>
+
+  <h3>La carte</h3>
+  <p>Chaque carte est une page. Survolez-la pour voir ce qu'elle contient, cliquez pour l'ouvrir. Si vous ne lisez qu'une page, lisez « La méthode transposable ».</p>
+  <div class="map">
+    <div class="hub"><span class="k">Le système</span><b>« Étape → étape → étape »</b><span class="hs">« L'idée qui relie tout. »</span></div>
+    <div class="branches">
+      <div class="br"><p class="brh">Déployer chez vous</p>
+        <a class="node key" href="#methode"><b>La méthode transposable</b><span class="sum">« Résumé visible. »</span><span class="more">« Aperçu au survol · éléments · canevas »</span></a>
+        <a class="node" href="#plan"><b>Plan 30/60/90</b><span class="sum">« … »</span><span class="more">« … »</span></a>
+      </div>
+      <div class="br"><p class="brh">Comprendre</p>
+        <a class="node" href="#cas"><b>« Le cas X »</b><span class="sum">« … »</span><span class="more">« … »</span></a>
+      </div>
+      <div class="br"><p class="brh">« Groupe de thèmes »</p>
+        <a class="node" href="#theme1"><b>« Thème 1 »</b><span class="sum">« … »</span><span class="more">« … »</span></a>
+      </div>
+      <div class="br"><p class="brh">Retenir</p>
+        <a class="node" href="#pepites"><b>Pépites</b><span class="sum">« N idées concrètes, chacune avec le geste à faire demain. »</span><span class="more">« … »</span></a>
+        <a class="node" href="#faq"><b>Questions fréquentes</b><span class="sum">Les questions qu'on se pose avant de s'y mettre.</span><span class="more">« … »</span></a>
+        <a class="node" href="#lexique"><b>Lexique</b><span class="sum">Le jargon en une ligne ; les mêmes définitions au survol.</span><span class="more">« sigles… »</span></a>
+        <a class="node" href="#sources"><b>Chapitrage et sources</b><span class="sum">Chapitres de la vidéo avec liens horodatés et sources de la recherche.</span><span class="more">« N chapitres · sources datées »</span></a>
+      </div>
+    </div>
+  </div>
+
+  <h3>Comment lire</h3>
+  <div class="legend">
+    <span><span class="tg v">VIDÉO</span> dit dans l'épisode, avec un lien vers le passage</span>
+    <span><span class="tg a">APPROFONDI</span> ajouté par recherche web, relevé en « mois année »</span>
+    <span><span class="tg o">AVIS</span> analyse ou exemple construit pour ce playbook</span>
+    <span><span class="tg q">À VÉRIFIER</span> incertain ou contradictoire</span>
+    <span><span class="def demo">terme souligné</span> survolez-le pour sa définition</span>
+  </div>
+
+  <h3>Pour qui, et à quel niveau</h3>
+  <div class="grid2">
+    <div class="box"><h4>Vous en tirerez le plus si…</h4><ul><li>« … »</li></ul></div>
+    <div class="box"><h4>Moins utile si…</h4><ul><li>« … »</li></ul></div>
+  </div>
+  <!-- 4 à 6 axes pertinents pour le sujet ; width = note × 10 % ; une annotation par axe -->
+  <div class="lvl" role="img" aria-label="Niveau requis sur 10 : « axe 1 » N, « axe 2 » N">
+    <div class="lvl-h"><b>Niveau requis, sur 10</b><span>1–3 découverte · 4–6 intermédiaire · 7–8 avancé · 9–10 expert</span></div>
+    <div class="lv"><span class="ln">« Axe 1 »</span><div class="lt"><div class="lf" style="width:70%"></div></div><span class="lsc">7</span><span class="lann">« Pourquoi cette note. »</span></div>
+    <div class="lv"><span class="ln">« Axe 2 »</span><div class="lt"><div class="lf" style="width:40%"></div></div><span class="lsc">4</span><span class="lann">« … »</span></div>
+    <p class="lvl-note">Mes critères : la note mesure ce qu'il faut savoir faire pour appliquer la page sans aide, pas la difficulté de lecture. Niveau global : <b>« intermédiaire »</b>. « Le plus dur… »</p>
+  </div>
+  <p class="byline">Source : « émission (chaîne) », « titre exact de la vidéo », invité « nom » · <a href="https://www.youtube.com/watch?v=VIDEO_ID">regarder la vidéo</a> · rédigé le « date »</p>
+</section>
+
+<!-- =============================== METHODE =============================== -->
+<section class="page" id="methode" data-title="La méthode transposable">
+  <p class="eyebrow">Déployer chez vous</p>
+  <h2>La méthode transposable</h2>
+  <p class="lede">« La méthode du cas ramenée à 6 à 8 éléments génériques que n'importe quelle activité peut définir. » {V} [[0:00]]</p>
+  <div class="ptoc"></div>
+  <h3>La boucle</h3>
+  {{FIG:loop}}
+  <h3>Les « huit » éléments, par métier</h3>
+  <p>Pour chaque élément : la question à vous poser, puis un exemple dans quatre métiers types. {O}</p>
+  <div class="tw"><table class="tr4">
+    <tr><th>Élément</th><th>Freelance, consultant</th><th>E-commerce</th><th>Startup SaaS</th><th>Formation en ligne</th></tr>
+    <tr><td>« Élément »<small>« La question à se poser ? »</small></td><td>« … »</td><td>« … »</td><td>« … »</td><td>« … »</td></tr>
+  </table></div>
+  <div class="box how"><h4>Recette : remplir la méthode en une heure</h4>
+    <ol class="steps"><li><b>« Verbe + objet »</b> « précision ».</li></ol>
+  </div>
+  <h3>« Quoi faire en premier »</h3>
+  <div class="mx" role="img" aria-label="Matrice « axe Y » et « axe X » : …">
+    <span class="mx-y">« Axe vertical » ↑</span>
+    <div class="mx-c go"><b>« Faire d'abord »</b><span>« … Ex. … »</span></div>
+    <div class="mx-c mid"><b>« Préparer avant »</b><span>« … »</span></div>
+    <div class="mx-c low"><b>« Plus tard »</b><span>« … »</span></div>
+    <div class="mx-c stop"><b>« Ignorer »</b><span>« … »</span></div>
+    <span class="mx-x">« Axe horizontal » →</span>
+  </div>
+  <h3>Votre canevas</h3>
+  <p>Remplissez-le ici : il reste enregistré dans votre navigateur seulement.</p>
+  <div class="canvas">
+    <label for="cv1">« Élément 1 »<textarea id="cv1" placeholder="Ex. …"></textarea></label>
+    <!-- un champ par élément, id cv1…cvN -->
+  </div>
+  <div class="box pit"><h4>Pièges et limites</h4><ul><li><b>« Piège »</b> : « explication ». [[0:00]]</li></ul></div>
+</section>
+
+<!-- =============================== PLAN =============================== -->
+<section class="page" id="plan" data-title="Plan 30/60/90">
+  <p class="eyebrow">Déployer chez vous</p>
+  <h2>Plan 30/60/90</h2>
+  <p class="lede">« Citation ou principe qui fixe le rythme. » {V} [[0:00]]</p>
+  <div class="ptoc"></div>
+  <h3>« Le rituel »</h3>
+  {{FIG:ritual}}
+  <h3>À cocher</h3>
+  <div class="grid3">
+    <div class="box"><h4>Jours 1–30 · « fondations »</h4>
+      <div class="ck"><input type="checkbox" id="c1"><label for="c1">« Action »</label></div>
+    </div>
+    <div class="box"><h4>Jours 31–60 · « … »</h4>
+      <div class="ck"><input type="checkbox" id="c6"><label for="c6">« Action »</label></div>
+    </div>
+    <div class="box"><h4>Jours 61–90 · « … »</h4>
+      <div class="ck"><input type="checkbox" id="c11"><label for="c11">« Action »</label></div>
+    </div>
+  </div>
+  <div class="box pit"><h4>Pièges et limites</h4><ul><li>« … »</li></ul></div>
+</section>
+
+<!-- =============================== CAS =============================== -->
+<section class="page" id="cas" data-title="« Le cas X »">
+  <p class="eyebrow">Comprendre · [[0:00]] → [[0:00]]</p>
+  <h2>« Le cas X »</h2>
+  <p class="lede">« Qui, quoi, quels chiffres clés. »</p>
+  <div class="ptoc"></div>
+  <h3>Le parcours</h3>
+  <p>« … » {V} [[0:00]]</p>
+  <h3>« Le produit / l'organisation »</h3>
+  {{FIG:case}}
+  <ul><li><b>« Point »</b> : « … » {V} [[0:00]]</li></ul>
+  <h3>Outils et alternatives</h3>
+  <p>« Familles d'outils, chacune expliquée en une phrase en langage courant. » {A}</p>
+  <div class="tw"><table>
+    <tr><th>Outil</th><th>Famille</th><th>À quoi il sert, en clair</th><th>Prix relevé (« mois année »)</th></tr>
+    <tr><td>« Outil »</td><td>« Famille »</td><td>« … »</td><td>« Dès ≈ … » {A} {Q}</td></tr>
+  </table></div>
+  <div class="box crit"><h4>Ce qui se transpose, et ce qui ne se transpose pas {O}</h4>
+    <ul><li><b>Se transpose</b> : « … »</li><li><b>Ne se transpose pas tel quel</b> : « … »</li><li><b>À garder en tête</b> : « intérêts commerciaux de l'intervenant… »</li></ul>
+  </div>
+</section>
+
+<!-- =============================== THEME (à dupliquer) =============================== -->
+<section class="page" id="theme1" data-title="« Thème 1 »">
+  <p class="eyebrow">« Groupe » · [[0:00]] → [[0:00]]</p>
+  <h2>« Thème 1 »</h2>
+  <p class="lede">« Citation forte de l'intervenant, ou l'idée du thème en une phrase. » {V} [[0:00]]</p>
+  <div class="ptoc"></div>
+  <h3>« Ce que fait le cas »</h3>
+  {{FIG:theme1}}
+  <ul><li><b>« Point »</b> : « fait, chiffre, exemple ». {V} [[0:00]]</li></ul>
+  <div class="box how"><h4>Recette : « résultat » en « durée »</h4>
+    <ol class="steps"><li>« Étape actionnable. »</li></ol>
+  </div>
+  <h3>Transposer à votre métier</h3>
+  <div class="tw"><table class="tr4">
+    <tr><th>À définir</th><th>Freelance, consultant</th><th>E-commerce</th><th>Startup SaaS</th><th>Formation en ligne</th></tr>
+    <tr><td>« Élément »</td><td>« … »</td><td>« … »</td><td>« … »</td><td>« … »</td></tr>
+  </table></div>
+  <h3>Outils et alternatives</h3>
+  <p>« Familles et outils expliqués simplement, prix relevés. » {A}</p>
+  <!-- Hack borderline : version pirate assumée + version dans les clous + disclaimer court, sans morale -->
+  <div class="box leg"><h4>« Le hack X », avec son risque</h4>
+    <p>« Ce qui marche et pourquoi. » <span class="disc"><b>Disclaimer</b> : « règle ou loi concernée, risque concret, version durable ». </span></p>
+  </div>
+  <div class="box pit"><h4>Pièges et limites</h4><ul><li>« … » [[0:00]]</li></ul></div>
+</section>
+
+<!-- Outil interactif (optionnel), à placer dans la page concernée ; script dans extra.js
+  <div class="calc" id="xcalc">
+    <label for="x1">« Entrée »<input id="x1" type="number" value="100"></label>
+    <div class="calc-out" id="xout" aria-live="polite"></div>
+  </div>
+-->
+
+<!-- =============================== PEPITES =============================== -->
+<section class="page" id="pepites" data-title="Pépites">
+  <p class="eyebrow">Retenir</p>
+  <h2>Pépites</h2>
+  <p class="lede">« N » idées concrètes et réutilisables. Chaque carte donne le geste à faire demain.</p>
+  <div class="cards">
+    <div class="card"><span class="k">« Thème » · [[0:00]]</span><h4>« Idée en quelques mots »</h4><p>« Pourquoi c'est malin. »</p><p class="do"><b>Demain</b> « Geste précis, faisable en moins d'une heure. »</p></div>
+    <!-- 5 à 10 cartes -->
+  </div>
+</section>
+
+<!-- =============================== FAQ =============================== -->
+<section class="page" id="faq" data-title="Questions fréquentes">
+  <p class="eyebrow">Retenir</p>
+  <h2>Questions fréquentes</h2>
+  <p class="lede">Les questions qu'on se pose avant de s'y mettre.</p>
+  <details class="faq"><summary>« Question ? »</summary><div class="b"><p>« Réponse courte. » {V} [[0:00]]</p></div></details>
+</section>
+
+<!-- =============================== LEXIQUE =============================== -->
+<section class="page" id="lexique" data-title="Lexique">
+  <p class="eyebrow">Retenir</p>
+  <h2>Lexique</h2>
+  <p class="lede">Le jargon en une ligne. Ailleurs dans le playbook, ces termes sont surlignés : survolez-les pour la définition.</p>
+  <div class="ptoc"></div>
+  {{LEXIQUE}}
+</section>
+
+<!-- =============================== SOURCES =============================== -->
+<section class="page" id="sources" data-title="Chapitrage et sources">
+  <p class="eyebrow">Retenir</p>
+  <h2>Chapitrage et sources</h2>
+  <p class="lede">Les chapitres de l'épisode avec un lien vers chaque passage, les noms à vérifier et les sources de la recherche.</p>
+  <div class="ptoc"></div>
+  {{SOURCES}}
+</section>
+
+<nav class="pager" aria-label="Page précédente et suivante"><a id="prev" href="#accueil"></a><a id="next" href="#methode"></a></nav>
+</div>
+</main>
+</div>
+<div id="tip" role="tooltip" hidden></div>
