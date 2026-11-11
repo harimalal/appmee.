@@ -111,6 +111,9 @@ def main():
         body = body.replace(k, v)
     left = re.findall(r"\{\{\w+|\[\[[^\]]*|\{[VAOQ]\}", body)
     assert not left, f"marqueurs non remplacés : {left[:5]}"
+    # textes du gabarit oubliés (« … », « mois année », VIDEO_ID, « Titre… », « Thème 1 »…)
+    tpl = re.findall(r"« …|… »|« mois année »|VIDEO_ID|« (?:Titre|Thème|Élément|Axe|Groupe|Compétence|Action|Point|Piège|Question|Le cas X|Outil|Famille|Idée|Étape)\b[^»]*»", body)
+    assert not tpl, f"textes du gabarit à remplacer : {sorted(set(tpl))[:8]}"
 
     css = open(os.path.join(HERE, "engine.css"), encoding="utf-8").read()
     js = (open(os.path.join(HERE, "engine.js"), encoding="utf-8").read()
