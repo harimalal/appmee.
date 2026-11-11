@@ -1,71 +1,95 @@
 ---
 name: video-playbook
-description: À déclencher dès que l'utilisateur envoie un lien YouTube (youtube.com/watch, youtu.be), même sans autre consigne, ou colle la transcription d'une vidéo. Transforme la vidéo (masterclass, interview, podcast) en masterclass transposable : carte interactive, une page par thème, méthode en éléments à définir illustrée pour quatre métiers, schémas et logigrammes, outils classés avec prix et alternatives, pièges et limites, pépites, lexique avec définitions au survol. Livrable : une page web en plusieurs pages (artefact privé), sans PDF.
+description: À déclencher dès que l'utilisateur envoie un lien YouTube (youtube.com/watch, youtu.be), même sans autre consigne, ou colle la transcription d'une vidéo. Transforme la vidéo (masterclass, interview, podcast) en masterclass transposable : carte interactive, une page par thème, méthode en éléments à définir illustrée pour quatre métiers, schémas et logigrammes, outils classés avec prix et alternatives, hacks avec disclaimer, pièges et limites, pépites, lexique avec définitions au survol. Livrable : une page web en plusieurs pages (artefact privé), sans PDF. Moteur fourni dans assets/.
 ---
 
 # Video Playbook
 
-Statut du process : **valide** (format v2 validé par Hari le 11/11/2026 ; deuxième playbook produit le même jour, Trendtrack). Registre : table `skills` du cockpit, id `video-playbook`, projet `masterai`.
+Statut : **valide** (format v2 validé par Hari le 11/11/2026). Trois playbooks produits avec ce process : Fountain (agents IA), Trendtrack (SaaS rentable), SEO et GEO (Paul Vengeons, ChatSEO). Registre du cockpit : table `skills`, id `video-playbook`, projet `masterai`.
 
-## Ce que Hari attend (décisions prises, v2 du 11/11/2026)
+Le principe : on ne résume pas la vidéo, on en tire une **masterclass déployable**. Le cas de la vidéo sert d'exemple ; chaque mécanisme est ramené à des éléments génériques et transposé à n'importe quel métier, avec ses hacks, ses pièges et ses limites.
 
-- **But :** passer d'une restitution à une **masterclass déployable**. Le cas de la vidéo sert d'exemple ; chaque mécanisme doit pouvoir être transposé à n'importe quel métier, objectif ou structure, avec ses pièges et ses limites.
+## Contenu du skill
+
+| Fichier | Rôle |
+|---|---|
+| `assets/template.body.html` | Gabarit de toutes les pages et de tous les composants (carte, niveau, matrice, canevas, cases, recettes, tableaux, hacks, pépites, FAQ). Le copier, le remplir. |
+| `assets/content.example.py` | Exemple de `content.py` : métadonnées, figures SVG, glossaire, chapitres, noms à vérifier, sources. |
+| `assets/build.py` | Assemble le tout. Fournit aussi les aides SVG (`box`, `ar`, `pa`, `dia`, `pill`, `band`, `chain`, `T`, `fig`). |
+| `assets/engine.css`, `assets/engine.js` | Moteur commun : style sombre à dégradé vert, routage des pages, sommaires, infobulles, mémoire locale. Ne pas modifier pour un playbook ; un outil propre va dans `extra.js`. |
+| `assets/check.js` | Contrôle Playwright : erreurs console, infobulles par page, débordement à 400 px, captures. |
+| `references/redaction.md` | Règles de rédaction page par page, avec les exemples des trois playbooks. **À lire avant d'écrire.** |
+
+## Ce que Hari attend (décisions prises)
+
 - **Public :** startups, builders IA, freelances, business en ligne, profils proches des intervenants. Rien sur les projets de Hari.
-- **Format :** une page web découpée en **pages** (routage par `#nom`), chacune avec son titre, un sommaire « Sur cette page », et des liens page précédente / suivante. **Pas de PDF.**
-- **Accueil :** une introduction qui va droit au but et dit ce que le lecteur va apprendre. Ensuite une **vraie carte** : tous les thèmes en cartes groupées, chacune avec un résumé, un aperçu au survol, et un clic qui ouvre la page.
-- **« Comment lire » :** seulement la légende des étiquettes, sans avertissements.
-- **« Pour qui et à quel niveau » :** un public adapté au contenu, et un graphique de niveau sur 10 (stratégie, business, mindset, technique, organisation, ou d'autres axes pertinents). Critères explicites et une annotation par axe.
-- **À ne pas faire :** pas de chronologie, pas d'encart « limites de la source », pas de « retiré volontairement », pas de numérotation (5, 5.1…).
-- **Mise en page :** paragraphes sur toute la largeur. Encarts recette ou takeaway sur **fond blanc**.
-- **Page « méthode transposable » :** les éléments génériques à définir (ex. objectif, signaux, machines, agents, gates humaines, mémoire, mesures, budget et rituel). Pour chacun, la question à se poser et des exemples dans quatre métiers types (freelance, e-commerce, startup SaaS, formation en ligne). Y ajouter une matrice de priorité et un canevas à remplir.
-- **Chaque page thématique :** ce que fait le cas étudié, des schémas, une recette sur fond blanc, un tableau « Transposer à votre métier », les outils, et « Pièges et limites ».
-- **Outils et alternatives :** les classer par famille et dire en langage courant à quoi sert chaque famille et chaque outil.
-- **Termes techniques et acronymes :** surlignés, avec la définition au survol, générée automatiquement à partir du lexique. Il faut aussi une page Lexique.
-- **Pépites :** 5 à 10 maximum, chacune avec un « à faire demain ».
-- **Visuels :** schémas, logigrammes, illustrations et workflows visuels dès qu'un mécanisme se montre mieux qu'il ne se dit.
-- **Style :** dark mode, ombres, dégradé vert.
-- **Esprit pirate assumé :** évoquer tous les hacks de la vidéo, y compris borderline (scraping, appels sortants, données récupérées…). Les présenter comme des hacks avec la version qui reste dans les clous et un court **disclaimer** légal, sans ton moralisateur ni encart « à ne pas reproduire ». Seule limite : ne pas donner de mode opératoire pour une intrusion (accès à une base sans autorisation).
-- **Outils interactifs bienvenus** quand un calcul est au cœur de la méthode (ex. calculateur « objectif de MRR → créateurs nécessaires »).
+- **Format :** une page web découpée en pages (`#id`), chacune avec titre, sommaire « Sur cette page », page précédente / suivante. **Pas de PDF.**
+- **Style :** dark mode, ombres, dégradé vert (fourni par le moteur).
+- **À ne pas faire :** pas de chronologie de la vidéo, pas d'encart « limites de la source », pas de « retiré volontairement », pas de numérotation de sections (5, 5.1…).
+- **Mise en page :** paragraphes pleine largeur ; recettes et takeaways sur **fond blanc** (`.box.how`).
+- **Esprit pirate assumé :** évoquer tous les hacks de la vidéo, y compris borderline (scraping, achat de liens, manipulation de clics, appels sortants…). Les présenter comme des hacks, avec la version qui reste dans les clous et un court **disclaimer** (`.box.leg` + `.disc`), sans ton moralisateur ni « à ne pas reproduire ». Seule limite : pas de mode opératoire d'intrusion (accès à un système ou une base sans autorisation).
+- **Outils interactifs** quand un calcul ou un réglage est au cœur de la méthode (calculateur « objectif de MRR → créateurs nécessaires », générateur de title avec compteur…).
+- **Visuels :** beaucoup de schémas, logigrammes, workflows ; 8 à 12 figures par playbook.
+- **Pépites :** 5 à 10, chacune avec « Demain ».
+- **Lexique :** termes et sigles surlignés avec définition au survol (automatique) + une page Lexique.
 
 ## Récupérer le titre et la transcription
 
-1. **Titre et chaîne : automatique.** `curl "https://www.youtube.com/oembed?url=<lien>&format=json"` fonctionne depuis le cloud.
-2. **Transcription : un seul essai automatique**, avec `python3.13` et `youtube-transcript-api` (langues `fr` puis `en`). En cas d'échec, ne pas insister.
-3. **Constat du 11/11/2026 :** depuis le cloud Claude Code, YouTube bloque l'adresse IP. La bibliothèque répond « YouTube is blocking requests from your IP » et yt-dlp « Sign in to confirm you're not a bot ». Ne pas contourner : ni proxy, ni cookies de compte.
-4. **Si c'est bloqué**, demander dans le même message, sans attendre :
-   - soit de coller la transcription (sous la vidéo : « ··· » puis « Afficher la transcription ») ;
-   - soit de lancer le skill dans une session Claude Code sur la machine de Hari, où YouTube répond normalement.
-5. Dès que le texte est là, lancer tout le process **sans redemander de « go »**. Le format est validé (v2).
-6. **Dernier recours**, à signaler dans le livrable : un playbook reconstruit à partir de sources publiques seulement, donc moins fidèle.
+1. **Titre et chaîne :** `curl -s "https://www.youtube.com/oembed?url=<lien>&format=json"` (marche aussi depuis le cloud).
+2. **Transcription :** un seul essai automatique, dans cet ordre selon l'environnement :
+   - navigateur disponible (Claude in Chrome, navigateur intégré) : ouvrir la vidéo, « ··· » sous la vidéo puis « Afficher la transcription », copier le texte ;
+   - sinon `pip install youtube-transcript-api` puis récupérer les langues `fr` puis `en`.
+3. **Depuis le cloud Claude Code, YouTube bloque l'adresse IP** (« YouTube is blocking requests from your IP », yt-dlp « Sign in to confirm you're not a bot »). Ne pas contourner : ni proxy, ni cookies de compte.
+4. **Si c'est bloqué**, demander dans le même message, sans attendre : coller la transcription, ou lancer le skill depuis un environnement local (Claude Code sur la machine, Cowork, navigateur).
+5. Dès que le texte est là, tout lancer **sans redemander de « go »**.
+6. Dernier recours, à signaler dans le livrable : playbook reconstruit à partir de sources publiques, moins fidèle.
+7. Si la description de la vidéo contient des chapitres, les reprendre tels quels pour `CH`.
 
 ## Process
 
-1. **Reformuler** (hub) : objectif, livrable, critère de fin ; projet `masterai`, skill `video-playbook` ; attendre un « go » sauf si tout est déjà cadré.
-2. **Nettoyer la transcription :** séparer les voix, repérer les chapitres, lister les noms mal transcrits (annexe « à vérifier »), noter les passages inaudibles.
-3. **Extraire** par thème : affirmations, chiffres, exemples, étapes. Tout est étiqueté par provenance :
-   - `VIDÉO` dit dans la vidéo (avec horodatage cliquable `&t=…s`)
-   - `APPROFONDI` ajouté par recherche web, avec sources et date de relevé
-   - `AVIS` lecture de Claude
-   - `À VÉRIFIER` incertain, contradictoire ou mal transcrit
-4. **Choisir 5 à 8 sujets décisifs** et les rechercher (WebSearch « standard », en parallèle) : prix actuels, alternatives, retours d'utilisateurs, conformité si pertinent. Les prix des comparateurs divergent souvent : le dire, ne pas trancher.
-5. **Plan du playbook :** vue d'ensemble (carte + tableau « qui alimente quoi »), contexte, une partie par thème (module : ce que dit la vidéo, comment le faire, schéma, outils et prix, pièges, FAQ de la partie), pépites, FAQ, plan 30/60/90, lexique, annexes (chapitrage, noms à vérifier, retiré volontairement, sources).
-6. **Vérifier les chiffres entre eux** (ex. un revenu annoncé plus grand que le total) et signaler les incohérences plutôt que les lisser.
-7. **Écrire** : ne jamais deviner le genre d'une personne (tournures neutres) ; ne pas inventer ce que la vidéo ne dit pas (ex. une réponse laissée sans réponse reste signalée comme telle).
-8. **Schémas :** SVG en ligne, étiquettes sur les flèches, numérotation des figures automatique (compteur CSS). Logigramme quand il y a des décisions, chronologie pour un calendrier, couches pour une architecture.
-9. **Construire** : un fichier de contenu (pages), une feuille de style, un script (routage, sommaires, infobulles, mémoire locale), et un script d'assemblage qui produit le fragment pour l'artefact et un HTML complet.
-10. **Contrôler** : un coup d'œil au rendu (carte, une page, infobulle), puis console sans erreur et pas de débordement à 400 px sur chaque page.
-11. **Publier** l'artefact en privé, puis l'enregistrer dans le cockpit (livrable, étapes de suite).
+1. **Cadrer en une ligne** (mode hub) : objectif, livrable, critère de fin ; projet `masterai`, skill `video-playbook`. Pas de « go » à attendre : le format est validé.
+2. **Lire et nettoyer la transcription :** séparer les voix, repérer les chapitres, relever avec leur horodatage les affirmations, chiffres, exemples, étapes, outils, hacks. Lister les noms mal transcrits (`VERIFY`).
+3. **Étiqueter chaque information** par provenance :
+   - `{V}` VIDÉO : dit dans la vidéo, toujours avec un horodatage `[[mm:ss]]` ou `[[h:mm:ss]]` ;
+   - `{A}` APPROFONDI : ajouté par recherche web, avec la source dans `SRC` ;
+   - `{O}` AVIS : analyse, exemple ou transposition construits pour le playbook ;
+   - `{Q}` À VÉRIFIER : incertain, contradictoire, mal transcrit.
+4. **Rechercher 5 à 8 sujets décisifs** (WebSearch, en parallèle) : prix actuels des outils cités, alternatives, chiffres ou études avancés dans la vidéo, cadre légal des hacks, identité des noms mal transcrits. Les prix des comparateurs divergent : donner la fourchette et `{Q}`, ne pas trancher.
+5. **Vérifier les chiffres entre eux** (un revenu plus grand que le total, un pourcentage qui change en cours d'échange…) et signaler l'incohérence plutôt que la lisser.
+6. **Plan :** 4 à 8 pages thématiques regroupées en 2 à 4 groupes (ex. « Comprendre », « Construire », « Accélérer »), plus les pages fixes (voir l'ordre ci-dessous). Une page par thème décisif, pas par chapitre de la vidéo.
+7. **Écrire** dans un dossier de travail (dossier temporaire ou de brouillon, jamais un dossier publié) :
+   - `body.html` copié depuis `assets/template.body.html` ;
+   - `content.py` copié depuis `assets/content.example.py` ;
+   - `extra.js` si un outil interactif est utile.
+   Suivre `references/redaction.md`.
+8. **Figures** dans `FIGURES()` : SVG en ligne avec les aides de `build.py`, un identifiant de marqueur unique par figure (`m = "s1"`, `"s2"`…), une description complète en `label`, une légende avec étiquette et horodatage. Logigramme quand il y a des décisions, chaîne pour un funnel ou un rituel, couches ou arbre pour une architecture, courbe « illustrative » pour une dynamique dans le temps (le dire dans la légende).
+9. **Assembler :** `python3 assets/build.py <dossier>` → `playbook.artifact.html` (à publier) et `playbook.full.html` (à contrôler). Le script refuse de finir s'il reste un marqueur non remplacé ou une figure manquante.
+10. **Contrôler :** `node assets/check.js <dossier>` (Playwright ; en cloud Claude Code : `NODE_PATH=/opt/node-tools/node_modules`). Attendu : `erreurs []`, `debordement mobile {}`. Regarder la carte, deux figures et l'outil interactif sur les captures ; corriger les textes qui débordent des boîtes. Sans Playwright : ouvrir `playbook.full.html`, console sans erreur, largeur 400 px sans défilement horizontal.
+11. **Publier** `playbook.artifact.html` en artefact privé (nouvel artefact par vidéo, icône d'un mot, description en une phrase).
+12. **Cockpit** (`cockpit-db`) : `INSERT OR REPLACE INTO deliverables` (kind `artefact`, projet `masterai`, id = id de l'artefact) et une ligne `tasks` en `done` (`skill_id='video-playbook'`).
+13. **Répondre à Hari en français**, court : le lien, le contenu (pages, figures, outil), les hacks traités, les points à vérifier.
+
+## Ordre des pages
+
+1. `accueil` : intro « ce que vous allez apprendre », carte interactive, « Comment lire » (légende seule), « Pour qui, et à quel niveau » avec graphique de niveau sur 10, ligne source.
+2. Groupe **Déployer chez vous** : `methode` (méthode transposable), `plan` (30/60/90, rituel, cases à cocher).
+3. Groupe **Comprendre** : `cas` (l'intervenant, le produit, outils et alternatives, ce qui se transpose ou non), éventuellement une page de stratégie.
+4. Groupes thématiques : une page par thème décisif.
+5. Groupe **Retenir** : `pepites`, `faq`, `lexique`, `sources`.
 
 ## Pièges techniques déjà rencontrés
 
-- **Ne pas committer le playbook dans le dépôt.** `wrangler.toml` publie tout le dépôt (`pages_build_output_dir = "."`) : le HTML et le PDF dérivés d'un podcast deviendraient publics. Garder le livrable dans un artefact privé et en fichiers non suivis ; ne committer que ce skill.
-- Playwright : module dans `/opt/node-tools/node_modules` (`NODE_PATH=/opt/node-tools/node_modules node script.js`). Chromium déjà installé.
-- Dans les commandes Bash, éviter `${…}` (littéraux JavaScript) et les gros heredocs contenant du JavaScript : le contrôle de sécurité les prend pour des suppressions. Écrire le script avec l'outil d'écriture, puis l'exécuter.
-- `pip install` installe pour `python3.13` ; `python3` est la 3.11.
-- Script de page : appeler l'affichage de la première page **après** avoir défini le moteur d'infobulles, sinon il plante.
-- Barres ou étiquettes avec `padding` en pourcentage : risque de débordement sur mobile ; tester à 400 px.
+- **Ne pas committer un playbook dans ce dépôt :** `wrangler.toml` publie tout le dépôt (`pages_build_output_dir = "."`). Le livrable reste dans un artefact privé et des fichiers non suivis (`playbooks/` est dans `.gitignore`). Seul le skill est commité.
+- Dans Bash, éviter `${…}` et les gros heredocs contenant du JavaScript (le contrôle de sécurité les prend pour des suppressions) : écrire le fichier avec l'outil d'écriture, puis l'exécuter.
+- Cloud Claude Code : `pip install` installe pour `python3.13` ; Playwright est dans `/opt/node-tools/node_modules`, Chromium déjà installé.
+- Le moteur affiche la première page **après** avoir défini les infobulles ; si on modifie `engine.js`, garder l'appel `show()` à la fin.
+- Pas de `padding` en pourcentage dans les barres ou étiquettes : débordement sur mobile.
+- Les infobulles ne s'appliquent pas aux titres, liens, libellés de cases, cartes de la carte, ni aux sorties d'outil (`.calc-out`) : c'est voulu.
+- Boîtes SVG : ≤ 22 caractères par ligne pour une boîte de 156 px, sinon le texte déborde. Vérifier sur les captures.
+- Les commentaires HTML de `body.html` sont retirés à l'assemblage ; on peut y laisser des notes.
+- Une f-string Python ne peut pas contenir de barre oblique inverse ni d'apostrophe du même type que ses guillemets : utiliser des guillemets doubles pour le français.
 
 ## Fin de tâche
 
-- Cockpit : livrable ajouté (`deliverables`), étapes de suite (`steps`), tâche passée en `done`.
-- Dire en deux phrases ce qui a été fait et ce qui reste à valider.
+- Cockpit : livrable ajouté, tâche en `done`, étapes de suite si Hari en demande.
+- Deux phrases : ce qui a été fait, ce qui reste à vérifier.
