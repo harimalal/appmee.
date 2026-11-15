@@ -1,0 +1,17 @@
+date,hippodrome,reunion,course,nom_course,discipline,distance_m,allocation_eur,partants,lisibilite,retenu1,cote1,score1,retenu2,cote2,score2,retenu3,cote3,score3,arrivee_1,arrivee_2,arrivee_3,arrivee_4,retenus_dans_les_3,top3_cotes_dans_les_3,disqualifies,gain_gagnant_eur,gain_couples_eur,mode
+2026-11-14,VINCENNES,1,2,PRIX DE BELLERIVE,monte,2700,62000,14,difficile,7,6.0,65,2,12,62,13,3.4,58,14,4,6,8,0,1,"7;9;12;13",-3.0,-6.0,approfondie
+2026-11-14,VINCENNES,1,3,PRIX DE LA BRESSE,attele,2700,40000,15,moderee,13,1.5,78,10,7.7,70,8,60,58,7,13,3,6,1,1,"2;5;9;12;14;15",-3.0,-6.0,approfondie
+2026-11-14,VINCENNES,1,4,PRIX ATLANTIC,attele,2700,59000,16,difficile,15,3.4,80,17,5.1,68,8,7.1,62,8,13,5,3,1,1,"18",4.1,-6.0,approfondie
+2026-11-14,VINCENNES,1,5,PRIX DE DUNKERQUE,attele,2850,46000,10,moderee,2,4.4,78,9,11,70,11,3.3,68,9,11,7,5,2,2,"1;10",8.0,0.5,approfondie
+2026-11-14,VINCENNES,1,6,PRIX DE BRIOUDE,monte,2700,59000,13,moderee,13,4.7,74,5,7.1,72,6,3.6,70,12,11,6,9,1,1,"1;4;13",-3.0,-6.0,approfondie
+2026-11-14,VINCENNES,1,7,PRIX DU LANGUEDOC,attele,2850,90000,13,moderee,8,4.5,76,9,5.8,75,11,2.9,74,11,8,3,13,2,2,"6",-0.1,-0.4,approfondie
+2026-11-14,VINCENNES,1,9,PRIX D'ARGENTAN,attele,2700,85000,8,facile,8,2.1,80,7,2.0,72,5,48,40,8,2,7,1,2,3,"",-0.9,-1.7,approfondie
+2026-11-14,CAEN,8,1,PRIX DES HEUCHERES,monte,2450,15500,17,difficile,18,10,72,7,6.7,65,11,9.1,62,7,11,10,15,2,,"1;5;9;14;18",3.7,7.3,approfondie
+2026-11-14,CAEN,8,2,PRIX DES SYMPHORINES (GR A),attele,2450,15500,14,moderee,6,1.4,82,9,21,66,8,21,55,12,13,6,7,1,,"2;4;10",-3.0,-6.0,approfondie
+2026-11-14,CAEN,8,3,PRIX DES SYMPHORINES (GR B),attele,2450,15500,14,difficile,8,2.5,68,7,11,62,2,5.6,58,3,8,4,7,1,,"2;5;10",-3.0,-2.7,approfondie
+2026-11-14,CAEN,8,4,PRIX DES VERMICULAIRES (GR A),attele,2450,15500,11,,7,11,,10,7.1,,12,8,,7,12,11,,2,,,,2.0,mecanique
+2026-11-14,CAEN,8,5,PRIX DES VERMICULAIRES (GR B),attele,2450,15500,12,,7,15,,9,34,,6,12,,12,7,11,,1,,,,-6.0,mecanique
+2026-11-14,CAEN,8,6,PRIX DES CELOSIES,attele,2450,17500,16,,9,57,,8,4.2,,5,9.6,,5,15,11,,1,,,,-6.0,mecanique
+2026-11-14,CAEN,8,7,PRIX DES BERGENIES,attele,2450,15500,14,,7,18,,12,9.8,,14,6,,12,14,6,,2,,,,6.8,mecanique
+2026-11-14,CAEN,8,8,PRIX DES AIRELLES,monte,2450,16000,18,,14,5.5,,17,6.6,,10,23,,6,16,17,,1,,,,-6.0,mecanique
+2026-11-14,CAEN,8,9,PRIX DES LIATRIS,attele,2450,18000,14,,12,1.5,,6,16,,9,12,,9,13,5,,1,,,,-0.9,mecanique
