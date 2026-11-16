@@ -1,7 +1,7 @@
 
 /* ===== V2 : fonds alternés blanc / dégradé violet, photos pleines ===== */
 main>section:nth-of-type(odd){background:#fff!important;border:0!important}
-main>section:nth-of-type(even){background:linear-gradient(165deg,#F1EBFF 0%,#D9CDFF 55%,#CDBBFF 100%)!important;border:0!important}
+main>section:nth-of-type(even){background:linear-gradient(165deg,#F1EBFF 0%,#E4DBFF 55%,#D9CDFF 100%)!important;border:0!important}
 main>section.hero{background:#fff!important}
 .cta-section{background:#fff!important}
 body{background:#fff}

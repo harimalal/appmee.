@@ -49,6 +49,8 @@ P = {
  "phone": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
 }
 def ic(n, cls=""):
+    if V3:
+        return f'<svg class="i{(" " + cls) if cls else ""}" viewBox="0 0 24 24" aria-hidden="true">{P[n]}</svg>'
     c = f' class="{cls}"' if cls else ""
     return f'<svg{c} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{P[n]}</svg>'
 PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>'
@@ -112,7 +114,7 @@ def proof_wall():
     ]
     one = "".join(cards)
     dup = one.replace('<figure class="tcard"', '<figure aria-hidden="true" class="tcard"')
-    return f'<div class="proof"><div class="marquee">{one}{dup}</div></div>'
+    return f'<div class="proof"><div class="marquee">{one}</div></div>' if V3 else f'<div class="proof"><div class="marquee">{one}{dup}</div></div>'
 
 # ---------- lecteur animé ----------
 def player():
@@ -232,6 +234,9 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
                 '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
                 '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
                 + head + '</head>\n<body>\n' + main + '\n</body></html>')
+    if V3:
+        import re as _re
+        html = _re.sub(r'>\s*\n\s*<', '><', html)
     with open(os.path.join(DIST, fname), "w", encoding="utf-8") as f:
         f.write(html)
 

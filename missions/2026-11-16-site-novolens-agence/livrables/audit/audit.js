@@ -7,10 +7,10 @@ const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) 
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
 // paires texte / fond réellement utilisées (seuil : 4,5 texte normal, 3 grand texte)
 const pairs = [
-  ['encre sur blanc', '#14102F', '#FFFFFF', 4.5], ['encre sur violet clair', '#14102F', '#F1EBFF', 4.5], ['encre sur violet fin de dégradé', '#14102F', '#CDBBFF', 4.5],
-  ['texte secondaire sur blanc', '#35325C', '#FFFFFF', 4.5], ['texte secondaire sur violet clair', '#35325C', '#F1EBFF', 4.5], ['texte secondaire sur violet fin de dégradé', '#35325C', '#CDBBFF', 4.5],
-  ['gris muted sur blanc', '#5A5681', '#FFFFFF', 4.5], ['gris muted sur violet fin de dégradé', '#5A5681', '#CDBBFF', 4.5],
-  ['violet de marque sur blanc', '#4B39DD', '#FFFFFF', 4.5], ['violet de marque sur violet clair', '#4B39DD', '#F1EBFF', 4.5], ['violet de marque sur violet fin de dégradé', '#4B39DD', '#CDBBFF', 4.5],
+  ['encre sur blanc', '#14102F', '#FFFFFF', 4.5], ['encre sur violet clair', '#14102F', '#F1EBFF', 4.5], ['encre sur violet fin de dégradé', '#14102F', '#D9CDFF', 4.5],
+  ['texte secondaire sur blanc', '#35325C', '#FFFFFF', 4.5], ['texte secondaire sur violet clair', '#35325C', '#F1EBFF', 4.5], ['texte secondaire sur violet fin de dégradé', '#35325C', '#D9CDFF', 4.5],
+  ['gris muted sur blanc', '#4F4B78', '#FFFFFF', 4.5], ['gris muted sur violet fin de dégradé', '#4F4B78', '#D9CDFF', 4.5],
+  ['violet de marque sur blanc', '#4B39DD', '#FFFFFF', 4.5], ['violet de marque sur violet clair', '#4B39DD', '#F1EBFF', 4.5], ['violet de marque sur violet fin de dégradé', '#4B39DD', '#D9CDFF', 4.5],
   ['blanc sur bouton violet', '#FFFFFF', '#4B39DD', 4.5], ['blanc sur violet clair du bouton', '#FFFFFF', '#7656F5', 4.5],
   ['encre sur jaune', '#14102F', '#FFD84D', 4.5], ['rouge pastille sans', '#FFFFFF', '#B03A52', 4.5],
 ];

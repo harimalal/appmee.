@@ -299,3 +299,11 @@
     if (e.key === 'Escape' && menu && menu.classList.contains('open')) { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.focus(); }
   });
 })();
+
+/* Mur de preuves : le second jeu de cartes (boucle continue) est cloné ici pour alléger le HTML */
+(function () {
+  var m = document.querySelector('.marquee');
+  if (!m) return;
+  var n = m.children.length;
+  for (var i = 0; i < n; i++) { var c = m.children[i].cloneNode(true); c.setAttribute('aria-hidden', 'true'); m.appendChild(c); }
+})();
