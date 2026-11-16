@@ -12,25 +12,28 @@ Mission `site-novolens-agence`, état du 2026-11-16. Les textes ci-dessous sont 
 
 Fichiers sources : `build.py` (pages, pied de page, FAQ, formulaire), `story.py` (parcours en étapes), `ucards.py` (les 4 encarts), `v3_extra.py` (cas client, 404, sitemap, robots), `app.js` (hero animé, formulaire, simulateur). Chemins relatifs à `livrables/`.
 
-## Constats prioritaires
+## Constats prioritaires et état de traitement
 
-| # | Constat | Où | Correction |
-|---|---|---|---|
-| 1 | `index.html` est écrit sans `<!doctype>`, sans `<html lang>`, sans `<meta charset>` ni `viewport` (mode « fragment » prévu pour l'artefact) | `site-src/build.py` · `page()` (branche `if index:`) | Générer l'accueil avec le même squelette que les autres pages (détail dans L04) |
-| 2 | Le titre de l'accueil est « NOVOLENS » seul (8 caractères) | `build.py` · `page()` (ligne `if V3 and index: title = "NOVOLENS"`) | Supprimer cette ligne et utiliser le titre proposé ci-dessous |
-| 3 | Le site public affiche des remarques internes et des textes de remplissage (cartes de cas clients, pastilles, « Chiffre à confirmer »…) alors que le brief interdit les espaces réservés | voir tableau « Mentions internes visibles » | Remplacer comme indiqué |
-| 4 | Chiffres contradictoires : courbe de 57 rendez-vous contre 8 dans l'entonnoir ; « trois étapes » annoncées pour 5 affichées ; pilotage « hebdomadaire » ou « régulier » | `build.py` · `laptop()`, `build_resultats()`, `build_methode()`, `build_tarifs()` | Voir les tableaux « À valider » |
-| 5 | Trois témoignages nommés (Thomas L., Sophie M., Marc D.) sont fictifs | `build.py` · `proof_wall()` | Les retirer avant mise en ligne ou les remplacer par de vrais avis signés |
-| 6 | Dates figées dans les exemples (19 nov., créneaux du 17 au 19 nov.) qui seront passées | `build.py` · `delivery()`, `build_contact()` ; `app.js` · hero | Voir tableaux |
-| 7 | L'accueil (55,7 Ko) et `comment-ca-marche.html` (52,0 Ko) respectent le poids du brief (60 Ko) : ne pas ajouter de contenu lourd sans retirer autre chose | `site/` | Relancer l'audit après chaque ajout |
+Les constats ci-dessous ont été relevés à la première relecture ; la colonne « État » reflète le site reconstruit le 2026-11-16 (version 18 h 12). Dans les tableaux « À valider », une recommandation qui commence par « Traité » est déjà appliquée dans le site actuel ; la suite de la phrase dit ce qui reste.
+
+| # | Constat | État | Où | Correction |
+|---|---|---|---|---|
+| 1 | `index.html` était écrit en fragment, sans `<!doctype>`, `<html lang>`, `<meta charset>` ni `viewport` | Traité : document complet ; la variante en fragment pour l'artefact est dans `livrables/site-artefact/index.html` | `build.py` · `page()` | Aucune |
+| 2 | Le titre de l'accueil était « NOVOLENS » seul | Traité : « NOVOLENS, prospection B2B externalisée » | `build.py` · `page()` | Aucune |
+| 3 | Textes de remplissage et remarques internes visibles | Traité en grande partie (cartes de cas clients, pied de page, « Chiffre à confirmer », note des tarifs) ; reste à faire pour les points du tableau « Mentions internes » | voir ce tableau | Voir ce tableau |
+| 4 | Chiffres contradictoires | Traité pour la courbe (cumul de 8) et pour l'introduction de Méthode (« Cinq étapes »). Reste à faire : description SEO de Méthode (« trois étapes »), illustration de l'étape 5 (barres 3 à 17), pilotage « hebdomadaire » ou « régulier » | `build.py` · `build_methode()`, `build_tarifs()` ; `story.py` · `il5()` | Voir les tableaux « À valider » |
+| 5 | Trois témoignages nommés (Thomas L., Sophie M., Marc D.) sont fictifs | Reste à faire | `build.py` · `proof_wall()` | Les retirer avant mise en ligne ou les remplacer par de vrais avis signés |
+| 6 | Dates figées dans les exemples | Traité (carte de livraison, hero calculé à partir du jour, créneaux en jours de semaine) | `build.py`, `app.js` | Aucune |
+| 7 | Poids des pages | Conforme : accueil 55,7 Ko, Méthode 51,7 Ko (limite 60 Ko) | `site/` | Relancer l'audit après chaque ajout |
+| 8 | Pages légales absentes et pied de page sans liens vers elles | Reste à faire : les mentions de remplissage sont retirées, les trois pages sont à créer (voir L04, section e) | `build.py` · `footer()` | Créer mentions légales, confidentialité et CGV |
 
 ## Titres SEO et descriptions : actuel et proposition
 
-Longueur recommandée : titre 60 caractères au plus, description 155 au plus. Pour changer : dernier appel `page(...)` de chaque fonction `build_*()` dans `build.py` (et `v3_extra.py` pour le cas client). Si le titre prend le suffixe « | NOVOLENS », adapter aussi le calcul du fil d'Ariane dans `page()` : `title.replace(" NOVOLENS","").replace("NOVOLENS ","")` doit devenir `title.split(" | ")[0]`.
+Longueur recommandée : titre 60 caractères au plus, description 155 au plus. Pour changer : dernier appel `page(...)` de chaque fonction `build_*()` dans `build.py` (et `v3_extra.py` pour le cas client). Le titre de l'accueil est déjà corrigé (« NOVOLENS, prospection B2B externalisée »). Si les autres titres prennent le suffixe « | NOVOLENS », adapter aussi le calcul du fil d'Ariane dans `page()` : `title.replace(" NOVOLENS","").replace("NOVOLENS ","")` doit devenir `title.split(" | ")[0]`.
 
 | Page | Titre actuel | Proposition (longueur) | Description proposée (longueur) |
 |---|---|---|---|
-| `index.html` | NOVOLENS (8) | Prospection B2B externalisée \| NOVOLENS (39) | NOVOLENS prend en charge votre prospection B2B : nous qualifions et livrons des rendez-vous avec des décideurs de PME, ETI et grands groupes. (141) |
+| `index.html` | NOVOLENS, prospection B2B externalisée (38) | Conservé : NOVOLENS, prospection B2B externalisée (38) | NOVOLENS prend en charge votre prospection B2B : nous qualifions et livrons des rendez-vous avec des décideurs de PME, ETI et grands groupes. (141) |
 | `pourquoi-nous.html` | Pourquoi NOVOLENS (17) | Pourquoi externaliser sa prospection B2B \| NOVOLENS (51) | Pourquoi confier sa prospection B2B à NOVOLENS : démarrage rapide visé, ciblage sur mesure, qualification selon vos critères et pilotage mesurable. (147) |
 | `comment-ca-marche.html` | Comment ça marche, NOVOLENS (27) | Méthode de prospection B2B en 5 étapes \| NOVOLENS (49) | La méthode NOVOLENS en cinq étapes : calibrage, prospection, qualification, rendez-vous livrés avec contexte et pilotage par le reporting. (138) |
 | `resultats.html` | Résultats NOVOLENS (18) | Résultats et indicateurs de prospection \| NOVOLENS (50) | Les indicateurs suivis par NOVOLENS : rendez-vous qualifiés, entonnoir de prospection et exemple de reporting. Chiffres d'exemple en attendant les premiers cas clients. (168) |
@@ -63,15 +66,15 @@ Les descriptions de `cas-client`, `tarifs`, `faq` et `contact` (102 à 137 carac
 
 ## Mentions internes visibles sur le site à remplacer
 
-| Où | Texte visible | Fichier · fonction | Remplacement |
+| Où | Texte visible | Fichier · fonction | État et remplacement |
 |---|---|---|---|
-| Pied de page, toutes les pages | « (à confirmer) » après l'e-mail ; ligne « Mentions légales, confidentialité et CGV : … » ; « * Chiffres repris du visuel de départ, à confirmer avant mise en ligne. » | site-src/build.py · footer() | Liens vers mentions-legales.html, confidentialite.html, cgv.html (pages à créer avec les informations légales de l'éditeur) ; retirer « (à confirmer) » ; remplacer l'astérisque par « * Objectif, non garanti » une fois le chiffre validé. |
-| Accueil, avis clients | « Textes provisoires en attendant les vrais avis clients. » et pastille « Texte provisoire » | site-src/build.py · build_index(), tcard() | Retirer la section (P6, P12). |
-| Pourquoi nous | « Repères qualitatifs et indicatifs, à affiner selon votre situation. » ; « Engagements proposés, à valider avant publication. » | site-src/build.py · build_pourquoi() | Supprimer les deux sous-titres. |
-| Résultats | Sous-titre des cas clients, pastilles, « Contexte », « Action », compteur 0 → 00 ; « Chiffre à confirmer » ; « À remplacer par vos vrais chiffres. » sous la courbe ; emplacement vidéo | site-src/build.py · build_resultats() | Voir le tableau de la page résultats. |
-| Tarifs | « Formules proposées à titre indicatif, à ajuster avec vos tarifs réels. » | site-src/build.py · build_tarifs() | Remplacer par « Chaque devis est établi après un échange de 15 minutes ». |
-| Contact | « Aperçu : ce formulaire n'envoie rien… » ; « (adresse à confirmer) » | site-src/build.py · build_contact() | À retirer une fois le formulaire branché et l'adresse confirmée. |
-| Comment ça marche, accueil | Pastille « Photo remplaçable : img/etape-N.jpg » en haut de chaque scène d'étape (visible sur grand écran) | site-src/story.py · story() (span photo-tag) | Supprimer la ligne `<span class="photo-tag">` avant la mise en ligne. |
+| Pied de page, toutes les pages | « (à confirmer) » après l'e-mail ; ligne de remplissage sur mentions légales, confidentialité et CGV ; ancienne note « * Chiffres repris du visuel de départ… » | site-src/build.py · footer() | Traité : mention « à confirmer » et ligne de remplissage retirées ; note remplacée par « * Objectif indicatif. Les chiffres, exemples de cas et coordonnées de cette maquette sont donnés à titre illustratif. ». Reste à faire : créer les trois pages légales et leurs liens, retirer la note à la mise en ligne. |
+| Accueil, avis clients | « Textes provisoires en attendant les vrais avis clients. » et pastille « Texte provisoire » | site-src/build.py · build_index(), tcard() | Reste à faire : retirer la section (P6, P12). |
+| Pourquoi nous | Sous-titre du comparatif ; « Engagements proposés, à valider avant publication. » | site-src/build.py · build_pourquoi() | Traité : le sous-titre du comparatif est devenu « Repères généraux, à adapter à votre situation. ». Reste à faire : supprimer « Engagements proposés, à valider avant publication. ». |
+| Résultats | Cartes de cas clients à texte de remplissage, « Chiffre à confirmer », « À remplacer par vos vrais chiffres. », étiquette d'emplacement vidéo | site-src/build.py · build_resultats() | Traité : remplacés par trois cartes « Secteurs ciblés » et des phrases propres. Reste à faire : le cadre « Témoignage vidéo · 60 s » (voir tableau de la page). |
+| Tarifs | Note « Formules proposées à titre indicatif, à ajuster avec vos tarifs réels. » | site-src/build.py · build_tarifs() | Traité : remplacée par « Chaque devis est établi après un échange de 15 minutes. ». |
+| Contact | « Aperçu : ce formulaire n'envoie rien… » ; « (adresse à confirmer) » | site-src/build.py · build_contact() | Reste à faire : à retirer une fois le formulaire branché et l'adresse confirmée. |
+| Comment ça marche, accueil | Pastille « Photo remplaçable : img/etape-N.jpg » en haut de chaque scène d'étape (visible sur grand écran) | site-src/story.py · story() (span photo-tag) | Reste à faire : supprimer la ligne `<span class="photo-tag">` avant la mise en ligne. |
 
 ## Blocs communs (texte repris sur plusieurs pages)
 
@@ -138,7 +141,7 @@ Source : `build.py` · `compare()`.
   - Intérêt
   - Élevé
   - Prochain échange
-  - Jeu. 19 nov. · 10h00
+  - Jeudi · 10h00
   - Documents
   - Compte rendu + notes
   - Un rendez-vous qualifié, avec tout le contexte.
@@ -223,17 +226,16 @@ Source : `build.py` · `proof_wall()`, `tcard()`. Le script `app.js` clone les c
   - FAQ
   - Réserver un échange
   - *H4* : Contact
-  - contact@novolens.fr (à confirmer)
+  - contact@novolens.fr
   - Réponse sous 24 h
-  - Mentions légales, confidentialité et CGV : (texte de remplissage)
   - © 2026 NOVOLENS. Tous droits réservés.
-  - * Chiffres repris du visuel de départ, à confirmer avant mise en ligne.
+  - * Objectif indicatif. Les chiffres, exemples de cas et coordonnées de cette maquette sont donnés à titre illustratif.
 
 Source : `build.py` · `footer()`.
 
 ## Page Accueil (`index.html`)
 
-- **Titre SEO** : NOVOLENS
+- **Titre SEO** : NOVOLENS, prospection B2B externalisée
 - **Description** : NOVOLENS livre des rendez-vous qualifiés avec des décideurs : prospection B2B externalisée pour PME, ETI et grands groupes.
 - **Balise h1** : unique
 
@@ -339,7 +341,7 @@ Source : `build.py` · `footer()`.
 | 2 | « < 1 mois pour les premiers résultats » | repris du visuel de départ | `site-src/build.py · build_index() (.stats), build_pourquoi(), build_methode(), build_resultats(), FAQ` | Voir P2. Même formulation partout : premiers rendez-vous visés après le cadrage, selon la cible. |
 | 3 | « Des rendez-vous avec dirigeants / directeurs achats / DSI / directeurs commerciaux » (rotateur) | hypothèse à confirmer | `site-src/build.py · constante ROT` | Ne garder que les fonctions que l'équipe sait réellement atteindre. |
 | 4 | « des décideurs réellement intéressés » (introduction) et « décideurs prêts à échanger sur vos solutions » | hypothèse à confirmer | `site-src/build.py · build_index() (hero, reality)` | Voir P4. |
-| 5 | « De nouveaux clients dans votre agenda » + 5 rendez-vous défilants (19 nov., 23 nov., 26 nov., 30 nov., 3 déc. ; DG Industrie 500 M€, Directrice Achats Santé Groupe, CEO Tech, Directeur Commercial Distribution ETI, DSI Services B2B 1 200 salariés) | exemple illustratif | `site-src/app.js · bloc « Hero : liste de rendez-vous » (tableau data) ; titre dans site-src/build.py · build_index() (notifs-title)` | Voir P14. Ajouter la mention « Exemple » dans le titre ; remplacer les dates par des jours relatifs ou les retirer (elles seront passées). |
+| 5 | « De nouveaux clients dans votre agenda » + 5 rendez-vous défilants (jours de semaine calculés à partir de la date du jour ; DG Industrie 500 M€, Directrice Achats Santé Groupe, CEO Tech, Directeur Commercial Distribution ETI, DSI Services B2B 1 200 salariés) | exemple illustratif | `site-src/app.js · bloc « Hero : liste de rendez-vous » (tableau data) ; titre dans site-src/build.py · build_index() (notifs-title)` | Traité : les dates sont maintenant calculées à partir du jour de la visite (`app.js`). Reste à faire : voir P14, renommer le titre en « Exemple de rendez-vous livrés ». |
 | 6 | Pastilles « Décideur confirmé » et « Besoin qualifié » | hypothèse à confirmer | `site-src/build.py · build_index() (chip-float)` | Garder si ces deux contrôles figurent bien dans le process de qualification. |
 | 7 | « Réserver un échange de 15 min », « Sans engagement », « Échange avec un expert » | hypothèse à confirmer | `site-src/build.py · cta(), build_index(), header()` | Confirmer la durée, que l'échange initial est gratuit et qu'un expert prend l'appel. Préciser « Échange initial sans engagement ». |
 | 8 | « Réponse sous 24 h » (hero, CTA, contact, footer) | hypothèse à confirmer | `site-src/build.py · cta(), footer(), build_index(), build_contact()` | Voir P15. Engagement de délai : à tenir ou à adoucir. |
@@ -348,7 +350,7 @@ Source : `build.py` · `footer()`.
 | 11 | « Contacts sélectionnés et vérifiés » | hypothèse à confirmer | `site-src/story.py · STEPS[1] (bullets)` | Préciser la méthode de vérification (source, mise à jour) ou écrire « Contacts sélectionnés selon votre cible ». |
 | 12 | « Ce qui ne passe pas le filtre ne vous est jamais livré » et « Zéro rendez-vous pour rien » | hypothèse à confirmer | `site-src/story.py · STEPS[2] (text, gain)` | Voir P3. Promesse absolue non sourcée. |
 | 13 | « Des rendez-vous prêts à signer » (gain de l'étape 4) | hypothèse à confirmer | `site-src/story.py · STEPS[3] (gain)` | Voir P5. |
-| 14 | Carte de livraison : DG, Industrie · 500 M€ · France, projet de modernisation, intérêt Élevé, prochain échange Jeu. 19 nov. · 10h00 | exemple illustratif | `site-src/build.py · delivery()` | Ajouter la pastille « Exemple » sur la carte ; remplacer la date fixe (elle sera passée) par « Date et heure du rendez-vous ». |
+| 14 | Carte de livraison : DG, Industrie · 500 M€ · France, projet de modernisation, intérêt Élevé, prochain échange « Jeudi · 10h00 » | exemple illustratif | `site-src/build.py · delivery()` | Traité : la date fixe est remplacée par un jour de semaine. Reste à faire : ajouter la pastille « Exemple » sur la carte. |
 | 15 | Trois cartes « Pour qui » : PME en croissance, ETI, Grands groupes (Dirigeants, Directions commerciales, Développement, Business units, Comptes stratégiques, Nouveaux marchés) | hypothèse à confirmer | `site-src/build.py · build_index() (cibles)` | Confirmer que les trois segments et les fonctions citées sont bien servis. |
 | 16 | Section « Des dirigeants qui accélèrent leur croissance avec NOVOLENS » : témoignages de Thomas L., Sophie M., Marc D. + 3 cartes « Témoignage à venir » | exemple illustratif | `site-src/build.py · proof_wall(), tcard(), build_index() (preuves)` | Voir P6 et P12. Personnes fictives : à retirer avant mise en ligne (pratique commerciale trompeuse) ou à remplacer par de vrais avis signés. |
 | 17 | « Des comptes stratégiques et un fort potentiel commercial » (statistique 3) | hypothèse à confirmer | `site-src/build.py · build_index() (.stats)` | Phrase non mesurable. Remplacer par « Des comptes choisis avec vous ». |
@@ -390,18 +392,18 @@ Source : `build.py` · `footer()`.
   - Vous gardez la main sur la cible et le rythme, sans structure fixe à porter ni engagement sur l'échange initial.
   - Comparatif
 - **H2** : Trois façons de remplir un pipeline.
-  - Repères qualitatifs et indicatifs, à affiner selon votre situation.
+  - Repères généraux, à adapter à votre situation.
   - Critère
   - Recruter en interne
-  - Agence classique
+  - Autres approches
   - NOVOLENS
   - Démarrage
-  - Plusieurs mois
-  - Quelques semaines
+  - Selon le recrutement
+  - Selon le prestataire
   - Moins d'un mois visé
   - Coût
   - Fixe, chargé
-  - Variable selon prestations
+  - Variable
   - Sur devis, adapté à votre cible
   - Expertise du froid
   - À construire
@@ -409,15 +411,15 @@ Source : `build.py` · `footer()`.
   - Équipe dédiée et rodée
   - Qualification
   - Dépend du profil
-  - Souvent déclarative
+  - Dépend du prestataire
   - Critères définis avec vous
   - Visibilité
   - Dépend du CRM
-  - Rapport périodique
+  - Dépend du prestataire
   - Reporting partagé en continu
   - Flexibilité
   - Faible
-  - Moyenne
+  - Variable
   - Élevée, sans engagement initial
   - Nos engagements
 - **H2** : Une prospection sérieuse, transparente, respectueuse.
@@ -438,7 +440,7 @@ Source : `build.py` · `footer()`.
 | 2 | « Un rendez-vous n'est livré que si le décideur, le besoin et l'intérêt sont confirmés selon vos critères » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (arguments, « shield »)` | Garder si le contrôle est réel ; sinon « Chaque rendez-vous est qualifié selon les critères définis avec vous ». |
 | 3 | « Une équipe dédiée à la prospection, rompue aux objections » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (arguments, « phone »)` | Ajouter un fait vérifiable (taille ou ancienneté de l'équipe) ou supprimer « rompue aux objections ». |
 | 4 | « Une souplesse totale » ; « sans structure fixe à porter ni engagement sur l'échange initial » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (arguments, « sliders »)` | Voir P8. |
-| 5 | Comparatif : Recruter en interne (« Plusieurs mois », « Fixe, chargé », « Faible »), Agence classique (« Quelques semaines », « Souvent déclarative », « Moyenne »), NOVOLENS (« Moins d'un mois visé », « Élevée ») | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (fonction row() et tableau)` | Généralités non sourcées sur des tiers. Rester objectif et vérifiable (publicité comparative) : renommer la colonne « Agence classique » en « Autres approches », retirer les jugements (« Souvent déclarative ») et ne garder que des critères que NOVOLENS peut documenter. |
+| 5 | Comparatif : Recruter en interne (« Selon le recrutement », « Fixe, chargé », « Faible »), Autres approches (« Selon le prestataire », « Variable », « Dépend du prestataire »), NOVOLENS (« Moins d'un mois visé », « Élevée ») | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (fonction row() et tableau)` | Traité : la colonne est renommée « Autres approches » et les jugements sur des tiers sont neutralisés. Reste à faire : faire confirmer par l'équipe les cases de la colonne NOVOLENS (« Moins d'un mois visé », « Équipe dédiée et rodée », « Élevée »). |
 | 6 | Engagement « Transparence » : « Vous voyez qui est contacté, ce qui est dit et où en est chaque piste » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (engage)` | Vérifier que le reporting donne bien accès aux échanges ; sinon « Vous suivez l'avancement de chaque piste ». |
 | 7 | Engagement « Conformité » : « respectueuse du RGPD et du droit d'opposition » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (engage), FAQ` | Voir P13. À faire relire par un juriste. |
 | 8 | Engagement « Image de marque » : « jamais de relance agressive » | hypothèse à confirmer | `site-src/build.py · build_pourquoi() (engage)` | Voir P11. |
@@ -455,7 +457,7 @@ Source : `build.py` · `footer()`.
   - Accueil / Comment ça marche
   - Notre méthode
 - **H1** : De la stratégie au rendez-vous, nous nous occupons de tout.
-  - Trois étapes, une équipe experte en prospection à froid, un reporting clair. Vous n'intervenez que pour définir la cible et accueillir les rendez-vous.
+  - Cinq étapes, une équipe experte en prospection à froid, un reporting clair. Vous n'intervenez que pour définir la cible et accueillir les rendez-vous.
 - *Étapes 1 à 4 : identiques à l'accueil.*
   - Étape 5 sur 5
   - *H3* : Vous pilotez avec des chiffres, pas des impressions.
@@ -508,12 +510,12 @@ Source : `build.py` · `footer()`.
   - Projets qualifiés
   - 8
   - Rendez-vous planifiés
-  - 3
+  - 1
+  - 2
+  - 4
   - 5
+  - 7
   - 8
-  - 11
-  - 14
-  - 16
   - Sem. 1
   - Sem. 2
   - Sem. 3
@@ -534,12 +536,12 @@ Source : `build.py` · `footer()`.
 
 | # | Affirmation | Statut | Où la modifier | Recommandation |
 |---|---|---|---|---|
-| 1 | « Trois étapes » (introduction et description SEO) alors que la page montre 5 étapes (et l'accueil 4) | hypothèse à confirmer | `site-src/build.py · build_methode() (hero) et page() de build_methode()` | Incohérence factuelle : écrire « Cinq étapes » ici et « Quatre étapes » sur l'accueil, ou unifier. |
+| 1 | « Trois étapes » dans la description SEO (la page montre 5 étapes, l'accueil 4) | hypothèse à confirmer | `site-src/build.py · build_methode() (hero) et page() de build_methode()` | Traité : l'introduction de la page dit maintenant « Cinq étapes ». Reste à faire : la description SEO dit encore « trois étapes » (appel `page(...)` de `build_methode()`), voir la proposition SEO. |
 | 2 | « Vous n'intervenez que pour définir la cible et accueillir les rendez-vous » | hypothèse à confirmer | `site-src/build.py · build_methode() (hero)` | Contredit « validés avec vous » et le point de pilotage. Écrire « Votre rôle : définir la cible, valider le message, accueillir les rendez-vous ». |
 | 3 | Étape 5 : « Tableau de bord partagé en continu », « Ajustements rapides de cible et de message » | hypothèse à confirmer | `site-src/story.py · STEPS[4]` | Confirmer l'outil de reporting et sa fréquence de mise à jour ; écrire « mis à jour chaque semaine » si c'est le cas. |
 | 4 | Calendrier des 30 jours : S1 cadrage, S2 lancement, S3 premiers rendez-vous, S4 bilan | hypothèse à confirmer | `site-src/build.py · build_methode() (tl)` | Dépend de P2 ; mentionner que S3 est un objectif et non une garantie. |
 | 5 | Entonnoir d'exemple : 128 entreprises ciblées, 86 décideurs contactés (67 %), 24 projets qualifiés (28 %), 8 rendez-vous planifiés (33 %) | exemple illustratif | `site-src/build.py · funnel() (rows) ; texte dans build_methode() (fun)` | Taux cohérents (86/128, 24/86, 8/24). Valeurs reprises dans laptop(), build_resultats(), v3_extra.py build_cas(), story.py il5(), ucards.py u3()/u4() : les changer partout. |
-| 6 | Reporting d'exemple : tableau de bord 128 / 86 / 24 / 8 et courbe 3, 5, 8, 11, 14, 16 rendez-vous par semaine | exemple illustratif | `site-src/build.py · laptop() (liste [3, 5, 8, 11, 14, 16])` | Incohérence : la courbe totalise 57 rendez-vous alors que l'entonnoir en annonce 8 ; l'illustration de l'étape 5 a une 6e barre à 17 au lieu de 16 (`story.py` · `il5()`, liste vals). Aligner partout (par exemple 0, 1, 1, 2, 2, 2 = 8) et adapter le calcul de hauteur des barres (v*6 dans laptop(), v*11 dans il5()). |
+| 6 | Reporting d'exemple : tableau de bord 128 / 86 / 24 / 8 et courbe cumulée 1, 2, 4, 5, 7, 8 rendez-vous (8 en 6 semaines) | exemple illustratif | `site-src/build.py · laptop() (liste [3, 5, 8, 11, 14, 16])` | Traité : tableau de bord et courbe de `laptop()` sont cohérents avec l'entonnoir (8 rendez-vous). Reste à faire : l'illustration de l'étape 5 garde les barres 3, 5, 8, 11, 14, 17 (`story.py` · `il5()`, liste vals, hauteur v*11) : l'aligner. |
 | 7 | « Téléphone, e-mail, LinkedIn » comme canaux de prospection | hypothèse à confirmer | `site-src/story.py · STEPS[1] ; site-src/ucards.py · section() (moyens)` | Confirmer les canaux utilisés (et la façon d'utiliser LinkedIn). |
 | 8 | « Fiche de contexte et compte rendu » livrés avec chaque rendez-vous | hypothèse à confirmer | `site-src/build.py · delivery(), site-src/story.py · STEPS[3]` | Confirmer le contenu réel du dossier. |
 | 9 | Fréquence du point de pilotage : « régulier » ici, « hebdomadaire » dans la formule Croissance | hypothèse à confirmer | `site-src/story.py · STEPS[4] ; site-src/build.py · build_tarifs() (plan Croissance)` | Aligner les deux : par exemple « point de pilotage toutes les deux semaines » si c'est la réalité. |
@@ -558,7 +560,7 @@ Source : `build.py` · `footer()`.
   - Les indicateurs que nous suivons, les cas clients qui arrivent et les retours de dirigeants.
   - +70 %
   - *H3* : de rendez-vous qualifiés*
-  - Progression visée par rapport à une prospection menée en interne. Chiffre à confirmer.
+  - Objectif de progression fixé avec vous dès le calibrage, mesuré dans le reporting.
   - < 1 mois
   - *H3* : pour les premiers résultats
   - Du calibrage aux premiers rendez-vous dans votre agenda.
@@ -567,59 +569,40 @@ Source : `build.py` · `footer()`.
   - Sur 128 entreprises ciblées, 8 rendez-vous planifiés dans l'exemple de reporting.
   - Montée en puissance
 - **H2** : Un pipeline qui se remplit semaine après semaine.
-  - La régularité fait la différence : chaque semaine apporte de nouveaux rendez-vous qualifiés à vos équipes.
-  - Courbe d'exemple, à titre illustratif. À remplacer par vos vrais chiffres.
-  - *H4* : Rendez-vous qualifiés par semaine (exemple)
-  - 3
+  - La régularité fait la différence : chaque semaine ajoute de nouveaux rendez-vous qualifiés à vos équipes. Dans l'exemple, 8 rendez-vous cumulés en 6 semaines.
+  - Courbe d'exemple, à titre illustratif.
+  - *H4* : Rendez-vous qualifiés cumulés, 6 semaines (exemple)
+  - 1
+  - 2
+  - 4
   - 5
+  - 7
   - 8
-  - 11
-  - 14
-  - 16
   - S1
   - S2
   - S3
   - S4
   - S5
   - S6
-  - Cas clients
-- **H2** : Trois secteurs, un même objectif.
-  - (sous-titre de remplissage sur les études de cas)
-  - (pastille de remplissage)
+  - Secteurs ciblés
+- **H2** : Trois secteurs où nous construisons nos premiers cas.
+  - Un exemple de cas complet est présenté dans le gabarit de cas client.
   - *H3* : Industrie
   - Directeur Général
   - ETI
-  - Contexte : (texte de remplissage).
-  - Action : (texte de remplissage).
-  - Avant
-  - 0
-  - → Après
-  - 00
-  - (pastille de remplissage)
+  - Des décideurs difficiles à joindre et des cycles de vente longs : le rendez-vous qualifié ouvre le dialogue au bon niveau.
   - *H3* : Santé
   - Direction Achats
   - Groupe
-  - Contexte : (texte de remplissage).
-  - Action : (texte de remplissage).
-  - Avant
-  - 0
-  - → Après
-  - 00
-  - (pastille de remplissage)
+  - Des achats structurés, plusieurs interlocuteurs : une approche par compte et un contexte clair avant chaque échange.
   - *H3* : Tech & Logiciels
   - CEO
   - Scale-up
-  - Contexte : (texte de remplissage).
-  - Action : (texte de remplissage).
-  - Avant
-  - 0
-  - → Après
-  - 00
-  - Emplacement vidéo témoignage client
+  - Des équipes qui vendent déjà : la prospection prend en charge les relances pour que le pipeline reste régulier.
   - Témoignage vidéo · 60 s
   - La parole aux dirigeants
 - **H2** : Des retours qui parlent de rendez-vous, pas de promesses.
-  - Les vidéos et verbatims clients seront ajoutés ici dès leur validation.
+  - Les vidéos et verbatims clients apparaîtront ici dès leur validation. Les textes affichés dans le mur ci-dessous sont des exemples.
 - *Bloc commun : mur de témoignages (voir « Blocs communs »).*
 - *Bloc commun : appel à l'action final (voir « Blocs communs »).*
 
@@ -627,12 +610,12 @@ Source : `build.py` · `footer()`.
 
 | # | Affirmation | Statut | Où la modifier | Recommandation |
 |---|---|---|---|---|
-| 1 | « +70 % de rendez-vous qualifiés* » + phrase « Progression visée par rapport à une prospection menée en interne. Chiffre à confirmer. » | repris du visuel de départ | `site-src/build.py · build_resultats() (kp)` | Voir P1. Retirer « Chiffre à confirmer » de la page publique (remarque interne visible). |
+| 1 | « +70 % de rendez-vous qualifiés* » + phrase « Objectif de progression fixé avec vous dès le calibrage, mesuré dans le reporting. » | repris du visuel de départ | `site-src/build.py · build_resultats() (kp)` | Traité : « Chiffre à confirmer » est retiré et la phrase reprend P1. Reste à faire : valider le chiffre lui-même. |
 | 2 | « < 1 mois pour les premiers résultats » | repris du visuel de départ | `site-src/build.py · build_resultats() (kp)` | Voir P2. |
 | 3 | « 24 projets qualifiés (exemple) » ; « Sur 128 entreprises ciblées, 8 rendez-vous planifiés » | exemple illustratif | `site-src/build.py · build_resultats() (kp)` | Étiquette « exemple » présente : la garder. |
-| 4 | Courbe « Rendez-vous qualifiés par semaine (exemple) » S1 à S6 : 3, 5, 8, 11, 14, 16 | exemple illustratif | `site-src/build.py · build_resultats() (liste vals)` | Incohérence avec « 8 rendez-vous » (somme 57), voir comment-ca-marche. |
-| 5 | Trois cartes de cas clients : Industrie (Directeur Général, ETI), Santé (Direction Achats, Groupe), Tech & Logiciels (CEO, Scale-up) avec compteur « Avant 0 → Après 00 » | hypothèse à confirmer | `site-src/build.py · build_resultats() (cas)` | Cartes à texte de remplissage : contraire au brief. Remplacer par trois cartes « Secteurs ciblés » (titre, fonctions visées, une phrase sur l'enjeu type), sans compteur ni résultat, avec le sous-titre « Les secteurs où nous construisons nos premiers cas clients ». |
-| 6 | Emplacement vidéo « Témoignage vidéo · 60 s » et phrase « Les vidéos et verbatims clients seront ajoutés ici dès leur validation » | hypothèse à confirmer | `site-src/build.py · build_resultats() (vid)` | Promesse de contenu futur visible. Retirer le bloc vidéo jusqu'à l'existence d'un témoignage réel. |
+| 4 | Courbe « Rendez-vous qualifiés cumulés, 6 semaines (exemple) » : 1, 2, 4, 5, 7, 8 | exemple illustratif | `site-src/build.py · build_resultats() (liste vals)` | Traité : cumul de 8 rendez-vous, cohérent avec l'entonnoir. |
+| 5 | Trois cartes « Secteurs ciblés » : Industrie (Directeur Général, ETI), Santé (Direction Achats, Groupe), Tech & Logiciels (CEO, Scale-up), chacune avec une phrase sur l'enjeu type | hypothèse à confirmer | `site-src/build.py · build_resultats() (cas)` | Traité : textes de remplissage, pastilles et compteurs retirés ; les phrases décrivent des enjeux types, pas des résultats. Reste à faire : confirmer que ces trois secteurs sont bien ceux visés. |
+| 6 | Cadre vidéo « Témoignage vidéo · 60 s » et phrase « Les vidéos et verbatims clients apparaîtront ici dès leur validation. Les textes affichés dans le mur ci-dessous sont des exemples. » | hypothèse à confirmer | `site-src/build.py · build_resultats() (vid)` | Traité : l'étiquette d'emplacement est retirée et la phrase précise que les textes du mur sont des exemples. Reste à faire : retirer le cadre vidéo tant qu'aucun témoignage réel n'existe. |
 | 7 | « Des retours qui parlent de rendez-vous, pas de promesses » | hypothèse à confirmer | `site-src/build.py · build_resultats() (vid)` | Voir P12. |
 | 8 | Mur de témoignages (Thomas L., Sophie M., Marc D.) | exemple illustratif | `site-src/build.py · proof_wall()` | Voir P6. |
 | 9 | Description SEO : « cas clients et témoignages de dirigeants » | hypothèse à confirmer | `site-src/build.py · build_resultats() (page())` | Annonce des contenus qui n'existent pas encore : remplacer (voir proposition SEO). |
@@ -675,12 +658,12 @@ Source : `build.py` · `footer()`.
   - Projets qualifiés
   - 8
   - Rendez-vous planifiés
-  - 3
+  - 1
+  - 2
+  - 4
   - 5
+  - 7
   - 8
-  - 11
-  - 14
-  - 16
   - Sem. 1
   - Sem. 2
   - Sem. 3
@@ -765,7 +748,7 @@ Source : `build.py` · `footer()`.
   - Coordination avec vos équipes ventes
   - Pilotage dédié
   - Demander un devis
-  - Formules proposées à titre indicatif, à ajuster avec vos tarifs réels.
+  - Chaque devis est établi après un échange de 15 minutes.
   - Simulateur de gain
 - **H2** : Combien vaut un flux de rendez-vous pour vous ?
   - Entrez vos propres chiffres. Le calcul se fait dans votre navigateur et n'est pas une promesse de résultat.
@@ -814,7 +797,7 @@ Source : `build.py` · `footer()`.
 | 6 | « Un seul gros client signé suffit souvent à rentabiliser une mission » | hypothèse à confirmer | `site-src/build.py · build_tarifs() (how)` | Voir P10. |
 | 7 | « Nous revenons vers vous sous 24 h avec une proposition adaptée » (appel à l'action) | hypothèse à confirmer | `site-src/build.py · build_tarifs() (cta)` | Confirmer que le devis est bien envoyé sous 24 h ; sinon « Nous vous répondons sous 24 h et envoyons une proposition ensuite ». |
 | 8 | « Dans toutes les formules » : ciblage sur mesure, prospection multicanale, qualification des besoins, prise de rendez-vous, dossier de contexte, reporting partagé | hypothèse à confirmer | `site-src/build.py · build_tarifs() (inc)` | Confirmer que ces six éléments sont inclus partout, y compris dans Lancement. |
-| 9 | Note « Formules proposées à titre indicatif, à ajuster avec vos tarifs réels. » | hypothèse à confirmer | `site-src/build.py · build_tarifs() (pl)` | Remarque interne : à retirer à la mise en ligne, ou remplacer par « Chaque devis est établi après un échange de 15 minutes ». |
+| 9 | Note « Chaque devis est établi après un échange de 15 minutes. » | hypothèse à confirmer | `site-src/build.py · build_tarifs() (pl)` | Traité : la remarque interne est remplacée par cette phrase. Reste à faire : confirmer le principe du devis après échange. |
 
 ## Page FAQ (`faq.html`)
 
@@ -891,17 +874,17 @@ Source : `build.py` · `footer()`.
   - Grand groupe (5 000 salariés et plus)
   - Votre objectif
   - Créneau souhaité (facultatif)
-  - *H4* : Mar. 17 nov.
+  - *H4* : Mardi
   - 9h30
   - 11h00
   - 14h30
   - 16h00
-  - *H4* : Mer. 18 nov.
+  - *H4* : Mercredi
   - 9h30
   - 11h00
   - 14h30
   - 16h00
-  - *H4* : Jeu. 19 nov.
+  - *H4* : Jeudi
   - 9h30
   - 11h00
   - 14h30
@@ -934,10 +917,10 @@ Source : `build.py` · `footer()`.
 | # | Affirmation | Statut | Où la modifier | Recommandation |
 |---|---|---|---|---|
 | 1 | Tailles d'entreprise : PME (10 à 250 salariés), ETI (250 à 5 000), Grand groupe (5 000 et plus) | hypothèse à confirmer | `site-src/build.py · build_contact() (select #taille)` | Seuils usuels (UE pour les PME, INSEE pour les ETI). Confirmer qu'on ne cible pas les entreprises de moins de 10 salariés. |
-| 2 | Créneaux : mar. 17, mer. 18, jeu. 19 nov. à 9h30, 11h00, 14h30, 16h00 | exemple illustratif | `site-src/build.py · build_contact() (liste days)` | Dates figées qui seront passées. Remplacer par un agenda en ligne (voir guide, section formulaire) ou par un champ « Jours et horaires qui vous conviennent ». |
+| 2 | Créneaux : mardi, mercredi, jeudi à 9h30, 11h00, 14h30, 16h00 | exemple illustratif | `site-src/build.py · build_contact() (liste days)` | Traité : les dates sont remplacées par des jours de semaine (plus rien de périmé). Reste à faire : relier ces créneaux à de vraies disponibilités ou à un agenda en ligne (guide, section d). |
 | 3 | « Un expert NOVOLENS vous répond sous 24 h » (message de succès et étape 1) | hypothèse à confirmer | `site-src/build.py · build_contact() (success, side)` | Voir P15. |
 | 4 | « Échange de 15 minutes : vos objectifs, votre cible, vos contraintes » | hypothèse à confirmer | `site-src/build.py · build_contact() (side)` | Confirmer la durée. |
-| 5 | Adresse contact@novolens.fr « (adresse à confirmer) » | hypothèse à confirmer | `site-src/build.py · footer() ; build_contact() (side)` | Adresse d'exemple (domaine non confirmé). Remplacer à deux endroits et retirer la mention « à confirmer » à la mise en ligne. |
+| 5 | Adresse contact@novolens.fr « (adresse à confirmer) » | hypothèse à confirmer | `site-src/build.py · footer() ; build_contact() (side)` | Traité dans le pied de page (la mention « à confirmer » y est retirée). Reste à faire : remplacer l'adresse par la vraie et retirer « (adresse à confirmer) » dans la colonne de contact (`build_contact()`, bloc side). |
 | 6 | Case « J'accepte d'être recontacté au sujet de ma demande » | hypothèse à confirmer | `site-src/build.py · build_contact() (consent)` | Ajouter sous le bouton : responsable du traitement, finalité, durée de conservation, droits et lien vers la politique de confidentialité. |
 | 7 | Note « Aperçu : ce formulaire n'envoie rien tant qu'il n'est pas relié… » | hypothèse à confirmer | `site-src/build.py · build_contact() (form)` | Vraie à ce jour (l'envoi est simulé dans app.js). À supprimer dès que le formulaire est branché. |
 | 8 | Neuf champs dans le formulaire | hypothèse à confirmer | `site-src/build.py · build_contact()` | Le dossier de choix recommandait 5 champs ou moins : passer Téléphone, Taille et Objectif en facultatifs ou les retirer. |
@@ -955,11 +938,11 @@ Aucune affirmation à valider.
 
 | # | Affirmation | Statut | Où la modifier | Recommandation |
 |---|---|---|---|---|
-| 1 | Adresse contact@novolens.fr « (à confirmer) » | hypothèse à confirmer | `site-src/build.py · footer()` | Remplacer par l'adresse réelle (voir contact). |
+| 1 | Adresse contact@novolens.fr | hypothèse à confirmer | `site-src/build.py · footer()` | Traité : la mention « (à confirmer) » est retirée du pied de page. Reste à faire : remplacer par l'adresse réelle. |
 | 2 | « Réponse sous 24 h » | hypothèse à confirmer | `site-src/build.py · footer()` | Voir P15. |
-| 3 | « Mentions légales, confidentialité et CGV : … » (texte de remplissage) | hypothèse à confirmer | `site-src/build.py · footer()` | Remplacer par trois liens vers des pages réelles ; mentions légales obligatoires pour un éditeur professionnel : dénomination, forme juridique, capital, adresse, numéro SIREN, directeur de la publication, hébergeur. |
+| 3 | Ligne sur mentions légales, confidentialité et CGV : retirée du pied de page | hypothèse à confirmer | `site-src/build.py · footer()` | Traité : texte de remplissage retiré. Reste à faire : créer les trois pages et leurs liens (L04, section e, avec la liste des champs obligatoires). |
 | 4 | « © 2026 NOVOLENS. Tous droits réservés. » | hypothèse à confirmer | `site-src/build.py · footer()` | Ajouter la forme juridique exacte de la société une fois connue. |
-| 5 | « * Chiffres repris du visuel de départ, à confirmer avant mise en ligne. » | repris du visuel de départ | `site-src/build.py · footer()` | À retirer dès que +70 % et < 1 mois sont validés ou retirés. |
+| 5 | « * Objectif indicatif. Les chiffres, exemples de cas et coordonnées de cette maquette sont donnés à titre illustratif. » | exemple illustratif | `site-src/build.py · footer()` | Traité : remplace l'ancienne note. Reste à faire : retirer cette note à la mise en ligne, une fois chiffres et coordonnées validés. |
 
 ## Synthèse
 

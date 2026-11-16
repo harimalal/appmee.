@@ -19,6 +19,7 @@ livrables/
 │   ├── style.css, style_v2.css, style_v3.css   feuilles concaténées dans site/style.css
 │   ├── app.js             animations, hero, formulaire, simulateur
 │   └── img/               photos sources (copiées dans site/img)
+├── site-artefact/index.html   accueil au format fragment (sans doctype ni <html>), à coller dans l'artefact privé ; régénéré à chaque reconstruction
 ├── audit/audit.js         audit automatique
 ├── L02-design-system.html, L03-contenu.md, L04-guide.md, L05-rapport-audit.md
 ```
@@ -35,7 +36,7 @@ V2=1 V3=1 python3 build.py     # écrit dans livrables/site
 | Prérequis | Python 3 et Pillow (`pip install pillow`) ; Pillow lit la taille des images pour écrire `width` et `height` |
 | Les deux variables | `V2=1` active les photos et le style des cartes, `V3=1` active la version finale (cas client, 404, sitemap, robots) ; sans les deux, le rendu est incomplet |
 | Le dossier `site/` est effacé | `build.py` supprime puis recrée `site/` à chaque exécution : tout fichier ajouté à la main dans `site/` disparaît. Mettre les fichiers à ajouter dans `site-src/` et les copier depuis `build.py` (exemple en section e) |
-| Effet de bord | La reconstruction réécrit aussi `L02-design-system.html` |
+| Effets de bord | La reconstruction réécrit `site-artefact/index.html` (variante fragment de l'accueil, utile uniquement pour l'artefact) et `L02-design-system.html`. `site/index.html` est un document complet (doctype, `lang="fr"`, charset, viewport) : c'est lui qu'on met en ligne |
 | Vérifier | La dernière ligne affichée est `ok [...]` avec la liste des fichiers ; ouvrir `site/index.html` dans un navigateur |
 | Règle d'or | On modifie `site-src/`, on reconstruit, on relance l'audit (section h) |
 
@@ -185,13 +186,20 @@ Autres éléments à ajouter avant la mise en ligne, absents du site actuel :
 
 | Élément | Comment |
 |---|---|
-| Squelette complet de l'accueil | `index.html` est généré sans `<!doctype>`, `<html lang="fr">`, `<meta charset>` ni `viewport` (branche `if index:` de `page()`). Réserver cette branche à l'artefact : `if index and os.environ.get("ARTIFACT") == "1":` ; sans cette variable, l'accueil prend le squelette des autres pages |
-| Titre de l'accueil | Supprimer `if V3 and index: title = "NOVOLENS"` dans `page()` (titre proposé dans L03) |
+| Accueil | Déjà traité : `site/index.html` est un document complet avec le titre « NOVOLENS, prospection B2B externalisée ». Reste un détail : la balise `og:title` de l'accueil vaut encore « NOVOLENS » (`page()`, la substitution ne vise que `<title>`) ; l'aligner sur le titre |
 | Page cas client en `noindex` | Tant qu'elle est un gabarit : `<meta name="robots" content="noindex">` dans `build_cas()` et retrait de `build_seo()` et du pied de page |
 | Favicon | Enregistrer le logo SVG (fonction `logo()`) dans `site-src/img/favicon.svg` et ajouter `<link rel="icon" href="img/favicon.svg">` dans `page()` |
 | Image de partage | Créer une image 1200 × 630 `img/og.jpg` (moins de 250 Ko) et ajouter `<meta property="og:image" content="{BASE}img/og.jpg">` dans `page()` |
-| Pages légales | Créer `mentions-legales.html`, `confidentialite.html`, `cgv.html` (contenu fourni par l'éditeur), les ajouter à `footer()`, au sitemap et à la liste `pages` de `build_seo()` |
+| Pages légales | Voir la liste détaillée ci-dessous : le pied de page ne contient plus de ligne de remplissage, il n'y a donc aucun lien vers ces pages tant qu'elles ne sont pas créées |
 | En-têtes de sécurité | Fichier `site-src/_headers` copié à la reconstruction (après `shutil.copytree(...)` dans `build.py` : `shutil.copy(os.path.join(HERE, "_headers"), DIST)`), avec par exemple `/*` puis, indentés, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` |
+
+**Pages légales à créer avant la mise en ligne** (contenu fourni et validé par l'éditeur ; faire relire par un juriste). Pour chacune : créer une fonction `build_...()` dans `v3_extra.py` sur le modèle de `build_404()`, ajouter le lien dans `footer()` (colonne « Contact » ou ligne du bas), l'ajouter à la liste `pages` de `build_seo()` et relancer l'audit.
+
+| Page | Fichier | Champs obligatoires |
+|---|---|---|
+| Mentions légales | `mentions-legales.html` | Éditeur : dénomination sociale, forme juridique, capital, adresse du siège, numéro SIREN et RCS, numéro de TVA intracommunautaire si applicable, e-mail et téléphone de contact. Directeur de la publication (nom). Hébergeur : nom, adresse et téléphone (par exemple Cloudflare, Inc. si le site y est hébergé). Propriété intellectuelle (textes, images, crédits des photos). Responsabilité |
+| Politique de confidentialité | `confidentialite.html` | Responsable du traitement et contact (ou DPO) ; finalités (réponse aux demandes, prise de rendez-vous, mesure d'audience) et base légale de chacune ; données collectées par le formulaire (prénom, nom, e-mail, téléphone, entreprise, fonction, taille, objectif, créneau) ; destinataires et sous-traitants (hébergeur, service de formulaire ou d'e-mail, outil d'analyse) ; transferts hors Union européenne le cas échéant ; durées de conservation ; droits d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité, et comment les exercer ; droit de réclamation auprès de la CNIL ; cookies et traceurs (section f) ; information des personnes prospectées : origine des données, droit d'opposition |
+| Conditions générales de vente | `cgv.html` | Identité du vendeur ; description des prestations (formules, périmètre, ce que le client fournit) ; prix et modalités de paiement, pénalités de retard et indemnité de recouvrement ; durée, renouvellement, résiliation et préavis ; obligations de moyens ou de résultat (formulation à soigner : aucun résultat n'est garanti dans le site) ; propriété et confidentialité des données de prospection ; protection des données (rôles des parties, sous-traitance) ; responsabilité ; droit applicable et tribunal compétent ; médiation (pour un client consommateur, ce qui est rare en B2B) |
 
 ## f) Analytics et consentement aux cookies
 
@@ -210,15 +218,15 @@ Constat : le site ne contient ni outil de mesure d'audience, ni bandeau de conse
 
 - [ ] Accord explicite de l'utilisateur pour publier et sur quel domaine
 - [ ] Toutes les affirmations de `L03-contenu.md` sont tranchées : confirmées par une source, ou reformulées (P1 à P15) ; +70 % et « < 1 mois » validés ou retirés
-- [ ] Mentions internes remplacées (tableau « Mentions internes visibles » de L03) : cartes de cas clients, « Chiffre à confirmer », « (à confirmer) », « Aperçu : ce formulaire… », étiquette « Photo remplaçable »
+- [ ] Mentions internes restantes traitées (tableau « Mentions internes visibles » de L03, colonne « État ») : « Textes provisoires… », « Engagements proposés, à valider avant publication. », « Aperçu : ce formulaire… », « (adresse à confirmer) », étiquette « Photo remplaçable », note d'astérisque du pied de page
 - [ ] Témoignages fictifs retirés ou remplacés par de vrais avis autorisés ; page cas client en `noindex`
-- [ ] Dates figées retirées (carte de livraison, notifications du hero, créneaux du formulaire)
-- [ ] Courbe et entonnoir cohérents ; « trois étapes » corrigé en « cinq étapes » sur Comment ça marche
+- [ ] Créneaux du formulaire reliés à de vraies disponibilités (les dates figées sont déjà remplacées par des jours de semaine)
+- [ ] Cohérence des chiffres : illustration de l'étape 5 (`story.py` · `il5()`) alignée sur le cumul de 8 ; description SEO de Méthode corrigée (« cinq étapes »)
 - [ ] Photos validées (droits, cadrage, moins de 250 Ko), textes alternatifs relus
 - [ ] E-mail réel, formulaire branché et testé de bout en bout, note « Aperçu » supprimée, mention RGPD ajoutée
-- [ ] Pages mentions légales, confidentialité et CGV créées et liées dans le pied de page
+- [ ] Pages mentions légales, confidentialité et CGV créées (champs obligatoires ci-dessus) et liées dans le pied de page
 - [ ] Domaine remplacé dans `build_seo()`, balises canoniques, favicon, image de partage ajoutés ; `sitemap.xml` et `robots.txt` regénérés
-- [ ] `index.html` avec `<!doctype>`, `lang="fr"`, titre complet
+- [ ] Mise en ligne de `site/` (jamais de `site-artefact/`) ; `og:title` de l'accueil aligné
 - [ ] Polices hébergées sur le site ; analytics et consentement traités (section f)
 - [ ] Audit relancé : aucun élément dans `summary`, contrastes OK, `index.html` et chaque page sous 60 Ko, images sous 250 Ko
 - [ ] Test à la main à 400, 820 et 1360 px, au clavier (Tab, menu mobile, FAQ), avec mouvement réduit activé

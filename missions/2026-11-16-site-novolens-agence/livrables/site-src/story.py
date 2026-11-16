@@ -80,9 +80,9 @@ def il4():
 
 def il5():
     bars = ""
-    vals = [3, 5, 8, 11, 14, 17]
+    vals = [1, 2, 4, 5, 7, 8]
     for i, v in enumerate(vals):
-        h = v * 11
+        h = v * 20
         col = YEL if i == 5 else f"url(#bg{i%2})"
         stroke = f' stroke="{INK}" stroke-width="2.5"' if i == 5 else ""
         bars += f'<rect class="rise" style="--d:{500+i*180}" x="{66+i*64}" y="{340-h}" width="42" height="{h}" rx="9" fill="{col}"{stroke}/>'

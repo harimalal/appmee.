@@ -4,7 +4,7 @@ Date : 2026-11-16. Outil : `livrables/audit/audit.js` (Playwright), résultats b
 
 ## Résultat de synthèse
 - 9 pages auditées à 400, 820 et 1360 px : aucun débordement horizontal, aucune erreur de console, un seul `h1` par page.
-- Poids : plus grosse page HTML 55,7 Ko (index) pour un budget de 60 Ko ; plus grosse image 198 Ko pour un budget de 250 Ko.
+- Poids : plus grosse page HTML 56 Ko (index) pour un budget de 60 Ko ; plus grosse image 198 Ko pour un budget de 250 Ko.
 - Contrastes : 15 paires sur 15 au niveau AA (4,5:1).
 - Clavier : focus visible sur les 8 premiers éléments tabulés de chaque page (testé). Fermeture du menu avec Échap et pilotage des onglets aux flèches : implémentés, non testés automatiquement.
 - Mouvement réduit : aucun bloc de contenu resté masqué.
@@ -13,15 +13,15 @@ Date : 2026-11-16. Outil : `livrables/audit/audit.js` (Playwright), résultats b
 ## Détail par page
 | page | poids HTML | h1 | description | débordement | erreurs console | focus visible | blocs masqués (mouvement réduit) |
 |---|---|---|---|---|---|---|---|
-| 404.html | 4.2 Ko | 1 | non | aucun | 0 | oui | 0 |
-| cas-client.html | 24.7 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| comment-ca-marche.html | 52 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| contact.html | 10.4 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| 404.html | 4.3 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| cas-client.html | 24.6 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| comment-ca-marche.html | 51.9 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| contact.html | 10.2 Ko | 1 | oui | aucun | 0 | oui | 0 |
 | faq.html | 13.5 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| index.html | 55.7 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| pourquoi-nous.html | 16.7 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| resultats.html | 13 Ko | 1 | oui | aucun | 0 | oui | 0 |
-| tarifs.html | 14.1 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| index.html | 56 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| pourquoi-nous.html | 16.6 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| resultats.html | 13.3 Ko | 1 | oui | aucun | 0 | oui | 0 |
+| tarifs.html | 14 Ko | 1 | oui | aucun | 0 | oui | 0 |
 
 ## Contrastes (texte et fond réellement utilisés)
 | paire | ratio | seuil | conforme |
@@ -48,13 +48,16 @@ avec.jpg 52 Ko, card-1.jpg 152 Ko, card-2.jpg 124 Ko, card-3.jpg 169 Ko, card-4.
 ## Corrections faites pendant l'audit
 - Dégradé violet de fin de section éclairci (#CDBBFF vers #D9CDFF) : le violet de marque passait de 4,15:1 à 4,82:1 et le gris secondaire de 3,94:1 à 5,0:1 ou plus.
 - Index ramené de 64,7 Ko à 55,7 Ko : icônes et polices des illustrations déplacées dans la feuille de style, second jeu de cartes du mur de preuves cloné par le script.
-- Dimensions ajoutées sur les images des étapes ; description ajoutée à la page 404 (vérifiée dans le fichier, hors nouvelle passe complète).
+- Dimensions ajoutées sur les images des étapes ; description ajoutée à la page 404.
 - Notes de développement masquées (« photo remplaçable ») sur le site public.
+
+## Corrections issues de la relecture de contenu
+Index en document complet (doctype, langue, jeu de caractères) pour le dépôt, avec une variante en fragment réservée à l'artefact ; remarques internes retirées du site public ; cartes de cas à texte de remplissage remplacées par des secteurs ciblés ; comparatif rendu neutre ; courbe, tableau de bord et illustration de l'étape 5 alignés sur le cumul de 8 rendez-vous de l'entonnoir ; page Méthode alignée sur 5 étapes ; dates de la page Contact remplacées par des jours, dates du hero calculées à partir de la date du jour ; page cas client en noindex.
 
 ## Ce que cet audit ne couvre pas
 - Lighthouse et mesures réelles de LCP, INP et CLS : non exécutés dans cette session. Les seuils web.dev (LCP 2,5 s, INP 200 ms, CLS 0,1) restent à mesurer après mise en ligne.
 - Test sur appareils réels, lecteurs d'écran et outil d'accessibilité automatique de type axe : non faits.
 - Contraste vérifié sur les paires de couleurs de la charte, pas sur chaque élément du rendu.
 - Les polices Google Fonts n'ont pas été chargées dans l'environnement de test (repli système) : les rendus des captures peuvent différer légèrement.
-- La page L02-design-system.html a été ajoutée après la dernière passe complète : contrôlée en capture et sans erreur de console, à 1360 px seulement.
+- La page L02-design-system.html n'est pas dans la passe automatique : contrôlée en capture et sans erreur de console, à 1360 px seulement.
 - Chiffres, tarifs, témoignages et cas client : exemples étiquetés, à remplacer. L'e-mail et le domaine du sitemap sont des valeurs d'exemple.

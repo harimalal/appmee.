@@ -35,7 +35,7 @@ def build_404():
 
 
 def build_seo():
-    pages = ["index.html", "pourquoi-nous.html", "comment-ca-marche.html", "resultats.html", "cas-client.html", "tarifs.html", "faq.html", "contact.html"]
+    pages = ["index.html", "pourquoi-nous.html", "comment-ca-marche.html", "resultats.html", "tarifs.html", "faq.html", "contact.html"]
     base = "https://www.novolens.fr/"  # domaine d'exemple, à remplacer (voir guide.md)
     urls = "".join("<url><loc>" + base + ("" if p == "index.html" else p) + "</loc></url>" for p in pages)
     with open(os.path.join(DIST, "sitemap.xml"), "w") as f:

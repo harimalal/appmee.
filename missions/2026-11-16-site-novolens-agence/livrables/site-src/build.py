@@ -214,6 +214,7 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
     head += f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#FCFBFF">\n'
     if V3:
         head += '<meta name="color-scheme" content="light">\n'
+        if fname == 'cas-client.html': head += '<meta name="robots" content="noindex">\n'
         if index: head += '<link rel="preload" as="image" href="img/hero-bg.jpg" fetchpriority="high">\n'
     head += FONTS + '\n<link rel="stylesheet" href="style.css">\n'
     if V3 and fname not in ("index.html", "404.html"):
@@ -232,7 +233,7 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
         full = ('<!doctype html>\n<html lang="fr"><head><meta charset="utf-8">'
                 '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
                 '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
-                + head.replace('<title>NOVOLENS</title>', '<title>NOVOLENS, prospection B2B externalisée</title>', 1) + '</head>\n<body>\n' + main + '\n</body></html>')
+                + head.replace('<title>NOVOLENS</title>', '<title>NOVOLENS, prospection B2B externalisée</title>', 1).replace('og:title" content="NOVOLENS"', 'og:title" content="NOVOLENS, prospection B2B externalisée"') + '</head>\n<body>\n' + main + '\n</body></html>')
         os.makedirs(os.path.join(DIST, "..", "site-artefact"), exist_ok=True)
         import re as _r2
         with open(os.path.join(DIST, "..", "site-artefact", "index.html"), "w", encoding="utf-8") as f2:
@@ -414,7 +415,7 @@ def build_methode():
 <p class="lead">Un tableau de bord partagé suit les entreprises ciblées, les décideurs contactés, les projets qualifiés et les rendez-vous planifiés. Vous pilotez avec des chiffres, pas des impressions.</p></div></div></section>'''
     vid = ucards_section(ic, P, "La méthode <mark class='hl'>en un coup d'œil.</mark>", "Quatre étapes qui se suivent : l'action, et le moyen utilisé pour chacune.")
     body = hero + s + tl + fun + liv + rep + vid + cta()
-    page("comment-ca-marche.html", "Comment ça marche, NOVOLENS", "La méthode NOVOLENS en trois étapes : calibrage, prospection, rendez-vous qualifiés livrés avec contexte et reporting.", body, "comment-ca-marche.html", [ORG])
+    page("comment-ca-marche.html", "Comment ça marche, NOVOLENS", "La méthode NOVOLENS en cinq étapes : calibrage, prospection, rendez-vous qualifiés livrés avec contexte et reporting.", body, "comment-ca-marche.html", [ORG])
 
 # =====================================================================
 # RÉSULTATS
@@ -437,7 +438,7 @@ def build_resultats():
 <article class="card" data-reveal><span class="ico">{ic("building")}</span><h3>Industrie</h3><ul class="target-list"><li>Directeur Général</li><li>ETI</li></ul><p>Des décideurs difficiles à joindre et des cycles de vente longs : le rendez-vous qualifié ouvre le dialogue au bon niveau.</p></article>
 <article class="card" data-reveal="100"><span class="ico">{ic("shield")}</span><h3>Santé</h3><ul class="target-list"><li>Direction Achats</li><li>Groupe</li></ul><p>Des achats structurés, plusieurs interlocuteurs : une approche par compte et un contexte clair avant chaque échange.</p></article>
 <article class="card" data-reveal="200"><span class="ico">{ic("zap")}</span><h3>Tech &amp; Logiciels</h3><ul class="target-list"><li>CEO</li><li>Scale-up</li></ul><p>Des équipes qui vendent déjà : la prospection prend en charge les relances pour que le pipeline reste régulier.</p></article></div></div></section>'''
-    vid = f'''<section class="section"><div class="wrap proof-feature"><figure class="vid-frame" data-reveal style="margin:0"><span class="big-play" aria-hidden="true">{PLAY}</span><figcaption>Témoignage vidéo · 60 s</figcaption></figure>
+    vid = f'''<section class="section"><div class="wrap proof-feature"><figure class="solid" data-reveal style="margin:0">{IMG("livraison.jpg", "Rendez-vous d'affaires entre un dirigeant et deux interlocuteurs")}</figure>
 <div class="sec-head" data-reveal="120" style="margin:0;align-content:center"><p class="eyebrow">La parole aux dirigeants</p><h2>Des retours qui parlent de rendez-vous, pas de promesses.</h2><p class="lead">Les vidéos et verbatims clients apparaîtront ici dès leur validation. Les textes affichés dans le mur ci-dessous sont des exemples.</p></div></div>{proof_wall()}</section>'''
     body = hero + kp + chart + cas + vid + cta()
     page("resultats.html", "Résultats NOVOLENS", "Résultats NOVOLENS : rendez-vous qualifiés, premiers résultats en moins d'un mois, cas clients et témoignages de dirigeants.", body, "resultats.html", [ORG])
@@ -528,7 +529,7 @@ def build_contact():
 <div class="s"><span class="n">2</span><div><h4>Échange de 15 minutes</h4><p>Vos objectifs, votre cible, vos contraintes. Nous écoutons d'abord.</p></div></div>
 <div class="s"><span class="n">3</span><div><h4>Proposition sur mesure</h4><p>Si cela a du sens pour vous, nous vous envoyons un devis adapté.</p></div></div>
 <ul class="checks" style="margin-top:8px"><li>{ic("check")}Sans engagement</li><li>{ic("check")}Réponse sous 24 h</li><li>{ic("check")}Échange avec un expert</li></ul>
-<p class="muted">Vous préférez écrire ? contact@novolens.fr <span class="note">(adresse à confirmer)</span></p></div>'''
+<p class="muted">Vous préférez écrire ? contact@novolens.fr </p></div>'''
     hero = f'''<section class="page-hero"><div class="wrap">{crumbs("Contact")}<p class="eyebrow">Échange stratégique</p>
 <h1>Parlons de vos <span class="accent">objectifs de croissance.</span></h1><p class="lead">Un échange de 15 minutes avec un expert NOVOLENS pour comprendre vos enjeux et voir comment nous pouvons vous apporter des rendez-vous qualifiés.</p></div></section>'''
     body = hero + f'<section class="section band-white" style="padding-top:clamp(32px,5vw,56px)"><div class="wrap contact-grid">{form}{side}</div></section>'

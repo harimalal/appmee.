@@ -2,7 +2,7 @@
  "pages": [
   {
    "page": "404.html",
-   "size_kb": 4.2,
+   "size_kb": 4.3,
    "widths": {
     "400": {
      "overflow": false,
@@ -21,7 +21,7 @@
     }
    },
    "title": "Page introuvable NOVOLENS",
-   "description": false,
+   "description": true,
    "h1": 1,
    "imgs_without_dims": 0,
    "imgs_without_alt": 0,
@@ -31,7 +31,7 @@
   },
   {
    "page": "cas-client.html",
-   "size_kb": 24.7,
+   "size_kb": 24.6,
    "widths": {
     "400": {
      "overflow": false,
@@ -60,7 +60,7 @@
   },
   {
    "page": "comment-ca-marche.html",
-   "size_kb": 52,
+   "size_kb": 51.9,
    "widths": {
     "400": {
      "overflow": false,
@@ -89,7 +89,7 @@
   },
   {
    "page": "contact.html",
-   "size_kb": 10.4,
+   "size_kb": 10.2,
    "widths": {
     "400": {
      "overflow": false,
@@ -147,7 +147,7 @@
   },
   {
    "page": "index.html",
-   "size_kb": 55.7,
+   "size_kb": 56,
    "widths": {
     "400": {
      "overflow": false,
@@ -165,7 +165,7 @@
      "errors": []
     }
    },
-   "title": "NOVOLENS",
+   "title": "NOVOLENS, prospection B2B externalisée",
    "description": true,
    "h1": 1,
    "imgs_without_dims": 0,
@@ -176,7 +176,7 @@
   },
   {
    "page": "pourquoi-nous.html",
-   "size_kb": 16.7,
+   "size_kb": 16.6,
    "widths": {
     "400": {
      "overflow": false,
@@ -205,7 +205,7 @@
   },
   {
    "page": "resultats.html",
-   "size_kb": 13,
+   "size_kb": 13.3,
    "widths": {
     "400": {
      "overflow": false,
@@ -234,7 +234,7 @@
   },
   {
    "page": "tarifs.html",
-   "size_kb": 14.1,
+   "size_kb": 14,
    "widths": {
     "400": {
      "overflow": false,
@@ -361,9 +361,7 @@
   "overflow": [],
   "console_errors": [],
   "h1_not_one": [],
-  "no_description": [
-   "404.html"
-  ],
+  "no_description": [],
   "imgs_without_dims": [],
   "imgs_without_alt": [],
   "broken_links": [],
