@@ -22,7 +22,7 @@ Fichiers sources : `build.py` (pages, pied de page, FAQ, formulaire), `story.py`
 | 4 | Chiffres contradictoires : courbe de 57 rendez-vous contre 8 dans l'entonnoir ; « trois étapes » annoncées pour 5 affichées ; pilotage « hebdomadaire » ou « régulier » | `build.py` · `laptop()`, `build_resultats()`, `build_methode()`, `build_tarifs()` | Voir les tableaux « À valider » |
 | 5 | Trois témoignages nommés (Thomas L., Sophie M., Marc D.) sont fictifs | `build.py` · `proof_wall()` | Les retirer avant mise en ligne ou les remplacer par de vrais avis signés |
 | 6 | Dates figées dans les exemples (19 nov., créneaux du 17 au 19 nov.) qui seront passées | `build.py` · `delivery()`, `build_contact()` ; `app.js` · hero | Voir tableaux |
-| 7 | `index.html` pèse 64,7 Ko (limite du brief : 60 Ko hors images) ; `comment-ca-marche.html` 57,4 Ko | `site/index.html` | Alléger : retirer la section témoignages dupliquée (le mur est inséré deux fois pour le défilement) ou réduire le SVG du hero |
+| 7 | L'accueil (55,7 Ko) et `comment-ca-marche.html` (52,0 Ko) respectent le poids du brief (60 Ko) : ne pas ajouter de contenu lourd sans retirer autre chose | `site/` | Relancer l'audit après chaque ajout |
 
 ## Titres SEO et descriptions : actuel et proposition
 
@@ -30,14 +30,14 @@ Longueur recommandée : titre 60 caractères au plus, description 155 au plus. P
 
 | Page | Titre actuel | Proposition (longueur) | Description proposée (longueur) |
 |---|---|---|---|
-| `index.html` | NOVOLENS (8) | Prospection B2B externalisée | NOVOLENS (39) | NOVOLENS prend en charge votre prospection B2B : nous qualifions et livrons des rendez-vous avec des décideurs de PME, ETI et grands groupes. (141) |
-| `pourquoi-nous.html` | Pourquoi NOVOLENS (17) | Pourquoi externaliser sa prospection B2B | NOVOLENS (51) | Pourquoi confier sa prospection B2B à NOVOLENS : démarrage rapide visé, ciblage sur mesure, qualification selon vos critères et pilotage mesurable. (147) |
-| `comment-ca-marche.html` | Comment ça marche, NOVOLENS (27) | Méthode de prospection B2B en 5 étapes | NOVOLENS (49) | La méthode NOVOLENS en cinq étapes : calibrage, prospection, qualification, rendez-vous livrés avec contexte et pilotage par le reporting. (138) |
-| `resultats.html` | Résultats NOVOLENS (18) | Résultats et indicateurs de prospection | NOVOLENS (50) | Les indicateurs suivis par NOVOLENS : rendez-vous qualifiés, entonnoir de prospection et exemple de reporting. Chiffres d'exemple en attendant les premiers cas clients. (168) |
-| `cas-client.html` | Cas client modèle NOVOLENS (26) | Cas client modèle : du ciblage au rendez-vous | NOVOLENS (56) | Gabarit de cas client NOVOLENS : contexte, action, résultat et parole du dirigeant. Données d'exemple. (102) |
-| `tarifs.html` | Tarifs NOVOLENS (15) | Tarifs de prospection B2B sur devis | NOVOLENS (46) | Tarifs NOVOLENS : trois formules de prospection B2B externalisée, sur devis, adaptées à votre cible et à votre volume de rendez-vous. (133) |
-| `faq.html` | FAQ NOVOLENS (12) | FAQ prospection B2B externalisée | NOVOLENS (43) | Réponses aux questions fréquentes sur NOVOLENS : rendez-vous qualifiés, délais, méthode, reporting, engagement et tarifs. (121) |
-| `contact.html` | Contact NOVOLENS (16) | Réserver un échange de 15 min | NOVOLENS (40) | Réservez un échange de 15 minutes avec un expert NOVOLENS pour parler de vos objectifs de croissance. Sans engagement, réponse sous 24 h. (137) |
+| `index.html` | NOVOLENS (8) | Prospection B2B externalisée \| NOVOLENS (39) | NOVOLENS prend en charge votre prospection B2B : nous qualifions et livrons des rendez-vous avec des décideurs de PME, ETI et grands groupes. (141) |
+| `pourquoi-nous.html` | Pourquoi NOVOLENS (17) | Pourquoi externaliser sa prospection B2B \| NOVOLENS (51) | Pourquoi confier sa prospection B2B à NOVOLENS : démarrage rapide visé, ciblage sur mesure, qualification selon vos critères et pilotage mesurable. (147) |
+| `comment-ca-marche.html` | Comment ça marche, NOVOLENS (27) | Méthode de prospection B2B en 5 étapes \| NOVOLENS (49) | La méthode NOVOLENS en cinq étapes : calibrage, prospection, qualification, rendez-vous livrés avec contexte et pilotage par le reporting. (138) |
+| `resultats.html` | Résultats NOVOLENS (18) | Résultats et indicateurs de prospection \| NOVOLENS (50) | Les indicateurs suivis par NOVOLENS : rendez-vous qualifiés, entonnoir de prospection et exemple de reporting. Chiffres d'exemple en attendant les premiers cas clients. (168) |
+| `cas-client.html` | Cas client modèle NOVOLENS (26) | Cas client modèle : du ciblage au rendez-vous \| NOVOLENS (56) | Gabarit de cas client NOVOLENS : contexte, action, résultat et parole du dirigeant. Données d'exemple. (102) |
+| `tarifs.html` | Tarifs NOVOLENS (15) | Tarifs de prospection B2B sur devis \| NOVOLENS (46) | Tarifs NOVOLENS : trois formules de prospection B2B externalisée, sur devis, adaptées à votre cible et à votre volume de rendez-vous. (133) |
+| `faq.html` | FAQ NOVOLENS (12) | FAQ prospection B2B externalisée \| NOVOLENS (43) | Réponses aux questions fréquentes sur NOVOLENS : rendez-vous qualifiés, délais, méthode, reporting, engagement et tarifs. (121) |
+| `contact.html` | Contact NOVOLENS (16) | Réserver un échange de 15 min \| NOVOLENS (40) | Réservez un échange de 15 minutes avec un expert NOVOLENS pour parler de vos objectifs de croissance. Sans engagement, réponse sous 24 h. (137) |
 
 Les descriptions de `cas-client`, `tarifs`, `faq` et `contact` (102 à 137 caractères) restent valables. Page 404 : titre « Page introuvable NOVOLENS », à laisser tel quel (ajouter `noindex` est inutile, le serveur renvoie déjà le code 404).
 
@@ -50,7 +50,7 @@ Les descriptions de `cas-client`, `tarifs`, `faq` et `contact` (102 à 137 carac
 | P3 | « Zéro rendez-vous pour rien » ; « Ce qui ne passe pas le filtre ne vous est jamais livré » | « Seuls les rendez-vous qui répondent à vos critères vous sont proposés » ; gain : « Des rendez-vous filtrés ». | site-src/story.py · STEPS[2] |
 | P4 | « des décideurs réellement intéressés » ; « prêts à échanger sur vos solutions » | « des décideurs qui ont accepté d'échanger avec vous ». | site-src/build.py · build_index() ; compare() (liste Avec) |
 | P5 | « Des rendez-vous prêts à signer » | « Des rendez-vous préparés, avec tout le contexte ». | site-src/story.py · STEPS[3] |
-| P6 | « Une croissance accélérée » ; « Des dirigeants qui accélèrent leur croissance avec NOVOLENS » (alors qu'aucun client n'est cité) | « Un agenda commercial alimenté chaque semaine » ; titre de section : « Ce qu'en diront nos clients » est à éviter, retirer la section tant qu'il n'y a pas de vrai avis. | site-src/build.py · compare(), build_index() (preuves) |
+| P6 | « Une croissance accélérée » ; « Des dirigeants qui accélèrent leur croissance avec NOVOLENS » (alors qu'aucun client n'est cité) | « Un agenda commercial alimenté chaque semaine » ; pour la section d'avis, la retirer tant qu'il n'y a pas de vrai avis. | site-src/build.py · compare(), build_index() (preuves) |
 | P7 | « Un pipeline prévisible » (accueil, étape 5, reporting, cas client) | « Un pipeline mesurable » : on promet la visibilité, pas la prévision. | site-src/build.py · build_index(), build_methode(), v3_extra.py ; site-src/story.py · STEPS[4] |
 | P8 | « Une souplesse totale » | « Une souplesse réelle : vous gardez la main sur la cible et le rythme ; la durée minimale est précisée au devis ». | site-src/build.py · build_pourquoi() |
 | P9 | « Le plus choisi » (formule Croissance) | « Recommandé » (avis de l'équipe, vérifiable) ou retirer le badge. | site-src/build.py · build_tarifs() |
@@ -68,10 +68,10 @@ Les descriptions de `cas-client`, `tarifs`, `faq` et `contact` (102 à 137 carac
 | Pied de page, toutes les pages | « (à confirmer) » après l'e-mail ; ligne « Mentions légales, confidentialité et CGV : … » ; « * Chiffres repris du visuel de départ, à confirmer avant mise en ligne. » | site-src/build.py · footer() | Liens vers mentions-legales.html, confidentialite.html, cgv.html (pages à créer avec les informations légales de l'éditeur) ; retirer « (à confirmer) » ; remplacer l'astérisque par « * Objectif, non garanti » une fois le chiffre validé. |
 | Accueil, avis clients | « Textes provisoires en attendant les vrais avis clients. » et pastille « Texte provisoire » | site-src/build.py · build_index(), tcard() | Retirer la section (P6, P12). |
 | Pourquoi nous | « Repères qualitatifs et indicatifs, à affiner selon votre situation. » ; « Engagements proposés, à valider avant publication. » | site-src/build.py · build_pourquoi() | Supprimer les deux sous-titres. |
-| Résultats | Sous-titre des cas clients, pastilles, « Contexte », « Action », compteur 0 → 00 ; « Chiffre à confirmer » ; emplacement vidéo | site-src/build.py · build_resultats() | Voir le tableau de la page résultats. |
+| Résultats | Sous-titre des cas clients, pastilles, « Contexte », « Action », compteur 0 → 00 ; « Chiffre à confirmer » ; « À remplacer par vos vrais chiffres. » sous la courbe ; emplacement vidéo | site-src/build.py · build_resultats() | Voir le tableau de la page résultats. |
 | Tarifs | « Formules proposées à titre indicatif, à ajuster avec vos tarifs réels. » | site-src/build.py · build_tarifs() | Remplacer par « Chaque devis est établi après un échange de 15 minutes ». |
 | Contact | « Aperçu : ce formulaire n'envoie rien… » ; « (adresse à confirmer) » | site-src/build.py · build_contact() | À retirer une fois le formulaire branché et l'adresse confirmée. |
-| Comment ça marche, accueil | Pastille « Photo remplaçable : img/etape-N.jpg » en haut de chaque scène d'étape (visible sur grand écran) | site-src/story.py · story() (span photo-tag) | Supprimer la ligne <span class="photo-tag"> avant la mise en ligne. |
+| Comment ça marche, accueil | Pastille « Photo remplaçable : img/etape-N.jpg » en haut de chaque scène d'étape (visible sur grand écran) | site-src/story.py · story() (span photo-tag) | Supprimer la ligne `<span class="photo-tag">` avant la mise en ligne. |
 
 ## Blocs communs (texte repris sur plusieurs pages)
 
@@ -128,8 +128,8 @@ Source : `build.py` · `compare()`.
 
 ### Carte de livraison d'un rendez-vous (accueil, comment ça marche)
 
-  - DG
-  - Directeur GénéralIndustrie · 500 M€ · France
+  - Directeur Général
+  - Industrie · 500 M€ · France
   - Rendez-vous qualifié
   - Contexte
   - Projet de modernisation en cours
@@ -165,7 +165,8 @@ Source : `build.py` · `delivery()`.
   - Le moyen
   - Téléphone
   - E-mail
-  - inLinkedIn
+  - in
+  - LinkedIn
   - 3
   - *H3* : Qualification
   - On filtre : seuls les vrais intéressés passent.
@@ -185,21 +186,27 @@ Source : `ucards.py` · `section()` (textes) et `u1()` à `u4()` (animations).
 
   - Texte provisoire
   - En moins d'un mois, nous avons obtenu des rendez-vous qualifiés avec des décideurs que nous n'arrivions pas à contacter.
-  - TThomas L.Dirigeant · Industrie
+  - Thomas L.
+  - Dirigeant · Industrie
   - Texte provisoire
   - NOVOLENS nous a permis de réactiver des prospects que nous avions mis de côté faute de temps. Des opportunités concrètes et à fort potentiel.
-  - SSophie M.Directrice Commerciale · Services B2B
+  - Sophie M.
+  - Directrice Commerciale · Services B2B
   - Texte provisoire
   - Une équipe très professionnelle, déterminée et persévérante. Les rendez-vous sont bien qualifiés et nous gagnons un temps considérable.
-  - MMarc D.CEO · Tech & Logiciels
+  - Marc D.
+  - CEO · Tech & Logiciels
   - Témoignage à venir
-  - ?Nom du clientFonction · Secteur
+  - Nom du client
+  - Fonction · Secteur
   - Témoignage à venir
-  - ?Nom du clientFonction · Secteur
+  - Nom du client
+  - Fonction · Secteur
   - Témoignage à venir
-  - ?Nom du clientFonction · Secteur
+  - Nom du client
+  - Fonction · Secteur
 
-Source : `build.py` · `proof_wall()`, `tcard()`. Le bloc est inséré deux fois (copie masquée aux lecteurs d'écran) pour le défilement continu.
+Source : `build.py` · `proof_wall()`, `tcard()`. Le script `app.js` clone les cartes (copie masquée aux lecteurs d'écran) pour le défilement continu.
 
 ### Pied de page
 
@@ -532,7 +539,7 @@ Source : `build.py` · `footer()`.
 | 3 | Étape 5 : « Tableau de bord partagé en continu », « Ajustements rapides de cible et de message » | hypothèse à confirmer | `site-src/story.py · STEPS[4]` | Confirmer l'outil de reporting et sa fréquence de mise à jour ; écrire « mis à jour chaque semaine » si c'est le cas. |
 | 4 | Calendrier des 30 jours : S1 cadrage, S2 lancement, S3 premiers rendez-vous, S4 bilan | hypothèse à confirmer | `site-src/build.py · build_methode() (tl)` | Dépend de P2 ; mentionner que S3 est un objectif et non une garantie. |
 | 5 | Entonnoir d'exemple : 128 entreprises ciblées, 86 décideurs contactés (67 %), 24 projets qualifiés (28 %), 8 rendez-vous planifiés (33 %) | exemple illustratif | `site-src/build.py · funnel() (rows) ; texte dans build_methode() (fun)` | Taux cohérents (86/128, 24/86, 8/24). Valeurs reprises dans laptop(), build_resultats(), v3_extra.py build_cas(), story.py il5(), ucards.py u3()/u4() : les changer partout. |
-| 6 | Reporting d'exemple : tableau de bord 128 / 86 / 24 / 8 et courbe 3, 5, 8, 11, 14, 16 rendez-vous par semaine | exemple illustratif | `site-src/build.py · laptop() (liste [3, 5, 8, 11, 14, 16])` | Incohérence : la courbe totalise 57 rendez-vous alors que l'entonnoir en annonce 8. Aligner (par exemple 0, 1, 1, 2, 2, 2 = 8) et adapter le calcul de hauteur des barres (v*6). |
+| 6 | Reporting d'exemple : tableau de bord 128 / 86 / 24 / 8 et courbe 3, 5, 8, 11, 14, 16 rendez-vous par semaine | exemple illustratif | `site-src/build.py · laptop() (liste [3, 5, 8, 11, 14, 16])` | Incohérence : la courbe totalise 57 rendez-vous alors que l'entonnoir en annonce 8 ; l'illustration de l'étape 5 a une 6e barre à 17 au lieu de 16 (`story.py` · `il5()`, liste vals). Aligner partout (par exemple 0, 1, 1, 2, 2, 2 = 8) et adapter le calcul de hauteur des barres (v*6 dans laptop(), v*11 dans il5()). |
 | 7 | « Téléphone, e-mail, LinkedIn » comme canaux de prospection | hypothèse à confirmer | `site-src/story.py · STEPS[1] ; site-src/ucards.py · section() (moyens)` | Confirmer les canaux utilisés (et la façon d'utiliser LinkedIn). |
 | 8 | « Fiche de contexte et compte rendu » livrés avec chaque rendez-vous | hypothèse à confirmer | `site-src/build.py · delivery(), site-src/story.py · STEPS[3]` | Confirmer le contenu réel du dossier. |
 | 9 | Fréquence du point de pilotage : « régulier » ici, « hebdomadaire » dans la formule Croissance | hypothèse à confirmer | `site-src/story.py · STEPS[4] ; site-src/build.py · build_tarifs() (plan Croissance)` | Aligner les deux : par exemple « point de pilotage toutes les deux semaines » si c'est la réalité. |
@@ -698,7 +705,8 @@ Source : `build.py` · `footer()`.
   - Chiffres d'exemple, à titre illustratif.
   - Texte provisoire
   - Une équipe très professionnelle, déterminée et persévérante. Les rendez-vous sont bien qualifiés et nous gagnons un temps considérable.
-  - MMarc D. (exemple)CEO · Tech & Logiciels
+  - Marc D. (exemple)
+  - CEO · Tech & Logiciels
   - *H3* : Ce que ce cas contiendra
   - Le nom du client avec son accord, les objectifs de départ, le nombre de rendez-vous réels, le nombre de projets ouverts et la durée du cycle de vente.
 - *Bloc commun : appel à l'action final (voir « Blocs communs »).*
@@ -712,7 +720,7 @@ Source : `build.py` · `footer()`.
 | 3 | Entonnoir et tableau de bord 128 / 86 / 24 / 8, courbe hebdomadaire | exemple illustratif | `site-src/build.py · funnel(), laptop() ; site-src/v3_extra.py · build_cas() (res)` | Voir comment-ca-marche pour l'incohérence de la courbe. |
 | 4 | « Un pipeline devenu prévisible » (titre de résultat) | hypothèse à confirmer | `site-src/v3_extra.py · build_cas() (res)` | Présente un résultat acquis dans un exemple. Écrire « Exemple de résultat : un pipeline mesurable » (P7). |
 | 5 | Citation de Marc D. (exemple), CEO · Tech & Logiciels | exemple illustratif | `site-src/v3_extra.py · build_cas() (quote)` | Voir P6. |
-| 6 | Page gabarit présente dans le sitemap et dans le pied de page (« Cas client (modèle) ») | hypothèse à confirmer | `site-src/v3_extra.py · build_seo() ; site-src/build.py · footer()` | Tant qu'aucun cas réel n'existe : ajouter <meta name="robots" content="noindex"> dans cette page, retirer l'URL du sitemap et le lien du pied de page. |
+| 6 | Page gabarit présente dans le sitemap et dans le pied de page (« Cas client (modèle) ») | hypothèse à confirmer | `site-src/v3_extra.py · build_seo() ; site-src/build.py · footer()` | Tant qu'aucun cas réel n'existe : ajouter `<meta name="robots" content="noindex">` dans cette page, retirer l'URL du sitemap et le lien du pied de page. |
 
 ## Page Tarifs (`tarifs.html`)
 
@@ -851,7 +859,7 @@ Source : `build.py` · `footer()`.
 | 2 | Q2 : « premiers rendez-vous en moins d'un mois après le cadrage » | repris du visuel de départ | `site-src/build.py · liste FAQ (index 1)` | Formulation de référence pour P2. |
 | 3 | Q3 : clients visés dont « l'industrie, la santé, la tech et les services B2B » | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 2)` | Aucun client à ce jour dans ces secteurs : écrire « notamment » seulement si l'équipe y a de l'expérience, sinon « tous secteurs B2B ». |
 | 4 | Q4 : « appels, e-mails et messages professionnels, avec des relances persévérantes jusqu'à obtenir une réponse claire » | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 3)` | Fixer un nombre maximal de relances pour rester cohérent avec « jamais de relance agressive ». |
-| 5 | Q5 : la question « en quel nom ? » reçoit une réponse sur l'équipe mais pas sur le nom utilisé | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 4)` | Réponse proposée : « Nous contactez vos prospects en votre nom, avec un discours et une signature validés par vous, ou sous l'identité de NOVOLENS si vous préférez rester discret. Le choix se fait au calibrage. » (à valider). |
+| 5 | Q5 : la question « en quel nom ? » reçoit une réponse sur l'équipe mais pas sur le nom utilisé | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 4)` | Réponse proposée : « Nous contactons vos prospects en votre nom, avec un discours et une signature validés par vous, ou sous l'identité de NOVOLENS si vous préférez rester discret. Le choix se fait au calibrage. » (à valider). |
 | 6 | Q6 : « reporting partagé » et « point de pilotage régulier » | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 5)` | Voir comment-ca-marche (fréquence). |
 | 7 | Q7 : dossier après rendez-vous (profil, contexte, besoin, niveau d'intérêt, compte rendu) | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 6)` | Confirmer le contenu réel du dossier. |
 | 8 | Q8 : échange de 15 minutes sans engagement, durée selon la formule (« de la mission pilote à l'engagement mensuel ») | hypothèse à confirmer | `site-src/build.py · liste FAQ (index 7)` | Ajouter la durée minimale d'engagement et le préavis une fois fixés. |

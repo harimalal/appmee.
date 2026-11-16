@@ -81,12 +81,15 @@
   /* Hero : liste de rendez-vous qui arrivent en continu */
   var list = $('#notif-list');
   if (list) {
+    var MOIS = ['JANV', 'FÉVR', 'MARS', 'AVR', 'MAI', 'JUIN', 'JUIL', 'AOÛT', 'SEPT', 'OCT', 'NOV', 'DÉC'];
+    var nextDays = function (n) { var out = [], t = new Date(), step = 2; while (out.length < n) { t = new Date(t.getTime() + step * 864e5); var w = t.getDay(); if (w === 6) t = new Date(t.getTime() + 2 * 864e5); else if (w === 0) t = new Date(t.getTime() + 864e5); out.push([String(t.getDate()), MOIS[t.getMonth()]]); step = 2; } return out; };
+    var dd = nextDays(5);
     var data = [
-      ['19', 'NOV', 'Directeur Général', 'Industrie · 500 M€'],
-      ['23', 'NOV', 'Directrice Achats', 'Santé · Groupe'],
-      ['26', 'NOV', 'CEO', 'Tech & Logiciels'],
-      ['30', 'NOV', 'Directeur Commercial', 'Distribution · ETI'],
-      ['03', 'DÉC', 'DSI', 'Services B2B · 1 200 salariés']
+      [dd[0][0], dd[0][1], 'Directeur Général', 'Industrie · 500 M€'],
+      [dd[1][0], dd[1][1], 'Directrice Achats', 'Santé · Groupe'],
+      [dd[2][0], dd[2][1], 'CEO', 'Tech & Logiciels'],
+      [dd[3][0], dd[3][1], 'Directeur Commercial', 'Distribution · ETI'],
+      [dd[4][0], dd[4][1], 'DSI', 'Services B2B · 1 200 salariés']
     ];
     var arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
     var idx = 0;

@@ -82,9 +82,9 @@ def footer():
 <p class="muted" style="margin-top:14px;max-width:34ch">Prospection B2B externalisée : des rendez-vous qualifiés avec des décideurs, livrés directement dans votre agenda.</p></div>
 <div><h4>Site</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="pourquoi-nous.html">Pourquoi nous</a></li><li><a href="comment-ca-marche.html">Comment ça marche</a></li><li><a href="resultats.html">Résultats</a></li><li><a href="cas-client.html">Cas client (modèle)</a></li></ul></div>
 <div><h4>Offre</h4><ul><li><a href="tarifs.html">Tarifs</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Réserver un échange</a></li></ul></div>
-<div><h4>Contact</h4><ul><li>contact@novolens.fr <span class="note">(à confirmer)</span></li><li>Réponse sous 24 h</li><li class="note">Mentions légales, confidentialité et CGV : à compléter</li></ul></div>
+<div><h4>Contact</h4><ul><li>contact@novolens.fr</li><li>Réponse sous 24 h</li></ul></div>
 </div>
-<div class="foot-bottom"><span>© 2026 NOVOLENS. Tous droits réservés.</span><span>* Chiffres repris du visuel de départ, à confirmer avant mise en ligne.</span></div>
+<div class="foot-bottom"><span>© 2026 NOVOLENS. Tous droits réservés.</span><span>* Objectif indicatif. Les chiffres, exemples de cas et coordonnées de cette maquette sont donnés à titre illustratif.</span></div>
 </div></footer>'''
 
 def cta(title="Parlons de vos objectifs de croissance.", text="Un échange de 15 minutes avec un expert NOVOLENS pour comprendre vos enjeux et voir comment nous pouvons vous apporter des rendez-vous qualifiés."):
@@ -183,7 +183,7 @@ def compare():
 def delivery(card_only=False):
     meter = '<span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>'
     rows = [("layers", "Contexte", "Projet de modernisation en cours"), ("target", "Besoin identifié", "Recherche de solutions pour optimiser ses opérations"),
-            ("gauge", "Intérêt", "Élevé" + meter), ("calendar", "Prochain échange", "Jeu. 19 nov. · 10h00"), ("file", "Documents", "Compte rendu + notes")]
+            ("gauge", "Intérêt", "Élevé" + meter), ("calendar", "Prochain échange", "Jeudi · 10h00"), ("file", "Documents", "Compte rendu + notes")]
     rr = "".join(f'<div class="drow"><span class="i">{ic(i)}</span><span class="k">{k}</span><span class="v">{v}</span></div>' for i, k, v in rows)
     card = f'''<div class="dcard" data-in><div class="dhead"><span class="avatar" aria-hidden="true">DG</span><span><strong>Directeur Général</strong><span class="sub">Industrie · 500 M€ · France</span></span><span class="tag">Rendez-vous qualifié</span></div>{rr}</div>'''
     items = ["Profil du décideur", "Contexte et enjeux", "Besoin identifié", "Niveau d'intérêt", "Compte rendu détaillé", "Accès au reporting global"]
@@ -227,7 +227,18 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
         head += f'<script type="application/ld+json">{json.dumps(l, ensure_ascii=False)}</script>\n'
     sticky = '' if (not V3 or fname in ("contact.html", "404.html")) else f'<a class="sticky-cta" href="contact.html">Réserver un échange de 15 min {ic("arrow")}</a>'
     main = f'{header(active)}\n<main id="main">{body}</main>\n{footer()}\n{sticky}\n<script src="app.js" defer></script>'
-    if index:
+    if index and V3:
+        frag = head + main
+        full = ('<!doctype html>\n<html lang="fr"><head><meta charset="utf-8">'
+                '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
+                '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
+                + head.replace('<title>NOVOLENS</title>', '<title>NOVOLENS, prospection B2B externalisée</title>', 1) + '</head>\n<body>\n' + main + '\n</body></html>')
+        os.makedirs(os.path.join(DIST, "..", "site-artefact"), exist_ok=True)
+        import re as _r2
+        with open(os.path.join(DIST, "..", "site-artefact", "index.html"), "w", encoding="utf-8") as f2:
+            f2.write(_r2.sub(r'>\s*\n\s*<', '><', frag))
+        html = full
+    elif index:
         html = head + main
     else:
         html = ('<!doctype html>\n<html lang="fr"><head><meta charset="utf-8">'
@@ -285,7 +296,7 @@ def funnel():
 def laptop():
     return f'''<div class="laptop" data-in role="img" aria-label="Aperçu du tableau de bord de reporting NOVOLENS"><span class="brand-s">NOVOLENS · REPORTING</span>
 <div class="kpis"><div class="kpi"><b data-count="128">128</b><span>Entreprises ciblées</span></div><div class="kpi"><b data-count="86">86</b><span>Décideurs contactés</span></div><div class="kpi"><b data-count="24">24</b><span>Projets qualifiés</span></div><div class="kpi"><b data-count="8">8</b><span>Rendez-vous planifiés</span></div></div>
-<div class="chart" data-in><div class="bars">{"".join(f'<div class="bar"><em>{v}</em><i style="--h:{v*6}%;--i:{i}"></i></div>' for i, v in enumerate([3, 5, 8, 11, 14, 16]))}</div><div class="bar-labels"><span>Sem. 1</span><span>Sem. 2</span><span>Sem. 3</span><span>Sem. 4</span><span>Sem. 5</span><span>Sem. 6</span></div></div>
+<div class="chart" data-in><div class="bars">{"".join(f'<div class="bar"><em>{v}</em><i style="--h:{v*11}%;--i:{i}"></i></div>' for i, v in enumerate([1, 2, 4, 5, 7, 8]))}</div><div class="bar-labels"><span>Sem. 1</span><span>Sem. 2</span><span>Sem. 3</span><span>Sem. 4</span><span>Sem. 5</span><span>Sem. 6</span></div></div>
 <p class="note">Données d'exemple, à titre illustratif.</p></div>'''
 
 # =====================================================================
@@ -366,14 +377,14 @@ def build_pourquoi():
     avantages = f'<section class="section"><div class="wrap">{sec_head("Six raisons", "Ce que vous gagnez en nous confiant la prospection.")}<div class="grid-3">{cards}</div></div></section>'
     def row(a, b, c, d):
         return f'<tr><td>{a}</td><td>{b}</td><td>{c}</td><td class="us">{d}</td></tr>'
-    table = f'''<section class="section band-soft"><div class="wrap">{sec_head("Comparatif", "Trois façons de remplir un pipeline.", "Repères qualitatifs et indicatifs, à affiner selon votre situation.")}
-<div class="tbl-wrap" data-reveal><table class="tbl"><thead><tr><th scope="col">Critère</th><th scope="col">Recruter en interne</th><th scope="col">Agence classique</th><th scope="col" class="us">NOVOLENS</th></tr></thead><tbody>
-{row("Démarrage", '<span class="pill no">Plusieurs mois</span>', '<span class="pill mid">Quelques semaines</span>', '<span class="pill ok">Moins d\'un mois visé</span>')}
-{row("Coût", "Fixe, chargé", "Variable selon prestations", "Sur devis, adapté à votre cible")}
+    table = f'''<section class="section band-soft"><div class="wrap">{sec_head("Comparatif", "Trois façons de remplir un pipeline.", "Repères généraux, à adapter à votre situation.")}
+<div class="tbl-wrap" data-reveal><table class="tbl"><thead><tr><th scope="col">Critère</th><th scope="col">Recruter en interne</th><th scope="col">Autres approches</th><th scope="col" class="us">NOVOLENS</th></tr></thead><tbody>
+{row("Démarrage", '<span class="pill mid">Selon le recrutement</span>', '<span class="pill mid">Selon le prestataire</span>', '<span class="pill ok">Moins d\'un mois visé</span>')}
+{row("Coût", "Fixe, chargé", "Variable", "Sur devis, adapté à votre cible")}
 {row("Expertise du froid", "À construire", "Variable", "Équipe dédiée et rodée")}
-{row("Qualification", "Dépend du profil", "Souvent déclarative", "Critères définis avec vous")}
-{row("Visibilité", "Dépend du CRM", "Rapport périodique", "Reporting partagé en continu")}
-{row("Flexibilité", "Faible", "Moyenne", "Élevée, sans engagement initial")}
+{row("Qualification", "Dépend du profil", "Dépend du prestataire", "Critères définis avec vous")}
+{row("Visibilité", "Dépend du CRM", "Dépend du prestataire", "Reporting partagé en continu")}
+{row("Flexibilité", "Faible", "Variable", "Élevée, sans engagement initial")}
 </tbody></table></div></div></section>'''
     engage = f'''<section class="section"><div class="wrap">{sec_head("Nos engagements", "Une prospection sérieuse, transparente, respectueuse.", "Engagements proposés, à valider avant publication.")}
 <div class="grid-3"><article class="card" data-reveal><span class="ico">{ic("eye")}</span><h3>Transparence</h3><p>Vous voyez qui est contacté, ce qui est dit et où en est chaque piste.</p></article>
@@ -388,7 +399,7 @@ def build_pourquoi():
 def build_methode():
     hero = f'''<section class="page-hero"><div class="wrap">{crumbs("Comment ça marche")}<p class="eyebrow">Notre méthode</p>
 <h1>De la stratégie au rendez-vous, <mark class="hl">nous nous occupons de tout.</mark></h1>
-<p class="lead">Trois étapes, une équipe experte en prospection à froid, un reporting clair. Vous n'intervenez que pour définir la cible et accueillir les rendez-vous.</p></div></section>'''
+<p class="lead">Cinq étapes, une équipe experte en prospection à froid, un reporting clair. Vous n'intervenez que pour définir la cible et accueillir les rendez-vous.</p></div></section>'''
     s = f'<section class="section band-white"><div class="wrap">{story(ic, 5)}</div></section>'
     tl = f'''<section class="section"><div class="wrap">{sec_head("Vos 30 premiers jours", "Des premiers résultats en moins d'un mois.", "Calendrier type, ajusté à votre marché.")}
 <div class="tl" data-reveal><div class="t"><b>Semaine 1</b><h3>Cadrage</h3><p>Objectifs, cible, critères de qualification et message validés ensemble.</p></div>
@@ -413,21 +424,21 @@ def build_resultats():
 <h1>Des rendez-vous qui <mark class="hl">font avancer votre pipeline.</mark></h1>
 <p class="lead">Les indicateurs que nous suivons, les cas clients qui arrivent et les retours de dirigeants.</p></div></section>'''
     kp = f'''<section class="section band-white"><div class="wrap"><div class="grid-3">
-<article class="card" data-reveal><span class="big" data-count="70" data-pre="+" data-suf=" %">+70 %</span><h3>de rendez-vous qualifiés*</h3><p>Progression visée par rapport à une prospection menée en interne. Chiffre à confirmer.</p></article>
+<article class="card" data-reveal><span class="big" data-count="70" data-pre="+" data-suf=" %">+70 %</span><h3>de rendez-vous qualifiés*</h3><p>Objectif de progression fixé avec vous dès le calibrage, mesuré dans le reporting.</p></article>
 <article class="card" data-reveal="100"><span class="big">&lt; 1 mois</span><h3>pour les premiers résultats</h3><p>Du calibrage aux premiers rendez-vous dans votre agenda.</p></article>
 <article class="card" data-reveal="200"><span class="big" data-count="24">24</span><h3>projets qualifiés (exemple)</h3><p>Sur 128 entreprises ciblées, 8 rendez-vous planifiés dans l'exemple de reporting.</p></article></div></div></section>'''
-    vals = [3, 5, 8, 11, 14, 16]
-    bars = "".join(f'<div class="bar"><em>{v}</em><i style="--h:{round(v/16*100)}%;--i:{i}"></i></div>' for i, v in enumerate(vals))
+    vals = [1, 2, 4, 5, 7, 8]
+    bars = "".join(f'<div class="bar"><em>{v}</em><i style="--h:{round(v/8*100)}%;--i:{i}"></i></div>' for i, v in enumerate(vals))
     chart = f'''<section class="section"><div class="wrap split"><div class="sec-head" data-reveal style="margin:0"><p class="eyebrow">Montée en puissance</p><h2>Un pipeline qui se remplit semaine après semaine.</h2>
-<p class="lead">La régularité fait la différence : chaque semaine apporte de nouveaux rendez-vous qualifiés à vos équipes.</p><p class="note">Courbe d'exemple, à titre illustratif. À remplacer par vos vrais chiffres.</p></div>
-<div class="card" data-reveal="120" style="padding:24px"><h4>Rendez-vous qualifiés par semaine (exemple)</h4><div class="chart" data-in><div class="bars">{bars}</div><div class="bar-labels"><span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span></div></div></div></div></section>'''
-    cas = f'''<section class="section band-soft"><div class="wrap">{sec_head("Cas clients", "Trois secteurs, un même objectif.", "Études de cas à compléter avec les résultats réels.")}
+<p class="lead">La régularité fait la différence : chaque semaine ajoute de nouveaux rendez-vous qualifiés à vos équipes. Dans l'exemple, 8 rendez-vous cumulés en 6 semaines.</p><p class="note">Courbe d'exemple, à titre illustratif.</p></div>
+<div class="card" data-reveal="120" style="padding:24px"><h4>Rendez-vous qualifiés cumulés, 6 semaines (exemple)</h4><div class="chart" data-in><div class="bars">{bars}</div><div class="bar-labels"><span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span></div></div></div></div></section>'''
+    cas = f'''<section class="section band-soft"><div class="wrap">{sec_head("Secteurs ciblés", "Trois secteurs où nous construisons nos premiers cas.", "Un exemple de cas complet est présenté dans le <a class='vi' href='cas-client.html'>gabarit de cas client</a>.")}
 <div class="grid-3">
-<article class="card" data-reveal><span class="draft">À compléter</span><h3>Industrie</h3><ul class="target-list"><li>Directeur Général</li><li>ETI</li></ul><p><b>Contexte :</b> à rédiger.</p><p><b>Action :</b> à rédiger.</p><div class="metric-pair"><em>Avant</em><b>0</b><em>→ Après</em><b>00</b></div></article>
-<article class="card" data-reveal="100"><span class="draft">À compléter</span><h3>Santé</h3><ul class="target-list"><li>Direction Achats</li><li>Groupe</li></ul><p><b>Contexte :</b> à rédiger.</p><p><b>Action :</b> à rédiger.</p><div class="metric-pair"><em>Avant</em><b>0</b><em>→ Après</em><b>00</b></div></article>
-<article class="card" data-reveal="200"><span class="draft">À compléter</span><h3>Tech &amp; Logiciels</h3><ul class="target-list"><li>CEO</li><li>Scale-up</li></ul><p><b>Contexte :</b> à rédiger.</p><p><b>Action :</b> à rédiger.</p><div class="metric-pair"><em>Avant</em><b>0</b><em>→ Après</em><b>00</b></div></article></div></div></section>'''
-    vid = f'''<section class="section"><div class="wrap proof-feature"><figure class="vid-frame" data-reveal style="margin:0"><span class="slot-note">Emplacement vidéo témoignage client</span><span class="big-play" aria-hidden="true">{PLAY}</span><figcaption>Témoignage vidéo · 60 s</figcaption></figure>
-<div class="sec-head" data-reveal="120" style="margin:0;align-content:center"><p class="eyebrow">La parole aux dirigeants</p><h2>Des retours qui parlent de rendez-vous, pas de promesses.</h2><p class="lead">Les vidéos et verbatims clients seront ajoutés ici dès leur validation.</p></div></div>{proof_wall()}</section>'''
+<article class="card" data-reveal><span class="ico">{ic("building")}</span><h3>Industrie</h3><ul class="target-list"><li>Directeur Général</li><li>ETI</li></ul><p>Des décideurs difficiles à joindre et des cycles de vente longs : le rendez-vous qualifié ouvre le dialogue au bon niveau.</p></article>
+<article class="card" data-reveal="100"><span class="ico">{ic("shield")}</span><h3>Santé</h3><ul class="target-list"><li>Direction Achats</li><li>Groupe</li></ul><p>Des achats structurés, plusieurs interlocuteurs : une approche par compte et un contexte clair avant chaque échange.</p></article>
+<article class="card" data-reveal="200"><span class="ico">{ic("zap")}</span><h3>Tech &amp; Logiciels</h3><ul class="target-list"><li>CEO</li><li>Scale-up</li></ul><p>Des équipes qui vendent déjà : la prospection prend en charge les relances pour que le pipeline reste régulier.</p></article></div></div></section>'''
+    vid = f'''<section class="section"><div class="wrap proof-feature"><figure class="vid-frame" data-reveal style="margin:0"><span class="big-play" aria-hidden="true">{PLAY}</span><figcaption>Témoignage vidéo · 60 s</figcaption></figure>
+<div class="sec-head" data-reveal="120" style="margin:0;align-content:center"><p class="eyebrow">La parole aux dirigeants</p><h2>Des retours qui parlent de rendez-vous, pas de promesses.</h2><p class="lead">Les vidéos et verbatims clients apparaîtront ici dès leur validation. Les textes affichés dans le mur ci-dessous sont des exemples.</p></div></div>{proof_wall()}</section>'''
     body = hero + kp + chart + cas + vid + cta()
     page("resultats.html", "Résultats NOVOLENS", "Résultats NOVOLENS : rendez-vous qualifiés, premiers résultats en moins d'un mois, cas clients et témoignages de dirigeants.", body, "resultats.html", [ORG])
 
@@ -447,7 +458,7 @@ def build_tarifs():
     hero = f'''<section class="page-hero"><div class="wrap">{crumbs("Tarifs")}<p class="eyebrow">Tarifs</p>
 <h1>Une offre sur mesure, <span class="accent">calée sur votre cible.</span></h1>
 <p class="lead">Le prix dépend de la cible, du volume de rendez-vous visé et de la durée. Nous construisons un devis après un échange de 15 minutes, sans engagement.</p></div></section>'''
-    pl = f'<section class="section band-white"><div class="wrap"><div class="plans">{plans}</div><p class="note" style="margin-top:24px;text-align:center">Formules proposées à titre indicatif, à ajuster avec vos tarifs réels.</p></div></section>'
+    pl = f'<section class="section band-white"><div class="wrap"><div class="plans">{plans}</div><p class="note" style="margin-top:24px;text-align:center">Chaque devis est établi après un échange de 15 minutes.</p></div></section>'
     inc = [("target", "Ciblage sur mesure"), ("send", "Prospection multicanale"), ("filter", "Qualification des besoins"), ("calcheck", "Prise de rendez-vous"), ("file", "Dossier de contexte"), ("chart", "Reporting partagé")]
     cc = "".join(f'<article class="card" data-reveal="{(i%3)*80}" style="padding:22px"><span class="ico">{ic(i_)}</span><h4>{t}</h4></article>' for i, (i_, t) in enumerate(inc))
     incl = f'<section class="section"><div class="wrap">{sec_head("Dans toutes les formules", "Ce qui est toujours inclus.")}<div class="grid-3">{cc}</div></div></section>'
@@ -495,7 +506,7 @@ def build_faq():
 # CONTACT
 # =====================================================================
 def build_contact():
-    days = [("Mar. 17 nov.", ["9h30", "11h00", "14h30", "16h00"]), ("Mer. 18 nov.", ["9h30", "11h00", "14h30", "16h00"]), ("Jeu. 19 nov.", ["9h30", "11h00", "14h30", "16h00"])]
+    days = [("Mardi", ["9h30", "11h00", "14h30", "16h00"]), ("Mercredi", ["9h30", "11h00", "14h30", "16h00"]), ("Jeudi", ["9h30", "11h00", "14h30", "16h00"])]
     dd = "".join(f'<div class="day"><h4>{d}</h4>' + "".join(f'<button type="button" class="tbtn" aria-pressed="false" data-label="{d} à {t}">{t}</button>' for t in ts) + "</div>" for d, ts in days)
     def f(id_, label, typ="text", req=True, auto=""):
         r = " required" if req else ""
