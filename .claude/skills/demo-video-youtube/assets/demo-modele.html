@@ -1,0 +1,770 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Démo Veille YouTube</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#080C16; --bg2:#0D1322; --surf:#121A2B; --surf2:#18223A; --line:#24304A; --ink:#F2F4F8; --mut:#8A94A8;
+  --acc:#FFE14A; --acc-ink:#141008; --red:#FF5D5D; --red-s:#3A1418;
+  --b0:#9AA3B3; --b1:#7FB0EA; --b2:#E8A24A; --b3:#46C7B2;
+  --disp:'Anton','Impact','Arial Narrow',sans-serif; --ui:'Inter','Segoe UI',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace; --yt:'Roboto','Arial',sans-serif;
+  /* interfaces claires reproduites */
+  --w:#FFFFFF; --w2:#F2F2F2; --wl:#E5E5E5; --wk:#0F0F0F; --wm:#606060;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#03050A;color:var(--ink);font-family:var(--ui);overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;background:var(--bg)}
+.slide{position:absolute;inset:0;visibility:hidden;background:radial-gradient(1200px 700px at 70% 30%,#101a33 0%,var(--bg) 60%)}
+.slide.cur{visibility:visible}
+.cam{position:absolute;inset:0;transform-origin:0 0;transition:transform 1.4s cubic-bezier(.65,0,.25,1)}
+.hud{position:absolute;left:120px;top:72px;right:120px;z-index:5;pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.title{font-family:var(--disp);font-size:104px;line-height:1;text-transform:uppercase;letter-spacing:.005em;margin-top:14px;color:var(--ink)}
+.title em{font-style:normal;color:var(--acc)}
+.bar{display:block;width:120px;height:8px;background:var(--acc);margin-top:20px;border-radius:2px}
+/* animations */
+[data-s]{opacity:0;transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .7s ease}
+[data-s].on{opacity:1;transform:none;filter:none}
+.a-up{transform:translateY(46px)}.a-down{transform:translateY(-46px)}.a-l{transform:translateX(-80px)}.a-r{transform:translateX(80px)}
+.a-pop{transform:scale(.55)}.a-zoom{transform:scale(1.25)}.a-blur{filter:blur(14px)}
+.noanim,.noanim *{transition:none!important;animation:none!important}
+.caret{display:inline-block;width:.08em;min-width:3px;height:1em;background:currentColor;vertical-align:-.12em;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+/* pointeur */
+.ptr{position:absolute;width:40px;height:40px;z-index:6;transition:left 1s cubic-bezier(.6,0,.2,1),top 1s cubic-bezier(.6,0,.2,1),opacity .4s;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.click{animation:click .5s ease}
+@keyframes click{50%{transform:scale(.8)}}
+/* repère logo */
+.logo-slot{display:inline-flex;align-items:center;justify-content:center;border:1.5px dashed currentColor;border-radius:6px;font-family:var(--ui);font-weight:600;opacity:.75;white-space:nowrap}
+/* fenêtres */
+.win{position:absolute;border-radius:14px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+.chrome{background:#DEE1E6;height:86px;position:relative}
+.chrome .tabs{height:44px;display:flex;align-items:flex-end;padding-left:96px;gap:4px}
+.chrome .dots{position:absolute;left:18px;top:16px;display:flex;gap:8px}
+.chrome .dots i{width:13px;height:13px;border-radius:50%;background:#FF5F57}.chrome .dots i+i{background:#FEBC2E}.chrome .dots i+i+i{background:#28C840}
+.chrome .tab{background:#fff;height:36px;border-radius:10px 10px 0 0;padding:0 16px;display:flex;align-items:center;gap:10px;font-size:15px;color:#202124;min-width:250px}
+.chrome .tab.off{background:transparent;color:#5f6368}
+.chrome .url{position:absolute;left:12px;right:12px;top:48px;height:32px;background:#fff;border-radius:16px;display:flex;align-items:center;padding:0 16px;gap:10px;font-size:15px;color:#202124}
+.chrome .url .nav{color:#5f6368;font-size:18px;letter-spacing:12px;margin-right:6px}
+.fav{width:16px;height:16px;border-radius:4px;flex:none}
+/* youtube */
+.yt{background:var(--w);color:var(--wk);font-family:var(--yt);position:absolute;inset:86px 0 0 0}
+.yt .top{height:64px;display:flex;align-items:center;padding:0 24px;gap:22px}
+.yt .burger{width:22px;height:16px;border-top:2px solid #0f0f0f;border-bottom:2px solid #0f0f0f;position:relative}
+.yt .burger:after{content:"";position:absolute;left:0;right:0;top:5px;border-top:2px solid #0f0f0f}
+.yt .search{flex:none;width:640px;height:42px;margin-left:auto;display:flex;border:1px solid #ccc;border-radius:21px;overflow:hidden}
+.yt .search .in{flex:1;padding:0 18px;display:flex;align-items:center;font-size:17px}
+.yt .search .btn{width:64px;background:#f8f8f8;border-left:1px solid #ccc;display:flex;align-items:center;justify-content:center}
+.yt .mic{width:42px;height:42px;border-radius:50%;background:#f2f2f2;margin-right:auto}
+.yt .acts{display:flex;gap:18px;align-items:center}
+.yt .avatar{width:34px;height:34px;border-radius:50%;background:#7a4cc2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:500}
+.yt .chips{display:flex;gap:12px;padding:10px 24px 14px 24px}
+.yt .chip{background:#f2f2f2;border-radius:8px;padding:7px 13px;font-size:15px;font-weight:500}
+.yt .chip.on2{background:#0f0f0f;color:#fff}
+.yt .res{display:flex;flex-direction:column;gap:18px;padding:6px 24px}
+.yt .row{display:flex;gap:16px}
+.yt .row .th{width:360px;height:202px;border-radius:12px;flex:none;position:relative;overflow:hidden}
+.yt .row .dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.8);color:#fff;font-size:12.5px;font-weight:500;padding:2px 5px;border-radius:4px}
+.yt .row .t{font-size:19px;line-height:1.35;font-weight:400;max-width:620px}
+.yt .row .m{font-size:13px;color:#606060;margin-top:4px}
+.yt .row .c{display:flex;align-items:center;gap:8px;font-size:13px;color:#606060;margin:12px 0}
+.yt .row .c i{width:24px;height:24px;border-radius:50%;display:block}
+.yt .row .d{font-size:13px;color:#606060;max-width:560px}
+/* miniatures factices */
+.mth{display:flex;align-items:center;justify-content:center;font-family:var(--disp);color:#fff;text-transform:uppercase;text-align:center;line-height:.95;text-shadow:0 3px 0 rgba(0,0,0,.35);position:relative;overflow:hidden}
+.mth .face{position:absolute;bottom:-10%;width:42%;height:85%;border-radius:50% 50% 0 0;background:radial-gradient(circle at 50% 30%,#f0c8a8 0 22%,transparent 23%),radial-gradient(ellipse at 50% 100%,#1b1b22 0 55%,transparent 56%);opacity:.95}
+/* claude desktop */
+.cd{position:absolute;inset:0;background:#262624;color:#EDEBE5;font-family:var(--ui);display:flex}
+.cd .side{width:280px;background:#1F1E1D;border-right:1px solid #33322f;padding:18px 14px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.cd .side .nw{background:#33322f;border-radius:10px;padding:10px 12px;font-weight:600;margin-bottom:14px}
+.cd .side .it{padding:8px 12px;border-radius:8px;color:#bfbcb3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd .side .it.cur2{background:#33322f;color:#fff}
+.cd .side .lab2{font-size:12.5px;color:#8f8c84;margin:12px 12px 4px}
+.cd .main2{flex:1;position:relative;display:flex;flex-direction:column}
+.cd .hd{height:56px;display:flex;align-items:center;padding:0 26px;border-bottom:1px solid #33322f;font-size:15px;color:#bfbcb3;gap:10px}
+.cd .msgs{flex:1;padding:30px 0;display:flex;flex-direction:column;gap:22px;align-items:center;overflow:hidden}
+.cd .u{align-self:flex-end;margin-right:120px;max-width:720px;background:#141413;border-radius:16px;padding:16px 20px;font-size:18px;line-height:1.5;white-space:pre-wrap}
+.cd .a{width:860px;font-size:18px;line-height:1.55;color:#E8E6E0}
+.cd .box{margin:0 auto 28px;width:860px;min-height:118px;background:#30302E;border:1px solid #44433f;border-radius:20px;padding:18px 20px 54px;font-size:19px;line-height:1.5;position:relative;white-space:pre-wrap}
+.cd .box .ph{color:#8f8c84}
+.cd .box .tools{position:absolute;left:16px;bottom:12px;display:flex;gap:8px}
+.cd .box .tools i{width:30px;height:30px;border:1px solid #55534e;border-radius:8px;display:block}
+.cd .box .send{position:absolute;right:14px;bottom:12px;width:36px;height:36px;border-radius:10px;background:#C96442;display:flex;align-items:center;justify-content:center}
+.cd .box .model{position:absolute;right:62px;bottom:18px;font-size:14px;color:#a9a69e}
+.toolcall{display:flex;align-items:center;gap:10px;font-size:15px;color:#bfbcb3;border:1px solid #3d3c38;border-radius:10px;padding:8px 12px;margin:6px 0;width:fit-content}
+.toolcall b{color:#EDEBE5;font-weight:600}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid #6b6964;border-top-color:#E8E6E0;animation:sp 0.9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ok{width:14px;height:14px;border-radius:50%;background:#46C7B2}
+/* terminal */
+.term{position:absolute;inset:0;background:#0C0C0C;font-family:var(--mono);font-size:19px;line-height:1.6;color:#E6E6E6;padding:56px 28px 20px}
+.term .tb{position:absolute;left:0;right:0;top:0;height:40px;background:#1E1E1E;display:flex;align-items:center;justify-content:center;font-family:var(--ui);font-size:14px;color:#9a9a9a}
+.term .tb .dots{position:absolute;left:16px;display:flex;gap:8px}
+.term .tb .dots i{width:12px;height:12px;border-radius:50%;background:#FF5F57}.term .tb .dots i+i{background:#FEBC2E}.term .tb .dots i+i+i{background:#28C840}
+.term .welcome{border:1px solid #D97757;border-radius:6px;padding:12px 18px;color:#D97757;width:fit-content;margin-bottom:18px}
+.term .welcome span{color:#9a9a9a}
+.term .pr{border:1px solid #555;border-radius:6px;padding:10px 14px;margin-top:14px}
+.term .dim{color:#8a8a8a}
+/* tableur */
+.gs{position:absolute;inset:86px 0 0 0;background:#fff;color:#202124;font-family:'Roboto',Arial,sans-serif}
+.gs .mb{height:54px;display:flex;align-items:center;gap:14px;padding:0 16px}
+.gs .doc{font-size:18px}
+.gs .menu{display:flex;gap:16px;font-size:14px;color:#444;margin-top:2px}
+.gs .tool{height:40px;margin:0 10px;background:#EDF2FA;border-radius:20px;display:flex;align-items:center;gap:18px;padding:0 18px;font-size:14px;color:#444}
+.gs .fx{height:34px;display:flex;align-items:center;border-bottom:1px solid #e1e1e1;font-size:15px}
+.gs .fx .nm{width:100px;padding-left:12px;border-right:1px solid #e1e1e1;height:100%;display:flex;align-items:center}
+.gs .fx .f{padding:0 12px;color:#888;font-style:italic;border-right:1px solid #e1e1e1;height:100%;display:flex;align-items:center}
+.gs .fx .v{padding-left:12px;font-family:'Roboto Mono',var(--mono);font-size:15px}
+.gs table{border-collapse:collapse;font-size:15px;table-layout:fixed}
+.gs th{background:#F8F9FA;color:#5f6368;font-weight:400;font-size:13px;height:26px;border:1px solid #e1e1e1}
+.gs td{border:1px solid #e1e1e1;height:36px;padding:0 8px;white-space:nowrap;overflow:hidden}
+.gs td.rn{background:#F8F9FA;color:#5f6368;text-align:center;font-size:13px;width:46px}
+.gs td.num{text-align:right;font-variant-numeric:tabular-nums}
+.gs tr.h td{font-weight:700;background:#fff}
+.gs td.sel{outline:2px solid #1A73E8;outline-offset:-2px}
+/* cartes génériques */
+.card{position:absolute;background:var(--surf);border:1px solid var(--line);border-radius:22px;padding:34px}
+.k{font-family:var(--mono);font-size:20px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.big{font-family:var(--disp);font-size:120px;line-height:1;letter-spacing:.01em}
+.mono{font-family:var(--mono)}
+.pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-family:var(--mono);font-weight:700;color:#0B0F18}
+.p0{background:var(--b0)}.p1{background:var(--b1)}.p2{background:var(--b2)}.p3{background:var(--b3)}
+.stamp{position:absolute;border:6px solid var(--red);color:var(--red);font-family:var(--disp);font-size:64px;padding:8px 26px;text-transform:uppercase;border-radius:10px;letter-spacing:.02em}
+.tag{display:inline-block;background:var(--red-s);color:var(--red);border-radius:999px;font-size:20px;font-weight:600;padding:5px 14px}
+.tagok{display:inline-block;background:#12302D;color:var(--b3);border-radius:999px;font-size:20px;font-weight:600;padding:5px 14px}
+.yel{color:var(--acc)}
+/* dashboard factice */
+.db{position:absolute;background:#F4F5F8;color:#141A24;font-family:'Inter',sans-serif}
+.db .sb{position:absolute;left:0;top:0;bottom:0;width:300px;padding:28px 22px;border-right:1px solid #E0E3EA}
+.db .brand{font-family:'Inter';font-weight:800;font-size:22px;letter-spacing:-.01em}
+.db .brand small{display:block;font-weight:500;font-size:13px;color:#586172;margin-top:4px}
+.db .ovb{border:1px solid #E0E3EA;background:#fff;border-radius:8px;padding:9px 12px;margin:18px 0 14px;font-weight:600;font-size:14px;display:flex;justify-content:space-between}
+.db .sit{padding:9px 12px;border-radius:8px;font-size:14px;margin-bottom:2px}
+.db .sit b{display:block;font-weight:600}
+.db .sit span{font-size:12px;color:#586172;display:flex;align-items:center;gap:6px}
+.db .sit span i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.db .sit.cur3{background:#1F3A5F;color:#fff}.db .sit.cur3 span{color:#d6deea}
+.db .mn{position:absolute;left:340px;top:0;right:0;bottom:0}
+.db .ey{position:absolute;left:0;top:30px;font-size:12px;font-weight:600;letter-spacing:.08em;color:#586172}
+.db h1{position:absolute;left:0;top:48px;margin:0;font-family:'Inter';font-weight:800;font-size:44px;letter-spacing:-.02em}
+.db .pn{position:absolute;background:#fff;border:1px solid #E0E3EA;border-radius:12px;padding:18px}
+.db .pn h3{margin:0 0 8px;font-size:11px;font-weight:600;letter-spacing:.08em;color:#586172;text-transform:uppercase}
+.db .vc{display:flex;gap:12px;align-items:flex-start}
+.db .rk{width:30px;height:30px;border-radius:50%;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none}
+.db .vt{font-weight:700;font-size:14px;line-height:1.25}
+.db .st{display:flex;gap:16px;font-family:var(--mono);font-size:12px;margin-top:6px;color:#586172}
+.db .st b{color:#141A24;font-weight:500}
+.db .r3{color:#0F766E}.db .r2{color:#B45F06}
+/* tableaux sombres */
+.dt{position:absolute;font-size:24px}
+.dt .hr,.dt .tr{position:absolute;left:0;right:0;height:64px;display:grid;align-items:center;padding:0 22px;column-gap:20px}
+.dt .hr{color:var(--mut);font-family:var(--mono);font-size:17px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.dt .tr{border-bottom:1px solid #1a2438;transition:top 1.1s cubic-bezier(.65,0,.25,1),opacity .6s,transform .8s cubic-bezier(.2,.8,.2,1),background .6s}
+.dt .n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.dt .tr .rkp{width:44px;height:44px;font-size:20px;opacity:0;transform:scale(.5);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.dt.ranked .tr .rkp{opacity:1;transform:none}
+/* contrôles */
+#ui{position:fixed;left:0;right:0;bottom:0;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13px;color:#8A94A8;transition:opacity .4s;z-index:20;background:linear-gradient(transparent,rgba(3,5,10,.85))}
+#ui.hide{opacity:0}
+#prog{flex:1;height:3px;background:#1c2436;border-radius:2px;overflow:hidden}
+#prog b{display:block;height:100%;background:var(--acc);width:0;transition:width .4s}
+#ui button{background:transparent;border:1px solid #2a3550;color:#C9D0DD;border-radius:6px;padding:4px 10px;font:inherit;cursor:pointer}
+#notes{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(16px + env(safe-area-inset-top,0px));width:min(420px,calc(100vw - 32px));background:rgba(13,19,34,.96);border:1px solid #2a3550;border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.5;color:#E3E7EF;z-index:21}
+#notes .k2{font-family:var(--mono);font-size:12px;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+body.idle{cursor:none}
+
+/* v2 */
+.pageimg{position:absolute;left:100px;top:0;width:1720px;display:block;box-shadow:0 40px 120px rgba(0,0,0,.6);border-radius:10px}
+.apimg{position:absolute;left:2400px;top:0;width:1720px;display:block;box-shadow:0 40px 120px rgba(0,0,0,.6);border-radius:10px}
+.lbl{position:absolute;left:120px;bottom:80px;z-index:6;background:rgba(8,12,22,.94);border:1px solid var(--line);padding:16px 26px;border-radius:14px;max-width:1100px}
+.lbl .n{font-family:var(--mono);color:var(--acc);font-size:22px;letter-spacing:.1em;text-transform:uppercase}
+.lbl .t{font-family:var(--disp);font-size:64px;line-height:1.02;text-transform:uppercase;margin-top:4px}
+.lbl .d{font-size:24px;color:#C9D0DD;margin-top:6px}
+.rth{width:360px;height:202px;border-radius:12px;object-fit:cover;display:block}
+/* mur de miniatures */
+.wall{position:absolute;left:-40px;top:0;width:2000px;display:grid;grid-template-columns:repeat(8,240px);gap:14px;animation:wall 40s linear infinite alternate;opacity:.55}
+.wall img{width:240px;height:135px;border-radius:10px;display:block}
+@keyframes wall{to{transform:translateY(-520px)}}
+.veil{position:absolute;inset:0;background:radial-gradient(900px 600px at 50% 60%,rgba(8,12,22,.55),rgba(8,12,22,.92))}
+.ben{position:absolute;display:flex;gap:22px;align-items:flex-start;background:rgba(18,26,43,.94);border:1px solid var(--line);border-radius:20px;padding:26px 30px;width:820px}
+.ben .num{font-family:var(--disp);font-size:64px;line-height:.9;color:var(--acc);min-width:48px}
+.ben b{display:block;font-family:var(--disp);font-size:46px;text-transform:uppercase;line-height:1.02;letter-spacing:.01em}
+.ben span{display:block;font-size:24px;color:#C9D0DD;margin-top:6px;line-height:1.35}
+/* CTA */
+.ytbtn{display:inline-flex;align-items:center;gap:12px;border-radius:999px;font-family:var(--yt);font-weight:500;font-size:34px;padding:18px 36px}
+.sub{background:#FF0033;color:#fff}
+.subd{background:#272727;color:#F1F1F1}
+.likebox{display:inline-flex;align-items:center;background:#272727;border-radius:999px;font-family:var(--yt);font-size:32px;color:#F1F1F1;overflow:hidden}
+.likebox>span{display:flex;align-items:center;gap:12px;padding:16px 28px}
+.likebox>span+span{border-left:1px solid #444}
+.ctabox{position:absolute;background:#0F0F0F;border:1px solid #2a2a2a;border-radius:24px;padding:36px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+.cm{display:flex;gap:16px;align-items:center;width:100%}
+.cm .av{width:56px;height:56px;border-radius:50%;background:#7a4cc2;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--yt);font-size:26px;flex:none}
+.cm .fld{flex:1;border-bottom:2px solid #F1F1F1;font-family:var(--yt);font-size:30px;color:#F1F1F1;padding:8px 2px;min-height:52px}
+/* outils en liste */
+.tool2{position:absolute;left:120px;width:1680px;display:grid;grid-template-columns:70px 520px minmax(0,1fr);gap:28px;align-items:center;background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:22px 30px}
+.tool2 .ix{font-family:var(--disp);font-size:54px;color:var(--mut)}
+.tool2 .nm{font-size:32px;font-weight:700;line-height:1.15}
+.tool2 .ex{font-size:20px;color:var(--mut);margin-top:4px}
+.tool2 .lim{display:flex;gap:10px;flex-wrap:wrap}
+.tool2 .tag{font-size:22px;padding:7px 16px}
+/* chrome + extension */
+.tgroup{display:inline-flex;align-items:center;height:26px;border-radius:8px;background:#D97757;color:#fff;font-size:13px;font-weight:700;padding:0 10px;margin-bottom:6px}
+.ext{position:absolute;right:22px;top:52px;display:flex;gap:10px;align-items:center;z-index:2}
+.ext i{width:24px;height:24px;border-radius:6px;background:#c4c7cc;display:block}
+.flow{stroke:#D97757;stroke-width:5;fill:none;stroke-dasharray:14 12;animation:flow 1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-26}}
+.glow{position:absolute;inset:0;border:5px solid #D97757;border-radius:14px;pointer-events:none;box-shadow:inset 0 0 40px rgba(217,119,87,.35)}
+/* tableur v2 */
+.gs td{height:34px}
+.gs td.fill{background:#E8F0FE}
+
+.hud{transition:opacity .5s ease}
+</style>
+<div id="stage">
+
+<!-- 1. RÉSULTAT -->
+<section class="slide" id="resultat">
+  <div class="cam"><img class="pageimg" data-img="page" alt="Tableau de veille YouTube, recherche Higgsfield"></div>
+  <div data-s="2" class="a-up" style="position:absolute;left:0;right:0;bottom:0;height:560px;background:linear-gradient(transparent,rgba(8,12,22,.97) 55%);z-index:4"></div>
+  <div class="hud" style="top:auto;bottom:96px">
+    <div data-s="2" class="a-up eyebrow">Veille YouTube, sujet : Higgsfield</div>
+    <div data-s="2" class="a-up title" data-d="120">51 vidéos classées. <em>Zéro copier-coller.</em></div>
+    <span data-s="2" class="a-l bar" data-d="300"></span>
+  </div>
+</section>
+
+<!-- 2. CTA DÉBUT -->
+<section class="slide" id="abonne">
+  <div class="hud"><div class="eyebrow">Avant de commencer</div><div class="title">Un geste, <em>trois clics</em></div></div>
+  <div class="cam">
+    <div class="ctabox a-up" data-s="0" style="left:120px;top:340px;width:520px;height:420px;justify-content:center;align-items:center">
+      <div style="display:flex;align-items:center;gap:16px"><div class="cm"><div class="av" style="width:72px;height:72px;font-size:32px">R</div></div></div>
+      <div style="font-family:var(--yt);font-size:30px;color:#F1F1F1;font-weight:500">Ta chaîne IA</div>
+      <div style="position:relative;height:84px;width:330px">
+        <div data-x="1" data-s="0" class="ytbtn sub" style="position:absolute;left:0;top:0">S'abonner</div>
+        <div data-s="1" class="ytbtn subd a-pop" style="position:absolute;left:0;top:0"><svg width="30" height="30" viewBox="0 0 24 24" fill="#F1F1F1"><path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11c0-3.1-1.6-5.6-4.5-6.3V4a1.5 1.5 0 0 0-3 0v.7C7.6 5.4 6 7.9 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>Abonné</div>
+      </div>
+    </div>
+    <div class="ctabox a-up" data-s="0" data-d="150" style="left:700px;top:340px;width:520px;height:420px;justify-content:center;align-items:center">
+      <div class="likebox"><span><svg width="34" height="34" viewBox="0 0 24 24"><path data-s="2" class="a-pop" d="M2 21h4V9H2v12zm20-11a2 2 0 0 0-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 1 6.6 7.6C6.2 8 6 8.5 6 9v10a2 2 0 0 0 2 2h9c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.2-.5.2-.7v-2z" fill="#F1F1F1"/><path d="M2 21h4V9H2v12zm20-11a2 2 0 0 0-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 1 6.6 7.6C6.2 8 6 8.5 6 9v10a2 2 0 0 0 2 2h9c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.2-.5.2-.7v-2z" fill="none" stroke="#F1F1F1" stroke-width="1.6"/></svg><span data-x="2" data-s="0">J'aime</span><span data-s="2" class="a-up" style="margin-left:-12px">Merci</span></span><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M22 3h-4v12h4V3zM2 14a2 2 0 0 0 2 2h6.3l-1 4.6v.3c0 .4.2.8.4 1.1l1.1 1 6.6-6.6c.4-.4.6-.9.6-1.4V5a2 2 0 0 0-2-2H7c-.8 0-1.5.5-1.8 1.2l-3 7.1c-.1.2-.2.5-.2.7v2z" fill="none" stroke="#F1F1F1" stroke-width="1.6"/></svg></span></div>
+      <div style="font-family:var(--yt);font-size:26px;color:#AAAAAA">si la méthode t'aide</div>
+    </div>
+    <div class="ctabox a-up" data-s="0" data-d="300" style="left:1280px;top:340px;width:520px;height:420px;justify-content:center">
+      <div style="font-family:var(--yt);font-size:30px;color:#F1F1F1;font-weight:500">Commentaires</div>
+      <div class="cm"><div class="av">H</div><div class="fld"><span class="type" data-text="Analyse le sujet : …" data-s2="3" data-caret="1"></span></div></div>
+      <div style="font-family:var(--yt);font-size:24px;color:#AAAAAA">Le sujet le plus demandé sera analysé.</div>
+    </div>
+    <div data-s="1" class="a-up" style="position:absolute;left:120px;top:800px;width:520px;text-align:center;font-size:28px;font-weight:600">Abonne-toi</div>
+    <div data-s="2" class="a-up" style="position:absolute;left:700px;top:800px;width:520px;text-align:center;font-size:28px;font-weight:600">Like</div>
+    <div data-s="3" class="a-up" style="position:absolute;left:1280px;top:800px;width:520px;text-align:center;font-size:28px;font-weight:600">Commente <span class="yel">ton sujet</span></div>
+    <svg class="ptr" data-path='[[960,1000],[400,600],[930,600],[1560,600]]' viewBox="0 0 40 40"><path d="M6 4 L6 32 L13 25 L18 36 L23 34 L18 23 L28 23 Z" fill="#fff" stroke="#111" stroke-width="2"/></svg>
+  </div>
+</section>
+
+<!-- 3. BLOCAGE -->
+<section class="slide" id="blocage" data-hudoff="1" data-cam='[[1,960,540],[2.05,960,330],[1,960,540],[1,960,540]]'>
+  <div class="cam">
+    <div class="win" style="left:150px;top:270px;width:1620px;height:790px;background:#fff">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+        <div class="tabs"><div class="tab"><span class="fav" style="background:#FF0033"></span>YouTube</div><div class="tab off">Nouvel onglet</div></div>
+        <div class="url"><span class="nav">‹ › ↻</span>youtube.com/results?search_query=<span class="type" data-text="higgsfield" data-s2="1"></span></div></div>
+      <div class="yt">
+        <div class="top"><div class="burger"></div><span class="logo-slot" style="color:#0f0f0f;font-size:15px;padding:4px 10px">Logo YouTube</span>
+          <div class="search"><div class="in"><span class="type" data-text="higgsfield" data-s2="1" data-caret="1" data-td="500"></span></div><div class="btn">⌕</div></div><div class="mic"></div>
+          <div class="acts"><span style="font-size:22px">＋</span><span style="width:22px;height:22px;border:2px solid #0f0f0f;border-radius:50% 50% 4px 4px;display:inline-block"></span><div class="avatar">H</div></div></div>
+        <div class="chips a-up" data-s="2"><span class="chip on2">Tous</span><span class="chip">Vidéos</span><span class="chip">Shorts</span><span class="chip">Non regardées</span><span class="chip">Regardées</span><span class="chip">Récemment mis en ligne</span><span class="chip">En direct</span></div>
+        <div class="res" id="ytres"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hud"><div class="eyebrow">Le blocage</div><div class="title">Quelle vidéo <em>faire</em> ?</div></div>
+  <div data-s="3" class="a-pop" style="position:absolute;right:120px;top:330px;z-index:5;display:flex;flex-direction:column;gap:18px;align-items:flex-end">
+    <div class="card" style="position:relative;padding:22px 30px;font-size:34px;font-weight:700;background:var(--acc);color:var(--acc-ink);border:0">Laquelle marche vraiment ?</div>
+    <div class="card" style="position:relative;padding:18px 26px;font-size:28px;font-weight:600">Pourquoi celle-ci et pas l'autre ?</div>
+    <div class="card" style="position:relative;padding:18px 26px;font-size:28px;font-weight:600">Quel angle reprendre ?</div>
+  </div>
+</section>
+
+<!-- 4. LE PIÈGE -->
+<section class="slide" id="piege">
+  <div class="hud"><div class="eyebrow">Le piège</div><div class="title">Les vues brutes <em>mentent</em></div></div>
+  <div class="cam">
+    <div class="card a-l" data-s="0" style="left:120px;top:320px;width:800px;height:640px">
+      <div style="display:flex;gap:20px;align-items:center"><img data-img="t_sirio" style="width:240px;height:135px;border-radius:12px" alt="Miniature Sirio"><div><div style="font-size:26px;font-weight:700">Sirio</div><div style="font-size:20px;color:var(--mut)">« Cher Higgsfield, je vous ai<br>rétro-conçus en 12 heures »</div></div></div>
+      <div class="k" style="margin-top:34px">Vues</div><div class="big"><span class="count" data-to="707986" data-s2="1">0</span></div>
+      <div data-s="2" class="a-up"><div class="k" style="margin-top:20px">Abonnés</div><div class="big" style="font-size:72px;color:var(--mut)">150 000</div></div>
+      <div data-s="3" class="a-up" style="margin-top:20px;display:flex;align-items:center;gap:18px"><span class="pill p1" style="font-size:40px;padding:8px 26px">4,7 ×</span><span style="font-size:24px;color:var(--mut)">vues par abonné</span></div>
+    </div>
+    <div class="card a-r" data-s="0" style="left:1000px;top:320px;width:800px;height:640px">
+      <div style="display:flex;gap:20px;align-items:center"><img data-img="t_nicolas" style="width:240px;height:135px;border-radius:12px" alt="Miniature NICOLAS"><div><div style="font-size:26px;font-weight:700">NICOLAS - VIDEO IA</div><div style="font-size:20px;color:var(--mut)">« Higgsfield coûte trop cher<br>(j'ai trouvé mieux) »</div></div></div>
+      <div class="k" style="margin-top:34px">Vues</div><div class="big"><span class="count" data-to="8576" data-s2="1">0</span></div>
+      <div data-s="2" class="a-up"><div class="k" style="margin-top:20px">Abonnés</div><div class="big" style="font-size:72px;color:var(--acc)">336</div></div>
+      <div data-s="3" class="a-up" style="margin-top:20px;display:flex;align-items:center;gap:18px"><span class="pill p3" style="font-size:40px;padding:8px 26px">25,5 ×</span><span style="font-size:24px;color:var(--mut)">vues par abonné</span></div>
+    </div>
+    <div data-s="1" class="a-pop" data-x="3" style="position:absolute;left:640px;top:292px;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:26px;padding:8px 18px;border-radius:999px">Gagnant ?</div>
+    <div data-s="3" class="a-pop" style="position:absolute;left:1520px;top:292px;background:var(--b3);color:#06221F;font-weight:800;font-size:26px;padding:8px 18px;border-radius:999px">5 fois plus fort</div>
+    <div data-s="4" class="a-up" style="position:absolute;left:0;right:0;top:990px;text-align:center;font-family:var(--mono);font-size:34px"><span class="yel">performance</span> = vues ÷ abonnés</div>
+  </div>
+</section>
+
+<!-- 5. LA JUNGLE -->
+<section class="slide" id="jungle">
+  <div class="cam">
+    <div class="wall" id="wall"></div><div class="veil"></div>
+    <div class="ben a-l" data-s="1" style="left:120px;top:330px"><div class="num">1</div><div><b>Se démarquer</b><span>Des milliers de vidéos par sujet : il faut un angle que les autres n'ont pas.</span></div></div>
+    <div class="ben a-r" data-s="2" style="left:980px;top:330px"><div class="num">2</div><div><b>Capter les tendances</b><span>Voir ce qui décolle maintenant, pas ce qui marchait il y a un an.</span></div></div>
+    <div class="ben a-l" data-s="3" style="left:120px;top:560px"><div class="num">3</div><div><b>Repérer les angles qui marchent</b><span>Titres, miniatures, formats : ce qui fait cliquer, chiffres à l'appui.</span></div></div>
+    <div class="ben a-r" data-s="4" style="left:980px;top:560px"><div class="num">4</div><div><b>Les retwister à ta sauce</b><span>Reprendre le mécanisme, pas la vidéo : l'appliquer à ta niche.</span></div></div>
+    <div class="ben a-up" data-s="5" style="left:550px;top:790px;border-color:var(--acc)"><div class="num">5</div><div><b>Décider avec des chiffres</b><span>Tourner la bonne vidéo, plutôt qu'au feeling.</span></div></div>
+  </div>
+  <div class="hud"><div class="eyebrow">Pourquoi faire cette veille</div><div class="title">YouTube, c'est <em>la jungle</em></div></div>
+</section>
+
+<!-- 6. POUR QUI -->
+<section class="slide" id="pourqui">
+  <div class="hud"><div class="eyebrow">Pour qui</div><div class="title">À qui ça <em>sert</em></div></div>
+  <div class="cam">
+    <div class="card a-up" data-s="1" style="left:120px;top:340px;width:530px;height:500px">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" stroke="#FFE14A" stroke-width="4"><rect x="8" y="18" width="68" height="48" rx="8"/><path d="M36 32 L52 42 L36 52 Z" fill="#FFE14A"/></svg>
+      <div style="font-family:var(--disp);font-size:58px;text-transform:uppercase;margin:24px 0 14px">Créateur</div>
+      <div style="font-size:30px;line-height:1.35;color:#C9D0DD">Trouver l'angle qui marche <b style="color:var(--ink)">avant</b> de tourner, et des titres prêts à tester.</div></div>
+    <div class="card a-up" data-s="2" style="left:695px;top:340px;width:530px;height:500px">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" stroke="#FFE14A" stroke-width="4"><path d="M12 64 L30 40 L46 52 L72 20"/><path d="M58 20 H72 V34"/><path d="M10 72 H74"/></svg>
+      <div style="font-family:var(--disp);font-size:58px;text-transform:uppercase;margin:24px 0 14px">Marque, agence</div>
+      <div style="font-size:30px;line-height:1.35;color:#C9D0DD">Surveiller un marché, un produit, <b style="color:var(--ink)">un concurrent</b>, et ce qui en est dit.</div></div>
+    <div class="card a-up" data-s="3" style="left:1270px;top:340px;width:530px;height:500px">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" stroke="#FFE14A" stroke-width="4"><rect x="14" y="10" width="56" height="64" rx="6"/><path d="M26 28 H58 M26 40 H58 M26 52 H46"/></svg>
+      <div style="font-family:var(--disp);font-size:58px;text-transform:uppercase;margin:24px 0 14px">Consultant IA</div>
+      <div style="font-size:30px;line-height:1.35;color:#C9D0DD">Livrer une veille <b style="color:var(--ink)">à un client</b>, chaque semaine, toujours au même format.</div></div>
+    <div data-s="4" class="a-up" style="position:absolute;left:120px;right:120px;top:900px;font-size:40px;font-weight:600;text-align:center">Un même besoin : savoir <span class="yel">ce qui performe</span>, et <span class="yel">pourquoi</span>.</div>
+  </div>
+</section>
+
+<!-- 7. MÉTHODE MANUELLE -->
+<section class="slide" id="manuel" data-hudoff="1,2,3,4" data-cam='[[1,960,540],[1.7,560,520],[1.7,560,555],[1.12,760,640],[1.12,760,640],[1,960,540],[1,960,540]]'>
+  <div class="hud"><div class="eyebrow">La méthode classique</div><div class="title">Tout <em>à la main</em></div></div>
+  <div class="cam">
+    <div class="win" style="left:120px;top:270px;width:1240px;height:790px;background:#fff">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="tabs"><div class="tab"><span class="fav" style="background:#0F9D58"></span>Veille YouTube - Tableur</div><div class="tab off"><span class="fav" style="background:#FF0033"></span>YouTube</div></div><div class="url"><span class="nav">‹ › ↻</span>docs.google.com/spreadsheets/d/…</div></div>
+      <div class="gs">
+        <div class="mb"><span class="logo-slot" style="color:#188038;font-size:12px;width:38px;height:38px;white-space:normal;text-align:center;line-height:1">Logo<br>Sheets</span><div><div class="doc">Veille YouTube</div><div class="menu"><span>Fichier</span><span>Édition</span><span>Affichage</span><span>Insertion</span><span>Format</span><span>Données</span><span>Outils</span></div></div></div>
+        <div class="tool"><span>↶ ↷</span><span>100 %</span><span>€ % .0</span><span>Par défaut</span><span>10</span><span><b>B</b> <i>I</i></span></div>
+        <div class="fx"><div class="nm">F2</div><div class="f">fx</div><div class="v"><span class="type" data-text="=C2/D2" data-s2="4" data-caret="1"></span></div></div>
+        <table id="sheet"></table>
+      </div>
+    </div>
+    <div class="card a-r" data-s="0" style="left:1400px;top:270px;width:400px;height:790px;padding:32px">
+      <div class="k">Pour chaque vidéo</div>
+      <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px;font-size:25px;line-height:1.3">
+        <div data-s="1" class="a-r">1. Ouvrir la vidéo</div>
+        <div data-s="1" class="a-r" data-d="300">2. Noter vues et date</div>
+        <div data-s="1" class="a-r" data-d="600">3. Ouvrir la chaîne</div>
+        <div data-s="1" class="a-r" data-d="900">4. Noter les abonnés</div>
+        <div data-s="1" class="a-r" data-d="1200">5. Coller, calculer</div>
+        <div data-s="1" class="a-r" data-d="1500">6. Recommencer</div>
+      </div>
+      <div data-s="5" class="a-up" style="margin-top:40px;border-top:1px solid var(--line);padding-top:26px">
+        <div style="font-family:var(--mono);font-size:24px;color:var(--mut)">≈ 2 min × 51 vidéos</div>
+        <div class="big" style="font-size:92px;color:var(--red);white-space:nowrap">≈ 1 h 40</div>
+        <div style="font-size:20px;color:var(--mut)">par sujet (estimation)</div>
+      </div>
+    </div>
+    <div data-s="6" class="a-zoom" style="position:absolute;left:300px;top:720px;transform-origin:center"><div class="stamp" style="position:relative;transform:rotate(-7deg);background:rgba(8,12,22,.92)">Et toujours aucune analyse</div></div>
+  </div>
+</section>
+
+<!-- 8. OUTILS -->
+<section class="slide" id="outils">
+  <div class="hud"><div class="eyebrow">Les autres solutions</div><div class="title">Des outils, <em>et leurs limites</em></div></div>
+  <div class="cam">
+    <div class="tool2 a-l" data-s="1" style="top:290px"><div class="ix">1</div><div><div class="nm">Recherche + copier-coller</div><div class="ex">YouTube à la main · gratuit</div></div><div class="lim"><span class="tag a-r" data-s="1" data-d="500">Lent</span><span class="tag a-r" data-s="1" data-d="700">Une vidéo à la fois</span><span class="tag a-r" data-s="1" data-d="900">Erreurs de saisie</span></div></div>
+    <div class="tool2 a-l" data-s="2" style="top:430px"><div class="ix">2</div><div><div class="nm">Tableur + formules</div><div class="ex">Google Sheets, Excel · gratuit</div></div><div class="lim"><span class="tag a-r" data-s="2" data-d="500">Saisie manuelle</span><span class="tag a-r" data-s="2" data-d="700">Calcule, n'analyse pas</span></div></div>
+    <div class="tool2 a-l" data-s="3" style="top:570px"><div class="ix">3</div><div><div class="nm">Extension de scraping</div><div class="ex">ex. Instant Data Scraper · gratuit</div></div><div class="lim"><span class="tag a-r" data-s="3" data-d="500">Pas les abonnés</span><span class="tag a-r" data-s="3" data-d="700">Page par page</span><span class="tag a-r" data-s="3" data-d="900">Données brutes à nettoyer</span></div></div>
+    <div class="tool2 a-l" data-s="4" style="top:710px"><div class="ix">4</div><div><div class="nm">Extensions YouTube</div><div class="ex">ex. vidIQ, TubeBuddy · freemium</div></div><div class="lim"><span class="tag a-r" data-s="4" data-d="500">Vidéo par vidéo</span><span class="tag a-r" data-s="4" data-d="700">Le meilleur est payant</span></div></div>
+    <div class="tool2 a-l" data-s="5" style="top:850px"><div class="ix">5</div><div><div class="nm">SaaS d'outliers</div><div class="ex">ex. 1of10, ViewStats Pro, OutlierKit · payant</div></div><div class="lim"><span class="tag a-r" data-s="5" data-d="500">Abonnement</span><span class="tag a-r" data-s="5" data-d="700">Gratuit très limité</span><span class="tag a-r" data-s="5" data-d="900">Pas l'angle pour ta niche</span></div></div>
+    <div data-s="6" class="a-pop" style="position:absolute;left:1180px;top:200px;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:30px;padding:12px 22px;border-radius:12px;transform-origin:center">Il manque : tous les sujets, l'analyse, l'angle</div>
+  </div>
+</section>
+
+<!-- 9. PIVOT -->
+<section class="slide" id="pivot">
+  <div class="cam">
+    <div style="position:absolute;left:0;right:0;top:250px;text-align:center">
+      <div data-s="0" class="a-up eyebrow">Et si…</div>
+      <div data-s="0" class="a-blur title" data-d="150" style="font-size:150px;margin-top:20px">On donne la <em>mission</em><br>à Claude ?</div>
+    </div>
+    <div data-s="1" class="a-up" style="position:absolute;left:460px;top:720px;width:1000px;background:#30302E;border:1px solid #44433f;border-radius:22px;padding:24px 28px;font-size:30px;color:#EDEBE5;min-height:100px"><span class="type" data-text="Trouve les vidéos qui performent vraiment sur ce sujet, et dis-moi pourquoi." data-s2="1" data-caret="1"></span></div>
+    <div data-s="2" class="a-up" style="position:absolute;left:0;right:0;top:900px;text-align:center;font-size:34px;color:#C9D0DD">Une phrase. <span class="yel">Une méthode fixe.</span> Un rapport.</div>
+  </div>
+</section>
+
+<!-- 10. CLAUDE DESKTOP + CHROME -->
+<section class="slide" id="desktop" data-hudoff="2" data-cam='[[1,960,540],[1,960,540],[1.25,1340,640],[1,960,540],[1,960,540]]'>
+  <div class="hud"><div class="eyebrow">L'outil</div><div class="title">Claude Desktop <em>+ Chrome</em></div></div>
+  <div class="cam">
+    <div class="win a-l" data-s="0" style="left:120px;top:300px;width:700px;height:700px">
+      <div class="cd" style="font-size:14px">
+        <div class="side" style="width:170px;font-size:13px;padding:14px 10px"><div class="nw">＋ Nouvelle</div><div class="lab2">Récents</div><div class="it cur2">Veille YouTube</div><div class="it">Pubs cosmétiques</div></div>
+        <div class="main2"><div class="hd" style="padding:0 16px"><span class="logo-slot" style="font-size:11px;padding:2px 6px;color:#D97757">Logo Claude</span>Veille YouTube</div>
+          <div class="msgs" style="padding:18px 0;gap:12px;align-items:stretch">
+            <div class="u" style="margin-right:18px;font-size:16px;max-width:380px">Nouvelle recherche : higgsfield</div>
+            <div class="a" style="width:auto;padding:0 18px;font-size:15px">
+              <div data-s="3" class="a-up toolcall" style="font-size:14px"><span class="ok"></span><b>Chrome</b> ouvre youtube.com/results</div>
+              <div data-s="3" class="a-up toolcall" data-d="600" style="font-size:14px"><span class="ok"></span><b>Chrome</b> lit la page · 51 vidéos</div>
+              <div data-s="3" class="a-up toolcall" data-d="1200" style="font-size:14px"><span class="spin"></span><b>Chrome</b> visite les chaînes…</div>
+            </div></div>
+          <div class="box" style="width:auto;margin:0 16px 16px;min-height:70px;font-size:14px;padding:12px 14px 40px"><span class="ph">Répondre à Claude…</span><div class="tools"><i style="width:24px;height:24px"></i></div><div class="send" style="width:28px;height:28px"></div></div></div>
+      </div></div>
+    <div class="win a-r" data-s="1" style="left:900px;top:300px;width:900px;height:700px;background:#fff">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+        <div class="tabs" style="align-items:center;gap:8px"><span data-s="2" class="a-pop tgroup">Claude</span><div class="tab" style="min-width:220px;height:36px;align-self:flex-end"><span class="fav" style="background:#FF0033"></span>higgsfield - YouTube</div></div>
+        <div class="url" style="right:150px"><span class="nav">‹ › ↻</span>youtube.com/results?search_query=<span class="type" data-text="higgsfield" data-s2="2" data-td="900"></span></div>
+        <div class="ext"><i></i><span class="logo-slot" style="color:#D97757;font-size:11px;padding:3px 6px;background:#fff">Claude in Chrome</span></div></div>
+      <div class="yt"><div class="chips" style="padding-top:14px"><span class="chip">Tous</span><span class="chip on2">Vidéos</span><span class="chip">Shorts</span></div><div class="res" id="ytres3" style="gap:12px"></div></div>
+      <div data-s="2" class="a-blur glow"></div>
+    </div>
+    <svg data-s="2" class="a-blur" width="1920" height="1080" style="position:absolute;left:0;top:0;pointer-events:none"><path class="flow" d="M 640 880 C 760 980, 860 600, 960 470"/></svg>
+    <div data-s="1" class="a-up" style="position:absolute;left:900px;top:1015px;font-size:24px;color:#C9D0DD">Extension <b class="yel">Claude in Chrome</b> installée et connectée</div>
+    <div data-s="4" class="a-up" style="position:absolute;left:120px;top:1015px;font-size:24px;color:#C9D0DD">Alternative : <b style="color:var(--ink)">Claude Code</b> dans le terminal, même méthode.</div>
+    <svg class="ptr" data-path='[[1500,900],[1500,900],[1180,358],[1060,600],[1060,600]]' viewBox="0 0 40 40"><path d="M6 4 L6 32 L13 25 L18 36 L23 34 L18 23 L28 23 Z" fill="#fff" stroke="#D97757" stroke-width="2.4"/></svg>
+  </div>
+</section>
+
+<!-- 11. ÉTAPE 1 : PROMPT -->
+<section class="slide" id="prompt" data-hudoff="1,3" data-cam='[[1,960,540],[1.45,960,790],[1,960,540],[1.5,1130,470]]'>
+  <div class="hud"><div class="eyebrow">Étape 1</div><div class="title">Le <em>prompt</em>, une seule fois</div></div>
+  <div class="cam">
+    <div class="win" style="left:120px;top:290px;width:1680px;height:760px">
+      <div class="cd">
+        <div class="side"><div class="nw">＋ Nouvelle tâche</div><div class="lab2">Récents</div><div class="it cur2">Veille YouTube</div><div class="it">Pubs cosmétiques</div><div class="it">Plan d'articles</div><div class="it">Recettes de sérums</div></div>
+        <div class="main2"><div class="hd"><span class="logo-slot" style="font-size:12px;padding:3px 8px;color:#D97757">Logo Claude</span>Veille YouTube</div>
+          <div class="msgs">
+            <div class="u a-up" data-s="2" style="font-size:17px">Je vais te donner des sujets YouTube.
+Trouve les vidéos longues (pas de Shorts) qui performent le plus, par rapport à la taille de la chaîne : vues ÷ abonnés, vues par mois.
+Top 15, de la meilleure à la moins bonne : titre, lien, miniature, vues, abonnés, date.
+Puis : 1 angle, 3 titres, 1 miniature, et le pattern à reproduire.</div>
+          </div>
+          <div class="box"><span class="type" data-text="Je vais te donner des sujets YouTube.&#10;Trouve les vidéos longues (pas de Shorts) qui performent le plus, par rapport à la taille de la chaîne : vues ÷ abonnés, vues par mois.&#10;Top 15, de la meilleure à la moins bonne : titre, lien, miniature, vues, abonnés, date.&#10;Puis : 1 angle, 3 titres, 1 miniature, et le pattern à reproduire." data-s2="1" data-x2="2" data-caret="1" data-speed="18"></span><span class="type" data-text="Nouvelle recherche : higgsfield" data-s2="2" data-caret="1" data-td="900"></span><div class="tools"><i></i><i></i></div><div class="model">Opus</div><div class="send">↑</div></div>
+        </div>
+      </div>
+    </div>
+    <div data-s="3" class="a-pop" style="position:absolute;right:990px;top:398px;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:24px;padding:8px 16px;border-radius:8px">le filtre</div>
+    <div data-s="3" class="a-pop" data-d="250" style="position:absolute;right:990px;top:448px;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:24px;padding:8px 16px;border-radius:8px">l'indicateur</div>
+    <div data-s="3" class="a-pop" data-d="500" style="position:absolute;right:990px;top:498px;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:24px;padding:8px 16px;border-radius:8px">le livrable</div>
+  </div>
+</section>
+
+<!-- 12. ÉTAPE 2 : COLLECTE -->
+<section class="slide" id="collecte" data-hudoff="1" data-cam='[[1,960,540],[1.3,700,640],[1,960,540],[1,960,540]]'>
+  <div class="hud"><div class="eyebrow">Étape 2</div><div class="title">Claude <em>collecte</em></div></div>
+  <div class="cam">
+    <div class="win" style="left:120px;top:300px;width:1040px;height:740px;background:#fff">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="tabs" style="align-items:center;gap:8px"><span class="tgroup">Claude</span><div class="tab" style="align-self:flex-end"><span class="fav" style="background:#FF0033"></span>higgsfield - YouTube</div></div><div class="url"><span class="nav">‹ › ↻</span>youtube.com/results?search_query=higgsfield&amp;sp=vidéos</div></div>
+      <div class="yt"><div class="chips" style="padding-top:16px"><span class="chip">Tous</span><span class="chip on2">Vidéos</span><span class="chip">Shorts</span><span class="chip">Récemment mis en ligne</span></div><div class="res" id="ytres2"></div></div>
+      <div data-s="1" class="a-blur glow"></div>
+      <div data-s="1" class="a-up" style="position:absolute;left:20px;bottom:20px;background:#D97757;color:#fff;font-weight:700;font-size:18px;padding:8px 14px;border-radius:8px">Claude pilote cet onglet</div>
+    </div>
+    <div class="card" style="left:1200px;top:300px;width:600px;height:740px;padding:30px;background:#262624;border-color:#3d3c38;color:#EDEBE5">
+      <div class="k" style="color:#a9a69e">Ce que fait Claude</div>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;font-size:21px">
+        <div data-s="1" class="a-up toolcall" style="font-size:20px"><span class="ok"></span><b>Recherche</b> « higgsfield », filtre Vidéos</div>
+        <div data-s="1" class="a-up toolcall" data-d="500" style="font-size:20px"><span class="ok"></span><b>Shorts exclus</b> (moins de 4 min)</div>
+        <div data-s="1" class="a-up toolcall" data-d="1000" style="font-size:20px"><span class="ok"></span><b>Lecture</b> titre, vues, date, durée</div>
+        <div data-s="2" class="a-up toolcall" style="font-size:20px"><span class="ok"></span><b>Visite des chaînes</b> → abonnés</div>
+        <div data-s="2" class="a-up toolcall" data-d="500" style="font-size:20px"><span class="ok"></span><b>« il y a 3 mois »</b> → âge en jours</div>
+      </div>
+      <div data-s="3" class="a-up" style="margin-top:40px;border-top:1px solid #3d3c38;padding-top:24px">
+        <div class="big" style="font-size:150px;color:var(--acc)"><span class="count" data-to="51" data-s2="3">0</span></div>
+        <div style="font-size:26px">vidéos longues retenues</div>
+        <div style="font-size:20px;color:#a9a69e;margin-top:6px">avec vues, abonnés, date et durée</div>
+      </div>
+    </div>
+    <svg class="ptr" data-path='[[860,520],[860,520],[700,800],[700,950]]' viewBox="0 0 40 40"><path d="M6 4 L6 32 L13 25 L18 36 L23 34 L18 23 L28 23 Z" fill="#fff" stroke="#D97757" stroke-width="2.4"/></svg>
+  </div>
+</section>
+
+<!-- 13. ÉTAPE 3 : CALCUL -->
+<section class="slide" id="calcul" data-hudoff="3,4" data-cam='[[1,960,540],[1,960,540],[1,960,540],[1.45,1420,640],[1.45,1420,680],[1,960,540]]'>
+  <div class="hud"><div class="eyebrow">Étape 3</div><div class="title">Le <em>calcul</em></div></div>
+  <div class="cam">
+    <div class="card" style="left:120px;top:300px;width:860px;height:680px;background:#0C0C0C;border-color:#2a2a2a">
+      <div class="k">Les règles, identiques à chaque sujet</div>
+      <div class="mono" style="font-size:30px;line-height:1.7;margin-top:26px">
+        <div><span class="yel">ratio</span> = <span class="type" data-text="vues ÷ abonnés" data-s2="0" data-td="500"></span></div>
+        <div><span class="yel">vues/mois</span> = <span class="type" data-text="vues ÷ (âge en jours ÷ 30,4)" data-s2="0" data-td="1300"></span></div>
+        <div style="margin-top:24px;color:var(--mut)">filtres :</div>
+        <div data-s="1" class="a-l">✓ plus de 4 minutes</div>
+        <div data-s="1" class="a-l" data-d="250">✓ plus de 500 vues</div>
+        <div data-s="1" class="a-l" data-d="500">✓ plus de 2 jours</div>
+        <div data-s="1" class="a-l" data-d="750">✓ moins de 12 mois</div>
+      </div>
+    </div>
+    <div class="card a-r" data-s="2" style="left:1040px;top:300px;width:760px;height:680px">
+      <div class="k">Exemple, vidéo n°1</div>
+      <div style="display:flex;gap:18px;align-items:center;margin-top:14px"><img data-img="t_nicolas" style="width:192px;height:108px;border-radius:10px" alt="Miniature n°1"><div style="font-size:26px;font-weight:700">NICOLAS - VIDEO IA</div></div>
+      <div class="mono" style="font-size:34px;margin-top:26px;color:#C9D0DD">8 576 ÷ 336 =</div>
+      <div class="big" style="font-size:150px;color:var(--b3)"><span class="count" data-to="25.5" data-dec="1" data-s2="3">0</span> ×</div>
+      <div data-s="4" class="a-up mono" style="font-size:27px;margin-top:16px;color:#C9D0DD">8 576 ÷ (91 j ÷ 30,4) = <b style="color:var(--ink)">2 865</b> vues/mois</div>
+    </div>
+    <div data-s="5" class="a-up" style="position:absolute;left:120px;right:120px;top:1010px;display:flex;gap:28px;font-size:24px;justify-content:center;align-items:center">
+      <span><span class="pill p3" style="width:24px;height:24px;vertical-align:-3px"></span> 10 × et plus</span><span><span class="pill p2" style="width:24px;height:24px;vertical-align:-3px"></span> 5 à 10 ×</span><span><span class="pill p1" style="width:24px;height:24px;vertical-align:-3px"></span> 3 à 5 ×</span><span><span class="pill p0" style="width:24px;height:24px;vertical-align:-3px"></span> moins de 3 ×</span></div>
+  </div>
+</section>
+
+<!-- 14. ÉTAPE 4 : CLASSEMENT -->
+<section class="slide" id="classement" data-hudoff="2,3" data-cam='[[1,960,540],[1,960,540],[1.12,960,560],[1.12,960,470],[1,960,540]]'>
+  <div class="hud"><div class="eyebrow">Étape 4</div><div class="title">Le <em>classement</em></div></div>
+  <div class="cam">
+    <div data-s="0" class="a-up" style="position:absolute;left:120px;top:262px;font-family:var(--mono);font-size:22px;color:var(--mut)" id="sortlab">Trié par vues</div>
+    <div class="dt" id="rk" style="left:120px;top:300px;width:1680px;height:700px"></div>
+    <div data-s="3" class="a-pop" style="position:absolute;left:1280px;top:255px;background:var(--b3);color:#06221F;font-weight:800;font-size:22px;padding:8px 16px;border-radius:999px">Le n°1 n'a que 336 abonnés</div>
+  </div>
+</section>
+
+<!-- 15. ÉTAPE 5 : CE QUE CLAUDE REPÈRE -->
+<section class="slide" id="analyse" data-hudoff="2">
+  <div class="hud"><div class="eyebrow">Étape 5</div><div class="title">Pourquoi <em>ça marche</em></div></div>
+  <div class="cam" id="anagrid"></div>
+</section>
+
+<!-- 16. CE QUE L'OUTIL DONNE -->
+<section class="slide" id="sortie">
+  <div class="cam"><img class="pageimg" data-img="page" alt="Analyse dans le tableau"></div>
+  <div data-s="0" data-x="1" class="lbl a-up"><div class="n">L'analyse</div><div class="t">6 mécanismes repérés</div><div class="d">Pour chacun : le constat chiffré, ce qu'il faut reprendre, des déclinaisons.</div></div>
+  <div data-s="1" data-x="2" class="lbl a-up"><div class="n">Exemple</div><div class="t">Le logo vert comme signature</div><div class="d">Constat, à reprendre, déclinaisons : prêt à réutiliser.</div></div>
+  <div data-s="2" class="lbl a-up"><div class="n">Le pattern</div><div class="t">Formule, checklist, exemples</div><div class="d">À appliquer tel quel sur un autre sujet.</div></div>
+</section>
+
+<!-- 17. RENDU FINAL -->
+<section class="slide" id="rendu">
+  <div class="cam"><img class="pageimg" data-img="page" alt="Tableau de veille complet"></div>
+  <div data-s="0" data-x="1" class="lbl a-up"><div class="n">Étape 6</div><div class="t">Le <span class="yel">rendu</span> final</div><div class="d">Une page par sujet, toutes les recherches à gauche.</div></div>
+  <div data-s="1" data-x="2" class="lbl a-up"><div class="n">En haut</div><div class="t">La synthèse pour ta vidéo</div></div>
+  <div data-s="2" data-x="3" class="lbl a-up"><div class="n">Ensuite</div><div class="t">Pourquoi elles performent</div></div>
+  <div data-s="3" data-x="4" class="lbl a-up"><div class="n">Le graphique</div><div class="t">Couleur = vues par abonné</div><div class="d">Le numéro = le rang.</div></div>
+  <div data-s="4" class="lbl a-up"><div class="n">Le classement</div><div class="t">Les 51 vidéos, en cartes</div></div>
+</section>
+
+<!-- 18. LES ENCARTS -->
+<section class="slide" id="encarts">
+  <div class="cam"><img class="pageimg" data-img="page" alt="Encarts du tableau"><img class="apimg" data-img="apercu" alt="Vue d'ensemble"></div>
+  <div data-s="0" data-x="1" class="lbl a-up"><div class="n">Encart 1</div><div class="t">L'angle de vidéo</div><div class="d">Le sujet, retwisté pour ta niche.</div></div>
+  <div data-s="1" data-x="2" class="lbl a-up"><div class="n">Encart 2</div><div class="t">Trois titres</div><div class="d">Chacun avec ses modèles et un bouton Copier.</div></div>
+  <div data-s="2" data-x="3" class="lbl a-up"><div class="n">Encart 3</div><div class="t">La miniature signature</div><div class="d">Ce qui est repris du top 5, et le prompt prêt à coller.</div></div>
+  <div data-s="3" data-x="4" class="lbl a-up"><div class="n">Encart 4</div><div class="t">Chaque vidéo</div><div class="d">Rang, tranche, vues, abonnés, ratio, remarque.</div></div>
+  <div data-s="4" class="lbl a-up"><div class="n">Encart 5</div><div class="t">La vue d'ensemble</div><div class="d">Toutes les recherches, la charte miniature, les meilleures vidéos.</div></div>
+</section>
+
+<!-- 19. AVANT / APRÈS -->
+<section class="slide" id="avantapres">
+  <div class="hud"><div class="eyebrow">Le bilan</div><div class="title">Avant, <em>après</em></div></div>
+  <div class="cam">
+    <div class="card a-l" data-s="0" style="left:120px;top:320px;width:800px;height:660px">
+      <div class="k" style="color:var(--red)">À la main</div>
+      <div style="display:flex;flex-direction:column;gap:30px;margin-top:34px;font-size:36px;color:#C9D0DD">
+        <div data-s="1" class="a-up">≈ 1 h 40 par sujet (estimation)</div>
+        <div data-s="2" class="a-up">Vidéo par vidéo</div>
+        <div data-s="3" class="a-up">Vues brutes</div>
+        <div data-s="4" class="a-up">L'analyse, c'est toi</div>
+      </div></div>
+    <div class="card a-r" data-s="0" style="left:1000px;top:320px;width:800px;height:660px;border-color:var(--acc)">
+      <div class="k" style="color:var(--acc)">Avec Claude</div>
+      <div style="display:flex;flex-direction:column;gap:30px;margin-top:34px;font-size:36px;font-weight:600">
+        <div data-s="1" class="a-up" data-d="250">Une phrase par sujet</div>
+        <div data-s="2" class="a-up" data-d="250">51 vidéos d'un coup</div>
+        <div data-s="3" class="a-up" data-d="250">Vues ÷ abonnés, vues par mois</div>
+        <div data-s="4" class="a-up" data-d="250">Angle, titres, miniature, pattern</div>
+      </div></div>
+  </div>
+</section>
+
+<!-- 20. CTA FIN -->
+<section class="slide" id="atoi">
+  <div class="cam">
+    <div style="position:absolute;left:0;right:0;top:200px;text-align:center">
+      <div data-s="0" class="a-up eyebrow">À toi</div>
+      <div data-s="0" class="a-blur title" data-d="150" style="font-size:140px;margin-top:20px">Donne-lui <em>un sujet</em></div>
+    </div>
+    <div data-s="0" class="a-up" data-d="400" style="position:absolute;left:410px;top:500px;width:1100px;background:#30302E;border:1px solid #44433f;border-radius:22px;padding:26px 30px;font-size:38px;color:#EDEBE5;min-height:110px">Nouvelle recherche : <span id="loop" class="yel"></span><span class="caret"></span></div>
+    <div data-s="1" class="a-up" style="position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;gap:28px;align-items:center">
+      <div class="ytbtn sub">S'abonner</div>
+      <div class="likebox"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11a2 2 0 0 0-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 1 6.6 7.6C6.2 8 6 8.5 6 9v10a2 2 0 0 0 2 2h9c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.2-.5.2-.7v-2z" fill="#F1F1F1"/></svg>J'aime</span></div>
+      <div class="ytbtn subd">Commente ton sujet</div>
+    </div>
+    <div data-s="2" class="a-up" style="position:absolute;left:0;right:0;top:880px;text-align:center;font-size:32px;color:#C9D0DD">Le prompt complet est dans la description.</div>
+  </div>
+</section>
+
+</div>
+<script id="assets" type="application/json">{"t_joseph":"","t_sirio":"","t_nicolas":"","t_artturi":"","t_dani":"","t_calvin":"","t_zinho":"","t_affil":"","t_marc":"","wall":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"page":"","apercu":"","sheet":[["HIGGSFIELD COÛTE TROP CHER (j'ai trouvé mieux)","NICOLAS - VIDEO IA",8576,336,"29/07/2026"],["HeyGen vs Higgsfield : Ne gaspillez pas votre argent !","Dani Builds",21687,1510,"07/10/2026"],["Claude a remplacé Higgsfield avec ce MCP GRATUIT","Calvin Hia",122493,14200,"28/08/2026"],["Tutoriel ultime de Higgsfield AI — TOUTES les fonctionnalités expliquées et passées en revue","Artturi Jalli",149748,22500,"28/06/2026"],["I Tried Higgsfield AI so You Don't Have to... FULL REVIEW","Joseph Martin",286061,51800,"27/02/2026"],["Cher Higgsfield, je vous ai rétro-conçus en 12 heures","Sirio",707986,150000,"14/10/2026"],["Higgsfield vs. Openart : quel générateur de vidéo par IA choisir ?","Artturi Jalli",90461,22500,"29/07/2026"],["Tutoriel IA Higgsfield : Guide complet pour débutants (Workflow complet)","Affiliation",99248,26300,"07/10/2026"],["J'ai laissé ChatGPT-6 Astra construire ma propre IA de Higgsfield (Copiez ceci)","Zinho Automates",205098,83300,"28/09/2026"],["HIGGSFIELD - LE GUIDE ULTIME (Intelligence Artificielle)","Marc Editing",43120,18400,"27/02/2026"],["Cher Higgsfield, je t'ai cloné en 1 heure","Albert Olgaard",152432,88900,"14/10/2026"],["How to Use Higgsfield AI Better than 99% of People","Roboverse",202480,150000,"28/09/2026"]],"geo":{"side":[200,32,288,740],"head":[528,32,992,181],"angle":[528,295,992,267],"titles":[528,578,992,324],"thumbp":[528,918,992,843],"why":[528,1844,992,1510],"whycard":[553,1979,455,333],"pattern":[553,3003,942,325],"chart":[528,3436,992,635],"dot1":[700,3698,24,24],"list":[528,4110,992,28],"ctl":[528,4150,992,72],"v":[[528,4278,992,195],[528,4485,992,173],[528,4669,992,195]],"H":4894,"apH":1891}}</script>
+<div id="ui"><span id="cnt">1 / 20</span><div id="prog"><b></b></div><button id="bn" type="button">Notes (N)</button><button id="bf" type="button">Plein écran (F)</button></div>
+<div id="notes" hidden><div class="k2" id="nk"></div><div id="nt"></div></div>
+
+<script>
+(function(){
+var A=JSON.parse(document.getElementById('assets').textContent);
+/* image manquante -> repère gris, pour que le modèle tourne sans ses images */
+function PH(l,w,h){return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'"><rect width="100%" height="100%" fill="#1b2335"/><text x="50%" y="50%" fill="#8A94A8" font-family="sans-serif" font-size="'+Math.round(w/16)+'" text-anchor="middle" dominant-baseline="middle">'+l+'</text></svg>')}
+Object.keys(A).forEach(function(k){if(A[k]==='')A[k]=k==='page'?PH('capture de la page',1720,A.geo.H):k==='apercu'?PH('vue d\'ensemble',1720,A.geo.apH):PH(k,640,360)});
+if(A.wall)A.wall=A.wall.map(function(x,n){return x||PH('miniature '+(n+1),240,135)});
+
+var NOTES={
+resultat:"On ouvre sur le résultat : zoom sur la vidéo n°1 du graphique, puis recul sur le classement avec les vraies miniatures. Comment on obtient ça en une phrase ?",
+abonne:"Avant de commencer : abonne-toi, like si la méthode t'aide, et écris en commentaire le sujet que tu veux que j'analyse.",
+blocage:"Le point de départ : tu tapes ton sujet, des centaines de vidéos. Laquelle copier ? Laquelle éviter ?",
+piege:"Le réflexe : regarder les vues. Sirio, 700 000 vues ; NICOLAS, 8 500. Mais rapporté aux abonnés, NICOLAS fait 25 fois sa chaîne, Sirio 4,7 fois.",
+jungle:"YouTube, c'est la jungle. Cette veille sert à cinq choses : se démarquer, capter les tendances, repérer les angles qui marchent, les retwister à ta sauce, et décider avec des chiffres.",
+pourqui:"Trois profils en ont besoin : le créateur, la marque ou l'agence, le consultant qui livre de la veille.",
+manuel:"À la main : tu ouvres chaque vidéo, tu notes, tu ouvres la chaîne, tu notes, tu recommences. Douze lignes, et il en reste quarante. Environ deux minutes par vidéo, c'est une estimation. Et l'analyse n'a pas commencé.",
+outils:"Les autres solutions, une par une, avec leurs limites. Chacune règle un morceau. Aucune ne fait tous les sujets, l'analyse et l'angle pour ta niche.",
+pivot:"Et si on donnait la mission entière à Claude, avec une méthode fixe ?",
+desktop:"Claude Desktop, plus l'extension Claude in Chrome. Claude ouvre un onglet, tape la recherche, lit la page, visite les chaînes. Tu regardes. Alternative : Claude Code dans le terminal.",
+prompt:"On écrit la méthode une seule fois : le filtre, l'indicateur, le livrable. Ensuite, chaque sujet tient en une ligne.",
+collecte:"Claude filtre sur les vidéos, exclut les Shorts, lit les chaînes pour les abonnés, convertit les dates.",
+calcul:"Les mêmes règles à chaque sujet : c'est ce qui rend les résultats comparables. Zoom sur la vidéo numéro un.",
+classement:"Trié par vues, Sirio est en tête. Trié par vues par abonné, l'ordre se renverse. Et voici le top 3.",
+analyse:"Claude regarde les miniatures du top 5 et en tire ce qui revient : le prix, le logo vert, refaire l'outil soi-même.",
+sortie:"Ce que l'outil te donne : six mécanismes, chacun avec le constat, ce qu'il faut reprendre et des déclinaisons. Puis le pattern à appliquer sur un autre sujet.",
+rendu:"Le rendu final, une page par sujet : synthèse, analyse, graphique, classement.",
+encarts:"Encart par encart : l'angle, les trois titres, la miniature signature avec son prompt, la carte de chaque vidéo, et la vue d'ensemble.",
+avantapres:"Avant, après : le temps, la méthode, la mesure, et surtout l'analyse.",
+atoi:"À toi : abonne-toi, like, et donne-moi ton sujet en commentaire. Le prompt est dans la description."
+};
+var stage=document.getElementById('stage'),S=[].slice.call(document.querySelectorAll('.slide')),cur=0,step=0,timers=[];
+function T(f,ms){var t=setTimeout(f,ms);timers.push(t);return t}
+function clearT(){timers.forEach(clearTimeout);timers=[];[].slice.call(document.querySelectorAll('[data-iv]')).forEach(function(e){clearInterval(+e.getAttribute('data-iv'));e.removeAttribute('data-iv')})}
+function fit(){var k=Math.min((innerWidth-32)/1920,innerHeight/1080);stage.style.transform='translate(-50%,-50%) scale('+k+')'}
+addEventListener('resize',fit);fit();
+var fmt=function(n,d){return Number(n).toLocaleString('fr-FR',{minimumFractionDigits:d||0,maximumFractionDigits:d||0})};
+var bk=function(q){return q>=10?3:q>=5?2:q>=3?1:0};
+[].slice.call(document.querySelectorAll('[data-img]')).forEach(function(i){i.src=A[i.getAttribute('data-img')]});
+
+/* résultats YouTube avec vraies miniatures */
+var RES=[["I Tried Higgsfield AI so You Don't Have to... FULL REVIEW","286 k vues","il y a 8 mois","Joseph Martin","19:09","t_joseph"],
+["Cher Higgsfield, je vous ai rétro-conçus en 12 heures","707 k vues","il y a 2 semaines","Sirio","21:46","t_sirio"],
+["HIGGSFIELD COÛTE TROP CHER (j'ai trouvé mieux)","8,5 k vues","il y a 3 mois","NICOLAS - VIDEO IA","8:34","t_nicolas"],
+["Tutoriel ultime de Higgsfield AI — TOUTES les fonctionnalités","149 k vues","il y a 4 mois","Artturi Jalli","1:49:30","t_artturi"]];
+function ytRows(id,n,anim,w){w=w||360;var h='';RES.slice(0,n).forEach(function(r,i){h+='<div class="row'+(anim?' a-up" data-s="2" data-d="'+(i*180):'')+'"><div class="th" style="width:'+w+'px;height:'+Math.round(w*9/16)+'px"><img src="'+A[r[5]]+'" style="width:100%;height:100%;object-fit:cover;display:block" alt=""><span class="dur">'+r[4]+'</span></div><div><div class="t">'+r[0]+'</div><div class="m">'+r[1]+' • '+r[2]+'</div><div class="c"><i style="background:hsl('+(i*70+20)+',45%,45%)"></i>'+r[3]+'</div><div class="d">Dans cette vidéo, je teste Higgsfield en conditions réelles…</div></div></div>'});document.getElementById(id).innerHTML=h}
+ytRows('ytres',3,true);ytRows('ytres2',3,false);ytRows('ytres3',3,false,240);
+
+/* mur de miniatures */
+document.getElementById('wall').innerHTML=A.wall.map(function(s){return '<img src="'+s+'" alt="">'}).join('');
+
+/* tableur rempli à la main */
+(function(){
+  var h='<colgroup><col style="width:46px"><col style="width:380px"><col style="width:200px"><col style="width:130px"><col style="width:130px"><col style="width:130px"><col style="width:120px"></colgroup><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr><tr class="h"><td class="rn">1</td><td>Titre</td><td>Chaîne</td><td>Vues</td><td>Abonnés</td><td>Date</td><td>Vues / abo.</td></tr>';
+  A.sheet.forEach(function(r,k){
+    var st=k===0?1:k===1?2:3, sp=k===0?38:k===1?26:7, base=k<2?0:(k-2)*420;
+    var cells=[r[0].length>34?r[0].slice(0,33)+'…':r[0],r[1],fmt(r[2]),fmt(r[3]),r[4]];
+    var off=[0,1,1.6,2,2.4].map(function(x){return base+Math.round(x*(k<2?900:180))});
+    h+='<tr><td class="rn">'+(k+2)+'</td>'+cells.map(function(c,j){return '<td class="'+(j>=2&&j<4?'num':'')+'"><span class="type" data-text="'+c.replace(/"/g,'&quot;')+'" data-s2="'+st+'" data-td="'+(off[j]+200)+'" data-speed="'+sp+'"></span></td>'}).join('')+
+      '<td class="num"><span data-s="4" class="a-pop" data-d="'+(900+k*120)+'">'+fmt(r[2]/r[3],1)+'</span></td></tr>';
+  });
+  document.getElementById('sheet').innerHTML=h;
+})();
+
+/* classement */
+var RK=[["Sirio","Cher Higgsfield, je vous ai rétro-conçus…",707986,150000,4.7,6,"t_sirio"],["Joseph Martin","I Tried Higgsfield AI so You Don't Have to…",286061,51800,5.5,5,"t_joseph"],["Zinho Automates","J'ai laissé ChatGPT-6 Astra construire…",205098,83300,2.5,9,"t_zinho"],["Artturi Jalli","Tutoriel ultime de Higgsfield AI…",149748,22500,6.7,4,"t_artturi"],["Calvin Hia","Claude a remplacé Higgsfield avec ce MCP…",122493,14200,8.6,3,"t_calvin"],["Affiliation","Tutoriel IA Higgsfield : guide complet…",99248,26300,3.8,8,"t_affil"],["Dani Builds","HeyGen vs Higgsfield : Ne gaspillez pas…",21687,1510,14.4,2,"t_dani"],["NICOLAS - VIDEO IA","Higgsfield coûte trop cher (j'ai trouvé…",8576,336,25.5,1,"t_nicolas"]];
+(function(){var g='grid-template-columns:56px 112px 250px minmax(0,1fr) 150px 140px 140px';var h='<div class="hr" style="top:0;'+g+'"><span>Rang</span><span></span><span>Chaîne</span><span>Titre</span><span style="text-align:right">Vues</span><span style="text-align:right">Abonnés</span><span style="text-align:right">Vues/abo.</span></div>';
+RK.forEach(function(r,i){var b=bk(r[4]);h+='<div class="tr" data-i="'+i+'" style="top:'+(64+i*76)+'px;height:72px;'+g+'"><span class="pill p'+b+' rkp">'+r[5]+'</span><img src="'+A[r[6]]+'" style="width:104px;height:58px;border-radius:6px;object-fit:cover" alt=""><span style="font-weight:700">'+r[0]+'</span><span style="color:#C9D0DD;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r[1]+'</span><span class="n">'+fmt(r[2])+'</span><span class="n">'+fmt(r[3])+'</span><span class="n" style="font-weight:700;color:var(--b'+b+')">'+fmt(r[4],1)+' ×</span></div>'});
+var top=[7,6,4].map(function(i,k){var r=RK[i],b=bk(r[4]);return '<div data-s="4" class="a-pop" data-d="'+(k*200)+'" style="position:absolute;left:'+(120+k*570)+'px;top:300px;width:540px;background:var(--surf);border:1px solid var(--line);border-radius:22px;padding:22px;z-index:3">'+
+  '<div style="position:relative"><img src="'+A[r[6]]+'" style="width:496px;height:279px;border-radius:14px;object-fit:cover;display:block" alt=""><span class="pill p'+b+'" style="position:absolute;left:-12px;top:-12px;width:64px;height:64px;font-size:28px;box-shadow:0 0 0 6px var(--surf)">'+r[5]+'</span></div>'+
+  '<div style="font-size:26px;font-weight:700;margin-top:18px">'+r[0]+'</div><div style="font-size:20px;color:#C9D0DD;margin-top:4px;min-height:52px">'+r[1]+'</div>'+
+  '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-family:var(--mono);font-size:20px;color:var(--mut)"><span>'+fmt(r[3])+' abonnés</span><span style="font-family:var(--disp);font-size:64px;color:var(--b'+b+')">'+fmt(r[4],1)+' ×</span></div></div>'}).join('');
+document.getElementById('rk').innerHTML=h;
+document.getElementById('rk').insertAdjacentHTML('afterend','<div data-s="4" class="a-blur" style="position:absolute;inset:0;background:rgba(8,12,22,.9);z-index:2"></div>'+top+'<div data-s="4" class="a-up" style="position:absolute;left:0;right:0;top:950px;text-align:center;font-family:var(--disp);font-size:56px;text-transform:uppercase;z-index:3">Le <span class="yel">top 3</span></div>');
+})();
+
+/* analyse : vraies miniatures du top 5 */
+(function(){var L=[["t_nicolas",1,3,"Logo Higgsfield brisé, visage stupéfait"],["t_dani",2,3,"Face-à-face des deux marques, $ contre $$$"],["t_calvin",3,2,"Prix barré « 99 $/MO » et logos concurrents"],["t_artturi",4,2,"Le nom du produit en énorme"],["t_joseph",5,2,"La question du prix : « worth the price ? »"]];
+var h=L.map(function(l,i){var x=120+i*344;return '<div data-s="0" class="a-pop" data-d="'+(i*140)+'" style="position:absolute;left:'+x+'px;top:300px;width:320px"><img src="'+A[l[0]]+'" style="width:320px;height:180px;border-radius:12px;display:block;object-fit:cover" alt=""><span class="pill p'+l[2]+'" style="position:absolute;left:-10px;top:-10px;width:48px;height:48px;font-size:22px;box-shadow:0 0 0 5px var(--bg)">'+l[1]+'</span>'+
+  '<div data-s="1" class="a-up" data-d="'+(i*180)+'" style="font-size:23px;font-weight:600;line-height:1.3;margin-top:16px">'+l[3]+'</div></div>'}).join('');
+h+='<div data-s="3" class="a-up" style="position:absolute;left:120px;right:120px;top:640px;font-family:var(--mono);font-size:22px;letter-spacing:.1em;color:var(--mut);text-transform:uppercase">Ce qui revient, d\'après l\'analyse</div>';
+[["Le prix et la valeur","Les 3 premiers parlent d'argent"],["Le logo vert en signature","Reconnaissable en un coup d'œil"],["Refaire l'outil soi-même","Alternative, clone, rétro-ingénierie"]].forEach(function(m,i){h+='<div data-s="3" class="a-up" data-d="'+(200+i*200)+'" style="position:absolute;left:'+(120+i*570)+'px;top:690px;width:540px;background:var(--surf);border:1px solid var(--line);border-left:6px solid var(--acc);border-radius:16px;padding:24px 26px"><div style="font-family:var(--disp);font-size:44px;text-transform:uppercase;line-height:1.05">'+m[0]+'</div><div style="font-size:23px;color:#C9D0DD;margin-top:8px">'+m[1]+'</div></div>'});
+h+='<div data-s="4" class="a-up" style="position:absolute;left:0;right:0;top:900px;text-align:center;font-size:34px;font-weight:600">À reprendre : <span class="yel">le mécanisme</span>, pas la vidéo.</div>';
+document.getElementById('anagrid').innerHTML=h;
+document.getElementById('analyse').setAttribute('data-cam',JSON.stringify([[1,960,540],[1,960,540],[2.1,280,420],[1,960,540],[1,960,540]]));
+})();
+
+/* caméras sur l'artefact réel */
+var G=A.geo,PX=100;
+function C(b,s,dy){return [s,PX+b[0]+b[2]/2,b[1]+b[3]/2+(dy||0)]}
+function setCam(id,a){document.getElementById(id).setAttribute('data-cam',JSON.stringify(a))}
+setCam('resultat',[[3.2,PX+G.dot1[0]+G.dot1[2]/2,G.dot1[1]+G.dot1[3]/2],[0.68,PX+1024,4165],[0.68,PX+1024,4165]]);
+setCam('sortie',[C(G.why,0.62,80),C(G.whycard,1.95,70),C(G.pattern,1.55,90)]);
+setCam('rendu',[[0.6,960,880],[0.6,960,1350],[0.6,960,2600],[0.92,PX+1024,G.chart[1]+G.chart[3]/2+110],[1.0,PX+1024,G.v[1][1]+100]]);
+setCam('encarts',[C(G.angle,1.5,70),C(G.titles,1.45,80),C(G.thumbp,0.95,110),C(G.v[0],1.55,70),[0.72,2400+860,760]]);
+
+var HOOK={
+ classement:function(st,an,sl){var dt=document.getElementById('rk'),rows=[].slice.call(dt.querySelectorAll('.tr'));
+   var order=st>=1?RK.map(function(r,i){return i}).sort(function(a,b){return RK[b][4]-RK[a][4]}):RK.map(function(r,i){return i});
+   rows.forEach(function(e){var i=+e.getAttribute('data-i'),p=order.indexOf(i);if(!an)e.style.transition='none';e.style.top=(64+p*76)+'px';e.style.opacity=(st===3&&p>2)?'.25':'1';e.style.background=(st>=3&&p<3)?'rgba(70,199,178,.10)':'transparent';if(!an){e.offsetHeight;e.style.transition=''}});
+   dt.classList.toggle('ranked',st>=2);
+   document.getElementById('sortlab').innerHTML=st>=1?'Trié par <span class="yel">vues par abonné</span>':'Trié par vues';},
+ atoi:function(st,an){var el=document.getElementById('loop'),W=["formulation cosmétique","agents IA","Claude Code motion","n8n automatisation","ton sujet"],wi=0;el.textContent='';
+   function typeW(){var w=W[wi%W.length],k=0;(function t(){el.textContent=w.slice(0,++k);if(k<w.length)T(t,70);else T(del,1400)})()}
+   function del(){(function d(){el.textContent=el.textContent.slice(0,-1);if(el.textContent.length)T(d,35);else{wi++;T(typeW,300)}})()}
+   T(typeW,an?1200:0)}
+};
+function ptr(sl,st,an){[].slice.call(sl.querySelectorAll('.ptr')).forEach(function(p){var P=JSON.parse(p.getAttribute('data-path')),q=P[Math.max(0,Math.min(st,P.length-1))];if(!an)p.style.transition='none';p.style.left=q[0]+'px';p.style.top=q[1]+'px';if(!an){p.offsetHeight;p.style.transition=''}})}
+
+function camOf(sl,st){var c=sl.getAttribute('data-cam');try{c=JSON.parse(c)}catch(e){c=null}if(!c||!c.length)return [1,960,540];return c[Math.max(0,Math.min(st,c.length-1))]}
+function maxStep(sl){var m=0;[].slice.call(sl.querySelectorAll('[data-s],[data-s2]')).forEach(function(e){m=Math.max(m,+(e.getAttribute('data-s')||e.getAttribute('data-s2')))});var c=sl.getAttribute('data-cam');try{c=JSON.parse(c);if(c&&c.length)m=Math.max(m,c.length-1)}catch(e){}return m}
+function typeEl(e,an){
+  var txt=e.getAttribute('data-text'),sp=+(e.getAttribute('data-speed')||45),td=+(e.getAttribute('data-td')||200),car=e.getAttribute('data-caret');
+  if(!an){e.textContent=txt;return}
+  e.textContent='';var k=0,c=document.createElement('span');c.className='caret';
+  T(function go(){e.textContent=txt.slice(0,++k);if(car||k<txt.length)e.appendChild(c);if(k<txt.length)T(go,sp*(txt[k-1]===' '?1.4:1)*(0.7+Math.random()*0.6));else if(!car&&c.parentNode)c.remove()},td);
+}
+function countEl(e,an){var to=+e.getAttribute('data-to'),d=+(e.getAttribute('data-dec')||0);if(!an){e.textContent=fmt(to,d);return}var t0=performance.now(),dur=1400;
+  var iv=setInterval(function(){var p=Math.min(1,(performance.now()-t0)/dur),ez=1-Math.pow(1-p,3);e.textContent=fmt(to*ez,d);if(p>=1){clearInterval(iv);e.removeAttribute('data-iv')}},30);e.setAttribute('data-iv',iv)}
+function apply(sl,st,an,prev){
+  [].slice.call(sl.querySelectorAll('[data-s]')).forEach(function(e){var s=+e.getAttribute('data-s'),x=e.getAttribute('data-x'),on=s<=st&&(x===null||st<+x);
+    e.classList.toggle('noanim',!an);e.style.transitionDelay=(an&&on&&s>prev?(+(e.getAttribute('data-d')||0)):0)+'ms';e.classList.toggle('on',on)});
+  [].slice.call(sl.querySelectorAll('[data-s2]')).forEach(function(e){var s=+e.getAttribute('data-s2'),x=e.getAttribute('data-x2'),on=s<=st&&(x===null||st<+x);
+    if(!on){if(e.classList.contains('type'))e.textContent='';else if(e.classList.contains('count'))e.textContent='0';e.style.display=x!==null&&st>=+x?'none':'';return}
+    e.style.display='';if(s>prev||!an){if(e.classList.contains('type'))typeEl(e,an&&s>prev);if(e.classList.contains('count'))countEl(e,an&&s>prev)}});
+  var c=camOf(sl,st),cam=sl.querySelector('.cam');if(!an)cam.style.transition='none';
+  cam.style.transform='translate('+(960-c[1]*c[0])+'px,'+(540-c[2]*c[0])+'px) scale('+c[0]+')';if(!an){cam.offsetHeight;cam.style.transition=''}
+  var ho=(sl.getAttribute('data-hudoff')||'').split(',').filter(function(x){return x!==''}).map(Number),hud=sl.querySelector('.hud');if(hud){if(!an)hud.style.transition='none';hud.style.opacity=ho.indexOf(st)>=0?'0':'';if(!an){hud.offsetHeight;hud.style.transition=''}}
+  ptr(sl,st,an);if(HOOK[sl.id])HOOK[sl.id](st,an,sl);
+  if(!an)T(function(){[].slice.call(sl.querySelectorAll('.noanim')).forEach(function(e){e.classList.remove('noanim')})},50);
+}
+function show(i,st,an){
+  clearT();i=Math.max(0,Math.min(S.length-1,i));var sl=S[i];
+  S.forEach(function(s,k){s.classList.toggle('cur',k===i)});
+  if(i!==cur||!an){apply(sl,-1,false,-1)}
+  cur=i;step=Math.max(0,Math.min(st,maxStep(sl)));
+  if(an){var target=step;requestAnimationFrame(function(){requestAnimationFrame(function(){apply(sl,target,true,-1)})})}else apply(sl,step,false,-1);
+  ui();
+}
+function next(){var sl=S[cur];if(step<maxStep(sl)){var p=step;step++;apply(sl,step,true,p);ui()}else if(cur<S.length-1)show(cur+1,0,true)}
+function prev(){if(step>0){clearT();step--;apply(S[cur],step,false,step);ui()}else if(cur>0)show(cur-1,maxStep(S[cur-1]),false)}
+function ui(){document.getElementById('cnt').textContent=(cur+1)+' / '+S.length+' · étape '+(step+1)+'/'+(maxStep(S[cur])+1);
+  document.querySelector('#prog b').style.width=((cur+ (step+1)/(maxStep(S[cur])+1))/S.length*100)+'%';
+  document.getElementById('nk').textContent=(cur+1)+'. '+S[cur].id;document.getElementById('nt').textContent=NOTES[S[cur].id]||'';
+  try{if(location.hash!=='#'+S[cur].id)history.replaceState(null,'','#'+S[cur].id)}catch(e){}}
+addEventListener('keydown',function(e){var k=e.key;
+  if(k==='ArrowRight'||k===' '||k==='PageDown'||k==='Enter'){e.preventDefault();next()}
+  else if(k==='ArrowLeft'||k==='PageUp'||k==='Backspace'){e.preventDefault();prev()}
+  else if(k==='Home')show(0,0,true);else if(k==='End')show(S.length-1,0,true);
+  else if(k==='r'||k==='R')show(cur,0,true);
+  else if(k==='n'||k==='N')toggleNotes();else if(k==='f'||k==='F')fs();
+  else if(k==='h'||k==='H')document.getElementById('ui').classList.toggle('hide')});
+function toggleNotes(){var n=document.getElementById('notes');n.hidden=!n.hidden}
+function fs(){try{if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen()}catch(e){}}
+document.getElementById('bn').onclick=function(e){e.stopPropagation();toggleNotes()};
+document.getElementById('bf').onclick=function(e){e.stopPropagation();fs()};
+stage.addEventListener('click',function(e){var r=stage.getBoundingClientRect();if(e.clientX<r.left+r.width*0.25)prev();else next()});
+var idle;function wake(){document.body.classList.remove('idle');document.getElementById('ui').classList.remove('hide');clearTimeout(idle);idle=setTimeout(function(){document.body.classList.add('idle');document.getElementById('ui').classList.add('hide')},2200)}
+addEventListener('mousemove',wake);wake();
+function fromHash(){var h=(location.hash||'').slice(1),i=S.map(function(s){return s.id}).indexOf(h);return i<0?0:i}
+addEventListener('hashchange',function(){var i=fromHash();if(i!==cur)show(i,0,true)});
+window.__go=function(i,st){show(i,st,false)};window.__S=S.map(function(s){return [s.id,maxStep(s)]});
+show(fromHash(),0,true);
+})();
+</script>
+
+</body></html>

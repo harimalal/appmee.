@@ -1,0 +1,67 @@
+/* ===== Thème « Pastel produit » + impact de la v1 ===== */
+:root{
+  --bg:#FFF7F2; --bg2:#FFF1EA; --surf:rgba(255,255,255,.82); --surf2:#FFFFFF; --line:#EFE6F2; --ink:#1C1B29; --mut:#7C7A92; --sub:#4D4B63;
+  --acc:#F0533F; --acc-ink:#FFFFFF; --red:#D0392A; --red-s:#FFE1DC; --hl:#FFE36E; --vio:#8E6BFF; --track:#EEE7F3;
+  --b0:#B8B5C8; --b1:#8E6BFF; --b2:#FF9A4D; --b3:#22B07D;
+  color-scheme:light;
+}
+body{background:#F3EDEA}
+#stage{background:var(--bg)}
+.slide{background:radial-gradient(900px 700px at 8% 12%,#FFE3DA 0%,transparent 60%),radial-gradient(900px 700px at 92% 18%,#ECE4FF 0%,transparent 60%),radial-gradient(1100px 700px at 60% 105%,#DDEEFF 0%,transparent 60%),var(--bg)}
+/* titres : l'impact de la v1 (condensé, capitales), sur fond clair */
+.title{color:var(--ink);font-size:112px;letter-spacing:-.005em}
+.title em{color:var(--ink);background:linear-gradient(transparent 56%,var(--hl) 56%,var(--hl) 92%,transparent 92%);padding:0 8px}
+.eyebrow{display:inline-block;font-family:Inter,sans-serif;font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:none;color:var(--acc);background:#fff;padding:10px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(240,83,63,.16)}
+.bar{height:10px;width:140px;border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--vio))}
+.yel{color:var(--acc)}
+.k{color:var(--mut)}
+/* surfaces : verre dépoli et ombres colorées */
+.card,.ben,.prom,.fam,.fact,.prof,.how,.agent,.ver,.en,.tool3,.pmcol,.kpi,.lnode,.mtd,.invc div,.fx2,.qa,.bars{color:var(--ink)}
+.card,.ben,.fam,.fact,.prof,.how,.agent,.ver,.en,.tool3,.pmcol,.kpi,.lnode,.mtd,.invc div,.bars{background:var(--surf);border:1px solid rgba(255,255,255,.9);box-shadow:0 22px 60px rgba(120,80,200,.13);backdrop-filter:blur(10px)}
+.ben,.fam,.fact,.prof,.how,.agent,.ver,.en,.kpi,.card{border-radius:30px}
+.tool3,.lnode,.pmcol{border-radius:24px}
+.lch{background:#fff;color:var(--ink);border:0;box-shadow:0 8px 24px rgba(120,80,200,.12)}
+.ref{box-shadow:0 8px 24px rgba(120,80,200,.12)}
+.mtd{border-left:6px solid var(--acc)}
+.big,.ctr .big,.kpi .big{color:var(--ink)}
+.ben .num,.qn,.fx2 span,.lnode span{color:#fff}
+.ben .num{color:var(--acc)}
+.qn,.fx2 span,.lnode span{background:var(--acc)}
+.prom .pn{color:var(--acc)}
+.prom b,.ben b,.fam b,.how b,.prof .pt,.qa b,.en .eu{color:var(--ink)}
+.en .eu{color:var(--acc)}
+.how span{background:var(--acc)}
+.ctr .big{background:linear-gradient(135deg,var(--acc),var(--vio));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* plus / moins, tags */
+.plus{color:#1E7A4C}.moins{color:#C0362A}
+.plus:before{color:#22B07D}.moins:before{color:#D0392A}
+.tag{background:var(--red-s);color:var(--red)}
+.tagok{background:#DDF6E8;color:#1E7A4C}
+.stamp{background:#fff!important;box-shadow:0 20px 50px rgba(208,57,42,.2)}
+/* voiles et projecteurs sur fond clair */
+.veil{background:radial-gradient(900px 600px at 50% 60%,rgba(255,247,242,.72),rgba(255,247,242,.94))}
+.hl{border-color:var(--acc);box-shadow:0 0 0 2000px rgba(28,27,41,.35)}
+.lbl{background:rgba(255,255,255,.94);border:0;box-shadow:0 20px 50px rgba(120,80,200,.18)}
+.lbl .t{color:var(--ink)}.lbl .n{color:var(--acc)}.lbl .d{color:var(--sub)}
+.ghost{opacity:.26;filter:blur(7px)}
+.wall3{opacity:.5}
+.day .dbar{background:var(--track)}
+.dfill{background:linear-gradient(90deg,var(--acc),var(--vio))}
+.dl{color:var(--ink)}
+.frm b{color:var(--acc)}
+.hr2{border-bottom-color:var(--line)}
+.hr2 b{color:var(--acc)}
+.rr{background:#fff;border:0;box-shadow:0 14px 40px rgba(120,80,200,.12)}
+.qq{background:#1C1B29;color:#fff}
+.gt{border-bottom-color:var(--line)}
+.gt b.c{color:var(--acc)}
+.todo .ti{background:#fff;border:0;box-shadow:0 8px 24px rgba(120,80,200,.1)}
+.todo .ti:before{border-color:var(--mut)}
+.fld,.phf{box-shadow:0 30px 80px rgba(120,80,200,.18)}
+.gi span,.fmt span{color:var(--sub)}
+.gi span{color:#fff;background:var(--acc)}
+.bub{background:var(--hl);color:#1C1B29;box-shadow:0 20px 50px rgba(240,83,63,.25)}
+.flow{stroke:var(--acc)}
+#ui{color:#7C7A92;background:linear-gradient(transparent,rgba(255,247,242,.9))}
+#prog{background:#EEE7F3}#prog b{background:var(--acc)}
+#ui button{border-color:#E0D8E8;color:#4D4B63}
