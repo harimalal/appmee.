@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: eclair-relance-facture
+expected_outcome: |
+  MAESTRO reconnaît une demande petite et réversible, annonce le mode éclair en une ligne, produit directement l'email sans cadrage complet ni gate, le remet en brouillon (aucun envoi) après une vérification de qualité légère.

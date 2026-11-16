@@ -15,11 +15,15 @@ const TABLES = {
   deliverables: ['project_id', 'kind', 'title', 'url', 'note', 'created_at'],
   ideas: ['project_id', 'text', 'status', 'claude_note'],
   substeps: ['step_id', 'section', 'title', 'status', 'position'],
+  skills: ['name', 'scope', 'location', 'when_to_use', 'keywords', 'process', 'status', 'position'],
+  tasks: ['text', 'project_id', 'skill_id', 'brief', 'status', 'claude_note'],
 };
 const STAMPED = new Set(['projects', 'steps']); // tables avec created_at / updated_at
 const HORIZONS = ['court', 'moyen', 'long'];
 const STATUSES = ['todo', 'doing', 'done', 'archived'];
 const SUB_STATUSES = ['todo', 'done'];
+const SKILL_STATUSES = ['draft', 'valide'];
+const TASK_STATUSES = ['new', 'routed', 'launched', 'done'];
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -52,9 +56,11 @@ function pick(table, body) {
   for (const col of TABLES[table]) {
     if (body[col] === undefined) continue;
     let v = body[col];
-    if (typeof v === 'string') v = v.slice(0, ['detail', 'note', 'text', 'description', 'claude_note'].includes(col) ? 20000 : 500);
+    if (typeof v === 'string') v = v.slice(0, ['detail', 'note', 'text', 'description', 'claude_note', 'process', 'brief', 'when_to_use', 'keywords'].includes(col) ? 20000 : 500);
     if (col === 'status' && table === 'steps' && !STATUSES.includes(v)) throw new Error('status invalide');
     if (col === 'status' && table === 'substeps' && !SUB_STATUSES.includes(v)) throw new Error('status invalide');
+    if (col === 'status' && table === 'skills' && !SKILL_STATUSES.includes(v)) throw new Error('status invalide');
+    if (col === 'status' && table === 'tasks' && !TASK_STATUSES.includes(v)) throw new Error('status invalide');
     if (col === 'horizon' && !HORIZONS.includes(v)) throw new Error('horizon invalide');
     if (['position', 'hidden'].includes(col)) v = Number(v) || 0;
     out[col] = v;
@@ -63,7 +69,7 @@ function pick(table, body) {
 }
 
 async function readState(db) {
-  const [projects, axes, goals, steps, deliverables, ideas, substeps] = await db.batch([
+  const [projects, axes, goals, steps, deliverables, ideas, substeps, skills, tasks] = await db.batch([
     db.prepare('SELECT * FROM projects ORDER BY position, name'),
     db.prepare('SELECT * FROM axes ORDER BY position, label'),
     db.prepare('SELECT * FROM goals'),
@@ -71,10 +77,12 @@ async function readState(db) {
     db.prepare('SELECT * FROM deliverables ORDER BY created_at DESC'),
     db.prepare('SELECT * FROM ideas ORDER BY created_at DESC'),
     db.prepare('SELECT * FROM substeps ORDER BY step_id, position'),
+    db.prepare('SELECT * FROM skills ORDER BY position, name'),
+    db.prepare('SELECT * FROM tasks ORDER BY created_at DESC LIMIT 100'),
   ]);
   return {
     projects: projects.results, axes: axes.results, goals: goals.results, steps: steps.results,
-    deliverables: deliverables.results, ideas: ideas.results, substeps: substeps.results, at: now(),
+    deliverables: deliverables.results, ideas: ideas.results, substeps: substeps.results, skills: skills.results, tasks: tasks.results, at: now(),
   };
 }
 
@@ -84,7 +92,7 @@ async function create(db, table, body) {
   const ts = now();
   const row = { id, ...data };
   if (STAMPED.has(table)) { row.created_at = ts; row.updated_at = ts; }
-  if (table === 'ideas') { row.created_at = ts; row.status = row.status || 'new'; }
+  if (table === 'ideas' || table === 'tasks') { row.created_at = ts; row.status = row.status || 'new'; }
   if (table === 'deliverables' && !row.created_at) row.created_at = ts.slice(0, 10);
   if (table === 'steps' && row.status === 'done') row.done_at = ts;
   const cols = Object.keys(row);

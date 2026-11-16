@@ -45,4 +45,18 @@ CREATE TABLE IF NOT EXISTS substeps (
 );
 CREATE INDEX IF NOT EXISTS idx_substeps_step ON substeps(step_id);
 
+-- Registre des skills (la « carte » que le dispatch consulte). scope : compte | projet | machine.
+-- status : draft | valide (process validé par Hari).
+CREATE TABLE IF NOT EXISTS skills (
+  id TEXT PRIMARY KEY, name TEXT NOT NULL, scope TEXT DEFAULT 'projet', location TEXT DEFAULT '',
+  when_to_use TEXT DEFAULT '', keywords TEXT DEFAULT '', process TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'draft', position REAL DEFAULT 0
+);
+
+-- Tâches lancées depuis la vue « Lancer ». status : new | routed | launched | done.
+CREATE TABLE IF NOT EXISTS tasks (
+  id TEXT PRIMARY KEY, text TEXT NOT NULL, project_id TEXT DEFAULT '', skill_id TEXT DEFAULT '',
+  brief TEXT DEFAULT '', status TEXT NOT NULL DEFAULT 'new', claude_note TEXT DEFAULT '', created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);

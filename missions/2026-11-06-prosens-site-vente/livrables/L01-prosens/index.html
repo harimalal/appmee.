@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROSENS — Prospection et closing externalisés</title>
+<meta name="description" content="PROSENS prend en charge votre prospection et votre closing&nbsp;: des rendez-vous qualifiés, confirmés dans votre agenda, par un directeur commercial de région.">
+<meta name="theme-color" content="#0B2A2B">
+<meta property="og:title" content="PROSENS — Prospection et closing externalisés">
+<meta property="og:description" content="Des rendez-vous qualifiés, confirmés dans votre agenda. Prospection et closing pour PME et grands groupes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230B2A2B'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%238FD4B1' stroke-width='2'/%3E%3Ccircle cx='21' cy='10' r='3.5' fill='%23FFB020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,700..900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#0B2A2B; --paper:#F2F5F2; --paper-2:#E3EBE6; --line:#C5D3CB; --muted:#46605C; --amber:#FFB020; --mint:#8FD4B1;
+  --on-ink:#F2F5F2; --on-ink-muted:#A9C2BA; --line-ink:rgba(242,245,242,.2);
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --hh:68px; --gutter:clamp(20px,5vw,64px); --max:1240px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 clamp(1rem,.35vw + .93rem,1.125rem)/1.6 var(--body);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:4px}
+.light :focus-visible{outline-color:var(--ink)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--amber);color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:600;z-index:100;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+h1,h2,h3{font-family:var(--display);font-stretch:112%;font-weight:800;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.4rem,5vw,4.4rem);line-height:.98;letter-spacing:-.025em}
+h2{font-size:clamp(1.95rem,4.3vw,3.5rem);line-height:1.02;letter-spacing:-.02em}
+h3{font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.12;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font:500 .78rem/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+.dark .eyebrow{color:var(--on-ink-muted)}
+.sec{padding-block:clamp(72px,10vw,148px)}
+.dark{background:var(--ink);color:var(--on-ink)}
+.alt{background:var(--paper-2)}
+.lead-p{font-size:clamp(1.1rem,1.1vw + .9rem,1.4rem);line-height:1.5;max-width:46ch}
+.dark .lead-p{color:var(--on-ink-muted)}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;gap:.7em;padding:.95em 1.5em;border-radius:999px;font:600 1rem/1 var(--body);text-decoration:none;border:2px solid transparent;cursor:pointer;transition:background .2s,color .2s,transform .2s;white-space:nowrap}
+.btn .arr{display:inline-block;transition:transform .25s}
+.btn:hover .arr{transform:translateX(5px)}
+.btn-main{background:var(--amber);color:var(--ink)}
+.btn-main:hover{background:#FFC24D}
+.btn-line{border-color:currentColor;color:inherit;background:none}
+.btn-line:hover{background:rgba(255,255,255,.08)}
+.light .btn-line:hover{background:rgba(11,42,43,.06)}
+.light .btn-main:focus-visible{outline-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+
+/* En-tête */
+.top{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--on-ink);border-bottom:1px solid transparent;transition:border-color .3s}
+.top.scrolled{border-bottom-color:var(--line-ink)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:var(--hh)}
+.logo{display:inline-flex;align-items:center;gap:10px;font:800 1.2rem/1 var(--display);font-stretch:125%;letter-spacing:.02em;text-decoration:none}
+.logo svg{flex:none}
+.nav{display:none;gap:28px}
+.nav a{font-size:.95rem;text-decoration:none;color:var(--on-ink-muted);padding:6px 0;border-bottom:1px solid transparent}
+.nav a:hover{color:var(--on-ink);border-bottom-color:var(--amber)}
+.top .btn{padding:.7em 1.15em;font-size:.92rem}
+@media (min-width:980px){.nav{display:flex}}
+@media (max-width:520px){.top .wrap{gap:12px}.top .btn{padding:.65em 1em}.top .btn .opt{display:none}}
+section[id]{scroll-margin-top:calc(var(--hh) - 1px)}
+
+/* Accroche */
+.hero{padding-block:clamp(56px,8vw,120px) clamp(64px,9vw,128px);overflow:hidden}
+.hero-grid{display:grid;gap:clamp(40px,6vw,72px);align-items:center}
+@media (min-width:980px){.hero-grid{grid-template-columns:1.08fr .92fr}}
+.hero h1{margin-bottom:28px}
+.hero .lead-p{margin-bottom:36px}
+.trust{margin-top:36px;font:500 .82rem/1.5 var(--mono);color:var(--on-ink-muted);letter-spacing:.04em;display:flex;gap:10px;align-items:flex-start}
+.trust::before{content:"";flex:none;width:28px;height:1px;background:var(--amber);margin-top:.8em}
+
+/* Visuel radar -> agenda */
+.viz{margin:0;color:var(--mint)}
+.viz figcaption{font:500 .74rem/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--on-ink-muted);margin-top:14px}
+.radar{display:block;width:100%;max-width:440px;margin-inline:auto;overflow:visible}
+.wedge{fill:rgba(143,212,177,.2)}
+.lead{stroke:var(--mint);stroke-width:1.6}
+.sweep{transform-origin:200px 200px}
+.dot{fill:var(--mint);transform-box:fill-box;transform-origin:center}
+.dot.q{fill:var(--mint)}
+.pulse{fill:none;stroke:var(--amber);stroke-width:1.5;opacity:0;transform-box:fill-box;transform-origin:center}
+.icp{stroke:var(--amber);stroke-width:1.5;stroke-dasharray:3 7;opacity:0}
+.agenda{display:grid;grid-template-columns:3.4em repeat(5,1fr);gap:1px;background:var(--line-ink);border:1px solid var(--line-ink);max-width:440px;margin:22px auto 0;font:500 .7rem/1 var(--mono);color:var(--on-ink-muted)}
+.agenda>div{background:var(--ink);min-height:30px;display:flex;align-items:center;justify-content:center}
+.agenda .day,.agenda .hour{letter-spacing:.06em;white-space:nowrap}
+.agenda .cell{padding:3px}
+.slot{width:100%;height:100%;min-height:24px;background:var(--amber);color:var(--ink);display:flex;align-items:center;justify-content:center;gap:4px;font-weight:600;letter-spacing:.06em;border-radius:2px}
+.tick{width:10px;height:10px;opacity:0;transition:opacity .4s}
+.viz-steps figcaption{display:none}
+
+/* Mouvement : boucle de l'accroche */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes detect{0%{opacity:0;transform:scale(.3)}3%{opacity:1;transform:scale(1.25)}8%{transform:scale(1)}60%{opacity:.55}100%{opacity:.18}}
+@keyframes detectq{0%{opacity:0;transform:scale(.3);fill:var(--mint)}3%{opacity:1;transform:scale(1.5)}10%{fill:var(--amber);transform:scale(1.35)}85%{opacity:1;fill:var(--amber)}100%{opacity:.5;fill:var(--amber)}}
+@keyframes ping{0%{opacity:.9;transform:scale(1)}40%,100%{opacity:0;transform:scale(3.4)}}
+@keyframes fill1{0%,14%{opacity:0;transform:translateY(6px)}18%,92%{opacity:1;transform:none}98%,100%{opacity:0}}
+@keyframes fill2{0%,34%{opacity:0;transform:translateY(6px)}38%,92%{opacity:1;transform:none}98%,100%{opacity:0}}
+@keyframes fill3{0%,58%{opacity:0;transform:translateY(6px)}62%,92%{opacity:1;transform:none}98%,100%{opacity:0}}
+.viz-loop .sweep{animation:spin 8s linear infinite}
+.viz-loop .dot{opacity:0;animation:detect 8s linear infinite;animation-delay:var(--d)}
+.viz-loop .dot.q{animation-name:detectq}
+.viz-loop .pulse{animation:ping 8s linear infinite;animation-delay:var(--d)}
+.viz-loop .slot{opacity:0}
+.viz-loop .s1{animation:fill1 16s infinite}
+.viz-loop .s2{animation:fill2 16s infinite}
+.viz-loop .s3{animation:fill3 16s infinite}
+.viz-loop .s1 .tick{opacity:1}
+
+/* Mouvement : visuel piloté par le défilement (section méthode) */
+.viz-steps .sweep{animation:spin 12s linear infinite}
+.viz-steps .dot{transition:opacity .6s,fill .6s,transform .6s}
+.viz-steps .slot{transition:opacity .6s,transform .6s}
+.viz-steps[data-step="1"] .dot,.viz-steps[data-step="1"] .slot{opacity:0}
+.viz-steps[data-step="1"] .icp,.viz-steps[data-step="2"] .icp{opacity:1}
+.viz-steps:is([data-step="2"],[data-step="3"],[data-step="4"],[data-step="5"]) .dot{opacity:.95}
+.viz-steps[data-step="2"] .slot{opacity:0}
+.viz-steps:is([data-step="3"],[data-step="4"],[data-step="5"]) .dot:not(.q){opacity:.16}
+.viz-steps:is([data-step="3"],[data-step="4"],[data-step="5"]) .dot.q{fill:var(--amber);transform:scale(1.5)}
+.viz-steps[data-step="3"] .slot{opacity:0}
+.viz-steps:is([data-step="4"],[data-step="5"]) .slot{opacity:1}
+.viz-steps[data-step="5"] .s1 .tick{opacity:1}
+.viz-steps[data-step="5"] .s1{outline:2px solid var(--on-ink);outline-offset:2px}
+
+/* Révélation au défilement (état de repos = visible) */
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv[data-d="1"]{transition-delay:.08s}.js .rv[data-d="2"]{transition-delay:.16s}.js .rv[data-d="3"]{transition-delay:.24s}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv{opacity:1;transform:none}
+  .viz-loop .dot{opacity:.5}
+  .viz-loop .dot.q{opacity:1;fill:var(--amber);transform:scale(1.4)}
+  .viz-loop .dot:not(.q){opacity:.25}
+  .viz-loop .slot{opacity:1}
+  .viz-loop .s1 .tick{opacity:1}
+  .viz-loop .pulse{opacity:0}
+  .sweep{transform:none}
+}
+
+/* Le constat */
+.facts{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--line)}
+.fact{display:grid;gap:12px 40px;padding-block:28px;border-bottom:1px solid var(--line)}
+@media (min-width:860px){.fact{grid-template-columns:200px 1fr 1fr;align-items:baseline}}
+.fact .tag{font:500 .78rem/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fact h3{font-size:clamp(1.2rem,1.7vw,1.5rem)}
+.fact p{color:var(--muted);max-width:44ch}
+.split{display:grid;gap:28px 64px}
+@media (min-width:860px){.split{grid-template-columns:1fr 1fr;align-items:end}}
+
+/* Méthode */
+.method-grid{display:grid;gap:clamp(24px,5vw,72px);margin-top:clamp(40px,6vw,72px)}
+@media (min-width:900px){.method-grid{grid-template-columns:5fr 6fr;align-items:start}}
+.stage-wrap{position:sticky;top:calc(var(--hh) + 8px);z-index:2;background:var(--ink);padding-block:8px}
+@media (min-width:900px){.stage-wrap{top:calc(var(--hh) + 32px);padding:0}}
+.stage-wrap .radar{max-width:min(440px,100%)}
+@media (max-width:899px){
+  .stage-wrap{top:var(--hh);padding-block:10px 14px;border-bottom:1px solid var(--line-ink)}
+  .stage-wrap .radar{max-height:30vh;width:auto}
+  .stage-wrap .agenda{margin-top:12px}
+  .stage-wrap .agenda>div{min-height:22px}
+  .stage-wrap .slot{min-height:16px}
+}
+.steps-list{list-style:none;margin:0;padding:0;counter-reset:s}
+.step{border-top:1px solid var(--line-ink);padding-block:clamp(28px,4vw,40px);display:grid;gap:14px;min-height:clamp(220px,52vh,520px);align-content:center}
+@media (max-width:899px){.step{min-height:44vh}}
+.step .n{font:500 .8rem/1 var(--mono);letter-spacing:.14em;color:var(--amber)}
+.step h3{font-size:clamp(1.6rem,3vw,2.4rem)}
+.step p{color:var(--on-ink-muted);max-width:42ch}
+.step.on h3{color:var(--on-ink)}
+
+/* Rendez-vous qualifié */
+.q-grid{display:grid;gap:40px clamp(32px,6vw,96px);margin-top:clamp(36px,5vw,64px)}
+@media (min-width:900px){.q-grid{grid-template-columns:1.25fr .75fr;align-items:start}}
+.tests{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tests li{display:grid;grid-template-columns:minmax(120px,160px) 1fr;gap:8px 24px;padding-block:22px;border-bottom:1px solid var(--line);align-items:baseline}
+.tests b{font:500 .78rem/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tests span{font-size:clamp(1.05rem,1.3vw,1.25rem);line-height:1.4}
+@media (max-width:560px){.tests li{grid-template-columns:1fr}}
+.not{background:var(--ink);color:var(--on-ink);padding:clamp(24px,3vw,40px)}
+.not h3{font-size:1.3rem;margin-bottom:18px}
+.not ul{margin:0;padding:0;list-style:none;display:grid;gap:14px;color:var(--on-ink-muted)}
+.not li{padding-left:26px;position:relative}
+.not li::before{content:"";position:absolute;left:0;top:.7em;width:14px;height:2px;background:var(--amber)}
+
+/* Offres */
+.tabs{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px;margin-top:clamp(28px,4vw,44px)}
+.tab{border:0;background:none;font:600 .95rem/1 var(--body);color:var(--muted);padding:.85em 1.4em;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--on-ink)}
+.panel{margin-top:clamp(28px,4vw,48px);display:grid;gap:28px 72px}
+.panel[hidden]{display:none}
+@media (min-width:900px){.panel{grid-template-columns:1fr 1fr;align-items:start}}
+.panel h3{font-size:clamp(1.6rem,3vw,2.4rem)}
+.panel ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.panel li{padding-block:18px;border-bottom:1px solid var(--line);color:var(--ink)}
+.panel .btn{margin-top:28px}
+
+/* Comparaison */
+.tbl{overflow-x:auto;margin-top:clamp(32px,5vw,56px);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:clamp(.95rem,1vw + .6rem,1.05rem)}
+caption{text-align:left;font:400 .85rem/1.5 var(--body);color:var(--muted);padding-bottom:16px;caption-side:bottom;padding-top:16px;max-width:70ch}
+th,td{text-align:left;padding:18px 20px 18px 0;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font:500 .78rem/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink)}
+tbody th{font-weight:600;width:24%}
+td.us,thead th.us{background:var(--ink);color:var(--on-ink);padding-inline:20px}
+thead th.us{color:var(--amber)}
+td.us{font-weight:500}
+.note{font-size:.88rem;line-height:1.5;color:var(--muted);margin-top:18px;max-width:70ch}
+
+/* Fondateur */
+.founder{display:grid;gap:clamp(32px,6vw,96px);margin-top:clamp(36px,5vw,64px)}
+@media (min-width:900px){.founder{grid-template-columns:1fr 1fr;align-items:start}}
+.big{font:800 clamp(4.2rem,13vw,10rem)/.9 var(--display);font-stretch:125%;letter-spacing:-.04em;color:var(--amber);margin-bottom:18px}
+.big small{font-size:.38em;letter-spacing:0;margin-right:.1em;vertical-align:.25em}
+.big-cap{font:500 .8rem/1.5 var(--mono);letter-spacing:.06em;color:var(--on-ink-muted);max-width:36ch}
+.principles{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-ink)}
+.principles li{padding-block:22px;border-bottom:1px solid var(--line-ink);font:600 clamp(1.15rem,1.8vw,1.5rem)/1.25 var(--display);font-stretch:100%}
+
+/* Questions */
+.faq{margin-top:clamp(32px,5vw,56px);border-top:1px solid var(--line);max-width:860px}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:center;padding-block:24px;font:600 clamp(1.05rem,1.5vw,1.3rem)/1.3 var(--body)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:500 1.6rem/1 var(--mono);transition:transform .25s;flex:none}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding-bottom:26px;max-width:62ch;color:var(--muted)}
+
+/* Appel final et pied de page */
+.final h2{max-width:16ch}
+.final .lead-p{margin-block:24px 40px}
+.foot{background:var(--ink);color:var(--on-ink-muted);border-top:1px solid var(--line-ink);padding-block:36px;font-size:.92rem}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between;align-items:center}
+.foot a{text-decoration:none}.foot a:hover{color:var(--on-ink)}
+.foot nav{display:flex;gap:24px;flex-wrap:wrap}
+
+/* Panneau « préparer l'échange » */
+dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;border-radius:6px}
+dialog::backdrop{background:rgba(11,42,43,.72)}
+.dlg{padding:clamp(22px,4vw,36px);display:grid;gap:16px}
+.dlg h2{font-size:1.7rem}
+.dlg p{color:var(--muted);font-size:.98rem}
+.dlg label{display:grid;gap:6px;font-weight:600;font-size:.95rem}
+.dlg input,.dlg textarea{font:400 1rem/1.4 var(--body);padding:12px 14px;border:1px solid var(--muted);border-radius:4px;background:#fff;color:var(--ink);width:100%}
+.dlg textarea{resize:vertical;min-height:72px}
+.dlg .out{font:400 .9rem/1.5 var(--mono);background:var(--paper-2);min-height:120px}
+.dlg .row{margin-top:4px}
+.dlg .status{min-height:1.4em;font-size:.9rem;color:var(--muted)}
+.dlg .btn-line{color:var(--ink)}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="top" id="haut">
+  <div class="wrap">
+    <a class="logo" href="#haut" aria-label="PROSENS, retour en haut de page">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 14V3.5" stroke="currentColor" stroke-width="2"/><circle cx="20.5" cy="8.5" r="3.2" fill="#FFB020"/></svg>
+      PROSENS
+    </a>
+    <nav class="nav" aria-label="Sections de la page">
+      <a href="#methode">Méthode</a><a href="#qualifie">Rendez-vous qualifié</a><a href="#offres">Offres</a><a href="#fondateur">Fondateur</a><a href="#questions">Questions</a>
+    </nav>
+    <a class="btn btn-main" href="#contact" data-cta><span>Réserver<span class="opt"> un échange</span></span></a>
+  </div>
+</header>
+
+<main id="contenu">
+
+<section class="hero dark" aria-labelledby="t-hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Prospection · Qualification · Closing</p>
+      <h1 id="t-hero">Vos prochains clients, déjà dans votre agenda.</h1>
+      <p class="lead-p">PROSENS prospecte, qualifie et conclut à votre place. Vous ne rencontrez que des décideurs qui ont accepté l'échange, et le closing est conduit avec vous par un commercial senior.</p>
+      <div class="row">
+        <a class="btn btn-main" href="#contact" data-cta>Réserver un échange de 30 minutes <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-line" href="#methode">Voir la méthode</a>
+      </div>
+      <p class="trust">Piloté par un directeur commercial de région · pour les PME et les grands groupes</p>
+    </div>
+    <figure class="viz viz-loop">
+    <svg class="radar" viewBox="0 0 400 400" role="img" aria-label="Radar de prospection&nbsp;: des cibles détectées, trois d'entre elles qualifiées">
+      <g class="rings" fill="none" stroke="currentColor" stroke-opacity=".28">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="140"/><circle cx="200" cy="200" r="90"/><circle cx="200" cy="200" r="40"/>
+        <path d="M200 10V390M10 200H390" stroke-opacity=".16"/>
+      </g>
+      <circle class="icp" cx="200" cy="200" r="165" fill="none"/>
+      <g class="sweep"><path d="M200 200L65.7 65.7A190 190 0 0 1 200 10Z" class="wedge"/><path d="M200 200V10" class="lead"/></g>
+      <circle class="dot" cx="241.0" cy="87.2" r="4.5" style="--d:0.44s"/>
+      <circle class="pulse" cx="329.9" cy="125.0" r="6" style="--d:1.33s"/>
+      <circle class="dot q" cx="329.9" cy="125.0" r="6" style="--d:1.33s"/>
+      <circle class="dot" cx="279.7" cy="207.0" r="4.5" style="--d:2.11s"/>
+      <circle class="pulse" cx="283.6" cy="299.6" r="6" style="--d:3.11s"/>
+      <circle class="dot q" cx="283.6" cy="299.6" r="6" style="--d:3.11s"/>
+      <circle class="dot" cx="190.8" cy="304.6" r="4.5" style="--d:4.11s"/>
+      <circle class="dot" cx="86.9" cy="313.1" r="4.5" style="--d:5.0s"/>
+      <circle class="dot" cx="90.0" cy="200.0" r="4.5" style="--d:6.0s"/>
+      <circle class="pulse" cx="92.8" cy="110.0" r="6" style="--d:6.89s"/>
+      <circle class="dot q" cx="92.8" cy="110.0" r="6" style="--d:6.89s"/>
+      <circle class="dot" cx="181.9" cy="132.4" r="4.5" style="--d:7.67s"/>
+    </svg>
+    <div class="agenda" role="img" aria-label="Agenda de la semaine&nbsp;: trois rendez-vous qualifiés confirmés">
+      <div class="corner"></div>
+      <div class="day">Lun</div>
+      <div class="day">Mar</div>
+      <div class="day">Mer</div>
+      <div class="day">Jeu</div>
+      <div class="day">Ven</div>
+      <div class="hour">9 h</div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s1">RDV<svg class="tick" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.6 2.6L10 3.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="hour">11 h</div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s2">RDV</span></div>
+      <div class="hour">14 h</div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s3">RDV</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <figcaption>Rendez-vous qualifiés, confirmés dans votre agenda</figcaption>
+  </figure>
+  </div>
+</section>
+
+<section class="sec light" id="constat" aria-labelledby="t-constat">
+  <div class="wrap">
+    <div class="split">
+      <div class="rv"><p class="eyebrow">Le constat</p><h2 id="t-constat">Un agenda plein n'est pas un agenda utile.</h2></div>
+      <p class="lead-p rv" data-d="1" style="color:var(--muted)">Prospecter est un métier à plein temps, et ce sont rarement ceux qui savent conclure qui ont le temps de le faire.</p>
+    </div>
+    <div class="facts">
+      <div class="fact rv"><span class="tag">Le temps</span><h3>Prospecter prend le temps de ceux qui devraient vendre.</h3><p>Chaque heure passée à chercher des contacts est une heure qui manque aux rendez-vous déjà obtenus.</p></div>
+      <div class="fact rv"><span class="tag">La rupture</span><h3>Beaucoup d'offres s'arrêtent à l'agenda.</h3><p>Le rendez-vous est livré, puis personne ne prépare la suite. Le closing reste entièrement à votre charge.</p></div>
+      <div class="fact rv"><span class="tag">Le flou</span><h3>Un rendez-vous «&nbsp;qualifié&nbsp;» dont personne n'a écrit la définition.</h3><p>Vous le découvrez en y allant. Chez PROSENS, la définition est écrite avec vous avant de démarrer.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="methode" aria-labelledby="t-methode">
+  <div class="wrap">
+    <p class="eyebrow rv">La méthode</p>
+    <h2 id="t-methode" class="rv" data-d="1" style="max-width:20ch">Du premier contact à la décision, un seul fil.</h2>
+    <div class="method-grid">
+      <div class="stage-wrap"><figure class="viz viz-steps" data-step="5">
+    <svg class="radar" viewBox="0 0 400 400" role="img" aria-label="Radar de prospection&nbsp;: des cibles détectées, trois d'entre elles qualifiées">
+      <g class="rings" fill="none" stroke="currentColor" stroke-opacity=".28">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="140"/><circle cx="200" cy="200" r="90"/><circle cx="200" cy="200" r="40"/>
+        <path d="M200 10V390M10 200H390" stroke-opacity=".16"/>
+      </g>
+      <circle class="icp" cx="200" cy="200" r="165" fill="none"/>
+      <g class="sweep"><path d="M200 200L65.7 65.7A190 190 0 0 1 200 10Z" class="wedge"/><path d="M200 200V10" class="lead"/></g>
+      <circle class="dot" cx="241.0" cy="87.2" r="4.5" style="--d:0.44s"/>
+      <circle class="pulse" cx="329.9" cy="125.0" r="6" style="--d:1.33s"/>
+      <circle class="dot q" cx="329.9" cy="125.0" r="6" style="--d:1.33s"/>
+      <circle class="dot" cx="279.7" cy="207.0" r="4.5" style="--d:2.11s"/>
+      <circle class="pulse" cx="283.6" cy="299.6" r="6" style="--d:3.11s"/>
+      <circle class="dot q" cx="283.6" cy="299.6" r="6" style="--d:3.11s"/>
+      <circle class="dot" cx="190.8" cy="304.6" r="4.5" style="--d:4.11s"/>
+      <circle class="dot" cx="86.9" cy="313.1" r="4.5" style="--d:5.0s"/>
+      <circle class="dot" cx="90.0" cy="200.0" r="4.5" style="--d:6.0s"/>
+      <circle class="pulse" cx="92.8" cy="110.0" r="6" style="--d:6.89s"/>
+      <circle class="dot q" cx="92.8" cy="110.0" r="6" style="--d:6.89s"/>
+      <circle class="dot" cx="181.9" cy="132.4" r="4.5" style="--d:7.67s"/>
+    </svg>
+    <div class="agenda" role="img" aria-label="Agenda de la semaine&nbsp;: trois rendez-vous qualifiés confirmés">
+      <div class="corner"></div>
+      <div class="day">Lun</div>
+      <div class="day">Mar</div>
+      <div class="day">Mer</div>
+      <div class="day">Jeu</div>
+      <div class="day">Ven</div>
+      <div class="hour">9 h</div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s1">RDV<svg class="tick" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.6 2.6L10 3.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="hour">11 h</div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s2">RDV</span></div>
+      <div class="hour">14 h</div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><span class="slot s3">RDV</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <figcaption>Rendez-vous qualifiés, confirmés dans votre agenda</figcaption>
+  </figure></div>
+      <ol class="steps-list">
+        <li class="step" data-step="1"><span class="n">ÉTAPE 1 SUR 5</span><h3>Cibler</h3><p>Nous définissons avec vous la cible idéale&nbsp;: secteur, taille, fonction du décideur, déclencheur d'achat. Tout part de là.</p></li>
+        <li class="step" data-step="2"><span class="n">ÉTAPE 2 SUR 5</span><h3>Aborder</h3><p>Appel, email, réseau professionnel&nbsp;: une séquence, pas trois relances identiques. Chaque message parle du contexte du prospect, pas du nôtre.</p></li>
+        <li class="step" data-step="3"><span class="n">ÉTAPE 3 SUR 5</span><h3>Qualifier</h3><p>Le prospect répond aux critères écrits avec vous, ou il sort du circuit. Rien n'entre dans votre agenda sans cela.</p></li>
+        <li class="step" data-step="4"><span class="n">ÉTAPE 4 SUR 5</span><h3>Planifier</h3><p>Le rendez-vous est confirmé par le prospect et placé dans votre agenda, avec le contexte de l'échange.</p></li>
+        <li class="step" data-step="5"><span class="n">ÉTAPE 5 SUR 5</span><h3>Conclure</h3><p>Un commercial senior prépare et conduit le closing avec vous&nbsp;: offre, objections, décision.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="sec light" id="qualifie" aria-labelledby="t-qualifie">
+  <div class="wrap">
+    <p class="eyebrow rv">Le rendez-vous qualifié</p>
+    <h2 id="t-qualifie" class="rv" data-d="1" style="max-width:20ch">Un rendez-vous n'est compté que s'il passe ces cinq tests.</h2>
+    <div class="q-grid">
+      <div>
+        <p class="lead-p rv" style="color:var(--muted);margin-bottom:28px">Nous convenons des critères avec vous avant de démarrer. Par défaut&nbsp;:</p>
+        <ul class="tests">
+          <li class="rv"><b>Cible</b><span>Le décideur correspond au profil convenu&nbsp;: secteur, taille, fonction.</span></li>
+          <li class="rv"><b>Besoin</b><span>Un besoin ou un déclencheur est exprimé, avec ses propres mots.</span></li>
+          <li class="rv"><b>Accord</b><span>Le prospect a accepté l'échange, à une date et une heure précises.</span></li>
+          <li class="rv"><b>Agenda</b><span>Le rendez-vous est dans votre agenda, invitation acceptée.</span></li>
+          <li class="rv"><b>Contexte</b><span>Vous recevez avant le rendez-vous ce qui a été dit et ce qui a été promis.</span></li>
+        </ul>
+      </div>
+      <aside class="not rv" data-d="1" aria-labelledby="t-not">
+        <h3 id="t-not">Ce que nous ne comptons pas</h3>
+        <ul>
+          <li>Un contact qui répond «&nbsp;envoyez-moi une présentation&nbsp;».</li>
+          <li>Un rendez-vous obtenu hors de la cible convenue.</li>
+          <li>Un rendez-vous que le prospect n'a pas confirmé.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt light" id="offres" aria-labelledby="t-offres">
+  <div class="wrap">
+    <p class="eyebrow rv">Les offres</p>
+    <h2 id="t-offres" class="rv" data-d="1" style="max-width:20ch">Deux façons de travailler, selon votre taille.</h2>
+    <div class="tabs rv" role="tablist" aria-label="Choisir votre profil">
+      <button class="tab" role="tab" id="tab-pme" aria-controls="p-pme" aria-selected="true">PME</button>
+      <button class="tab" role="tab" id="tab-gg" aria-controls="p-gg" aria-selected="false" tabindex="-1">Grands groupes</button>
+    </div>
+    <div class="panel" role="tabpanel" id="p-pme" aria-labelledby="tab-pme">
+      <div><h3>Une force commerciale externe, sans recruter.</h3><a class="btn btn-main" href="#contact" data-cta>Parler de mon cas PME <span class="arr" aria-hidden="true">→</span></a></div>
+      <ul>
+        <li>Un interlocuteur unique, un périmètre et un rythme de compte rendu fixés au lancement.</li>
+        <li>Vous gardez la relation&nbsp;: chaque rendez-vous arrive dans votre agenda, avec son contexte.</li>
+        <li>Le closing est préparé avec vous, ou conduit par PROSENS selon ce que vous décidez.</li>
+      </ul>
+    </div>
+    <div class="panel" role="tabpanel" id="p-gg" aria-labelledby="tab-gg" hidden>
+      <div><h3>Un renfort ciblé sur un segment, une région, une gamme.</h3><a class="btn btn-main" href="#contact" data-cta>Cadrer un périmètre <span class="arr" aria-hidden="true">→</span></a></div>
+      <ul>
+        <li>Périmètre et critères de qualification validés avec vos équipes commerciales avant le démarrage.</li>
+        <li>Un interlocuteur identifié, des indicateurs et un rythme de reporting convenus.</li>
+        <li>Les contacts prospectés et leur historique vous appartiennent et vous sont remis tout au long de la mission.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec light" id="difference" aria-labelledby="t-diff">
+  <div class="wrap">
+    <p class="eyebrow rv">La différence</p>
+    <h2 id="t-diff" class="rv" data-d="1" style="max-width:18ch">Ce qui change avec PROSENS.</h2>
+    <div class="tbl rv" tabindex="0" role="region" aria-labelledby="t-diff">
+      <table>
+        <thead><tr><th scope="col"><span class="sr-only" style="position:absolute;left:-9999px">Critère</span></th><th scope="col">Recruter en interne</th><th scope="col">Prise de rendez-vous seule</th><th scope="col" class="us">PROSENS</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Prospection prise en charge</th><td>Oui, après recrutement et formation</td><td>Oui</td><td class="us">Oui</td></tr>
+          <tr><th scope="row">Closing conduit</th><td>Par votre équipe</td><td>Rarement</td><td class="us">Oui, avec vous</td></tr>
+          <tr><th scope="row">Définition écrite du rendez-vous qualifié</th><td>À construire</td><td>Variable</td><td class="us">Convenue avant le démarrage</td></tr>
+          <tr><th scope="row">Pilotage</th><td>Votre management</td><td>Un chef de projet du prestataire</td><td class="us">Un directeur commercial de région</td></tr>
+          <tr><th scope="row">Mise en route</th><td>Durée d'un recrutement</td><td>Variable</td><td class="us">Calendrier fixé à l'issue de l'échange</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note rv">Constats d'ensemble tirés d'offres publiques de prise de rendez-vous. Ils ne décrivent pas chaque acteur du marché.</p>
+  </div>
+</section>
+
+<section class="sec dark" id="fondateur" aria-labelledby="t-fond">
+  <div class="wrap">
+    <p class="eyebrow rv">Le fondateur</p>
+    <h2 id="t-fond" class="rv" data-d="1" style="max-width:20ch">Un directeur commercial de région, pas un centre d'appels.</h2>
+    <div class="founder">
+      <div class="rv">
+        <p class="lead-p" style="margin-bottom:36px">PROSENS est dirigé par un directeur commercial de région. Il a ouvert des business units sur des marchés B2B émergents et, à chaque ouverture, déclare avoir multiplié le chiffre d'affaires par 4 à 5.</p>
+        <p class="big" aria-label="Fois quatre à fois cinq"><small>×</small>4 à <small>×</small>5</p>
+        <p class="big-cap">Chiffre d'affaires, marchés B2B émergents. Résultats déclarés par le fondateur.</p>
+      </div>
+      <div class="rv" data-d="1">
+        <p class="eyebrow">Ses principes de terrain</p>
+        <ul class="principles">
+          <li>On qualifie avant de relancer.</li>
+          <li>Le rendez-vous appartient à votre agenda, pas à notre tableau de bord.</li>
+          <li>Rien n'est compté tant que le prospect n'a pas confirmé.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec light" id="questions" aria-labelledby="t-faq">
+  <div class="wrap">
+    <p class="eyebrow rv">Les questions</p>
+    <h2 id="t-faq" class="rv" data-d="1">Ce que l'on nous demande d'abord.</h2>
+    <div class="faq rv">
+      <details><summary>En quoi est-ce différent d'un prestataire de prise de rendez-vous&nbsp;?</summary><p>Nous ne nous arrêtons pas à l'agenda. Le closing est préparé pendant la qualification et conduit avec vous, et la définition d'un rendez-vous qualifié est écrite avant le démarrage.</p></details>
+      <details><summary>Qu'appelez-vous un rendez-vous qualifié&nbsp;?</summary><p>Un rendez-vous qui passe cinq tests&nbsp;: cible, besoin exprimé, accord du prospect, présence dans votre agenda, contexte transmis avant l'échange. Les critères sont ajustés avec vous.</p></details>
+      <details><summary>Combien cela coûte-t-il&nbsp;?</summary><p>Cela dépend du périmètre&nbsp;: cible, volume, présence ou non du closing. Nous chiffrons à l'issue d'un échange de 30 minutes, avec une proposition écrite.</p></details>
+      <details><summary>À qui appartiennent les contacts et l'historique&nbsp;?</summary><p>À vous. Les contacts prospectés, les réponses et les comptes rendus vous sont remis tout au long de la mission.</p></details>
+      <details><summary>Combien de temps pour démarrer&nbsp;?</summary><p>Le calendrier est fixé à la fin de l'échange, une fois la cible et les critères validés.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark final" id="contact" aria-labelledby="t-final">
+  <div class="wrap">
+    <p class="eyebrow rv">Prochaine étape</p>
+    <h2 id="t-final" class="rv" data-d="1">Réservons 30 minutes pour définir votre cible.</h2>
+    <p class="lead-p rv" data-d="2">Vous repartez avec une cible clarifiée et les critères d'un rendez-vous qualifié. La proposition écrite suit.</p>
+    <a class="btn btn-main rv" data-d="3" href="#contact" data-cta>Réserver un échange de 30 minutes <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 PROSENS · Prospection et closing externalisés</span>
+    <nav aria-label="Pied de page"><a href="#methode">Méthode</a><a href="#qualifie">Rendez-vous qualifié</a><a href="#questions">Questions</a><a href="#haut">Haut de page</a></nav>
+  </div>
+</footer>
+
+<dialog id="echange" aria-labelledby="t-echange">
+  <form class="dlg" method="dialog" id="f-echange">
+    <h2 id="t-echange">Préparez votre échange</h2>
+    <p>Trois réponses nous permettent d'arriver avec des questions utiles. Copiez-les et envoyez-les à votre contact PROSENS.</p>
+    <label>Votre entreprise<input id="e-ent" type="text" autocomplete="organization"></label>
+    <label>Qui souhaitez-vous rencontrer&nbsp;?<textarea id="e-cible" rows="2"></textarea></label>
+    <label>Que vendez-vous&nbsp;?<textarea id="e-offre" rows="2"></textarea></label>
+    <label>Votre demande<textarea id="e-out" class="out" rows="5" readonly></textarea></label>
+    <div class="row">
+      <button class="btn btn-main" type="button" id="e-copy">Copier ma demande</button>
+      <button class="btn btn-line" type="submit" value="close">Fermer</button>
+    </div>
+    <p class="status" id="e-status" role="status"></p>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+  // Lien de prise de rendez-vous (agenda en ligne). Renseigné, tous les boutons l'ouvrent dans un nouvel onglet.
+  // Vide, ils ouvrent le panneau « Préparez votre échange ». Voir le guide de mise en ligne.
+  var CONTACT_URL = '';
+
+  var root = document.documentElement;
+  root.classList.add('js');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  // En-tête
+  var top = document.getElementById('haut');
+  var onScroll = function () { top.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Révélation au défilement
+  var rv = $$('.rv');
+  if (!('IntersectionObserver' in window) || reduce) {
+    rv.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    rv.forEach(function (el) { io.observe(el); });
+  }
+
+  // Méthode : le visuel suit l'étape au centre de l'écran
+  var stage = document.querySelector('.viz-steps');
+  var steps = $$('.step');
+  if (stage && steps.length && 'IntersectionObserver' in window) {
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          stage.setAttribute('data-step', e.target.getAttribute('data-step'));
+          steps.forEach(function (s) { s.classList.toggle('on', s === e.target); });
+        }
+      });
+    }, { rootMargin: (window.matchMedia && window.matchMedia('(max-width: 899px)').matches) ? '-60% 0px -32% 0px' : '-45% 0px -45% 0px', threshold: 0 });
+    steps.forEach(function (s) { so.observe(s); });
+  }
+
+  // Onglets PME / Grands groupes
+  var tabs = $$('.tab');
+  function selectTab(t, focus) {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute('aria-selected', on);
+      x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) t.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t, false); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = tabs.length;
+      if (k === 'ArrowRight' || k === 'ArrowDown') { e.preventDefault(); selectTab(tabs[(i + 1) % n], true); }
+      if (k === 'ArrowLeft' || k === 'ArrowUp') { e.preventDefault(); selectTab(tabs[(i - 1 + n) % n], true); }
+      if (k === 'Home') { e.preventDefault(); selectTab(tabs[0], true); }
+      if (k === 'End') { e.preventDefault(); selectTab(tabs[n - 1], true); }
+    });
+  });
+
+  // Boutons d'échange
+  var dlg = document.getElementById('echange');
+  var ent = document.getElementById('e-ent'), cible = document.getElementById('e-cible'),
+      offre = document.getElementById('e-offre'), out = document.getElementById('e-out'),
+      status = document.getElementById('e-status');
+  function compose() {
+    out.value = 'Bonjour,\nJe souhaite un échange de 30 minutes avec PROSENS.\n' +
+      'Entreprise : ' + (ent.value.trim() || 'à préciser') + '\n' +
+      'Personnes à rencontrer : ' + (cible.value.trim() || 'à préciser') + '\n' +
+      'Ce que nous vendons : ' + (offre.value.trim() || 'à préciser') + '\n';
+  }
+  [ent, cible, offre].forEach(function (f) { f.addEventListener('input', compose); });
+  compose();
+  $$('[data-cta]').forEach(function (a) {
+    if (CONTACT_URL) { a.href = CONTACT_URL; a.target = '_blank'; a.rel = 'noopener'; return; }
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      status.textContent = '';
+      if (dlg.showModal) { dlg.showModal(); } else { dlg.setAttribute('open', ''); }
+      ent.focus();
+    });
+  });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) { dlg.close(); } });
+  document.getElementById('e-copy').addEventListener('click', function () {
+    compose();
+    var done = function () { status.textContent = 'Demande copiée. Vous pouvez la coller dans votre message.'; };
+    var manual = function () { out.focus(); out.select(); status.textContent = 'Sélectionnée : copiez-la avec Ctrl+C ou Cmd+C.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(out.value).then(done, manual);
+    } else { manual(); }
+  });
+})();
+</script>
+</body>
+</html>
