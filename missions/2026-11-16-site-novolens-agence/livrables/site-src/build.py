@@ -526,7 +526,7 @@ def build_contact():
 exec(open(os.path.join(HERE, 'v3_extra.py'), encoding='utf-8').read())
 build_index(); build_pourquoi(); build_methode(); build_resultats(); build_tarifs(); build_faq(); build_contact()
 if V3:
-    build_cas(); build_404(); build_seo()
+    build_cas(); build_404(); build_seo(); build_ds()
 shutil.copytree(os.path.join(HERE, "img"), os.path.join(DIST, "img"))
 for fn in ("style.css", "app.js"):
     shutil.copy(os.path.join(HERE, fn), os.path.join(DIST, fn))

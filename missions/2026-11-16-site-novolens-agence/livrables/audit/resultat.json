@@ -1,0 +1,424 @@
+{
+ "pages": [
+  {
+   "page": "404.html",
+   "size_kb": 4.2,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Page introuvable NOVOLENS",
+   "description": false,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "cas-client.html",
+   "size_kb": 24.7,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Cas client modèle NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "comment-ca-marche.html",
+   "size_kb": 52,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Comment ça marche, NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "contact.html",
+   "size_kb": 10.4,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Contact NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "faq.html",
+   "size_kb": 13.5,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "FAQ NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "index.html",
+   "size_kb": 55.7,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "pourquoi-nous.html",
+   "size_kb": 16.7,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Pourquoi NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "resultats.html",
+   "size_kb": 13,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Résultats NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  },
+  {
+   "page": "tarifs.html",
+   "size_kb": 14.1,
+   "widths": {
+    "400": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "820": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    },
+    "1360": {
+     "overflow": false,
+     "console_errors": 0,
+     "errors": []
+    }
+   },
+   "title": "Tarifs NOVOLENS",
+   "description": true,
+   "h1": 1,
+   "imgs_without_dims": 0,
+   "imgs_without_alt": 0,
+   "links_broken": [],
+   "keyboard_focus_visible": true,
+   "reduced_motion_hidden": 0
+  }
+ ],
+ "contrast": [
+  {
+   "pair": "encre sur blanc",
+   "ratio": 18.34,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "encre sur violet clair",
+   "ratio": 15.78,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "encre sur violet fin de dégradé",
+   "ratio": 12.34,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "texte secondaire sur blanc",
+   "ratio": 11.92,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "texte secondaire sur violet clair",
+   "ratio": 10.25,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "texte secondaire sur violet fin de dégradé",
+   "ratio": 8.02,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "gris muted sur blanc",
+   "ratio": 8.05,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "gris muted sur violet fin de dégradé",
+   "ratio": 5.41,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "violet de marque sur blanc",
+   "ratio": 7.17,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "violet de marque sur violet clair",
+   "ratio": 6.17,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "violet de marque sur violet fin de dégradé",
+   "ratio": 4.82,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "blanc sur bouton violet",
+   "ratio": 7.17,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "blanc sur violet clair du bouton",
+   "ratio": 4.75,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "encre sur jaune",
+   "ratio": 13.26,
+   "min": 4.5,
+   "ok": true
+  },
+  {
+   "pair": "rouge pastille sans",
+   "ratio": 5.88,
+   "min": 4.5,
+   "ok": true
+  }
+ ],
+ "summary": {
+  "pages": 9,
+  "html_over_60kb": [],
+  "images_over_250kb": [],
+  "overflow": [],
+  "console_errors": [],
+  "h1_not_one": [],
+  "no_description": [
+   "404.html"
+  ],
+  "imgs_without_dims": [],
+  "imgs_without_alt": [],
+  "broken_links": [],
+  "focus_not_visible": [],
+  "reduced_motion_hidden": [],
+  "contrast_failures": []
+ },
+ "images": [
+  {
+   "n": "avec.jpg",
+   "kb": 52
+  },
+  {
+   "n": "card-1.jpg",
+   "kb": 152
+  },
+  {
+   "n": "card-2.jpg",
+   "kb": 124
+  },
+  {
+   "n": "card-3.jpg",
+   "kb": 169
+  },
+  {
+   "n": "card-4.jpg",
+   "kb": 131
+  },
+  {
+   "n": "cta-bg.jpg",
+   "kb": 198
+  },
+  {
+   "n": "eti.jpg",
+   "kb": 60
+  },
+  {
+   "n": "grand.jpg",
+   "kb": 111
+  },
+  {
+   "n": "hero-bg.jpg",
+   "kb": 197
+  },
+  {
+   "n": "livraison.jpg",
+   "kb": 65
+  },
+  {
+   "n": "pme.jpg",
+   "kb": 55
+  },
+  {
+   "n": "sans.jpg",
+   "kb": 85
+  }
+ ]
+}
