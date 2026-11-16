@@ -4,7 +4,7 @@ mission: site-novolens-agence
 date: 2026-11-16
 mode: complete
 verdict: lancer sous condition
-verrouillé: non
+verrouillé: oui (2026-11-16)
 
 ## À retenir
 - Objectif : un site vitrine multi-pages NOVOLENS abouti, rapide, accessible, animé, prêt à recevoir les vraies données.

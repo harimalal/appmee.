@@ -1,0 +1,42 @@
+
+/* ===== V2 : fonds alternés blanc / dégradé violet, photos pleines ===== */
+main>section:nth-of-type(odd){background:#fff!important;border:0!important}
+main>section:nth-of-type(even){background:linear-gradient(165deg,#F1EBFF 0%,#D9CDFF 55%,#CDBBFF 100%)!important;border:0!important}
+main>section.hero{background:#fff!important}
+.cta-section{background:#fff!important}
+body{background:#fff}
+.sec-head .lead,.lead{color:#35325C}
+.stats{box-shadow:0 30px 60px -30px rgba(75,57,221,.4)}
+main>section:nth-of-type(even) .card,main>section:nth-of-type(even) .tcard,main>section:nth-of-type(even) .cmp,main>section:nth-of-type(even) .dcard{border-color:rgba(75,57,221,.14);box-shadow:0 24px 50px -28px rgba(60,45,170,.5)}
+main>section:nth-of-type(even) .story-tab{background:#fff}
+/* photos pleines */
+.solid img,.duo img{display:block;width:100%;height:100%;object-fit:cover}
+.solid{margin:6px 0 0;width:100%;border-radius:26px;overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:16/10}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.duo figure{position:relative;margin:0;aspect-ratio:4/3;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.duo figure:first-child img{filter:grayscale(1) contrast(1.05)}
+.duo figcaption{position:absolute;left:12px;bottom:12px;padding:7px 14px;border-radius:999px;font:800 .78rem var(--f-body);color:#fff;background:#B03A52}
+.duo figcaption.yes{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+.cphoto{display:block;width:calc(100% + 64px);max-width:none;height:190px;margin:-32px -32px 10px;object-fit:cover;transition:transform .8s var(--ease)}
+.card:hover .cphoto{transform:scale(1.04)}
+.card{overflow:hidden}
+.card .cphoto{position:relative}
+/* encarts : photo pleine en tête, animation dessous */
+.ucard{padding:0 20px 20px;min-height:600px}
+.ucard::before{display:none}
+.ucard .bg{position:relative;inset:auto;z-index:0;order:-1;height:170px;margin:0 -20px 10px;opacity:1;filter:none;flex:none}
+.ucard:hover .bg{opacity:1;transform:none}
+.ucard .bg::after{content:"";position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(0deg,#fff,rgba(255,255,255,0))}
+.u-top{margin-top:-30px;position:relative;z-index:2}
+.u-num{box-shadow:0 0 0 5px #fff}
+.u-top h3{text-shadow:0 0 14px #fff,0 0 4px #fff}
+/* photos dans les en-têtes de pages */
+.page-hero{padding-block:clamp(44px,6vw,90px)}
+.page-hero.has-ph .wrap>*:not(.ph-photo){max-width:min(56%,620px)}
+.ph-photo{position:absolute;right:max(20px,calc((100% - 1180px)/2 + 20px));top:50%;transform:translateY(-50%);width:min(40%,470px);aspect-ratio:4/3.2;border-radius:30px;background:center/cover;box-shadow:var(--shadow-lg);border:6px solid #fff}
+.page-hero::before{display:none}
+@media (max-width:980px){
+  .page-hero.has-ph .wrap>*:not(.ph-photo){max-width:100%}
+  .ph-photo{position:relative;right:auto;top:auto;transform:none;width:100%;order:9;aspect-ratio:16/10}
+  .duo{grid-template-columns:1fr 1fr}
+}

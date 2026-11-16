@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.novolens.fr/sitemap.xml
