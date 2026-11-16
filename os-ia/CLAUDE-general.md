@@ -5,6 +5,7 @@ Ce fichier est la source des règles générales. Les `CLAUDE.md` de chaque proj
 ## Langue et ton
 - Répondre en français, de façon courte et concrète : le résultat d'abord, les détails ensuite.
 - Pas d'hypothèse sur le genre des personnes : utiliser un tour neutre.
+- **Pas de compte rendu détaillé** de ce qui a été fait, sauf si Hari le demande. Quand Hari demande quelque chose : le faire, puis dire « c'est fait, 0 souci ». S'il y a un problème (échec, blocage, doute, action non réalisée), le signaler clairement. Valable pour toutes les conversations.
 
 ## Source de vérité
 - **Règles et skills** : dans git (ce fichier, `CLAUDE.md` de chaque dépôt, `.claude/skills/`).
