@@ -1,0 +1,109 @@
+{
+  "client": "coach-endo",
+  "template": "clair-errance",
+  "fruit": "vert",
+  "titre_interne": "L'errance médicale : le parcours jusqu'au diagnostic",
+  "legende": "Des années à chercher des réponses. L'errance médicale dans l'endométriose : en moyenne 7 à 9 ans pour obtenir un diagnostic (sante.fr), 6,6 ans et 4,1 professionnels consultés selon l'enquête EndoVie 2 (2025). Pourquoi si long ? Des douleurs banalisées, un manque de sensibilisation, des formes variées de la maladie. Pour mieux avancer : tenir un carnet de bord, préparer ses questions, s'entourer. Ce n'est pas dans votre tête. Recevez le kit gratuit « Carrière en cycles » (guide, carnet de bord, 5 leçons) : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Chiffres EndoVie 2 et parcours-type à vérifier ; contenu à faire relire par un professionnel de santé.]] #endométriose #errancemédicale #diagnostic",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "eyebrow": "L'errance médicale",
+      "titre": "Des années à chercher *des réponses*",
+      "texte": "Le parcours de beaucoup de femmes avant le diagnostic.",
+      "pos": "bas",
+      "image": { "fichier": "m-couloir-chaises.jpg", "pos": "50% 55%" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Le délai",
+      "titre": "*7 à 9 ans* pour un diagnostic",
+      "texte": "En moyenne, entre les premiers symptômes et le diagnostic.",
+      "source": "Ministère de la Santé, sante.fr, « Endométriose ».",
+      "pos": "bas",
+      "image": { "fichier": "m-calendrier.jpg", "pos": "50% 40%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Un parcours-type",
+      "titre": "Du symptôme *au diagnostic*",
+      "blocs": [{ "type": "schema", "fichier": "parcours.svg" }]
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "En chiffres",
+      "titre": "Un parcours *qui s'allonge*",
+      "bande": { "fichier": "m-horloge.jpg", "pos": "50% 45%", "hauteur": 400, "cote": "bas" },
+      "blocs": [
+        {
+          "type": "stats",
+          "items": [
+            { "valeur": "6,6 ans", "texte": "en moyenne avant le diagnostic", "sup": "1" },
+            { "valeur": "4,1", "texte": "professionnels consultés avant le diagnostic", "sup": "1" }
+          ]
+        }
+      ],
+      "source": "¹ Enquête EndoVie 2, 2025 (Ipsos, EndoFrance). Selon les études, 6 à 10 ans : les définitions du délai varient. [[À vérifier.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Pourquoi c'est si long",
+      "titre": "Quand la douleur est *minimisée*",
+      "texte": "« Avoir mal pendant ses règles, c'est normal. » Cette idée reçue retarde parfois le diagnostic.",
+      "pos": "bas",
+      "image": { "fichier": "m-consultation.jpg", "pos": "50% 40%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Les causes de l'errance",
+      "titre": "Pourquoi ça dure *si longtemps*",
+      "blocs": [
+        {
+          "type": "liste",
+          "mode": "coche",
+          "items": [
+            { "t": "Des symptômes banalisés", "d": "Des douleurs jugées « normales »." },
+            { "t": "Un manque de sensibilisation", "d": "Y compris chez certains soignants." },
+            { "t": "Une maladie aux formes variées", "d": "Les signes diffèrent d'une femme à l'autre." }
+          ]
+        }
+      ],
+      "source": "Sources : sante.fr ; EndoFrance ; presse spécialisée. [[À vérifier.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Un premier réflexe",
+      "titre": "Votre *carnet de bord*, votre allié",
+      "texte": "Dates, intensité, impact au quotidien : des repères concrets pour votre médecin.",
+      "pos": "bas",
+      "image": { "fichier": "m-carnet-stylo.jpg", "pos": "50% 40%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Au rendez-vous",
+      "titre": "Trois *questions* à poser",
+      "blocs": [{ "type": "schema", "fichier": "questions.svg" }]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Pour tenir",
+      "titre": "Vous n'êtes *pas seule*",
+      "texte": "Associations de patientes, proches, professionnels à l'écoute : s'entourer aide à avancer.",
+      "pos": "bas",
+      "image": { "fichier": "m-soutien-amies.jpg", "pos": "50% 60%" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Reprendre la main, *à votre rythme*",
+      "texte": "Le kit gratuit « Carrière en cycles » : un guide, un carnet de bord et 5 leçons. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "m-soutien-mains.jpg", "pos": "50% 50%" }
+    }
+  ]
+}

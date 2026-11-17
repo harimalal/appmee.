@@ -190,4 +190,48 @@ b += f'<circle cx="{CX}" cy="{CY}" r="104" fill="{SUN}" stroke="{INK}" stroke-wi
 for k, (x, y) in enumerate(pos):
     b += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="92" fill="{STEP if k % 2 == 0 else CARD}" stroke="{INK}" stroke-width="5"/><text x="{x:.1f}" y="{y + 10:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{labs[k]}</text>'
 open(OUT + 'intimite.svg', 'w', encoding='utf8').write(svg(936, 660, b))
+# 9. Parcours médical : frise verticale en 6 étapes
+etapes = [
+    ('Premiers symptômes', 'des règles très douloureuses'),
+    ('« C\'est normal »', 'des douleurs minimisées'),
+    ('Antalgiques', 'sans chercher la cause'),
+    ('Autre avis, autre spécialiste', '3 à 4 professionnels en moyenne'),
+    ('Examens ciblés', 'échographie, IRM pelvienne'),
+    ('Le diagnostic', 'enfin un nom sur la douleur'),
+]
+b = ''
+H0, DY = 62, 112
+xs = [90, 150, 70, 150, 90, 120]
+for k in range(len(etapes) - 1):
+    y1, y2 = H0 + k * DY, H0 + (k + 1) * DY
+    c = 150 if k % 2 == 0 else 30
+    b += f'<path d="M{xs[k]} {y1 + 44} C{c} {y1 + 60} {c} {y2 - 60} {xs[k + 1]} {y2 - 44}" fill="none" stroke="{STEP}" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 20"/>'
+for k, (t, s) in enumerate(etapes):
+    y = H0 + k * DY
+    last = k == len(etapes) - 1
+    b += f'<rect x="170" y="{y - 46}" width="750" height="92" rx="26" fill="{SUN if last else CARD}" stroke="{INK}" stroke-width="5"/>'
+    b += f'<text x="204" y="{y - 6}" font-size="32" font-weight="800" fill="{INK}">{t}</text><text x="204" y="{y + 30}" font-size="27" font-weight="600" fill="{INK2}">{s}</text>'
+    b += f'<circle cx="{xs[k]}" cy="{y}" r="44" fill="{ACC if last else STEP}" stroke="{INK}" stroke-width="5"/><text x="{xs[k]}" y="{y + 14}" font-size="40" font-weight="800" fill="{"#fff" if last else INK}" text-anchor="middle">{k + 1}</text>'
+    b += f'<path d="M{xs[k] + 44} {y} H170" stroke="{INK}" stroke-width="4" stroke-linecap="round"/>'
+open(OUT + 'parcours.svg', 'w', encoding='utf8').write(svg(936, H0 + len(etapes) * DY - 40, b))
+
+
+# 10. Questions à poser : trois bulles
+def bulles(fichier, textes):
+    cols = [SUN, CARD, STEP]
+    cotes = ['left', 'right', 'left']
+    ys = [20, 210, 400]
+    b = ''
+    for k, (l1, l2) in enumerate(textes):
+        x, y, w, h, col, cote = (20 if cotes[k] == 'left' else 256), ys[k], 660, 150, cols[k], cotes[k]
+        b += f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="36" fill="{col}" stroke="{INK}" stroke-width="5"/>'
+        tx = x + 60 if cote == 'left' else x + w - 130
+        ty = y + h
+        b += f'<path d="M{tx} {ty} L{tx + (-10 if cote == "left" else 70)} {ty + 38} L{tx + 70} {ty} Z" fill="{col}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>'
+        b += f'<rect x="{tx + 4}" y="{ty - 4}" width="62" height="9" fill="{col}"/>'
+        b += f'<text x="{x + 40}" y="{y + 68}" font-size="38" font-weight="800" fill="{INK}">{l1}</text><text x="{x + 40}" y="{y + 114}" font-size="38" font-weight="800" fill="{INK}">{l2}</text>'
+    open(OUT + fichier, 'w', encoding='utf8').write(svg(936, 580, b))
+
+
+bulles('questions.svg', [('Mes douleurs peuvent-elles', "venir d'une endométriose ?"), ('Quels examens me', 'conseillez-vous ?'), ('Vers quel spécialiste', "m'orienter ?")])
 print('ok', os.listdir(OUT))
