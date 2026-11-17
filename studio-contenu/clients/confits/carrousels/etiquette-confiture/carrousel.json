@@ -1,0 +1,18 @@
+{
+  "client": "confits",
+  "template": "pedagogie-5-slides",
+  "fruit": "framboise",
+  "titre_interne": "Lire une étiquette de confiture",
+  "legende": "Avant d'acheter un pot, un coup d'œil à l'étiquette change tout. Trois repères pour choisir en confiance. Chez Les Confits, nous indiquons la quantité de fruits de chaque pot. #confiture #bio #artisanal #leconfits",
+  "slides": [
+    { "type": "cover", "kicker": "Bien choisir", "titre": "Comment lire l'étiquette d'une confiture ?", "sous": "Trois repères, trente secondes." },
+    { "type": "texte", "kicker": "Le réflexe", "titre": "Retournez le pot.", "texte": "Le devant de l'étiquette séduit. C'est au dos que se trouve ce qui compte : les ingrédients et la quantité de fruits." },
+    { "type": "liste", "titre": "Trois repères", "items": [
+      { "t": "Le premier ingrédient", "d": "La liste va du plus abondant au moins abondant." },
+      { "t": "La quantité de fruits", "d": "Elle est indiquée pour 100 g de confiture." },
+      { "t": "Le nombre d'ingrédients", "d": "Moins il y en a, plus la recette est lisible." }
+    ] },
+    { "type": "chiffre", "fond": "fruit", "valeur": "[[xx g]]", "texte": "de fruits pour 100 g dans nos pots. [[Chiffre exact à fournir par Pascal pour chaque parfum.]]" },
+    { "type": "cta", "titre": "Vérifiez, comparez, goûtez.", "texte": "Les Confits : confitures bio, artisanales, locales. En magasins bio, en boulangeries et aux Galeries Lafayette." }
+  ]
+}

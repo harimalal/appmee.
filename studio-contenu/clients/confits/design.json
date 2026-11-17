@@ -1,0 +1,20 @@
+{
+  "statut": "provisoire : aucune charte fournie, à valider par Pascal",
+  "marque": "Les Confits",
+  "signature": "confitures bio · artisanales · locales",
+  "polices": { "titre": "Bricolage Grotesque", "texte": "DM Sans" },
+  "couleurs": {
+    "encre": "#2A1822",
+    "papier": "#FAF7F4",
+    "fruits": {
+      "framboise": { "fond": "#B3204D", "texte": "#FFF4F0" },
+      "abricot":   { "fond": "#F2A03D", "texte": "#2A1822" },
+      "figue":     { "fond": "#4E2750", "texte": "#FFF4F0" }
+    }
+  },
+  "regles_visuelles": [
+    "Une couleur de fruit par carrousel, choisie selon le fruit du sujet",
+    "Pas de photo générée pour les pots, les fruits de Pascal ou les personnes : zone photo à remplir avec les vraies photos",
+    "Une idée par slide, 35 mots maximum de texte courant"
+  ]
+}

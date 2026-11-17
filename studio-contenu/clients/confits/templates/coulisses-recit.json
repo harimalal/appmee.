@@ -1,0 +1,6 @@
+{
+  "nom": "Coulisses en récit",
+  "pour": "Pilier « Coulisses » : raconter une scène de l'atelier ou de la tournée.",
+  "sequence": ["cover (le moment)", "photo + texte (scène 1)", "photo + texte (scène 2)", "etape ou texte (le geste)", "cta"],
+  "regles": ["Chaque slide s'appuie sur une vraie photo de Pascal", "Aucun fait d'atelier inventé : consigne de photo + légende à compléter"]
+}

@@ -1,0 +1,13 @@
+{
+  "client": "confits",
+  "template": "coulisses-recit",
+  "fruit": "abricot",
+  "titre_interne": "Une matinée de mise en pots",
+  "legende": "[[À écrire avec les faits de Pascal : quel jour, quel parfum, qui fait quoi.]] #confiture #artisanal #atelier #leconfits",
+  "slides": [
+    { "type": "cover", "kicker": "Dans l'atelier", "titre": "Une matinée de mise en pots", "sous": "Cinq personnes, un atelier, des pots bien remplis." },
+    { "type": "photo", "titre": "Le matin, à l'atelier", "consigne": "Photo large de l'atelier au démarrage : plans de travail, cuves, premières mains au travail.", "texte": "[[Légende : l'heure, le parfum du jour. À fournir par Pascal.]]" },
+    { "type": "photo", "titre": "Les mains qui conditionnent", "consigne": "Gros plan sur la mise en pots : le geste, le pot, la louche.", "texte": "[[Légende : qui fait quoi dans l'équipe. À fournir par Pascal.]]" },
+    { "type": "cta", "titre": "Fait ici, par nous.", "texte": "Les Confits : confitures bio, artisanales, locales, conditionnées à l'atelier." }
+  ]
+}

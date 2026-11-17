@@ -1,0 +1,6 @@
+{
+  "nom": "Pédagogie en 5 à 6 slides",
+  "pour": "Pilier « Lire et choisir » : expliquer un point pour aider à choisir.",
+  "sequence": ["cover (question)", "texte (le problème)", "liste (3 repères)", "texte ou chiffre (exemple ou donnée)", "cta"],
+  "regles": ["Ouvrir sur une question que se pose le client", "3 repères maximum", "Toute donnée non fournie par Pascal est marquée [[à compléter]]"]
+}

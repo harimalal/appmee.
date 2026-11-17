@@ -1,0 +1,6 @@
+{
+  "nom": "Accords en liste",
+  "pour": "Pilier « Usages et accords » : idées d'usage d'une confiture.",
+  "sequence": ["cover (promesse)", "liste (3 accords)", "texte (astuce de service)", "cta"],
+  "regles": ["Chaque accord = un fruit + un aliment, en une ligne", "Les exemples sont remplaçables par la gamme réelle de Pascal"]
+}
