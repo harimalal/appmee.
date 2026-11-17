@@ -32,16 +32,85 @@ export function load(root) {
   };
 }
 
-function fontFace() {
+const FONTS = {
+  'Bricolage Grotesque': [[700, 'bricolage-700.woff2'], [800, 'bricolage-800.woff2']],
+  'DM Sans': [['400 700', 'dmsans-var.woff2']],
+  Figtree: [['400 700', 'figtree-var.woff2']]
+};
+function fontFace(design) {
   const b64 = (f) => readFileSync(join(here, 'fonts', f)).toString('base64');
-  return `@font-face{font-family:"Bricolage Grotesque";font-weight:700;src:url(data:font/woff2;base64,${b64('bricolage-700.woff2')}) format("woff2")}
-@font-face{font-family:"DM Sans";font-weight:400 700;src:url(data:font/woff2;base64,${b64('dmsans-var.woff2')}) format("woff2")}`;
+  const names = [...new Set([design.polices.titre, design.polices.texte])];
+  return names
+    .flatMap((n) => (FONTS[n] ?? []).map(([w, f]) => `@font-face{font-family:"${n}";font-weight:${w};src:url(data:font/woff2;base64,${b64(f)}) format("woff2")}`))
+    .join('\n');
+}
+
+
+function clairCss(design, T) {
+  const ch = design.charte;
+  if (!ch) return '';
+  const B = `"${design.polices.texte}",system-ui,sans-serif`;
+  return `
+/* clair : charte « claire » (fond crème, encre verte, surligneur jaune, arches) */
+.l-clair{--cc-card:${ch.card};--cc-ink:${ch.ink};--cc-ink2:${ch.ink2};--cc-ink3:${ch.ink3};--cc-accent:${ch.accent};--cc-accent-ink:${ch.accentInk};--cc-sun:${ch.sun};--cc-mark:${ch.mark};--cc-band:${ch.band};--cc-step:${ch.step};--cc-edge:${ch.edge};
+  background:radial-gradient(900px 700px at 105% -5%,rgba(255,218,110,.40),transparent 60%),radial-gradient(800px 700px at -10% 105%,rgba(176,208,170,.38),transparent 60%),${ch.bg};color:${ch.ink};font-family:${B};padding:60px 72px 72px;display:flex;flex-direction:column}
+.cl-head{display:flex;align-items:center;gap:18px;flex:none}
+.cl-logo{width:68px;height:68px;flex:none}
+.cl-head b{display:block;font-family:${T};font-weight:800;font-size:38px;letter-spacing:-.01em;line-height:1.05}
+.cl-head small{display:block;font-size:22px;color:var(--cc-ink2);margin-top:2px}
+.cl-pg{margin-left:auto;font-size:26px;font-weight:700;color:var(--cc-ink3)}
+.cl-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:safe center;gap:26px;position:relative;padding-top:16px;padding-bottom:78px}
+.cl-body.haut{justify-content:flex-start;padding-top:56px}
+.cl-eyebrow{align-self:flex-start;font-size:28px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cc-accent-ink);background:linear-gradient(transparent 52%,var(--cc-mark) 52%,var(--cc-mark) 94%,transparent 94%);padding:2px 14px;border-radius:6px}
+.l-clair h1,.l-clair h2{font-family:${T};font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--cc-ink);margin:0}
+.l-clair mark{background:linear-gradient(transparent 52%,var(--cc-mark) 52%,var(--cc-mark) 94%,transparent 94%);color:inherit;padding:0 .12em;margin:0 -.04em;border-radius:6px 3px 8px 3px}
+.cl-texte{font-size:52px;line-height:1.32;color:var(--cc-ink2);margin:0;max-width:900px}
+.cl-texte.etroit{max-width:340px;font-size:42px}
+.cl-card{background:var(--cc-card);border-radius:30px;padding:36px 40px;box-shadow:0 22px 46px -30px rgba(18,48,31,.35),0 2px 0 rgba(18,48,31,.04)}
+.cl-card.band{background:var(--cc-band);box-shadow:0 22px 46px -30px rgba(18,48,31,.28)}
+.cl-card h3{font-family:${T};font-weight:800;font-size:60px;letter-spacing:-.02em;line-height:1.05;margin:0 0 14px}
+.cl-card p{font-size:48px;line-height:1.34;color:var(--cc-ink2);margin:0}
+.cl-big{font-family:${T};font-weight:800;font-size:150px;letter-spacing:-.04em;line-height:.9;color:var(--cc-accent-ink)}
+.cl-big small{display:block;font-family:${B};font-size:36px;letter-spacing:0;font-weight:700;color:var(--cc-ink);margin-top:14px}
+.cl-big sup,.cl-stat sup{font-size:.4em;font-weight:600;color:var(--cc-ink3)}
+.cl-svg{width:100%;height:auto;margin-top:22px;display:block}
+.cl-svg text{font-family:inherit}
+.cl-stats{display:flex;flex-direction:column;gap:16px}
+.cl-stat{display:flex;align-items:center;gap:34px;background:var(--cc-card);border-radius:30px;padding:22px 34px;box-shadow:0 22px 46px -30px rgba(18,48,31,.35),0 2px 0 rgba(18,48,31,.04)}
+.cl-stat b{font-family:${T};font-weight:800;font-size:96px;letter-spacing:-.03em;line-height:1;color:var(--cc-accent-ink);flex:0 0 auto;min-width:360px;white-space:nowrap}
+.cl-stat span{font-size:40px;line-height:1.3;color:var(--cc-ink2);flex:1}
+.cl-liste{display:flex;flex-direction:column;gap:20px}
+.cl-item{display:flex;align-items:flex-start;gap:28px;background:var(--cc-card);border-radius:30px;padding:30px 36px;box-shadow:0 22px 46px -30px rgba(18,48,31,.35),0 2px 0 rgba(18,48,31,.04)}
+.cl-num,.cl-ck{flex:none;width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:${T};font-weight:800;font-size:48px;background:var(--cc-step);color:var(--cc-ink)}
+.cl-item:nth-child(2) .cl-num{background:var(--cc-sun)}
+.cl-ck{background:var(--cc-accent);width:72px;height:72px;margin-top:4px}
+.cl-ck svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+.cl-item b{display:block;font-family:${T};font-weight:800;font-size:54px;letter-spacing:-.015em;line-height:1.1}
+.cl-item p{font-size:40px;line-height:1.3;color:var(--cc-ink2);margin:8px 0 0}
+.cl-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:18px;font-family:${T};font-weight:800;font-size:50px;letter-spacing:-.005em;padding:34px 56px;border-radius:999px;background:var(--cc-sun);color:var(--cc-ink);box-shadow:0 4px 0 var(--cc-edge),0 24px 40px -20px rgba(240,196,40,.75)}
+.cl-btn svg{width:52px;height:52px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.cl-gar{display:flex;flex-wrap:wrap;gap:14px 30px;font-size:32px;font-weight:600;color:var(--cc-ink2)}
+.cl-gar span{display:inline-flex;align-items:center;gap:12px}
+.cl-gar i{width:36px;height:36px;border-radius:50%;background:var(--cc-accent);display:inline-flex;align-items:center;justify-content:center}
+.cl-gar svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+.cl-src{font-size:26px;line-height:1.35;color:var(--cc-ink3);margin:0;padding-right:90px}
+.cl-mention{font-size:28px;line-height:1.35;color:var(--cc-ink3);margin:0;max-width:900px}
+.cl-next{position:absolute;right:72px;bottom:60px;font-size:60px;color:var(--cc-accent);font-weight:700;line-height:1}
+.cl-arche{position:absolute;right:92px;bottom:130px;width:460px;height:540px}
+.cl-arche::before{content:"";position:absolute;left:-26px;top:-26px;width:100%;height:100%;border:4px solid var(--cc-accent);border-bottom:0;border-radius:230px 230px 0 0;z-index:3;pointer-events:none}
+.cl-arche::after{content:"";position:absolute;right:-40px;bottom:-30px;width:94%;height:94%;background:var(--cc-sun);border-radius:70px 230px 40px 40px;z-index:0}
+.cl-arche-in{position:absolute;inset:0;border-radius:230px 230px 36px 36px;overflow:hidden;z-index:1;box-shadow:0 30px 60px -30px rgba(18,48,31,.5)}
+.cl-arche-in img{width:100%;height:100%;object-fit:cover}
+.cl-badge{position:absolute;left:-120px;bottom:70px;z-index:4;background:var(--cc-card);border-radius:24px;padding:18px 26px;display:flex;align-items:center;gap:18px;box-shadow:0 20px 40px -22px rgba(18,48,31,.5)}
+.cl-badge b{font-family:${T};font-weight:800;font-size:64px;letter-spacing:-.03em;color:var(--cc-accent-ink);line-height:1}
+.cl-badge span{font-size:22px;line-height:1.25;color:var(--cc-ink2);max-width:210px}
+`;
 }
 
 export function css(design) {
   const c = design.couleurs;
   const T = `"${design.polices.titre}",system-ui,sans-serif`;
-  return `${fontFace()}
+  return `${fontFace(design)}
 .slide{--encre:${c.encre};--papier:${c.papier};position:relative;width:${W}px;height:${H}px;overflow:hidden;
   font-family:"${design.polices.texte}",system-ui,sans-serif;color:var(--encre);background:var(--papier);box-sizing:border-box}
 .slide *{box-sizing:border-box}
@@ -207,6 +276,8 @@ mark{white-space:nowrap;background:var(--mkbg);color:var(--mkfg);padding:0 .14em
 /* texte seul, sans photo (rétro-compatible) */
 .l-texte{padding:150px 72px 72px;display:flex;flex-direction:column;justify-content:center;gap:40px}
 .l-texte h2{font-size:120px}
+${clairCss(design, T)}
+${(design.css ?? []).join('\n')}
 `.replace('mark &{background:none}', '');
 }
 
@@ -222,6 +293,26 @@ const bar = (i, n, design, sombre = false) =>
   `<div class="bar${sombre ? ' sombre' : ''}"><span>${esc(design.marque)}</span><span>${i + 1} / ${n}</span></div>`;
 const arrow = (i, n) => (i < n - 1 ? '<div class="arrow">→</div>' : '');
 const fit = (max, maxh) => `data-fit="${max}" data-maxh="${maxh}"`;
+
+const TICK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const ARROW_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+const svgFile = (root, f) => readFileSync(join(root, 'assets', 'svg', f), 'utf8').replace('<svg ', '<svg class="cl-svg" ');
+function clairBloc(b, root) {
+  switch (b.type) {
+    case 'stats':
+      return `<div class="cl-stats">${b.items.map((it) => `<div class="cl-stat"><b>${rich(it.valeur)}</b><span>${rich(it.texte)}${it.sup ? `<sup>${it.sup}</sup>` : ''}</span></div>`).join('')}</div>`;
+    case 'carte':
+      return `<div class="cl-card${b.fond === 'band' ? ' band' : ''}">${b.grand ? `<div class="cl-big">${rich(b.grand)}${b.sup ? `<sup>${b.sup}</sup>` : ''}${b.legende ? `<small>${rich(b.legende)}</small>` : ''}</div>` : ''}${b.titre ? `<h3>${rich(b.titre)}</h3>` : ''}${b.texte ? `<p>${rich(b.texte)}</p>` : ''}${b.svg ? svgFile(root, b.svg) : ''}</div>`;
+    case 'liste':
+      return `<div class="cl-liste">${b.items.map((it, k) => `<div class="cl-item">${b.mode === 'coche' ? `<span class="cl-ck">${TICK}</span>` : `<span class="cl-num">${k + 1}</span>`}<div><b>${rich(it.t)}</b>${it.d ? `<p>${rich(it.d)}</p>` : ''}</div></div>`).join('')}</div>`;
+    case 'bouton':
+      return `<div class="cl-btn">${rich(b.texte)} ${ARROW_SVG}</div>`;
+    case 'garanties':
+      return `<div class="cl-gar">${b.items.map((t) => `<span><i>${TICK}</i>${rich(t)}</span>`).join('')}</div>`;
+    default:
+      throw new Error(`Bloc inconnu : ${b.type}`);
+  }
+}
 
 const listeHtml = (items = [], mode = 'num') =>
   `<div class="liste">${items
@@ -253,6 +344,16 @@ function inner(s, i, n, design, root) {
       const body = s.texte ?? s.sous;
       return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
 <div class="txt">${lead}${s.valeur ? `<div class="chiffre">${rich(s.valeur)}</div>` : ''}${head}${body ? `<p class="corps">${rich(body)}</p>` : ''}${s.items ? listeHtml(s.items, s.puces) : ''}${s.mention ? `<p class="mention">${rich(s.mention)}</p>` : ''}${i === n - 1 ? `<div class="marque"><span>${esc(design.marque)}</span> · ${esc(design.signature)}</div>` : ''}</div>${arrow(i, n)}`;
+    }
+    case 'clair': {
+      const lg = design.charte?.logo ? readFileSync(join(root, 'assets', 'svg', design.charte.logo), 'utf8').replace('<svg ', '<svg class="cl-logo" ') : '';
+      const head = `<header class="cl-head">${lg}<div><b>${esc(design.marque)}</b><small>${esc(design.charte?.sous_marque ?? '')}</small></div><span class="cl-pg">${i + 1} / ${n}</span></header>`;
+      const big = s.grand ?? i === 0;
+      const blocs = (s.blocs ?? []).map((b) => clairBloc(b, root)).join('');
+      const a = s.arche;
+      const arche = a ? `<div class="cl-arche"><div class="cl-arche-in">${imgTag({ image: { fichier: a.fichier, pos: a.pos } }, root, 'ph')}</div>${a.badge ? `<div class="cl-badge"><b>${rich(a.badge.valeur)}</b><span>${rich(a.badge.texte)}</span></div>` : ''}</div>` : '';
+      const titre = s.titre ? (big ? `<h1 ${fit(124, 420)}>${rich(s.titre)}</h1>` : `<h2 ${fit(128, 330)}>${rich(s.titre)}</h2>`) : '';
+      return `${head}<div class="cl-body${s.haut ? ' haut' : ''}">${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
     }
     case 'typo': {
       const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';

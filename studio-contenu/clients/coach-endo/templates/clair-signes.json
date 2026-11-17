@@ -1,0 +1,27 @@
+{
+  "nom": "clair-signes",
+  "pour": "Pilier « Les signes » : reconnaître les signes qui doivent conduire à consulter.",
+  "regles": [
+    "Charte « Clair » : un mot clé surligné en jaune par titre",
+    "Dernière slide : bouton « Recevoir mon kit gratuit », garanties et mention « informations générales »",
+    "Santé et droit : jamais de conseil individuel, « en principe », « selon votre situation »",
+    "Rappeler que ces signes ne suffisent pas à poser un diagnostic"
+  ],
+  "slides": [
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    }
+  ]
+}

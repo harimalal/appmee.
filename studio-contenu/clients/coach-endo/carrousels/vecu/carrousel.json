@@ -1,98 +1,116 @@
 {
   "client": "coach-endo",
-  "template": "vecu-6-slides",
-  "fruit": "prune",
-  "marque": "couleur",
+  "template": "clair-vecu",
+  "fruit": "vert",
   "titre_interne": "Ce que vivent ces femmes",
-  "legende": "Elles ont mal, et on ne le voit pas. Ce que vivent beaucoup de femmes atteintes d'endométriose, au travail comme ailleurs. [[Ajouter les mots de vos clientes, avec leur accord.]] Informations générales, elles ne remplacent pas un avis médical. #endométriose #maladieinvisible #travail",
+  "legende": "Ce n'est pas un manque de motivation. C'est un rythme qui ne vous correspond pas. Les chiffres : 1 femme sur 10 concernée, 49 % estiment que l'endométriose a freiné leur carrière, 7 à 9 ans pour obtenir un diagnostic. Sources : sante.fr ; enquête CEET / EndoFrance 2020. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. #endométriose #carrière #reconversion",
   "slides": [
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "kicker": "Endométriose au travail",
-      "titre": "Elles ont mal.\nOn ne le *voit pas*.",
-      "sous": "Ce que vivent beaucoup de femmes, en silence.",
-      "image": {
-        "fichier": "silhouette-sombre.jpg",
-        "pos": "50% 30%"
+      "layout": "clair",
+      "haut": true,
+      "grand": true,
+      "eyebrow": "Endométriose et vie professionnelle",
+      "titre": "Ce n'est pas un *manque de motivation*",
+      "texte": "C'est un rythme qui ne vous correspond pas.",
+      "etroit": true,
+      "arche": {
+        "fichier": "femme-souriante.jpg",
+        "pos": "50% 30%",
+        "badge": {
+          "valeur": "1/10",
+          "texte": "femme concernée par l'endométriose en France"
+        }
       }
     },
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "kicker": "Avant de savoir",
-      "valeur": "~7 ans",
-      "texte": "C'est le délai moyen avant qu'un diagnostic soit posé, en France. [[Chiffre à sourcer avant publication.]]",
-      "image": {
-        "fichier": "silhouette-regard.jpg",
-        "pos": "50% 20%"
-      }
+      "layout": "clair",
+      "eyebrow": "Ce que vous vivez est documenté",
+      "titre": "Une femme sur dix *est concernée*",
+      "blocs": [
+        {
+          "type": "carte",
+          "grand": "1 sur 10",
+          "legende": "femmes concernées",
+          "sup": "1",
+          "svg": "foule.svg"
+        }
+      ],
+      "source": "¹ Ministère de la Santé, sante.fr, « Endométriose »."
     },
     {
-      "layout": "photo",
-      "pos": "haut",
-      "align": "gauche",
-      "kicker": "Ce qu'elles entendent",
-      "titre": "« C'est normal d'avoir mal *pendant les règles*. »",
-      "texte": "Une phrase que beaucoup de femmes entendent, parfois pendant des années. [[Verbatims réels de clientes, à fournir.]]",
-      "image": {
-        "fichier": "silhouette-fenetre.jpg",
-        "pos": "50% 60%"
-      }
+      "layout": "clair",
+      "eyebrow": "En chiffres",
+      "titre": "Un impact *réel* sur la carrière",
+      "blocs": [
+        {
+          "type": "stats",
+          "items": [
+            {
+              "valeur": "49 %",
+              "texte": "des femmes concernées estiment que l'endométriose a freiné leur carrière",
+              "sup": "2"
+            },
+            {
+              "valeur": "+25 %",
+              "texte": "ont dû changer de métier ou de statut professionnel",
+              "sup": "2"
+            },
+            {
+              "valeur": "7 à 9 ans",
+              "texte": "pour obtenir un diagnostic, en moyenne",
+              "sup": "1, 2"
+            }
+          ]
+        }
+      ],
+      "source": "¹ Ministère de la Santé, sante.fr, « Endométriose ». ² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
     },
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "ombre": "fort",
-      "kicker": "Au travail",
-      "titre": "Le poids *du silence*",
-      "image": {
-        "fichier": "ordi-store.jpg",
-        "pos": "50% 40%"
-      },
-      "items": [
+      "layout": "clair",
+      "eyebrow": "Deux rythmes",
+      "titre": "Un seul est *évalué*",
+      "blocs": [
         {
-          "t": "Cacher la douleur",
-          "d": "Sourire en réunion, malgré tout."
-        },
-        {
-          "t": "Compter ses absences",
-          "d": "Et s'en excuser à chaque fois."
-        },
-        {
-          "t": "Craindre le regard",
-          "d": "Se demander si on sera crue."
+          "type": "carte",
+          "fond": "band",
+          "texte": "Quand l'organisation du travail suppose une énergie constante, tout écart devient une faiblesse apparente. Le problème est le cadre, pas votre valeur.",
+          "svg": "rythmes.svg"
         }
       ]
     },
     {
-      "layout": "photo",
-      "pos": "haut",
-      "align": "gauche",
-      "kicker": "À retenir",
-      "titre": "Ce n'est pas *dans leur tête*",
-      "texte": "L'endométriose est une maladie chronique, reconnue médicalement. Elle mérite d'être prise au sérieux, aussi au travail.",
-      "image": {
-        "fichier": "lit-blanc.jpg",
-        "pos": "50% 50%"
-      },
-      "ombre": "fort"
+      "layout": "clair",
+      "haut": true,
+      "eyebrow": "Au quotidien",
+      "titre": "S'adapter en permanence, *jusqu'à s'épuiser*",
+      "texte": "Beaucoup de femmes s'adaptent en permanence, jusqu'à s'épuiser ou renoncer à leurs ambitions.",
+      "etroit": true,
+      "arche": {
+        "fichier": "carnet.jpg",
+        "pos": "62% 50%"
+      }
     },
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "titre": "Vous n'êtes pas *seule*",
-      "texte": "Parlons de votre situation professionnelle. [[Contact de la coach.]]",
-      "mention": "Informations générales : elles ne remplacent pas un avis médical.",
-      "image": {
-        "fichier": "bureau-bois.jpg",
-        "pos": "50% 50%"
-      },
-      "ombre": "fort"
+      "layout": "clair",
+      "eyebrow": "Première étape",
+      "titre": "Reprenez la main sur votre carrière, *à votre rythme*",
+      "texte": "Recevez le kit gratuit « Carrière en cycles » : un guide, un carnet de bord et 5 leçons par e-mail. [[Lien à mettre en bio.]]",
+      "blocs": [
+        {
+          "type": "bouton",
+          "texte": "Recevoir mon kit gratuit"
+        },
+        {
+          "type": "garanties",
+          "items": [
+            "Gratuit",
+            "Sans carte bancaire",
+            "Confidentiel",
+            "Désinscription en 1 clic"
+          ]
+        }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique."
     }
   ]
 }

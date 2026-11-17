@@ -1,41 +1,15 @@
 {
-  "source": "Unsplash (licence Unsplash)",
-  "statut": "photos d'illustration sans visage identifiable, pas des photos de la coach ni de ses clientes",
+  "source": "Photos d'illustration reprises de la landing EndoReconversion (Unsplash : Nolan Manning, Štefan Štefančík, Fabrício Severo, Kelly Sikkema, Jamshaid Mughal)",
+  "statut": "photos d'illustration à remplacer par les photos de la coach",
   "photos": {
-    "silhouette-sombre.jpg": {
-      "auteur": "Sophia",
-      "id": "Mjm6ot0FdNE",
-      "url": "https://unsplash.com/photos/a-silhouette-of-a-woman-in-the-dark-Mjm6ot0FdNE"
+    "femme-souriante.jpg": {
+      "auteur": "Unsplash (voir source)"
     },
-    "silhouette-fenetre.jpg": {
-      "auteur": "Jr Korpa",
-      "id": "lBPtkH1Sel4",
-      "url": "https://unsplash.com/photos/woman-standing-in-front-of-window-lBPtkH1Sel4"
+    "carnet.jpg": {
+      "auteur": "Unsplash (voir source)"
     },
-    "silhouette-regard.jpg": {
-      "auteur": "Nellie Adamyan",
-      "id": "R5P5h-jMsLQ",
-      "url": "https://unsplash.com/photos/a-silhouette-of-a-woman-sitting-in-front-of-a-window-R5P5h-jMsLQ"
-    },
-    "lit-blanc.jpg": {
-      "auteur": "Bluewater Sweden",
-      "id": "asXNM_n2jNM",
-      "url": "https://unsplash.com/photos/white-bed-linen-near-white-wooden-nightstand-asXNM_n2jNM"
-    },
-    "ordi-store.jpg": {
-      "auteur": "Manuel Chinchilla",
-      "id": "IelAcU7G0vo",
-      "url": "https://unsplash.com/photos/laptop-with-sunlight-streaming-through-window-blinds-IelAcU7G0vo"
-    },
-    "bureau-bois.jpg": {
-      "auteur": "Todd Jiang",
-      "id": "nmHNNVIyfow",
-      "url": "https://unsplash.com/photos/wooden-desk-with-keyboard-coffee-and-monitor-nmHNNVIyfow"
-    },
-    "ombres-plante.jpg": {
-      "auteur": "Lea Gindorf",
-      "id": "gxeNhhDOwCM",
-      "url": "https://unsplash.com/photos/sunlight-casts-plant-shadows-on-a-lamp-and-wall-gxeNhhDOwCM"
+    "ordinateur-parc.jpg": {
+      "auteur": "Unsplash (voir source)"
     }
   }
 }

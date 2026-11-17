@@ -1,18 +1,19 @@
-# Coach reconnaissance professionnelle et endométriose (provisoire)
+# EndoReconversion — marque (charte reprise de la landing)
 
-Statut : brouillon construit à partir d'une description orale. À valider par la coach.
+Statut : charte et textes repris de la landing « EndoReconversion Landing Clair » fournie par le client. À valider.
 
-## Ce qui est établi (dit par le client)
-- Une coach en reconnaissance professionnelle pour les femmes atteintes d'endométriose (et de maladies chroniques proches).
-- Objectif des contenus : faire comprendre ce que vivent ces femmes, les signes de la maladie, et ce qu'elles peuvent réclamer en entreprise.
+## Ce qui est établi (landing)
+- Marque : EndoReconversion, L'Académie de la Reconversion au Féminin. Coach : Claire (certifiée RNCP), 20 ans de conseil en transformation, 25 ans de vécu de l'endométriose avant le diagnostic.
+- Offre d'entrée : le kit gratuit « Carrière en cycles » (guide « Les 5 verrous de la carrière en endométriose », carnet de bord « Jauge d'énergie », trois trames de messages, 5 leçons par e-mail).
+- Méthode en trois étapes : mesurer sa jauge d'énergie, faire l'audit de ses compétences, choisir un format qui convient.
+- Garanties : gratuit, sans carte bancaire, confidentiel, désinscription en 1 clic.
+- Cadre : coaching, pas de thérapie ; ni avis médical ni avis juridique.
 
-## Voix (hypothèse à valider)
-- Vouvoiement, posé, chaleureux, direct. Jamais de pitié ni de dramatisation.
-- On parle de droits, de choix et de pouvoir d'agir, pas de victimes.
-- Phrases courtes. Un conseil concret par contenu.
+## Voix
+- Vouvoiement, posé, positif, concret. « Votre carrière peut avancer au rythme de votre corps. » « Pas d'assistanat. Une démarche pour activer votre potentiel. »
+- On parle de rythme, de cadre, de choix. Jamais de pitié, jamais de culpabilisation.
 
-## À fournir par la coach pour sortir du provisoire
-- Son nom, sa marque, ses coordonnées, son site, ses réseaux.
-- Son parcours et sa méthode (ce qu'elle propose exactement, à qui, à quel prix).
-- 3 à 5 contenus qu'elle juge réussis ; ses mots à elle ; des témoignages réels de clientes avec leur accord écrit.
-- Le pays visé : le droit présenté ici est le droit français.
+## Graphisme
+- Fond crème (#FAF4E8), encre vert profond (#12301F), vert (#1F7A4F), jaune (#FFD84A), surligneur (#FFE35C), menthe (#E7EFDC, #CFE8D6).
+- Bricolage Grotesque 800 pour les titres, Figtree pour le texte.
+- Surligneur jaune sur le mot clé, arche de photo cernée de vert avec forme jaune, cartes blanches arrondies, bouton jaune.

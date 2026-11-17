@@ -1,80 +1,99 @@
 {
   "client": "coach-endo",
-  "template": "droits-en-entreprise",
-  "fruit": "sauge",
-  "marque": "double",
+  "template": "clair-droits",
+  "fruit": "vert",
   "titre_interne": "Ce qu'elles peuvent réclamer en entreprise",
-  "legende": "Endométriose au travail : ce que vous pouvez demander à votre entreprise, en France. Informations générales, à adapter à votre situation. [[Contact de la coach.]] #endométriose #droits #travail",
+  "legende": "Endométriose au travail : ce que vous pouvez demander à votre entreprise, en France. Informations générales, à adapter à votre situation. Le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Ni avis médical, ni avis juridique. #endométriose #droits #travail",
   "slides": [
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "kicker": "Endométriose au travail",
+      "layout": "clair",
+      "haut": true,
+      "grand": true,
+      "eyebrow": "Endométriose au travail · France",
       "titre": "Ce que vous pouvez *demander*",
-      "sous": "À votre entreprise, en France.",
-      "image": {
-        "fichier": "bureau-bois.jpg",
-        "pos": "50% 40%"
-      },
-      "ombre": "fort"
+      "texte": "À votre entreprise.",
+      "etroit": true,
+      "arche": {
+        "fichier": "carnet.jpg",
+        "pos": "55% 50%"
+      }
     },
     {
-      "layout": "typo",
-      "kicker": "Premier droit",
+      "layout": "clair",
+      "eyebrow": "Premier droit",
       "titre": "Vous n'avez pas à *tout dire*",
-      "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège."
+      "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège. Cette décision vous appartient."
     },
     {
-      "layout": "typo",
-      "kicker": "Ce que vous pouvez demander",
+      "layout": "clair",
+      "eyebrow": "Ce que vous pouvez demander",
       "titre": "Trois *demandes*",
-      "items": [
+      "blocs": [
         {
-          "t": "Un aménagement de poste",
-          "d": "Horaires, pauses, télétravail : selon votre situation."
-        },
-        {
-          "t": "Une visite à la médecine du travail",
-          "d": "Vous pouvez la demander à tout moment."
-        },
-        {
-          "t": "La RQTH",
-          "d": "Reconnaissance de la qualité de travailleur handicapé, auprès de la MDPH."
+          "type": "liste",
+          "mode": "num",
+          "items": [
+            {
+              "t": "Un aménagement de poste",
+              "d": "Horaires, pauses, télétravail : selon votre situation."
+            },
+            {
+              "t": "Une visite à la médecine du travail",
+              "d": "Vous pouvez la demander à tout moment."
+            },
+            {
+              "t": "La RQTH",
+              "d": "Reconnaissance de la qualité de travailleur handicapé, auprès de la MDPH."
+            }
+          ]
         }
       ]
     },
     {
-      "layout": "typo",
-      "fond": "fruit",
-      "kicker": "La RQTH",
+      "layout": "clair",
+      "eyebrow": "La RQTH",
       "titre": "Un *outil*, pas une obligation",
-      "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier : elle n'est pas automatique. Vous décidez de la communiquer ou non."
+      "blocs": [
+        {
+          "type": "carte",
+          "fond": "band",
+          "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier : elle n'est pas automatique. Vous décidez de la communiquer ou non."
+        }
+      ]
     },
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
-      "kicker": "Vos protections",
+      "layout": "clair",
+      "eyebrow": "Vos protections",
       "titre": "Pas de *discrimination*",
-      "texte": "Une décision défavorable fondée sur votre état de santé ou votre handicap est en principe interdite par le Code du travail. [[À valider par un juriste en droit du travail.]]",
-      "image": {
-        "fichier": "silhouette-regard.jpg",
-        "pos": "50% 40%"
-      }
+      "blocs": [
+        {
+          "type": "carte",
+          "fond": "band",
+          "texte": "Une décision défavorable fondée sur votre état de santé ou votre handicap est en principe interdite par le Code du travail. [[À valider par un juriste en droit du travail.]]"
+        }
+      ]
     },
     {
-      "layout": "photo",
-      "pos": "bas",
-      "align": "gauche",
+      "layout": "clair",
+      "eyebrow": "Et maintenant ?",
       "titre": "Chaque situation est *différente*",
-      "texte": "Faisons le point sur la vôtre. [[Contact de la coach.]]",
-      "mention": "Informations générales sur le droit français, à adapter à votre situation. Elles ne remplacent pas un avis juridique ou médical.",
-      "image": {
-        "fichier": "lit-blanc.jpg",
-        "pos": "50% 50%"
-      },
-      "ombre": "fort"
+      "texte": "Les trames de messages du kit vous aident à choisir ce que vous dites, à qui, et dans quels mots. [[Lien à mettre en bio.]]",
+      "blocs": [
+        {
+          "type": "bouton",
+          "texte": "Recevoir mon kit gratuit"
+        },
+        {
+          "type": "garanties",
+          "items": [
+            "Gratuit",
+            "Sans carte bancaire",
+            "Confidentiel",
+            "Désinscription en 1 clic"
+          ]
+        }
+      ],
+      "mention": "Pour vos droits précis, rapprochez-vous de votre médecin du travail ou d'un conseil juridique. Informations d'ordre général, ni avis médical, ni avis juridique."
     }
   ]
 }

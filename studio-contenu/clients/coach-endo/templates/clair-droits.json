@@ -1,0 +1,30 @@
+{
+  "nom": "clair-droits",
+  "pour": "Pilier « Les droits en entreprise » : ce qu'une salariée peut demander (droit français).",
+  "regles": [
+    "Charte « Clair » : un mot clé surligné en jaune par titre",
+    "Dernière slide : bouton « Recevoir mon kit gratuit », garanties et mention « informations générales »",
+    "Santé et droit : jamais de conseil individuel, « en principe », « selon votre situation »",
+    "Préciser « en France », « selon votre situation », « en principe »"
+  ],
+  "slides": [
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    }
+  ]
+}

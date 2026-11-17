@@ -1,44 +1,56 @@
 {
-  "statut": "provisoire : aucune charte fournie, à valider par la coach",
-  "marque": "Nom de la coach",
-  "signature": "coaching reconnaissance professionnelle · endométriose",
+  "statut": "charte tirée de la landing « EndoReconversion Landing Clair » fournie par le client",
+  "marque": "EndoReconversion",
+  "signature": "L'Académie de la Reconversion au Féminin",
   "polices": {
     "titre": "Bricolage Grotesque",
-    "texte": "DM Sans"
+    "texte": "Figtree"
   },
   "couleurs": {
-    "encre": "#17141F",
-    "papier": "#FAF8F5",
+    "encre": "#12301F",
+    "papier": "#FAF4E8",
     "fruits": {
-      "prune": {
-        "fond": "#5B2A5E",
-        "texte": "#FFFFFF",
-        "clair": "#EBB9F2"
-      },
-      "jaune": {
-        "fond": "#E8B500",
-        "texte": "#17141F",
-        "clair": "#FFD84D"
-      },
-      "sauge": {
-        "fond": "#3F6B5A",
+      "vert": {
+        "fond": "#1F7A4F",
         "texte": "#FFFFFF",
         "clair": "#BFE8D2"
       }
     }
   },
+  "charte": {
+    "bg": "#FAF4E8",
+    "card": "#FFFDF8",
+    "line": "#EADFC6",
+    "ink": "#12301F",
+    "ink2": "#2E4A3A",
+    "ink3": "#5C7566",
+    "accent": "#1F7A4F",
+    "accentInk": "#1A6B45",
+    "sun": "#FFD84A",
+    "mark": "#FFE35C",
+    "band": "#E7EFDC",
+    "step": "#CFE8D6",
+    "edge": "#D1A91A",
+    "logo": "logo.svg",
+    "sous_marque": "L'Académie de la Reconversion au Féminin"
+  },
+  "css": [
+    ".cl-logo .m1{fill:#12301F}.cl-logo .m2{fill:#1F7A4F}.cl-logo .m3{fill:#FFD84A}",
+    ".cl-svg .ax,.cl-svg .lin{stroke:#2E4A3A}.cl-svg .cyc{stroke:#1F7A4F}.cl-svg .dot{fill:#FFD84A;stroke:#12301F}.cl-svg .lb{fill:#12301F}",
+    "svg.cl-svg.crowd{color:#A9D2B5}svg.cl-svg .fg-hi{color:#F2B90F}"
+  ],
   "regles_visuelles": [
-    "Ton posé, rassurant et digne : couleurs sombres et chaudes, jaune d'accent (couleur du mois de sensibilisation à l'endométriose)",
-    "Photos sans visage identifiable (silhouettes, lieux, objets), jamais de mise en scène de la douleur",
-    "Contenus à lire (signes, droits) sur fond uni et typographique, pour la lisibilité",
-    "Une idée par slide, 35 mots maximum de texte courant",
-    "Dernière slide : appel à l'action et mention « informations générales »"
+    "Fond crème, encre vert profond, surligneur jaune sur le mot clé de chaque titre",
+    "Titres Bricolage Grotesque 800, texte Figtree",
+    "Photos dans une arche cernée de vert avec une forme jaune décalée",
+    "Cartes blanches arrondies, chiffres en vert, bouton jaune « Recevoir mon kit gratuit »",
+    "Une idée par slide ; dernière slide : bouton, garanties et mention « informations générales »"
   ],
   "apercu": {
-    "titre": "Carrousels coach endométriose",
-    "h1": "Coach reconnaissance professionnelle · endométriose",
-    "intro": "Trois carrousels pour une coach qui accompagne des femmes atteintes d'endométriose : ce qu'elles vivent, les signes, ce qu'elles peuvent demander à leur entreprise. Contenu de santé et de droit : informations générales, à sourcer et à faire relire avant publication. Les photos sont des silhouettes d'illustration (Unsplash), sans visage identifiable. Les zones jaunes sont des informations que seule la coach peut donner.",
+    "titre": "Carrousels EndoReconversion",
+    "h1": "EndoReconversion",
+    "intro": "Trois carrousels aux couleurs de la charte de la landing EndoReconversion : ce que vivent ces femmes, les signes, ce qu'elles peuvent demander à leur entreprise. Les chiffres du premier viennent de la landing et sont sourcés. Santé et droit : informations générales, à faire relire avant publication. Les photos sont celles d'illustration de la landing, à remplacer par celles de la coach.",
     "complement": "la coach",
-    "note": "Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Droit présenté : droit français. Brouillons : rien n'est publié, chiffres et règles à vérifier avant publication."
+    "note": "Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Droit présenté : droit français. Brouillons : rien n'est publié."
   }
 }

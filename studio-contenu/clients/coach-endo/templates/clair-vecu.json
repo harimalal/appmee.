@@ -1,0 +1,30 @@
+{
+  "nom": "clair-vecu",
+  "pour": "Pilier « Ce que vivent ces femmes » : chiffres sourcés et rythme.",
+  "regles": [
+    "Charte « Clair » : un mot clé surligné en jaune par titre",
+    "Dernière slide : bouton « Recevoir mon kit gratuit », garanties et mention « informations générales »",
+    "Santé et droit : jamais de conseil individuel, « en principe », « selon votre situation »",
+    "Chiffres uniquement ceux de la landing, avec leur source en pied de slide"
+  ],
+  "slides": [
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    }
+  ]
+}
