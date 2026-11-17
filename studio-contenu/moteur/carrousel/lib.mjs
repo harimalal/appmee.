@@ -83,7 +83,7 @@ function clairCss(design, T) {
 .cl-fig-det{font-size:40px;line-height:1.3;color:var(--cc-ink3);margin:0;max-width:860px}
 .cl-viz{width:100%;height:auto;margin-top:14px;display:block}
 .cl-viz text{font-family:inherit}
-.cl-viz.globe{width:290px;margin-top:6px}
+.cl-viz.globe{width:230px;margin-top:0}
 .cl-body.bas{justify-content:flex-end}
 .cl-body.centre{justify-content:center}
 .cl-body .cl-badge{position:static;align-self:flex-start}
@@ -138,6 +138,21 @@ function clairCss(design, T) {
 .cl-arche::after{content:"";position:absolute;right:-40px;bottom:-30px;width:94%;height:94%;background:var(--cc-sun);border-radius:70px 230px 40px 40px;z-index:0}
 .cl-arche-in{position:absolute;inset:0;border-radius:230px 230px 36px 36px;overflow:hidden;z-index:1;box-shadow:0 30px 60px -30px rgba(18,48,31,.5)}
 .cl-arche-in img{width:100%;height:100%;object-fit:cover}
+.cl-bande{position:absolute;left:0;right:0;overflow:hidden;z-index:0;box-shadow:0 30px 60px -34px rgba(18,48,31,.5)}
+.cl-bande img{width:100%;height:100%;object-fit:cover;display:block}
+.cl-bande.haut{top:0;border-radius:0 0 72px 72px}
+.cl-bande.haut::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,32,20,.55) 0%,rgba(10,32,20,0) 34%)}
+.cl-bande.bas{bottom:0;border-radius:72px 72px 0 0}
+.bd-haut .cl-head,.bd-bas .cl-head{position:relative;z-index:2}
+.bd-haut .cl-head b,.bd-haut .cl-pg{color:#fff}
+.bd-haut .cl-head small{color:rgba(255,255,255,.9)}
+.bd-haut .cl-logo .m1{fill:${ch.bg}}
+.bd-bas .cl-next{color:#fff;z-index:3}
+.bd-bas .cl-body,.bd-haut .cl-body{position:relative;z-index:2}
+.cl-photos{display:flex;gap:22px;align-items:flex-end;margin:6px 0 4px}
+.cl-ph{flex:1;position:relative;border-radius:999px 999px 30px 30px;overflow:hidden;box-shadow:0 26px 50px -28px rgba(18,48,31,.55)}
+.cl-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.cl-ph em{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-style:normal;font-weight:700;font-size:28px;color:${ch.ink};background:var(--cc-card);padding:6px 20px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(18,48,31,.5)}
 .cl-badge{position:absolute;left:-120px;bottom:70px;z-index:4;background:var(--cc-card);border-radius:24px;padding:18px 26px;display:flex;align-items:center;gap:18px;box-shadow:0 20px 40px -22px rgba(18,48,31,.5)}
 .cl-badge b{font-family:${T};font-weight:800;font-size:64px;letter-spacing:-.03em;color:var(--cc-accent-ink);line-height:1}
 .cl-badge span{font-size:22px;line-height:1.25;color:var(--cc-ink2);max-width:210px}
@@ -370,6 +385,10 @@ function clairBloc(b, root, design) {
       return `<div class="cl-liste">${b.items.map((it, k) => `<div class="cl-item">${b.mode === 'coche' ? `<span class="cl-ck">${TICK}</span>` : `<span class="cl-num">${k + 1}</span>`}<div><b>${rich(it.t)}</b>${it.d ? `<p>${rich(it.d)}</p>` : ''}</div></div>`).join('')}</div>`;
     case 'photo':
       return `<div class="cl-photo" style="height:${b.hauteur ?? 380}px"><div class="cl-photo-in">${imgTag({ image: { fichier: b.fichier, pos: b.pos } }, root, 'ph')}</div></div>`;
+    case 'photos': {
+      const h = b.hauteur ?? 400, n = b.items.length;
+      return `<div class="cl-photos">${b.items.map((it, k) => `<div class="cl-ph" style="height:${k === 1 && n === 3 ? h + 56 : h}px">${imgTag({ image: { fichier: it.fichier, pos: it.pos } }, root, 'ph')}${it.legende ? `<em>${rich(it.legende)}</em>` : ''}</div>`).join('')}</div>`;
+    }
     case 'chiffre':
       return `<div class="cl-fig"><div class="cl-fig-num" data-fit="${b.taille ?? 250}" data-maxh="340">${rich(b.valeur)}${b.sup ? `<sup>${b.sup}</sup>` : ''}</div>${WAVE}<p class="cl-fig-leg">${rich(b.legende)}</p>${b.detail ? `<p class="cl-fig-det">${rich(b.detail)}</p>` : ''}${visuel(b.visuel, design.charte, root)}</div>`;
     case 'bouton':
@@ -424,9 +443,13 @@ function inner(s, i, n, design, root) {
       const titre = s.titre ? (big ? `<h1 ${fit(124, 420)}>${rich(s.titre)}</h1>` : `<h2 ${fit(128, 330)}>${rich(s.titre)}</h2>`) : '';
       const air = s.air ? ' air' : '';
       const bodyCls = air + (cp ? (s.pos === 'haut' ? ' haut' : s.pos === 'centre' ? ' centre' : ' bas') : s.haut ? ' haut' : '');
-      const bg = cp ? `${imgTag(s, root)}<div class="scrim"></div>` : '';
+      const bd = s.bande;
+      const bh = bd?.hauteur ?? 560;
+      const bande = bd ? `<div class="cl-bande ${bd.cote === 'bas' ? 'bas' : 'haut'}" style="height:${bh}px">${imgTag({ image: { fichier: bd.fichier, pos: bd.pos } }, root, 'ph')}</div>` : '';
+      const bodyStyle = bd ? (bd.cote === 'bas' ? ` style="padding-bottom:${bh + 36}px"` : ` style="padding-top:${bh - 92}px"`) : '';
+      const bg = cp ? `${imgTag(s, root)}<div class="scrim"></div>` : bande;
       const badge = s.badge ? `<div class="cl-badge"><b>${rich(s.badge.valeur)}</b><span>${rich(s.badge.texte)}</span></div>` : '';
-      return `${bg}${head}<div class="cl-body${bodyCls}">${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
+      return `${bg}${head}<div class="cl-body${bodyCls}"${bodyStyle}>${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
     }
     case 'typo': {
       const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';
@@ -455,7 +478,7 @@ function inner(s, i, n, design, root) {
 export function slideHtml(s, i, n, design, carousel, root) {
   const layout = s.layout ?? 'texte';
   const fond = s.fond ?? (layout === 'typo' ? 'encre' : 'papier');
-  const cls = ['slide', `l-${layout}`, `mk-${carousel.marque ?? (layout === 'photo' ? 'couleur' : 'surligne')}`, s.pos ? `p-${s.pos}` : '', s.align ? `a-${s.align}` : '', s.encart ? `e-${s.encart}` : '', s.ombre ? `o-${s.ombre}` : '', fond === 'fruit' ? 'fond-fruit' : fond === 'encre' ? 'fond-encre' : ''].join(' ');
+  const cls = ['slide', `l-${layout}`, `mk-${carousel.marque ?? (layout === 'photo' ? 'couleur' : 'surligne')}`, s.pos ? `p-${s.pos}` : '', s.align ? `a-${s.align}` : '', s.encart ? `e-${s.encart}` : '', s.ombre ? `o-${s.ombre}` : '', s.bande ? `bd-${s.bande.cote === 'bas' ? 'bas' : 'haut'}` : '', fond === 'fruit' ? 'fond-fruit' : fond === 'encre' ? 'fond-encre' : ''].join(' ');
   const p = design.couleurs.fruits[carousel.fruit] ?? Object.values(design.couleurs.fruits)[0];
   return `<section class="${cls}" style="--f:${p.fond};--ft:${p.texte};--fc:${p.clair ?? p.fond}">${inner({ ...s, layout }, i, n, design, root)}</section>`;
 }

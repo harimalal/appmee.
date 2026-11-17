@@ -14,8 +14,8 @@
       "texte": "À votre entreprise.",
       "etroit": true,
       "arche": {
-        "fichier": "carnet.jpg",
-        "pos": "55% 50%"
+        "fichier": "f-jeune-balcon.jpg",
+        "pos": "50% 24%"
       }
     },
     {
@@ -25,8 +25,8 @@
       "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège. Cette décision vous appartient.",
       "pos": "bas",
       "image": {
-        "fichier": "piece-lumineuse.jpg",
-        "pos": "50% 40%"
+        "fichier": "f-bureau-ecriture.jpg",
+        "pos": "50% 30%"
       }
     },
     {
@@ -43,12 +43,12 @@
               "d": "Horaires, pauses, télétravail : selon votre situation."
             },
             {
-              "t": "Une visite à la médecine du travail",
-              "d": "Vous pouvez la demander à tout moment."
+              "t": "La médecine du travail",
+              "d": "Une visite à demander à tout moment."
             },
             {
               "t": "La RQTH",
-              "d": "Reconnaissance de la qualité de travailleur handicapé, auprès de la MDPH."
+              "d": "Reconnaissance de travailleur handicapé, via la MDPH."
             }
           ]
         }
@@ -58,17 +58,17 @@
       "layout": "clair",
       "eyebrow": "La RQTH",
       "titre": "Un *outil*, pas une obligation",
+      "bande": {
+        "fichier": "f-jeune-lunettes.jpg",
+        "pos": "50% 38%",
+        "hauteur": 520,
+        "cote": "haut"
+      },
       "blocs": [
-        {
-          "type": "photo",
-          "fichier": "journal-bougie.jpg",
-          "pos": "50% 70%",
-          "hauteur": 380
-        },
         {
           "type": "carte",
           "fond": "band",
-          "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier : elle n'est pas automatique. Vous décidez de la communiquer ou non."
+          "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier. Vous décidez de la communiquer ou non."
         }
       ]
     },
@@ -85,15 +85,41 @@
       ],
       "pos": "haut",
       "image": {
-        "fichier": "carnet-bois.jpg",
-        "pos": "50% 40%"
+        "fichier": "bureau-maison.jpg",
+        "pos": "50% 60%"
       }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Chaque situation est différente",
+      "titre": "Vous *choisissez* ce que vous dites",
+      "blocs": [
+        {
+          "type": "photos",
+          "hauteur": 440,
+          "items": [
+            {
+              "fichier": "f-jeune-balcon.jpg",
+              "pos": "50% 25%"
+            },
+            {
+              "fichier": "f-soixantaine-sourire.jpg",
+              "pos": "50% 25%"
+            },
+            {
+              "fichier": "f-ainee-sourire.jpg",
+              "pos": "50% 25%"
+            }
+          ]
+        }
+      ],
+      "texte": "Les trames de messages du kit vous aident à choisir quoi dire, à qui, et dans quels mots."
     },
     {
       "layout": "clair-photo",
       "eyebrow": "Et maintenant ?",
-      "titre": "Chaque situation est *différente*",
-      "texte": "Les trames de messages du kit vous aident à choisir ce que vous dites, à qui, et dans quels mots. [[Lien à mettre en bio.]]",
+      "titre": "Passez à *l'action*, à votre façon",
+      "texte": "Le kit gratuit « Carrière en cycles ». [[Lien à mettre en bio.]]",
       "blocs": [
         {
           "type": "bouton",
@@ -112,8 +138,8 @@
       "mention": "Pour vos droits précis, rapprochez-vous de votre médecin du travail ou d'un conseil juridique. Informations d'ordre général, ni avis médical, ni avis juridique.",
       "pos": "bas",
       "image": {
-        "fichier": "bureau-maison.jpg",
-        "pos": "50% 55%"
+        "fichier": "piece-lumineuse.jpg",
+        "pos": "50% 50%"
       }
     }
   ]

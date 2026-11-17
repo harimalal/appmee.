@@ -23,6 +23,28 @@ const page = await browser.newPage({ viewport: { width: W, height: H }, deviceSc
 await page.setContent(printPage(design, carousel, root), { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
 await page.evaluate(fitScript);
+// Contrôle de débordement : rien ne doit sortir du cadre ni chevaucher l'en-tête.
+const problemes = await page.evaluate(({ W, H }) => {
+  const out = [];
+  document.querySelectorAll('.slide').forEach((sl, k) => {
+    const sr = sl.getBoundingClientRect();
+    const head = sl.querySelector('.cl-head');
+    const hb = head ? head.getBoundingClientRect().bottom - sr.top : 0;
+    const body = sl.querySelector('.cl-body');
+    if (body && body.scrollHeight > body.clientHeight + 2) out.push(`slide ${k + 1} : le contenu dépasse de ${body.scrollHeight - body.clientHeight}px`);
+    sl.querySelectorAll('.cl-body > *').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const top = r.top - sr.top, bottom = r.bottom - sr.top, right = r.right - sr.left, left = r.left - sr.left;
+      const nom = el.className || el.tagName;
+      if (bottom > H - 44) out.push(`slide ${k + 1} : « ${nom} » trop bas (${Math.round(bottom)}px)`);
+      if (right > W - 36 || left < 36) out.push(`slide ${k + 1} : « ${nom} » touche le bord (${Math.round(left)}–${Math.round(right)}px)`);
+      if (top < hb - 4) out.push(`slide ${k + 1} : « ${nom} » chevauche l'en-tête`);
+    });
+  });
+  return out;
+}, { W, H });
+if (problemes.length) console.warn('Débordements :\n' + problemes.map((p) => '  - ' + p).join('\n'));
+else console.log('Contrôle débordement : rien ne sort du cadre.');
 const els = await page.$$('.slide');
 for (let i = 0; i < els.length; i++) {
   await els[i].screenshot({ path: join(out, `slide-${String(i + 1).padStart(2, '0')}.png`) });

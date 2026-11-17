@@ -10,8 +10,8 @@
       "pos": "bas",
       "grand": true,
       "image": {
-        "fichier": "lecture-canape.jpg",
-        "pos": "50% 62%"
+        "fichier": "f-ainee-sourire.jpg",
+        "pos": "50% 10%"
       },
       "eyebrow": "Endométriose · en chiffres",
       "titre": "Les chiffres que *peu de gens* connaissent",
@@ -73,31 +73,31 @@
       "source": "¹ Ministère de la Santé, sante.fr. ² Enquête CEET / EndoFrance, 2020."
     },
     {
-      "layout": "clair",
-      "air": true,
+      "layout": "clair-photo",
+      "pos": "bas",
+      "image": {
+        "fichier": "f-terrasse-ecriture.jpg",
+        "pos": "58% 50%"
+      },
       "eyebrow": "Sur la carrière",
-      "blocs": [
-        {
-          "type": "chiffre",
-          "valeur": "49 %",
-          "sup": "2",
-          "legende": "des femmes concernées estiment que l'endométriose a freiné leur carrière",
-          "visuel": {
-            "type": "barre",
-            "valeur": 49
-          }
-        }
-      ],
-      "source": "² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
+      "titre": "*49 %* estiment que l'endométriose a freiné leur carrière",
+      "source": "Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
     },
     {
       "layout": "clair",
       "air": true,
       "eyebrow": "Sur le parcours",
+      "bande": {
+        "fichier": "f-bureau-ecriture.jpg",
+        "pos": "50% 33%",
+        "hauteur": 360,
+        "cote": "bas"
+      },
       "blocs": [
         {
           "type": "chiffre",
           "valeur": "+25 %",
+          "taille": 200,
           "sup": "2",
           "legende": "ont dû changer de métier ou de statut professionnel",
           "visuel": {
@@ -112,8 +112,8 @@
       "layout": "clair-photo",
       "pos": "bas",
       "image": {
-        "fichier": "bureau-maison.jpg",
-        "pos": "50% 55%"
+        "fichier": "piece-lumineuse.jpg",
+        "pos": "50% 50%"
       },
       "eyebrow": "Et maintenant ?",
       "titre": "Derrière chaque chiffre, *une femme*",

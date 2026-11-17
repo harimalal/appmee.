@@ -11,23 +11,23 @@
       "titre": "Endométriose : les *signes* à ne pas ignorer",
       "texte": "Des signes bien réels.",
       "pos": "bas",
+      "grand": true,
       "image": {
-        "fichier": "journal-bougie.jpg",
-        "pos": "50% 55%"
-      },
-      "grand": true
+        "fichier": "f-jeune-lunettes.jpg",
+        "pos": "50% 28%"
+      }
     },
     {
       "layout": "clair",
       "eyebrow": "Les douleurs",
       "titre": "Quand le corps *alerte*",
+      "bande": {
+        "fichier": "f-bureau-ecriture.jpg",
+        "pos": "50% 34%",
+        "hauteur": 400,
+        "cote": "haut"
+      },
       "blocs": [
-        {
-          "type": "photo",
-          "fichier": "carnet-bois.jpg",
-          "pos": "50% 40%",
-          "hauteur": 170
-        },
         {
           "type": "liste",
           "mode": "coche",
@@ -39,14 +39,20 @@
             {
               "t": "Douleurs pendant les rapports",
               "d": "Qui reviennent, ou s'installent."
-            },
-            {
-              "t": "Douleurs au bas du ventre",
-              "d": "Y compris en dehors des règles."
             }
           ]
         }
       ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Aussi",
+      "titre": "Des douleurs au bas du ventre, *même hors règles*",
+      "pos": "bas",
+      "image": {
+        "fichier": "f-jeune-balcon.jpg",
+        "pos": "50% 18%"
+      }
     },
     {
       "layout": "clair",
@@ -81,13 +87,24 @@
         {
           "type": "carte",
           "fond": "card",
-          "texte": "Ces signes peuvent avoir d'autres causes. Seul un professionnel de santé peut poser un diagnostic. Si vous vous reconnaissez, parlez-en à votre médecin ou à votre gynécologue."
+          "texte": "Ces signes peuvent avoir d'autres causes. Seul un professionnel de santé peut poser un diagnostic."
         }
       ],
-      "pos": "haut",
+      "pos": "bas",
       "image": {
-        "fichier": "lecture-canape.jpg",
-        "pos": "50% 60%"
+        "fichier": "hero-hd.jpg",
+        "pos": "50% 8%"
+      }
+    },
+    {
+      "layout": "clair",
+      "haut": true,
+      "eyebrow": "Et ensuite ?",
+      "titre": "Vous vous *reconnaissez* ?",
+      "texte": "Parlez-en à votre médecin ou à votre gynécologue.",
+      "arche": {
+        "fichier": "f-ainee-sourire.jpg",
+        "pos": "50% 25%"
       }
     },
     {
@@ -114,7 +131,7 @@
       "pos": "bas",
       "image": {
         "fichier": "ordinateur-parc.jpg",
-        "pos": "40% 55%"
+        "pos": "50% 60%"
       }
     }
   ]

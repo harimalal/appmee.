@@ -11,14 +11,10 @@
       "titre": "Ce n'est pas un *manque de motivation*",
       "texte": "C'est un rythme qui ne vous correspond pas.",
       "pos": "bas",
-      "image": {
-        "fichier": "hero-hd.jpg",
-        "pos": "50% 20%"
-      },
       "grand": true,
-      "badge": {
-        "valeur": "1/10",
-        "texte": "femme concernée par l'endométriose en France"
+      "image": {
+        "fichier": "f-jeune-balcon.jpg",
+        "pos": "50% 22%"
       }
     },
     {
@@ -27,42 +23,66 @@
       "titre": "Une femme sur dix *est concernée*",
       "blocs": [
         {
-          "type": "carte",
-          "grand": "1 sur 10",
-          "legende": "femmes concernées",
-          "sup": "1",
-          "svg": "foule.svg"
+          "type": "photos",
+          "hauteur": 440,
+          "items": [
+            {
+              "fichier": "f-jeune-lunettes.jpg",
+              "pos": "50% 30%"
+            },
+            {
+              "fichier": "f-terrasse-ecriture.jpg",
+              "pos": "62% 45%"
+            },
+            {
+              "fichier": "f-ainee-sourire.jpg",
+              "pos": "50% 25%"
+            }
+          ]
         }
       ],
+      "texte": "Autour d'une table de dix femmes, l'une d'elles l'est.",
       "source": "¹ Ministère de la Santé, sante.fr, « Endométriose »."
     },
     {
       "layout": "clair",
       "eyebrow": "En chiffres",
       "titre": "Un impact *réel* sur la carrière",
+      "bande": {
+        "fichier": "f-bureau-ecriture.jpg",
+        "pos": "50% 33%",
+        "hauteur": 340,
+        "cote": "bas"
+      },
       "blocs": [
         {
           "type": "stats",
           "items": [
             {
               "valeur": "49 %",
-              "texte": "des femmes concernées estiment que l'endométriose a freiné leur carrière",
+              "texte": "estiment que la maladie a freiné leur carrière",
               "sup": "2"
             },
             {
               "valeur": "+25 %",
-              "texte": "ont dû changer de métier ou de statut professionnel",
+              "texte": "ont dû changer de métier ou de statut",
               "sup": "2"
-            },
-            {
-              "valeur": "7 à 9 ans",
-              "texte": "pour obtenir un diagnostic, en moyenne",
-              "sup": "1, 2"
             }
           ]
         }
       ],
-      "source": "¹ Ministère de la Santé, sante.fr, « Endométriose ». ² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
+      "source": "² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Au quotidien",
+      "titre": "S'adapter en permanence, *jusqu'à s'épuiser*",
+      "texte": "Beaucoup de femmes finissent par renoncer à leurs ambitions.",
+      "pos": "bas",
+      "image": {
+        "fichier": "bureau-maison.jpg",
+        "pos": "50% 55%"
+      }
     },
     {
       "layout": "clair",
@@ -72,27 +92,28 @@
         {
           "type": "carte",
           "fond": "band",
-          "texte": "Quand l'organisation du travail suppose une énergie constante, tout écart devient une faiblesse apparente. Le problème est le cadre, pas votre valeur.",
+          "texte": "Quand l'organisation du travail suppose une énergie constante, tout écart devient une faiblesse apparente.",
           "svg": "rythmes.svg"
         }
       ]
     },
     {
-      "layout": "clair-photo",
-      "eyebrow": "Au quotidien",
-      "titre": "S'adapter en permanence, *jusqu'à s'épuiser*",
-      "texte": "Beaucoup de femmes s'adaptent en permanence, jusqu'à s'épuiser ou renoncer à leurs ambitions.",
-      "pos": "bas",
-      "image": {
-        "fichier": "bureau-maison.jpg",
-        "pos": "50% 55%"
+      "layout": "clair",
+      "haut": true,
+      "grand": false,
+      "eyebrow": "Le vrai sujet",
+      "titre": "Le problème, c'est *le cadre*",
+      "texte": "Pas votre valeur.",
+      "arche": {
+        "fichier": "f-soixantaine-sourire.jpg",
+        "pos": "50% 28%"
       }
     },
     {
       "layout": "clair-photo",
       "eyebrow": "Première étape",
       "titre": "Reprenez la main sur votre carrière, *à votre rythme*",
-      "texte": "Recevez le kit gratuit « Carrière en cycles » : un guide, un carnet de bord et 5 leçons par e-mail. [[Lien à mettre en bio.]]",
+      "texte": "Le kit gratuit « Carrière en cycles » : un guide, un carnet de bord et 5 leçons par e-mail. [[Lien à mettre en bio.]]",
       "blocs": [
         {
           "type": "bouton",
@@ -111,8 +132,8 @@
       "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
       "pos": "bas",
       "image": {
-        "fichier": "piece-lumineuse.jpg",
-        "pos": "50% 50%"
+        "fichier": "hero-hd.jpg",
+        "pos": "50% 18%"
       }
     }
   ]
