@@ -1,11 +1,24 @@
 {
   "nom": "Coulisses en 4 slides",
   "pour": "Pilier « Coulisses » : raconter une scène de l'atelier ou de la tournée.",
-  "regles": ["Remplacer les photos d'illustration par les vraies photos de Pascal avant publication", "Aucun fait d'atelier inventé : légende [[à compléter]]", "Titre court, un mot mis en valeur avec *mot*"],
+  "regles": [
+    "Remplacer les photos d'illustration par les vraies photos de Pascal avant publication",
+    "Aucun fait d'atelier inventé : légende [[à compléter]]",
+    "Titre court, un mot mis en valeur avec *mot*",
+    "Toutes les slides sont en photo plein cadre : texte directement sur la photo, sans fond ni cadre, produit visible"
+  ],
   "slides": [
-    { "layout": "cover-photo" },
-    { "layout": "plein" },
-    { "layout": "arche" },
-    { "layout": "duo" }
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    }
   ]
 }

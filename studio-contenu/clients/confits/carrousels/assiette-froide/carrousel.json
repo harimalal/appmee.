@@ -1,7 +1,7 @@
 {
   "client": "confits",
   "template": "secret-fabrication",
-  "fruit": "framboise",
+  "fruit": "pistache",
   "titre_interne": "Secret de fabrication : l'assiette froide",
   "legende": "Comment savoir si une confiture est prête ? Un vieux geste : l'assiette froide. Savoir-faire courant, [[à compléter avec la méthode de Pascal]]. #confiture #artisanal #savoirfaire #lesconfits",
   "slides": [
@@ -11,11 +11,11 @@
       "sous": "Comment savoir si une confiture est prête.",
       "image": {
         "fichier": "fraises-assiette.jpg",
-        "pos": "50% 35%"
+        "pos": "50% 40%"
       },
-      "layout": "carte",
+      "layout": "photo",
       "pos": "bas",
-      "encart": "rotee"
+      "align": "gauche"
     },
     {
       "kicker": "Le geste",
@@ -25,13 +25,15 @@
         "fichier": "pot-pommes.jpg",
         "pos": "50% 55%"
       },
-      "layout": "moitie"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "droite"
     },
     {
       "titre": "Trois *signes*",
       "image": {
         "fichier": "pot-myrtilles.jpg",
-        "pos": "60% 45%"
+        "pos": "50% 40%"
       },
       "items": [
         {
@@ -47,19 +49,22 @@
           "d": "Pendant le test, pour ne pas trop cuire."
         }
       ],
-      "layout": "bande",
-      "encart": "etiquette"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "ombre": "fort"
     },
     {
       "titre": "Et chez *Pascal* ?",
       "texte": "[[Comment Pascal vérifie la prise de ses confitures : à fournir.]]",
       "image": {
         "fichier": "fraises-bol.jpg",
-        "pos": "50% 30%"
+        "pos": "50% 40%"
       },
-      "layout": "carte",
-      "pos": "centre"
+      "layout": "photo",
+      "pos": "centre",
+      "align": "centre"
     }
   ],
-  "marque": "pastille"
+  "marque": "souligne"
 }

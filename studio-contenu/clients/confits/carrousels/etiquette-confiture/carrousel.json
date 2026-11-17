@@ -10,23 +10,29 @@
       "titre": "Lire une *étiquette*",
       "sous": "Trois repères. Trente secondes.",
       "image": {
-        "fichier": "pots-marmelade.jpg",
-        "pos": "50% 62%"
-      }
+        "fichier": "pots-table.jpg",
+        "pos": "50% 50%"
+      },
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche"
     },
     {
       "titre": "Retournez *le pot*",
       "texte": "Le devant séduit. Le dos dit tout : les ingrédients et la quantité de fruits.",
       "image": {
-        "fichier": "mains-pots-fruits.jpg",
-        "pos": "50% 38%"
-      }
+        "fichier": "pot-planche.jpg",
+        "pos": "50% 25%"
+      },
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche"
     },
     {
       "titre": "Trois *repères*",
       "image": {
-        "fichier": "pots-marmelade.jpg",
-        "pos": "50% 88%"
+        "fichier": "confiture-cuillere-or.jpg",
+        "pos": "50% 0%"
       },
       "items": [
         {
@@ -41,20 +47,34 @@
           "t": "Le nombre d'ingrédients",
           "d": "Moins il y en a, plus la recette est lisible."
         }
-      ]
+      ],
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "ombre": "fort"
     },
     {
       "valeur": "?? g",
-      "texte": "de fruits pour 100 g dans nos pots. [[Chiffre exact par parfum, à fournir par Pascal.]]"
+      "texte": "de fruits pour 100 g dans nos pots. [[Chiffre exact par parfum, à fournir par Pascal.]]",
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "image": {
+        "fichier": "panier-fraises-pot.jpg",
+        "pos": "50% 8%"
+      }
     },
     {
       "titre": "Vérifiez, comparez, *goûtez*",
       "texte": "Les Confits en magasins bio, en boulangeries et aux Galeries Lafayette.",
       "image": {
-        "fichier": "pots-marmelade.jpg",
-        "pos": "20% 35%"
-      }
+        "fichier": "deux-pots.jpg",
+        "pos": "50% 40%"
+      },
+      "layout": "photo",
+      "pos": "haut",
+      "align": "centre"
     }
   ],
-  "marque": "surligne"
+  "marque": "couleur"
 }

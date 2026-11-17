@@ -1,12 +1,28 @@
 {
   "nom": "Pédagogie en 5 slides",
   "pour": "Pilier « Lire et choisir » : expliquer un point pour aider à choisir.",
-  "regles": ["Ouvrir sur une question que se pose le client", "3 repères maximum", "Toute donnée non fournie par Pascal est marquée [[à compléter]]", "Titre court, un mot mis en valeur avec *mot*"],
+  "regles": [
+    "Ouvrir sur une question que se pose le client",
+    "3 repères maximum",
+    "Toute donnée non fournie par Pascal est marquée [[à compléter]]",
+    "Titre court, un mot mis en valeur avec *mot*",
+    "Toutes les slides sont en photo plein cadre : texte directement sur la photo, sans fond ni cadre, produit visible"
+  ],
   "slides": [
-    { "layout": "cover-photo" },
-    { "layout": "arche" },
-    { "layout": "bande" },
-    { "layout": "chiffre", "fond": "fruit" },
-    { "layout": "duo" }
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    }
   ]
 }

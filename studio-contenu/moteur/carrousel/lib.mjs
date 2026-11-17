@@ -13,6 +13,8 @@ const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').
 const rich = (s) =>
   esc(s)
     .replace(/'/g, '’')
+    .replace(/ ([?!:;»])/g, '\u00A0$1')
+    .replace(/(«) /g, '$1\u00A0')
     .replace(/\[\[(.+?)\]\]/g, '<span class="todo">$1</span>')
     .replace(/\*(.+?)\*/g, '<mark>$1</mark>')
     .replace(/\n/g, '<br>');
@@ -55,6 +57,9 @@ mark{white-space:nowrap;background:var(--mkbg);color:var(--mkfg);padding:0 .14em
 .mk-contour mark{background:none;color:transparent;-webkit-text-stroke:.04em var(--mkstroke);padding:0}
 .mk-pastille mark{display:inline-block;transform:rotate(-3deg);border-radius:.55em;padding:0 .3em}
 .mk-blanc mark{background:var(--mkbg2);color:var(--mkfg2)}
+.mk-couleur mark{background:none;color:var(--fc,var(--f));padding:0}
+.mk-double mark{background:linear-gradient(var(--fc,var(--f)),var(--fc,var(--f))) 0 94%/100% .14em no-repeat;color:var(--fc,var(--f));padding:0}
+.l-photo{--mkline:var(--fc);--mkstroke:#fff}
 .kicker{align-self:flex-start;display:inline-block;font-size:28px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--f);color:var(--ft);padding:10px 22px;border-radius:99px}
 .fond-fruit .kicker{background:var(--encre);color:var(--papier)}
 .corps{font-size:42px;line-height:1.36;margin:0}
@@ -154,6 +159,32 @@ mark{white-space:nowrap;background:var(--mkbg);color:var(--mkfg);padding:0 .14em
 .l-cercle .txtc{position:absolute;left:72px;right:72px;top:140px;display:flex;flex-direction:column;gap:24px}
 .l-cercle h2{font-size:116px}
 .l-cercle .rond{position:absolute;width:900px;height:900px;border-radius:50%;overflow:hidden;left:90px;bottom:-230px;box-shadow:0 0 0 18px var(--f)}
+/* photo : image plein cadre, texte posé dessus sans fond ni cadre, le produit reste visible */
+.l-photo .scrim{position:absolute;inset:0}
+.l-photo.p-bas .scrim{background:linear-gradient(to top,rgba(10,4,8,.74) 0%,rgba(10,4,8,.4) 34%,rgba(10,4,8,0) 62%),linear-gradient(to bottom,rgba(10,4,8,.4) 0%,rgba(10,4,8,0) 14%)}
+.l-photo.p-haut .scrim{background:linear-gradient(to bottom,rgba(10,4,8,.74) 0%,rgba(10,4,8,.4) 38%,rgba(10,4,8,0) 64%)}
+.l-photo.p-centre .scrim{background:rgba(10,4,8,.42)}
+.l-photo.p-bas.o-fort .scrim{background:linear-gradient(to top,rgba(10,4,8,.86) 0%,rgba(10,4,8,.56) 44%,rgba(10,4,8,0) 76%),linear-gradient(to bottom,rgba(10,4,8,.4) 0%,rgba(10,4,8,0) 14%)}
+.l-photo.p-haut.o-fort .scrim{background:linear-gradient(to bottom,rgba(10,4,8,.9) 0%,rgba(10,4,8,.72) 50%,rgba(10,4,8,0) 82%)}
+.l-photo .txt{position:absolute;left:72px;right:72px;display:flex;flex-direction:column;gap:26px;color:#fff;z-index:2;text-shadow:0 2px 26px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.45)}
+.l-photo.p-bas .txt{bottom:150px}
+.l-photo.p-haut .txt{top:150px}
+.l-photo.p-centre .txt{top:50%;transform:translateY(-50%)}
+.l-photo h1,.l-photo h2{color:#fff}
+.l-photo .kick{font-size:28px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--fc);display:flex;align-items:center;gap:16px}
+.l-photo .kick::before{content:"";width:56px;height:4px;background:var(--fc);flex:none}
+.l-photo.a-centre .kick{justify-content:center}
+.l-photo.a-droite .kick{flex-direction:row-reverse}
+.l-photo .corps{font-size:44px;line-height:1.3;max-width:820px}
+.l-photo .chiffre{font-family:${T};font-weight:700;font-size:340px;line-height:.85;letter-spacing:-0.05em;color:var(--fc)}
+.l-photo .liste{gap:34px;margin-top:6px}
+.l-photo .item{grid-template-columns:96px 1fr}
+.l-photo .item .n{font-size:96px;color:var(--fc)}
+.l-photo .item .t{font-size:52px}
+.l-photo .item .d{font-size:38px;opacity:.95}
+.l-photo .marque{font-family:${T};font-weight:700;font-size:44px;letter-spacing:-.01em}
+.l-photo .marque span{color:var(--fc)}
+.l-photo .arrow{background:none;color:#fff;width:auto;height:auto;font-size:76px;bottom:60px;text-shadow:0 2px 20px rgba(0,0,0,.6)}
 /* texte seul, sans photo (rétro-compatible) */
 .l-texte{padding:150px 72px 72px;display:flex;flex-direction:column;justify-content:center;gap:40px}
 .l-texte h2{font-size:120px}
@@ -196,6 +227,14 @@ function inner(s, i, n, design, root) {
     case 'duo':
       return `${imgTag(s, root)}<div class="teinte"></div><div class="scrim"></div>${bar(i, n, design)}
 <div class="txt">${kick}<h2 ${fit(170, 520)}>${rich(s.titre)}</h2>${s.texte ? `<p class="corps">${rich(s.texte)}</p>` : ''}<div class="marque">${esc(design.marque)} · ${esc(design.signature)}</div></div>`;
+    case 'photo': {
+      const big = s.grand ?? i === 0;
+      const head = s.titre ? (big ? `<h1 ${fit(190, 560)}>${rich(s.titre)}</h1>` : `<h2 ${fit(150, 420)}>${rich(s.titre)}</h2>`) : '';
+      const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';
+      const body = s.texte ?? s.sous;
+      return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
+<div class="txt">${lead}${s.valeur ? `<div class="chiffre">${rich(s.valeur)}</div>` : ''}${head}${body ? `<p class="corps">${rich(body)}</p>` : ''}${s.items ? listeHtml(s.items) : ''}${i === n - 1 ? `<div class="marque"><span>${esc(design.marque)}</span> · ${esc(design.signature)}</div>` : ''}</div>${arrow(i, n)}`;
+    }
     case 'carte':
       return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
 <div class="carte">${kick}<h2 ${fit(104, 260)}>${rich(s.titre)}</h2>${s.texte ?? s.sous ? `<p class="corps">${rich(s.texte ?? s.sous)}</p>` : ''}</div>${arrow(i, n)}`;
@@ -219,9 +258,9 @@ function inner(s, i, n, design, root) {
 export function slideHtml(s, i, n, design, carousel, root) {
   const layout = s.layout ?? 'texte';
   const fond = s.fond ?? 'papier';
-  const cls = ['slide', `l-${layout}`, `mk-${carousel.marque ?? 'surligne'}`, s.pos ? `p-${s.pos}` : '', s.align ? `a-${s.align}` : '', s.encart ? `e-${s.encart}` : '', fond === 'fruit' ? 'fond-fruit' : fond === 'encre' ? 'fond-encre' : ''].join(' ');
+  const cls = ['slide', `l-${layout}`, `mk-${carousel.marque ?? (layout === 'photo' ? 'couleur' : 'surligne')}`, s.pos ? `p-${s.pos}` : '', s.align ? `a-${s.align}` : '', s.encart ? `e-${s.encart}` : '', s.ombre ? `o-${s.ombre}` : '', fond === 'fruit' ? 'fond-fruit' : fond === 'encre' ? 'fond-encre' : ''].join(' ');
   const p = design.couleurs.fruits[carousel.fruit] ?? Object.values(design.couleurs.fruits)[0];
-  return `<section class="${cls}" style="--f:${p.fond};--ft:${p.texte}">${inner({ ...s, layout }, i, n, design, root)}</section>`;
+  return `<section class="${cls}" style="--f:${p.fond};--ft:${p.texte};--fc:${p.clair ?? p.fond}">${inner({ ...s, layout }, i, n, design, root)}</section>`;
 }
 
 export function slides(design, carousel, root) {

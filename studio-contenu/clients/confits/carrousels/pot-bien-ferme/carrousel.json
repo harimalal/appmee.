@@ -1,7 +1,7 @@
 {
   "client": "confits",
   "template": "secret-fabrication",
-  "fruit": "figue",
+  "fruit": "myrtille",
   "titre_interne": "Secret de fabrication : le pot bien fermé",
   "legende": "Une confiture se garde grâce au pot autant qu'à la recette. Trois gestes courants pour bien conditionner. [[Compléter avec la méthode de l'atelier.]] #confiture #artisanal #savoirfaire #lesconfits",
   "slides": [
@@ -11,16 +11,17 @@
       "sous": "Trois gestes pour bien conserver une confiture.",
       "image": {
         "fichier": "pot-myrtilles.jpg",
-        "pos": "50% 60%"
+        "pos": "50% 50%"
       },
-      "layout": "carte",
-      "pos": "centre"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche"
     },
     {
       "titre": "Trois *gestes*",
       "image": {
-        "fichier": "pot-pommes.jpg",
-        "pos": "50% 70%"
+        "fichier": "pot-planche.jpg",
+        "pos": "50% 0%"
       },
       "items": [
         {
@@ -36,32 +37,34 @@
           "d": "En refroidissant, le vide se forme dans le pot."
         }
       ],
-      "layout": "bande",
-      "encart": "contre"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "ombre": "fort"
     },
     {
       "kicker": "Le contrôle",
       "titre": "Le *couvercle* parle",
       "texte": "Un couvercle creusé au centre indique que le vide s'est fait. [[Contrôles faits à l'atelier : à fournir par Pascal.]]",
       "image": {
-        "fichier": "pot-myrtilles.jpg",
-        "pos": "75% 40%"
+        "fichier": "confiture-cuillere-or.jpg",
+        "pos": "50% 10%"
       },
-      "layout": "plein",
-      "pos": "haut",
+      "layout": "photo",
+      "pos": "bas",
       "align": "gauche"
     },
     {
       "titre": "Conditionné *à l'atelier*",
       "texte": "Les Confits : confitures bio, artisanales, locales, conditionnées à l'atelier.",
       "image": {
-        "fichier": "pot-pommes.jpg",
-        "pos": "50% 35%"
+        "fichier": "pots-alignes.jpg",
+        "pos": "50% 50%"
       },
-      "layout": "duo",
-      "pos": "bas",
-      "align": "droite"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche"
     }
   ],
-  "marque": "souligne"
+  "marque": "double"
 }

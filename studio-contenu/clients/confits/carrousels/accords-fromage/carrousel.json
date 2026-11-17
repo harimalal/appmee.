@@ -13,15 +13,15 @@
         "fichier": "plateau-fromage.jpg",
         "pos": "50% 30%"
       },
-      "layout": "cover-photo",
-      "pos": "haut",
-      "align": "centre"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche"
     },
     {
       "titre": "Trois *accords*",
       "image": {
         "fichier": "plateau-fruits.jpg",
-        "pos": "50% 62%"
+        "pos": "50% 0%"
       },
       "items": [
         {
@@ -37,28 +37,33 @@
           "d": "Du fruit, du caractère, une tartine qui tient."
         }
       ],
-      "layout": "liste-carte"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche",
+      "ombre": "fort"
     },
     {
       "kicker": "L'astuce",
       "titre": "Une *cuillère* suffit",
       "texte": "Posez la confiture sur le fromage, pas à côté. [[Parfums à remplacer par la gamme réelle de Pascal.]]",
       "image": {
-        "fichier": "plateau-fromage.jpg",
-        "pos": "50% 38%"
+        "fichier": "pot-pommes.jpg",
+        "pos": "50% 60%"
       },
-      "layout": "haut-texte"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "centre"
     },
     {
       "titre": "Quel pot pour votre *plateau* ?",
       "texte": "Les Confits en magasins bio, en boulangeries et aux Galeries Lafayette.",
       "image": {
-        "fichier": "plateau-fruits.jpg",
-        "pos": "50% 70%"
+        "fichier": "toast-pot.jpg",
+        "pos": "50% 50%"
       },
-      "layout": "duo",
-      "pos": "centre",
-      "align": "centre"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche"
     }
   ],
   "marque": "souligne"

@@ -13,8 +13,8 @@
         "fichier": "cuisine-cuivre.jpg",
         "pos": "50% 60%"
       },
-      "layout": "cover-photo",
-      "pos": "centre",
+      "layout": "photo",
+      "pos": "bas",
       "align": "gauche"
     },
     {
@@ -22,9 +22,11 @@
       "texte": "[[Légende : qui fait quoi, à quelle heure. À fournir par Pascal.]]",
       "image": {
         "fichier": "pots-marmelade.jpg",
-        "pos": "50% 50%"
+        "pos": "50% 70%"
       },
-      "layout": "plein"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche"
     },
     {
       "kicker": "Les fruits",
@@ -32,21 +34,23 @@
       "texte": "[[Provenance des fruits, à fournir par Pascal.]]",
       "image": {
         "fichier": "mains-pots-fruits.jpg",
-        "pos": "50% 45%"
+        "pos": "50% 50%"
       },
-      "layout": "cercle"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "centre"
     },
     {
       "titre": "Fait ici, *par nous*",
       "texte": "Confitures bio, artisanales, locales, conditionnées à l'atelier.",
       "image": {
-        "fichier": "cuisine-cuivre.jpg",
-        "pos": "50% 18%"
+        "fichier": "pots-alignes.jpg",
+        "pos": "50% 30%"
       },
-      "layout": "duo",
-      "pos": "haut",
+      "layout": "photo",
+      "pos": "bas",
       "align": "droite"
     }
   ],
-  "marque": "contour"
+  "marque": "double"
 }

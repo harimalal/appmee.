@@ -1,7 +1,7 @@
 {
   "client": "confits",
   "template": "secret-fabrication",
-  "fruit": "abricot",
+  "fruit": "citron",
   "titre_interne": "Secret de fabrication : citron et sucre",
   "legende": "Dans une confiture, chaque ingrédient travaille. Le citron, le sucre : à quoi ils servent. Savoir-faire courant, [[à compléter avec la recette de Pascal]]. #confiture #artisanal #savoirfaire #lesconfits",
   "slides": [
@@ -13,25 +13,27 @@
         "fichier": "citrons.jpg",
         "pos": "30% 100%"
       },
-      "layout": "cover-photo",
-      "pos": "bas",
-      "align": "droite"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche"
     },
     {
       "kicker": "Le citron",
       "titre": "Il aide à *prendre*",
       "texte": "Son acidité aide la pectine du fruit à gélifier, et garde un goût vif.",
       "image": {
-        "fichier": "citrons.jpg",
-        "pos": "35% 92%"
+        "fichier": "pots-table.jpg",
+        "pos": "50% 50%"
       },
-      "layout": "cercle"
+      "layout": "photo",
+      "pos": "haut",
+      "align": "droite"
     },
     {
       "titre": "Le *sucre* travaille aussi",
       "image": {
-        "fichier": "fraises-bol.jpg",
-        "pos": "50% 60%"
+        "fichier": "confiture-cuillere-or.jpg",
+        "pos": "50% 0%"
       },
       "items": [
         {
@@ -47,19 +49,22 @@
           "d": "[[Dose fruit et sucre : à fournir.]]"
         }
       ],
-      "layout": "bande",
-      "encart": "libre"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "ombre": "fort"
     },
     {
       "titre": "La recette de *Pascal*",
       "texte": "[[Liste exacte des ingrédients d'une confiture des Confits, à fournir.]]",
       "image": {
-        "fichier": "pot-pommes.jpg",
-        "pos": "50% 45%"
+        "fichier": "pot-planche.jpg",
+        "pos": "50% 70%"
       },
-      "layout": "moitie",
-      "pos": "bas"
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche"
     }
   ],
-  "marque": "blanc"
+  "marque": "couleur"
 }
