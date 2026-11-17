@@ -1,0 +1,123 @@
+{
+  "client": "coach-endo",
+  "template": "clair-cercle",
+  "fruit": "vert",
+  "titre_interne": "Le cercle vicieux des cycles : douleurs, arrêts, productivité, moral",
+  "legende": "Le cercle que personne ne voit : cycle et douleurs, fatigue, arrêts, baisse de productivité perçue, culpabilité et stress… qui à leur tour peuvent accentuer la douleur. Selon l'enquête EndoVie 2020 : 53 % des femmes concernées notent une baisse de leur capacité de travail et 60 % une baisse de concentration pendant les crises. Ce n'est pas un manque de volonté : c'est un cercle, et on peut le briser, à son rythme. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Chiffres EndoVie à vérifier dans l'enquête ; aspects santé mentale à faire relire par un professionnel de santé.]] #endométriose #carrière #santémentale #travail",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "eyebrow": "Endométriose et travail",
+      "titre": "Le cercle *que personne ne voit*",
+      "texte": "Douleurs, arrêts, productivité, moral : tout s'enchaîne.",
+      "pos": "bas",
+      "image": { "fichier": "bureau-maison.jpg", "pos": "50% 55%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Comment tout s'enchaîne",
+      "titre": "Un cercle, *pas une faute*",
+      "blocs": [{ "type": "schema", "fichier": "cercle.svg" }]
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Étapes 1 et 2",
+      "titre": "Quand le corps *s'épuise*",
+      "bande": { "fichier": "journal-bougie.jpg", "pos": "50% 60%", "hauteur": 420, "cote": "haut" },
+      "texte": "Des douleurs à chaque cycle, des nuits hachées : l'énergie s'use avant même de commencer la journée."
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Étapes 3 et 4",
+      "titre": "Au travail, *ça se ressent*",
+      "blocs": [
+        {
+          "type": "stats",
+          "items": [
+            { "valeur": "53 %", "texte": "notent une baisse de leur capacité de travail", "sup": "1" },
+            { "valeur": "60 %", "texte": "une baisse de concentration pendant les crises", "sup": "1" },
+            { "valeur": "8 %", "texte": "des cas : jusqu'à la rupture du contrat", "sup": "1" }
+          ]
+        }
+      ],
+      "source": "¹ Enquête EndoVie, 2020 (Ipsos, EndoFrance, Gedeon Richter). [[Chiffres à vérifier dans l'enquête.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Étape 3",
+      "titre": "Les arrêts, *puis le regard des autres*",
+      "texte": "Absences répétées, rendez-vous médicaux : l'étiquette de « moins fiable » peut s'installer.",
+      "pos": "bas",
+      "image": { "fichier": "piece-lumineuse.jpg", "pos": "50% 50%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Étape 4",
+      "titre": "Deux rythmes, *un seul évalué*",
+      "blocs": [
+        {
+          "type": "carte",
+          "fond": "band",
+          "texte": "Quand l'organisation suppose une énergie constante, un rythme en cycles passe pour un manque de productivité.",
+          "svg": "rythmes.svg"
+        }
+      ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Étape 5",
+      "titre": "L'impact sur *le moral*",
+      "texte": "La douleur invisible pèse aussi sur la tête.",
+      "pos": "bas",
+      "image": { "fichier": "lecture-canape.jpg", "pos": "50% 62%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Ce qui s'installe",
+      "titre": "Culpabilité, stress, *isolement*",
+      "blocs": [
+        {
+          "type": "liste",
+          "mode": "coche",
+          "items": [
+            { "t": "La culpabilité", "d": "De « ne pas en faire assez »." },
+            { "t": "Le stress d'anticipation", "d": "Avant chaque cycle, chaque réunion." },
+            { "t": "L'isolement", "d": "Difficile de se faire comprendre." }
+          ]
+        }
+      ],
+      "source": "Le stress et la fatigue peuvent aussi accentuer la douleur : le cercle se referme. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "La bonne nouvelle",
+      "titre": "On peut *briser* le cercle",
+      "blocs": [
+        { "type": "schema", "fichier": "leviers.svg" },
+        {
+          "type": "photos",
+          "hauteur": 300,
+          "items": [
+            { "fichier": "f-jeune-lunettes.jpg", "pos": "50% 30%" },
+            { "fichier": "f-terrasse-ecriture.jpg", "pos": "62% 45%" },
+            { "fichier": "f-soixantaine-sourire.jpg", "pos": "50% 28%" }
+          ]
+        }
+      ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Briser le cercle, *à votre rythme*",
+      "texte": "Le kit gratuit « Carrière en cycles » pour repérer vos cycles et en parler. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "hero-hd.jpg", "pos": "50% 8%" }
+    }
+  ]
+}
