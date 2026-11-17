@@ -1,13 +1,13 @@
 {
   "client": "confits",
   "template": "coulisses-recit",
-  "fruit": "abricot",
+  "fruit": "framboise",
   "titre_interne": "Une matinée de mise en pots",
-  "legende": "[[À écrire avec les faits de Pascal : quel jour, quel parfum, qui fait quoi.]] #confiture #artisanal #atelier #leconfits",
+  "legende": "[[À écrire avec les faits de Pascal : quel jour, quel parfum, qui fait quoi.]] Photos d'illustration, à remplacer par les vraies photos de l'atelier. #confiture #artisanal #atelier #lesconfits",
   "slides": [
-    { "type": "cover", "kicker": "Dans l'atelier", "titre": "Une matinée de mise en pots", "sous": "Cinq personnes, un atelier, des pots bien remplis." },
-    { "type": "photo", "titre": "Le matin, à l'atelier", "consigne": "Photo large de l'atelier au démarrage : plans de travail, cuves, premières mains au travail.", "texte": "[[Légende : l'heure, le parfum du jour. À fournir par Pascal.]]" },
-    { "type": "photo", "titre": "Les mains qui conditionnent", "consigne": "Gros plan sur la mise en pots : le geste, le pot, la louche.", "texte": "[[Légende : qui fait quoi dans l'équipe. À fournir par Pascal.]]" },
-    { "type": "cta", "titre": "Fait ici, par nous.", "texte": "Les Confits : confitures bio, artisanales, locales, conditionnées à l'atelier." }
+    { "kicker": "Dans l'atelier", "titre": "Matinée de *mise en pots*", "sous": "Cinq personnes. Un atelier.", "image": { "fichier": "cuisine-cuivre.jpg", "pos": "50% 60%" } },
+    { "titre": "Pot après *pot*", "texte": "[[Légende : qui fait quoi, à quelle heure. À fournir par Pascal.]]", "image": { "fichier": "pots-marmelade.jpg", "pos": "50% 50%" } },
+    { "kicker": "Les fruits", "titre": "Des fruits, *des mains*", "texte": "[[Provenance des fruits, à fournir par Pascal.]]", "image": { "fichier": "mains-pots-fruits.jpg", "pos": "50% 45%" } },
+    { "titre": "Fait ici, *par nous*", "texte": "Confitures bio, artisanales, locales, conditionnées à l'atelier.", "image": { "fichier": "cuisine-cuivre.jpg", "pos": "50% 18%" } }
   ]
 }

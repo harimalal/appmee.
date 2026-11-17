@@ -3,15 +3,15 @@
   "template": "accords-liste",
   "fruit": "figue",
   "titre_interne": "Trois accords confiture et fromage",
-  "legende": "Un plateau de fromages gagne à avoir un pot de confiture à côté. Trois accords classiques à essayer, à adapter selon votre pot. #confiture #fromage #apero #leconfits",
+  "legende": "Un plateau de fromages gagne à avoir un pot de confiture à côté. Trois accords classiques à essayer, à adapter selon votre pot. #confiture #fromage #apero #lesconfits",
   "slides": [
-    { "type": "cover", "kicker": "À table", "titre": "Confiture et fromage : 3 accords à essayer", "sous": "Un pot, un fromage, c'est prêt." },
-    { "type": "liste", "titre": "Les trois accords", "items": [
+    { "kicker": "À table", "titre": "Confiture + *fromage*", "sous": "Trois accords à essayer.", "image": { "fichier": "plateau-fromage.jpg", "pos": "50% 30%" } },
+    { "titre": "Trois *accords*", "image": { "fichier": "plateau-fruits.jpg", "pos": "50% 62%" }, "items": [
       { "t": "Figue et chèvre frais", "d": "La douceur du fruit contre l'acidité du fromage." },
       { "t": "Cerise noire et brebis", "d": "Un classique du plateau, fruité et rond." },
       { "t": "Abricot et comté", "d": "Du fruit, du caractère, une tartine qui tient." }
     ] },
-    { "type": "texte", "kicker": "L'astuce", "titre": "Une cuillère suffit.", "texte": "Posez la confiture sur le fromage, pas à côté. Une petite quantité, pour que le fruit accompagne sans couvrir. [[Parfums à remplacer par la gamme réelle de Pascal.]]" },
-    { "type": "cta", "titre": "Quel pot pour votre plateau ?", "texte": "Les Confits : confitures bio, artisanales, locales. En magasins bio, en boulangeries et aux Galeries Lafayette." }
+    { "kicker": "L'astuce", "titre": "Une *cuillère* suffit", "texte": "Posez la confiture sur le fromage, pas à côté. [[Parfums à remplacer par la gamme réelle de Pascal.]]", "image": { "fichier": "plateau-fromage.jpg", "pos": "50% 38%" } },
+    { "titre": "Quel pot pour votre *plateau* ?", "texte": "Les Confits en magasins bio, en boulangeries et aux Galeries Lafayette.", "image": { "fichier": "plateau-fruits.jpg", "pos": "50% 70%" } }
   ]
 }

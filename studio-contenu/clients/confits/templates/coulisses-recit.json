@@ -1,6 +1,11 @@
 {
-  "nom": "Coulisses en récit",
+  "nom": "Coulisses en 4 slides",
   "pour": "Pilier « Coulisses » : raconter une scène de l'atelier ou de la tournée.",
-  "sequence": ["cover (le moment)", "photo + texte (scène 1)", "photo + texte (scène 2)", "etape ou texte (le geste)", "cta"],
-  "regles": ["Chaque slide s'appuie sur une vraie photo de Pascal", "Aucun fait d'atelier inventé : consigne de photo + légende à compléter"]
+  "regles": ["Remplacer les photos d'illustration par les vraies photos de Pascal avant publication", "Aucun fait d'atelier inventé : légende [[à compléter]]", "Titre court, un mot mis en valeur avec *mot*"],
+  "slides": [
+    { "layout": "cover-photo" },
+    { "layout": "plein" },
+    { "layout": "arche" },
+    { "layout": "duo" }
+  ]
 }

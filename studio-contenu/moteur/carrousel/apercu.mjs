@@ -2,22 +2,25 @@
 // Génère une page d'aperçu (tous les carrousels d'un client) à partir des carrousel.json.
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { css, slides, W, H } from './lib.mjs';
+import { load, css, slides, fitScript, W, H } from './lib.mjs';
 
 const [clientDir, outFile] = process.argv.slice(2);
 const root = resolve(clientDir);
-const design = JSON.parse(readFileSync(join(root, 'design.json'), 'utf8'));
+const loader = load(root);
+const credits = JSON.parse(readFileSync(join(root, 'assets', 'unsplash', 'credits.json'), 'utf8')).photos;
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const todos = (c) => [...JSON.stringify(c.slides).matchAll(/\[\[(.+?)\]\]/g)].map((m) => m[1].replace(/\\u2019/g, '’'));
 
 const sections = readdirSync(join(root, 'carrousels')).sort().map((slug) => {
-  const c = JSON.parse(readFileSync(join(root, 'carrousels', slug, 'carrousel.json'), 'utf8'));
+  const { design, carousel: c } = loader(slug);
+  const photos = [...new Set(c.slides.map((x) => x.image?.fichier).filter(Boolean))];
   const t = todos(c);
   return `<section class="car">
   <header><span class="tpl">Template : ${esc(c.template)}</span><h2>${esc(c.titre_interne)}</h2></header>
-  <div class="rail" tabindex="0" aria-label="Slides de ${esc(c.titre_interne)}">${slides(design, c).map((h) => `<div class="frame"><div class="scale">${h}</div></div>`).join('')}</div>
+  <div class="rail" tabindex="0" aria-label="Slides de ${esc(c.titre_interne)}">${slides(design, c, root).map((h) => `<div class="frame"><div class="scale">${h}</div></div>`).join('')}</div>
   <div class="meta">
     <div><h3>Légende proposée</h3><p>${esc(c.legende).replace(/\[\[(.+?)\]\]/g, '<span class="todo-i">$1</span>')}</p></div>
+    <div><h3>Photos Unsplash</h3><ul>${photos.map((f) => `<li>${esc(credits[f]?.auteur ?? f)}</li>`).join('')}</ul></div>
     <div><h3>À compléter par Pascal</h3>${t.length ? `<ul>${t.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p>Rien.</p>'}</div>
   </div>
 </section>`;
@@ -44,11 +47,11 @@ p{margin:0;max-width:65ch}.lede{color:var(--muted);font-size:1.1rem;margin-top:1
 .meta ul{margin:0;padding-left:18px;display:grid;gap:4px}
 .todo-i{background:var(--warn-bg);color:var(--warn);font-weight:700;border-radius:6px;padding:0 6px}
 .note{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);padding-top:14px}
-${css(design)}
+${css(loader(readdirSync(join(root, 'carrousels')).sort()[0]).design)}
 </style>
 <div class="wrap">
 <header><span class="eyebrow">Test du moteur de carrousel</span><h1>Les Confits</h1>
-<p class="lede">Trois carrousels produits par le même moteur, avec le pack client des Confits : voix, design, thématiques et verrous. Les zones jaunes sont des informations que seul Pascal peut donner, elles ne sont pas inventées.</p></header>
+<p class="lede">Trois carrousels construits autour de photos, produits par le même moteur à partir de templates et du pack client des Confits. Les photos viennent d'Unsplash : ce sont des photos d'illustration, pas celles de Pascal. Les zones jaunes sont des informations que seul Pascal peut donner.</p></header>
 ${sections.join('\n')}
 <p class="note">Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Les images PNG et le PDF de chaque carrousel sont dans le dépôt, dossier studio-contenu/clients/confits/carrousels. Brouillons : rien n'est publié.</p>
 </div>
@@ -56,6 +59,7 @@ ${sections.join('\n')}
 (function(){
   function fit(){document.querySelectorAll('.frame').forEach(function(f){f.querySelector('.scale').style.setProperty('--s',f.clientWidth/${W});});}
   fit();window.addEventListener('resize',fit);
+  var go=function(){${fitScript}};if(document.fonts&&document.fonts.ready){document.fonts.ready.then(go);}else{go();}
   if(window.ResizeObserver){document.querySelectorAll('.frame').forEach(function(f){new ResizeObserver(fit).observe(f);});}
 })();
 </script>`;

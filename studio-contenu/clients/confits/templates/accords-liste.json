@@ -1,6 +1,11 @@
 {
-  "nom": "Accords en liste",
+  "nom": "Accords en 4 slides",
   "pour": "Pilier « Usages et accords » : idées d'usage d'une confiture.",
-  "sequence": ["cover (promesse)", "liste (3 accords)", "texte (astuce de service)", "cta"],
-  "regles": ["Chaque accord = un fruit + un aliment, en une ligne", "Les exemples sont remplaçables par la gamme réelle de Pascal"]
+  "regles": ["Chaque accord = un fruit + un aliment, en une ligne", "Les exemples sont remplaçables par la gamme réelle de Pascal", "Titre court, un mot mis en valeur avec *mot*"],
+  "slides": [
+    { "layout": "cover-photo" },
+    { "layout": "bande" },
+    { "layout": "arche" },
+    { "layout": "duo" }
+  ]
 }
