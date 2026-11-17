@@ -1,0 +1,101 @@
+{
+  "client": "coach-endo",
+  "template": "clair-sommeil",
+  "fruit": "vert",
+  "titre_interne": "Sommeil et fatigue : l'épuisement qui ne passe pas",
+  "legende": "Fatiguée, même après une nuit. La fatigue persistante fait partie des signes décrits dans l'endométriose, et les douleurs peuvent perturber le sommeil, ce qui l'aggrave. Plusieurs causes se cumulent : douleur chronique, inflammation, sommeil perturbé, charge mentale. Au travail, 60 % des femmes concernées notent une baisse de concentration pendant les crises (EndoVie 2020). Quelques repères de soirée peuvent aider à préparer la nuit ; parlez-en à votre médecin si les douleurs vous réveillent. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Chiffre EndoVie à vérifier ; contenu à faire relire par un professionnel de santé.]] #endométriose #fatigue #sommeil",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "eyebrow": "Sommeil et fatigue",
+      "titre": "Fatiguée, *même après une nuit*",
+      "texte": "Une fatigue que le repos ne suffit pas toujours à effacer.",
+      "pos": "bas",
+      "image": { "fichier": "s-lit-mains-visage.jpg", "pos": "50% 30%" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "La fatigue persistante",
+      "titre": "Une fatigue qui *ne passe pas*",
+      "texte": "Elle peut persister malgré des nuits complètes, et pèse sur tout le quotidien.",
+      "source": "Ministère de la Santé, sante.fr, « Endométriose ». [[À vérifier.]]",
+      "pos": "bas",
+      "image": { "fichier": "s-lit-allongee.jpg", "pos": "50% 45%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Pourquoi une telle fatigue ?",
+      "titre": "Plusieurs causes, *un seul épuisement*",
+      "blocs": [{ "type": "schema", "fichier": "causes-fatigue.svg" }],
+      "source": "Pistes générales, non exhaustives. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Les nuits",
+      "titre": "Des nuits *hachées*",
+      "texte": "Les douleurs peuvent empêcher de s'endormir, ou réveiller en pleine nuit.",
+      "pos": "bas",
+      "image": { "fichier": "s-reveil-nuit.jpg", "pos": "50% 62%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Une nuit-type",
+      "titre": "Une nuit, *plusieurs réveils*",
+      "blocs": [{ "type": "schema", "fichier": "nuit.svg" }],
+      "source": "Illustration simplifiée, pas une mesure."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "La douleur la nuit",
+      "titre": "Quand la douleur *réveille la nuit*",
+      "texte": "Parlez-en à votre médecin : des solutions existent pour apaiser les nuits.",
+      "pos": "haut",
+      "image": { "fichier": "s-lampe-chevet.jpg", "pos": "50% 50%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Le matin",
+      "titre": "Batterie *à plat* dès le réveil",
+      "blocs": [{ "type": "schema", "fichier": "batterie.svg" }],
+      "texte": "Une nuit agitée ne recharge pas complètement."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Au travail",
+      "titre": "Au bureau, *le brouillard*",
+      "texte": "Fatigue, concentration en baisse, difficulté à enchaîner : le travail devient plus lourd.",
+      "source": "Enquête EndoVie, 2020 : 60 % des femmes concernées notent une baisse de concentration pendant les crises. [[À vérifier.]]",
+      "pos": "bas",
+      "image": { "fichier": "s-bureau-laptop.jpg", "pos": "50% 50%" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Préparer la nuit",
+      "titre": "Un *rituel du soir* pour apaiser la nuit",
+      "texte": "Des gestes simples peuvent aider à se préparer au sommeil.",
+      "pos": "bas",
+      "image": { "fichier": "s-verre-tisane.jpg", "pos": "50% 60%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Repères généraux",
+      "titre": "Le soir, *heure par heure*",
+      "blocs": [{ "type": "schema", "fichier": "soiree.svg" }],
+      "source": "Repères d'hygiène du sommeil, d'ordre général. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Retrouver de l'énergie, *à votre rythme*",
+      "texte": "Le kit gratuit « Carrière en cycles » vous aide à repérer vos cycles d'énergie. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "s-chambre-soleil.jpg", "pos": "50% 35%" }
+    }
+  ]
+}

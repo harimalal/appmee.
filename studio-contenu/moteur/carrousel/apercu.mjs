@@ -4,7 +4,8 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { load, css, slides, fitScript, W, H } from './lib.mjs';
 
-const [clientDir, outFile] = process.argv.slice(2);
+// Option : un 3e argument <slug> limite l'aperçu à un seul carrousel (pages plus légères, sous la limite de 16 Mo).
+const [clientDir, outFile, only] = process.argv.slice(2);
 const root = resolve(clientDir);
 const loader = load(root);
 const D0 = loader(readdirSync(join(root, 'carrousels')).sort()[0]).design;
@@ -13,7 +14,7 @@ const credits = JSON.parse(readFileSync(join(root, 'assets', 'unsplash', 'credit
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const todos = (c) => [...JSON.stringify(c.slides).matchAll(/\[\[(.+?)\]\]/g)].map((m) => m[1].replace(/\\u2019/g, '’'));
 
-const sections = readdirSync(join(root, 'carrousels')).sort().map((slug) => {
+const sections = readdirSync(join(root, 'carrousels')).sort().filter((s) => !only || s === only).map((slug) => {
   const { design, carousel: c } = loader(slug);
   const photos = [...new Set(c.slides.map((x) => x.image?.fichier).filter(Boolean))];
   const t = todos(c);

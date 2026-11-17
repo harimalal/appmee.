@@ -234,4 +234,73 @@ def bulles(fichier, textes):
 
 
 bulles('questions.svg', [('Mes douleurs peuvent-elles', "venir d'une endométriose ?"), ('Quels examens me', 'conseillez-vous ?'), ('Vers quel spécialiste', "m'orienter ?")])
+
+# 11. Causes de la fatigue : quatre flèches convergentes
+b = ''
+cx, cy = 468, 330
+causes = [(190, 84, 'Douleur', 'chronique'), (746, 84, 'Inflammation', 'de fond'), (190, 576, 'Sommeil', 'perturbé'), (746, 576, 'Charge', 'mentale')]
+for x, y, l1, l2 in causes:
+    dx, dy = cx - x, cy - y
+    n = math.hypot(dx, dy)
+    ux, uy = dx / n, dy / n
+    sx, sy = x + ux * 150, y + uy * 62
+    ex, ey = cx - ux * 150, cy - uy * 130
+    b += f'<path d="M{sx:.0f} {sy:.0f} L{ex:.0f} {ey:.0f}" stroke="{ACC}" stroke-width="10" stroke-linecap="round"/>'
+    px, py = ex, ey
+    nx, ny = -uy, ux
+    b += f'<path d="M{px + ux * 30:.0f} {py + uy * 30:.0f} L{px - nx * 26:.0f} {py - ny * 26:.0f} L{px + nx * 26:.0f} {py + ny * 26:.0f} Z" fill="{ACC}"/>'
+for x, y, l1, l2 in causes:
+    b += f'<rect x="{x - 165}" y="{y - 52}" width="330" height="104" rx="30" fill="{CARD}" stroke="{INK}" stroke-width="5"/>'
+    b += f'<text x="{x}" y="{y - 4}" font-size="34" font-weight="800" fill="{INK}" text-anchor="middle">{l1}</text><text x="{x}" y="{y + 36}" font-size="34" font-weight="800" fill="{INK}" text-anchor="middle">{l2}</text>'
+b += f'<circle cx="{cx}" cy="{cy}" r="116" fill="{SUN}" stroke="{INK}" stroke-width="6"/><text x="{cx}" y="{cy + 18}" font-size="52" font-weight="800" fill="{INK}" text-anchor="middle">Fatigue</text>'
+open(OUT + 'causes-fatigue.svg', 'w', encoding='utf8').write(svg(936, 660, b))
+
+# 12. Nuit-type : courbe de sommeil avec réveils
+b = ''
+for y, t in [(90, 'Éveillée'), (190, 'Léger'), (290, 'Profond')]:
+    b += f'<path d="M200 {y} H910" stroke="{STEP}" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/><text x="188" y="{y + 9}" font-size="26" font-weight="700" fill="{INK2}" text-anchor="end">{t}</text>'
+pts = [(200, 90), (250, 90), (270, 190), (330, 190), (350, 290), (430, 290), (450, 190), (480, 190), (500, 90), (530, 90), (550, 190), (610, 190), (630, 290), (670, 290), (690, 190), (710, 90), (740, 90), (760, 190), (810, 190), (830, 90), (910, 90)]
+b += f'<polyline points="{" ".join(f"{x},{y}" for x, y in pts)}" fill="none" stroke="{ACC}" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>'
+for x in (500, 710, 830):
+    b += f'<circle cx="{x}" cy="90" r="20" fill="{SUN}" stroke="{INK}" stroke-width="5"/><text x="{x}" y="99" font-size="26" font-weight="800" fill="{INK}" text-anchor="middle">!</text>'
+b += f'<path d="M200 350 H910" stroke="{INK3}" stroke-width="4"/>'
+for x, t in [(200, '22 h'), (380, '0 h'), (560, '2 h'), (740, '4 h'), (910, '6 h')]:
+    b += f'<path d="M{x} 350 v14" stroke="{INK3}" stroke-width="4"/><text x="{x}" y="398" font-size="28" font-weight="700" fill="{INK2}" text-anchor="middle">{t}</text>'
+b += f'<circle cx="214" cy="446" r="16" fill="{SUN}" stroke="{INK}" stroke-width="4"/><text x="246" y="456" font-size="28" font-weight="700" fill="{INK}">Réveil causé par la douleur</text>'
+open(OUT + 'nuit.svg', 'w', encoding='utf8').write(svg(936, 480, b))
+
+
+# 13. Batteries : une nuit réparatrice / une nuit hachée
+def batterie(x, y, n, col, titre, sous):
+    s = f'<rect x="{x}" y="{y}" width="360" height="160" rx="30" fill="{CARD}" stroke="{INK}" stroke-width="6"/><rect x="{x + 360}" y="{y + 52}" width="26" height="56" rx="10" fill="{INK}"/>'
+    for i in range(4):
+        fill = col if i < n else STEP
+        op = '1' if i < n else '.55'
+        s += f'<rect x="{x + 20 + i * 83}" y="{y + 20}" width="70" height="120" rx="16" fill="{fill}" opacity="{op}"/>'
+    s += f'<text x="{x + 180}" y="{y + 222}" font-size="36" font-weight="800" fill="{INK}" text-anchor="middle">{titre}</text><text x="{x + 180}" y="{y + 262}" font-size="28" font-weight="600" fill="{INK2}" text-anchor="middle">{sous}</text>'
+    return s
+
+
+b = batterie(30, 70, 4, ACC, 'Nuit réparatrice', 'on se réveille rechargée') + batterie(516, 70, 1, SUN, 'Nuit hachée', 'on démarre à plat')
+b += f'<path d="M430 150 h46 m-14 -14 l14 14 -14 14" fill="none" stroke="{INK3}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>'
+open(OUT + 'batterie.svg', 'w', encoding='utf8').write(svg(936, 400, b))
+
+
+# 14. Soirée : arc de soirée en 4 repères
+def pic(k):
+    if k == 0:
+        return f'<circle r="30" fill="{CARD}" stroke="{INK}" stroke-width="6"/><circle r="14" fill="none" stroke="{INK3}" stroke-width="5"/><path d="M-46 -22 v44 M46 -22 v44" stroke="{INK}" stroke-width="6" stroke-linecap="round"/>'
+    if k == 1:
+        return f'<rect x="-34" y="-26" width="68" height="46" rx="8" fill="{CARD}" stroke="{INK}" stroke-width="6"/><path d="M-12 26 h24" stroke="{INK}" stroke-width="6" stroke-linecap="round"/><path d="M-44 -34 L44 34" stroke="{ACC}" stroke-width="8" stroke-linecap="round"/>'
+    if k == 2:
+        return f'<path d="M-30 -18 h56 v26 a28 28 0 0 1 -56 0 Z" fill="{CARD}" stroke="{INK}" stroke-width="6" stroke-linejoin="round"/><path d="M26 -8 a16 16 0 0 1 0 28" fill="none" stroke="{INK}" stroke-width="6"/><path d="M-12 -34 q8 -10 0 -18 M6 -34 q8 -10 0 -18" fill="none" stroke="{ACC}" stroke-width="5" stroke-linecap="round"/>'
+    return f'<path d="M14 -40 a40 40 0 1 0 28 56 a32 32 0 0 1 -28 -56 Z" fill="{SUN}" stroke="{INK}" stroke-width="6" stroke-linejoin="round"/>'
+
+
+stops = [(130, 440, '19 h', 'Dîner léger'), (327, 230, '20 h', 'Écrans en pause'), (609, 230, '21 h', 'Tisane, lecture'), (806, 440, '22 h', 'Coucher régulier')]
+b = f'<path d="M130 440 A359 359 0 0 1 806 440" fill="none" stroke="{STEP}" stroke-width="16" stroke-linecap="round" stroke-dasharray="2 26"/>'
+for k, (x, y, h, t) in enumerate(stops):
+    b += f'<circle cx="{x}" cy="{y}" r="78" fill="{SUN if k == 3 else STEP}" stroke="{INK}" stroke-width="5"/><g transform="translate({x} {y}) scale(.9)">{pic(k)}</g>'
+    b += f'<text x="{x}" y="{y + 124}" font-size="40" font-weight="800" fill="{INK}" text-anchor="middle">{h}</text><text x="{x}" y="{y + 160}" font-size="28" font-weight="600" fill="{INK2}" text-anchor="middle">{t}</text>'
+open(OUT + 'soiree.svg', 'w', encoding='utf8').write(svg(936, 640, b))
 print('ok', os.listdir(OUT))
