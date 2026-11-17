@@ -8,7 +8,8 @@ from ucards import section as ucards_section
 HERE = os.path.dirname(os.path.abspath(__file__))
 V2 = os.environ.get("V2") == "1"
 V3 = os.environ.get("V3") == "1"
-DIST = os.path.join(HERE, "..", "site" if V3 else ("dist-v2" if V2 else "dist"))
+V4 = os.environ.get("V4") == "1"
+DIST = os.path.join(HERE, "..", "..", "v4", "site") if V4 else os.path.join(HERE, "..", "site" if V3 else ("dist-v2" if V2 else "dist"))
 shutil.rmtree(DIST, ignore_errors=True)
 os.makedirs(DIST)
 
@@ -193,6 +194,7 @@ def delivery(card_only=False):
 <ul class="tick-list">{tl}</ul>{'<figure class="solid">' + IMG("livraison.jpg", "Un rendez-vous préparé avec le dossier complet") + '</figure>' if V2 else ''}</div></div>'''
 
 # ---------- gabarits de page ----------
+FONTS4 = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">'
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap">'
 
 PH = {"pourquoi-nous.html": "card-1", "comment-ca-marche.html": "card-2", "resultats.html": "cta-bg", "tarifs.html": "card-4", "faq.html": "pme", "contact.html": "livraison"}
@@ -209,14 +211,14 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
     if V2:
         body = v2body(fname, body)
         if index: title = "NOVOLENS V2"
-    if V3 and index: title = "NOVOLENS"
+    if V3 and index: title = "NOVOLENS V4" if V4 else "NOVOLENS"
     head = f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<meta name="description" content="{desc}">\n'
     head += f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#FCFBFF">\n'
     if V3:
         head += '<meta name="color-scheme" content="light">\n'
         if fname == 'cas-client.html': head += '<meta name="robots" content="noindex">\n'
         if index: head += '<link rel="preload" as="image" href="img/hero-bg.jpg" fetchpriority="high">\n'
-    head += FONTS + '\n<link rel="stylesheet" href="style.css">\n'
+    head += (FONTS4 if V4 else FONTS) + '\n<link rel="stylesheet" href="style.css">\n'
     if V3 and fname not in ("index.html", "404.html"):
         crumb = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "index.html"},
@@ -234,9 +236,9 @@ def page(fname, title, desc, body, active=None, ld=None, index=False):
                 '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
                 '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
                 + head.replace('<title>NOVOLENS</title>', '<title>NOVOLENS, prospection B2B externalisée</title>', 1).replace('og:title" content="NOVOLENS"', 'og:title" content="NOVOLENS, prospection B2B externalisée"') + '</head>\n<body>\n' + main + '\n</body></html>')
-        os.makedirs(os.path.join(DIST, "..", "site-artefact"), exist_ok=True)
+        os.makedirs(os.path.join(DIST, "..", "artefact" if V4 else "site-artefact"), exist_ok=True)
         import re as _r2
-        with open(os.path.join(DIST, "..", "site-artefact", "index.html"), "w", encoding="utf-8") as f2:
+        with open(os.path.join(DIST, "..", "artefact" if V4 else "site-artefact", "index.html"), "w", encoding="utf-8") as f2:
             f2.write(_r2.sub(r'>\s*\n\s*<', '><', frag))
         html = full
     elif index:
@@ -536,15 +538,18 @@ def build_contact():
     page("contact.html", "Contact NOVOLENS", "Réservez un échange de 15 minutes avec un expert NOVOLENS pour parler de vos objectifs de croissance. Sans engagement, réponse sous 24 h.", body, None, [ORG])
 
 exec(open(os.path.join(HERE, 'v3_extra.py'), encoding='utf-8').read())
-build_index(); build_pourquoi(); build_methode(); build_resultats(); build_tarifs(); build_faq(); build_contact()
+exec(open(os.path.join(HERE, 'v4_extra.py'), encoding='utf-8').read())
+(build_index_v4 if V4 else build_index)(); build_pourquoi(); build_methode(); build_resultats(); build_tarifs(); build_faq(); build_contact()
 if V3:
-    build_cas(); build_404(); build_seo(); build_ds()
+    build_cas(); build_404(); build_seo()
+    if not V4: build_ds()
 shutil.copytree(os.path.join(HERE, "img"), os.path.join(DIST, "img"))
 for fn in ("style.css", "app.js"):
     shutil.copy(os.path.join(HERE, fn), os.path.join(DIST, fn))
 if V3:
     with open(os.path.join(DIST, "style.css"), "a") as f:
         f.write(open(os.path.join(HERE, "style_v2.css")).read()); f.write(open(os.path.join(HERE, "style_v3.css")).read())
+        if V4: f.write(open(os.path.join(HERE, "style_v4.css")).read())
 elif V2:
     with open(os.path.join(DIST, "style.css"), "a") as f:
         f.write(open(os.path.join(HERE, "style_v2.css")).read())
