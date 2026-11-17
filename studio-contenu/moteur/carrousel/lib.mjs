@@ -149,6 +149,8 @@ function clairCss(design, T) {
 .bd-haut .cl-logo .m1{fill:${ch.bg}}
 .bd-bas .cl-next{color:#fff;z-index:3}
 .bd-bas .cl-body,.bd-haut .cl-body{position:relative;z-index:2}
+.cl-schema{margin:0 auto;flex:none;width:100%}
+.cl-schema .cl-svg{margin-top:0}
 .cl-photos{display:flex;gap:22px;align-items:flex-end;margin:6px 0 4px}
 .cl-ph{flex:1;position:relative;border-radius:999px 999px 30px 30px;overflow:hidden;box-shadow:0 26px 50px -28px rgba(18,48,31,.55)}
 .cl-ph img{width:100%;height:100%;object-fit:cover;display:block}
@@ -385,6 +387,8 @@ function clairBloc(b, root, design) {
       return `<div class="cl-liste">${b.items.map((it, k) => `<div class="cl-item">${b.mode === 'coche' ? `<span class="cl-ck">${TICK}</span>` : `<span class="cl-num">${k + 1}</span>`}<div><b>${rich(it.t)}</b>${it.d ? `<p>${rich(it.d)}</p>` : ''}</div></div>`).join('')}</div>`;
     case 'photo':
       return `<div class="cl-photo" style="height:${b.hauteur ?? 380}px"><div class="cl-photo-in">${imgTag({ image: { fichier: b.fichier, pos: b.pos } }, root, 'ph')}</div></div>`;
+    case 'schema':
+      return `<div class="cl-schema"${b.largeur ? ` style="width:${b.largeur}%"` : ''}>${svgFile(root, b.fichier)}</div>`;
     case 'photos': {
       const h = b.hauteur ?? 400, n = b.items.length;
       return `<div class="cl-photos">${b.items.map((it, k) => `<div class="cl-ph" style="height:${k === 1 && n === 3 ? h + 56 : h}px">${imgTag({ image: { fichier: it.fichier, pos: it.pos } }, root, 'ph')}${it.legende ? `<em>${rich(it.legende)}</em>` : ''}</div>`).join('')}</div>`;

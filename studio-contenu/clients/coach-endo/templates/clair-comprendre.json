@@ -1,0 +1,12 @@
+{
+  "nom": "clair-comprendre",
+  "pour": "Pilier « Comprendre la maladie » : explication biologique avec schémas d'anatomie.",
+  "regles": [
+    "Schémas dessinés dans la charte (assets/svg), jamais de photo d'organes ou de photo sans rapport avec la slide",
+    "Photos de femmes uniquement sur les slides d'émotion (couverture, ce que ça fait, clôture)",
+    "Vocabulaire simple, un terme médical défini à la fois, rien d'individuel",
+    "Contenu médical relu par un professionnel de santé avant publication",
+    "Dernière slide : bouton « Recevoir mon kit gratuit », garanties et mention « informations générales »"
+  ],
+  "slides": []
+}

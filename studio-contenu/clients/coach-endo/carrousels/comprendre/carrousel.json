@@ -1,0 +1,92 @@
+{
+  "client": "coach-endo",
+  "template": "clair-comprendre",
+  "fruit": "vert",
+  "titre_interne": "L'endométriose expliquée biologiquement",
+  "legende": "L'endométriose, expliquée simplement : un tissu semblable à la muqueuse de l'utérus s'installe en dehors de l'utérus, réagit au cycle comme elle, et provoque inflammation, douleurs, adhérences et parfois des kystes. Les causes ne sont pas toutes connues, et ce n'est la faute de personne. Sources : sante.fr. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Contenu à faire relire par un professionnel de santé avant publication.]] #endométriose #santé #comprendre",
+  "slides": [
+    {
+      "layout": "clair",
+      "grand": true,
+      "eyebrow": "Comprendre l'endométriose",
+      "titre": "Ce qui se passe *dans le corps*",
+      "texte": "Un schéma simple, sans jargon.",
+      "blocs": [{ "type": "schema", "fichier": "uterus.svg" }]
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "La définition",
+      "titre": "Un tissu *hors de sa place*",
+      "blocs": [{ "type": "schema", "fichier": "comparaison.svg" }],
+      "texte": "L'endomètre est la muqueuse qui tapisse l'intérieur de l'utérus.",
+      "source": "Ministère de la Santé, sante.fr, « Endométriose ». [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Les localisations",
+      "titre": "Où *s'installe-t-il* ?",
+      "blocs": [{ "type": "schema", "fichier": "localisations.svg", "largeur": 94 }],
+      "source": "Schéma simplifié, à titre d'illustration."
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Chaque mois",
+      "titre": "Il réagit *comme l'endomètre*",
+      "blocs": [{ "type": "schema", "fichier": "cycle.svg" }],
+      "texte": "Les hormones du cycle agissent aussi sur ce tissu, même hors de l'utérus."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Une maladie réelle",
+      "titre": "Une maladie *chronique et inflammatoire*",
+      "texte": "Elle évolue avec les cycles. Ce n'est pas dans votre tête.",
+      "pos": "bas",
+      "image": { "fichier": "f-jeune-balcon.jpg", "pos": "50% 18%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Ses effets",
+      "titre": "Ce que ça *provoque*",
+      "blocs": [
+        {
+          "type": "liste",
+          "mode": "coche",
+          "items": [
+            { "t": "De l'inflammation", "d": "Source de douleurs et de fatigue." },
+            { "t": "Des adhérences", "d": "Des organes qui se collent entre eux." },
+            { "t": "Parfois des kystes", "d": "Notamment sur les ovaires." }
+          ]
+        }
+      ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Les causes",
+      "titre": "On ne sait pas *encore tout*",
+      "texte": "Plusieurs pistes : hormones, immunité, génétique. Ce n'est la faute de personne.",
+      "pos": "bas",
+      "image": { "fichier": "f-ainee-sourire.jpg", "pos": "50% 10%" }
+    },
+    {
+      "layout": "clair",
+      "haut": true,
+      "eyebrow": "Le diagnostic",
+      "titre": "Un *examen*, pas une impression",
+      "texte": "Souvent une échographie ou une IRM pelvienne.",
+      "arche": { "fichier": "f-bureau-ecriture.jpg", "pos": "50% 30%" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Comprendre, c'est déjà *reprendre la main*",
+      "texte": "Le kit gratuit « Carrière en cycles » pour avancer à votre rythme. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "piece-lumineuse.jpg", "pos": "50% 50%" }
+    }
+  ]
+}
