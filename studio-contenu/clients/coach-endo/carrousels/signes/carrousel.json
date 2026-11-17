@@ -6,23 +6,28 @@
   "legende": "Une maladie invisible, des signes bien réels. Les signes qui doivent conduire à consulter un professionnel de santé : ils ne suffisent pas à poser un diagnostic. Le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. #endométriose #signes #santédesfemmes",
   "slides": [
     {
-      "layout": "clair",
-      "haut": true,
-      "grand": true,
+      "layout": "clair-photo",
       "eyebrow": "Maladie invisible",
       "titre": "Endométriose : les *signes* à ne pas ignorer",
       "texte": "Des signes bien réels.",
-      "etroit": true,
-      "arche": {
-        "fichier": "ordinateur-parc.jpg",
-        "pos": "38% 50%"
-      }
+      "pos": "bas",
+      "image": {
+        "fichier": "journal-bougie.jpg",
+        "pos": "50% 55%"
+      },
+      "grand": true
     },
     {
       "layout": "clair",
       "eyebrow": "Les douleurs",
       "titre": "Quand le corps *alerte*",
       "blocs": [
+        {
+          "type": "photo",
+          "fichier": "carnet-bois.jpg",
+          "pos": "50% 40%",
+          "hauteur": 170
+        },
         {
           "type": "liste",
           "mode": "coche",
@@ -69,19 +74,24 @@
       ]
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Important",
       "titre": "Ce n'est *pas un diagnostic*",
       "blocs": [
         {
           "type": "carte",
-          "fond": "band",
+          "fond": "card",
           "texte": "Ces signes peuvent avoir d'autres causes. Seul un professionnel de santé peut poser un diagnostic. Si vous vous reconnaissez, parlez-en à votre médecin ou à votre gynécologue."
         }
-      ]
+      ],
+      "pos": "haut",
+      "image": {
+        "fichier": "lecture-canape.jpg",
+        "pos": "50% 60%"
+      }
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Et au travail ?",
       "titre": "Ces signes pèsent aussi sur *votre carrière* ?",
       "texte": "Le kit « Carrière en cycles » vous aide à repérer vos cycles et à reprendre la main. [[Lien à mettre en bio.]]",
@@ -100,7 +110,12 @@
           ]
         }
       ],
-      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique."
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": {
+        "fichier": "ordinateur-parc.jpg",
+        "pos": "40% 55%"
+      }
     }
   ]
 }

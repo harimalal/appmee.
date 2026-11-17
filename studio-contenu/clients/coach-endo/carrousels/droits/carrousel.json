@@ -19,10 +19,15 @@
       }
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Premier droit",
       "titre": "Vous n'avez pas à *tout dire*",
-      "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège. Cette décision vous appartient."
+      "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège. Cette décision vous appartient.",
+      "pos": "bas",
+      "image": {
+        "fichier": "piece-lumineuse.jpg",
+        "pos": "50% 40%"
+      }
     },
     {
       "layout": "clair",
@@ -55,6 +60,12 @@
       "titre": "Un *outil*, pas une obligation",
       "blocs": [
         {
+          "type": "photo",
+          "fichier": "journal-bougie.jpg",
+          "pos": "50% 70%",
+          "hauteur": 380
+        },
+        {
           "type": "carte",
           "fond": "band",
           "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier : elle n'est pas automatique. Vous décidez de la communiquer ou non."
@@ -62,19 +73,24 @@
       ]
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Vos protections",
       "titre": "Pas de *discrimination*",
       "blocs": [
         {
           "type": "carte",
-          "fond": "band",
+          "fond": "card",
           "texte": "Une décision défavorable fondée sur votre état de santé ou votre handicap est en principe interdite par le Code du travail. [[À valider par un juriste en droit du travail.]]"
         }
-      ]
+      ],
+      "pos": "haut",
+      "image": {
+        "fichier": "carnet-bois.jpg",
+        "pos": "50% 40%"
+      }
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Et maintenant ?",
       "titre": "Chaque situation est *différente*",
       "texte": "Les trames de messages du kit vous aident à choisir ce que vous dites, à qui, et dans quels mots. [[Lien à mettre en bio.]]",
@@ -93,7 +109,12 @@
           ]
         }
       ],
-      "mention": "Pour vos droits précis, rapprochez-vous de votre médecin du travail ou d'un conseil juridique. Informations d'ordre général, ni avis médical, ni avis juridique."
+      "mention": "Pour vos droits précis, rapprochez-vous de votre médecin du travail ou d'un conseil juridique. Informations d'ordre général, ni avis médical, ni avis juridique.",
+      "pos": "bas",
+      "image": {
+        "fichier": "bureau-maison.jpg",
+        "pos": "50% 55%"
+      }
     }
   ]
 }

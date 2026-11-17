@@ -6,20 +6,19 @@
   "legende": "Ce n'est pas un manque de motivation. C'est un rythme qui ne vous correspond pas. Les chiffres : 1 femme sur 10 concernée, 49 % estiment que l'endométriose a freiné leur carrière, 7 à 9 ans pour obtenir un diagnostic. Sources : sante.fr ; enquête CEET / EndoFrance 2020. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. #endométriose #carrière #reconversion",
   "slides": [
     {
-      "layout": "clair",
-      "haut": true,
-      "grand": true,
+      "layout": "clair-photo",
       "eyebrow": "Endométriose et vie professionnelle",
       "titre": "Ce n'est pas un *manque de motivation*",
       "texte": "C'est un rythme qui ne vous correspond pas.",
-      "etroit": true,
-      "arche": {
-        "fichier": "femme-souriante.jpg",
-        "pos": "50% 30%",
-        "badge": {
-          "valeur": "1/10",
-          "texte": "femme concernée par l'endométriose en France"
-        }
+      "pos": "bas",
+      "image": {
+        "fichier": "hero-hd.jpg",
+        "pos": "50% 20%"
+      },
+      "grand": true,
+      "badge": {
+        "valeur": "1/10",
+        "texte": "femme concernée par l'endométriose en France"
       }
     },
     {
@@ -79,19 +78,18 @@
       ]
     },
     {
-      "layout": "clair",
-      "haut": true,
+      "layout": "clair-photo",
       "eyebrow": "Au quotidien",
       "titre": "S'adapter en permanence, *jusqu'à s'épuiser*",
       "texte": "Beaucoup de femmes s'adaptent en permanence, jusqu'à s'épuiser ou renoncer à leurs ambitions.",
-      "etroit": true,
-      "arche": {
-        "fichier": "carnet.jpg",
-        "pos": "62% 50%"
+      "pos": "bas",
+      "image": {
+        "fichier": "bureau-maison.jpg",
+        "pos": "50% 55%"
       }
     },
     {
-      "layout": "clair",
+      "layout": "clair-photo",
       "eyebrow": "Première étape",
       "titre": "Reprenez la main sur votre carrière, *à votre rythme*",
       "texte": "Recevez le kit gratuit « Carrière en cycles » : un guide, un carnet de bord et 5 leçons par e-mail. [[Lien à mettre en bio.]]",
@@ -110,7 +108,12 @@
           ]
         }
       ],
-      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique."
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": {
+        "fichier": "piece-lumineuse.jpg",
+        "pos": "50% 50%"
+      }
     }
   ]
 }

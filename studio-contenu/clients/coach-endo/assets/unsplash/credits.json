@@ -10,6 +10,36 @@
     },
     "ordinateur-parc.jpg": {
       "auteur": "Unsplash (voir source)"
+    },
+    "hero-hd.jpg": {
+      "auteur": "Nolan Manning",
+      "id": "Ll9YOG20UFI",
+      "url": "https://unsplash.com/photos/smiling-woman-at-wooden-table-Ll9YOG20UFI"
+    },
+    "journal-bougie.jpg": {
+      "auteur": "Noha Badawi",
+      "id": "R2TRrQQxzzw",
+      "url": "https://unsplash.com/photos/desk-with-open-journal-pen-candle-and-magnifying-glass-R2TRrQQxzzw"
+    },
+    "bureau-maison.jpg": {
+      "auteur": "Kailun Zhang",
+      "id": "f7vn4prP2AU",
+      "url": "https://unsplash.com/photos/person-working-at-home-office-desk-f7vn4prP2AU"
+    },
+    "piece-lumineuse.jpg": {
+      "auteur": "Aleksandra Dementeva",
+      "id": "aWBPQHfPwVM",
+      "url": "https://unsplash.com/photos/sunlit-room-with-desk-chair-and-laptop-aWBPQHfPwVM"
+    },
+    "carnet-bois.jpg": {
+      "auteur": "Justin Morgan",
+      "id": "2_BrZ3AJ_78",
+      "url": "https://unsplash.com/photos/black-spring-notebook-on-brown-wooden-table-2_BrZ3AJ_78"
+    },
+    "lecture-canape.jpg": {
+      "auteur": "Kailun Zhang",
+      "id": "p7yuMnmSoFM",
+      "url": "https://unsplash.com/photos/a-woman-reading-a-book-on-a-couch-p7yuMnmSoFM"
     }
   }
 }

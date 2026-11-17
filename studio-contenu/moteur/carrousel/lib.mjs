@@ -52,8 +52,35 @@ function clairCss(design, T) {
   const B = `"${design.polices.texte}",system-ui,sans-serif`;
   return `
 /* clair : charte « claire » (fond crème, encre verte, surligneur jaune, arches) */
-.l-clair{--cc-card:${ch.card};--cc-ink:${ch.ink};--cc-ink2:${ch.ink2};--cc-ink3:${ch.ink3};--cc-accent:${ch.accent};--cc-accent-ink:${ch.accentInk};--cc-sun:${ch.sun};--cc-mark:${ch.mark};--cc-band:${ch.band};--cc-step:${ch.step};--cc-edge:${ch.edge};
-  background:radial-gradient(900px 700px at 105% -5%,rgba(255,218,110,.40),transparent 60%),radial-gradient(800px 700px at -10% 105%,rgba(176,208,170,.38),transparent 60%),${ch.bg};color:${ch.ink};font-family:${B};padding:60px 72px 72px;display:flex;flex-direction:column}
+.l-clair,.l-clair-photo{--cc-card:${ch.card};--cc-ink:${ch.ink};--cc-ink2:${ch.ink2};--cc-ink3:${ch.ink3};--cc-accent:${ch.accent};--cc-accent-ink:${ch.accentInk};--cc-sun:${ch.sun};--cc-mark:${ch.mark};--cc-band:${ch.band};--cc-step:${ch.step};--cc-edge:${ch.edge};
+  font-family:${B};padding:60px 72px 72px;display:flex;flex-direction:column}
+.l-clair{background:radial-gradient(900px 700px at 105% -5%,rgba(255,218,110,.40),transparent 60%),radial-gradient(800px 700px at -10% 105%,rgba(176,208,170,.38),transparent 60%),${ch.bg};color:${ch.ink}}
+/* clair-photo : photo plein cadre + charte (logo, surligneur jaune, cartes, bouton) */
+.l-clair-photo{color:#fff;background:${ch.ink}}
+.l-clair-photo .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,32,20,.94) 0%,rgba(10,32,20,.72) 42%,rgba(10,32,20,.16) 72%),linear-gradient(to bottom,rgba(10,32,20,.6) 0%,rgba(10,32,20,0) 20%)}
+.l-clair-photo.p-haut .scrim{background:linear-gradient(to bottom,rgba(10,32,20,.94) 0%,rgba(10,32,20,.72) 46%,rgba(10,32,20,.14) 82%)}
+.l-clair-photo.p-centre .scrim{background:rgba(10,32,20,.62)}
+.l-clair-photo .cl-head{position:relative;z-index:2}
+.l-clair-photo .cl-head b,.l-clair-photo .cl-pg{color:#fff}
+.l-clair-photo .cl-head small{color:rgba(255,255,255,.86)}
+.l-clair-photo .cl-logo .m1{fill:${ch.bg}}
+.l-clair-photo .cl-body{position:relative;z-index:2}
+.l-clair-photo .cl-next{color:var(--cc-sun);z-index:2}
+.slide.l-clair-photo h1,.slide.l-clair-photo h2{color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.slide.l-clair-photo mark{background:var(--cc-sun);color:${ch.ink};text-shadow:none;padding:0 .14em;margin:0 -.04em;border-radius:8px 4px 10px 4px}
+.l-clair-photo .cl-eyebrow{background:var(--cc-mark);color:${ch.ink}}
+.l-clair-photo .cl-texte{color:rgba(255,255,255,.96);text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.l-clair-photo .cl-gar{color:#fff}
+.l-clair-photo .cl-src,.l-clair-photo .cl-mention{color:rgba(255,255,255,.84)}
+.l-clair-photo .cl-card{color:${ch.ink}}
+.l-clair-photo .cl-card h3{color:${ch.ink}}
+.cl-body.bas{justify-content:flex-end}
+.cl-body.centre{justify-content:center}
+.cl-body .cl-badge{position:static;align-self:flex-start}
+.cl-photo{position:relative;flex:none;margin:14px 20px 8px 0}
+.cl-photo::after{content:"";position:absolute;right:-20px;top:-14px;left:36px;bottom:30px;background:var(--cc-sun);border-radius:34px 64px 34px 34px;z-index:0}
+.cl-photo-in{position:absolute;inset:0;border-radius:34px;overflow:hidden;z-index:1;box-shadow:0 26px 50px -28px rgba(18,48,31,.55)}
+.cl-photo-in img{width:100%;height:100%;object-fit:cover}
 .cl-head{display:flex;align-items:center;gap:18px;flex:none}
 .cl-logo{width:68px;height:68px;flex:none}
 .cl-head b{display:block;font-family:${T};font-weight:800;font-size:38px;letter-spacing:-.01em;line-height:1.05}
@@ -62,8 +89,8 @@ function clairCss(design, T) {
 .cl-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:safe center;gap:26px;position:relative;padding-top:16px;padding-bottom:78px}
 .cl-body.haut{justify-content:flex-start;padding-top:56px}
 .cl-eyebrow{align-self:flex-start;font-size:28px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cc-accent-ink);background:linear-gradient(transparent 52%,var(--cc-mark) 52%,var(--cc-mark) 94%,transparent 94%);padding:2px 14px;border-radius:6px}
-.l-clair h1,.l-clair h2{font-family:${T};font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--cc-ink);margin:0}
-.l-clair mark{background:linear-gradient(transparent 52%,var(--cc-mark) 52%,var(--cc-mark) 94%,transparent 94%);color:inherit;padding:0 .12em;margin:0 -.04em;border-radius:6px 3px 8px 3px}
+.l-clair h1,.l-clair h2,.l-clair-photo h1,.l-clair-photo h2{font-family:${T};font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--cc-ink);margin:0}
+.l-clair mark,.l-clair-photo mark{background:linear-gradient(transparent 52%,var(--cc-mark) 52%,var(--cc-mark) 94%,transparent 94%);color:inherit;padding:0 .12em;margin:0 -.04em;border-radius:6px 3px 8px 3px}
 .cl-texte{font-size:52px;line-height:1.32;color:var(--cc-ink2);margin:0;max-width:900px}
 .cl-texte.etroit{max-width:340px;font-size:42px}
 .cl-card{background:var(--cc-card);border-radius:30px;padding:36px 40px;box-shadow:0 22px 46px -30px rgba(18,48,31,.35),0 2px 0 rgba(18,48,31,.04)}
@@ -305,6 +332,8 @@ function clairBloc(b, root) {
       return `<div class="cl-card${b.fond === 'band' ? ' band' : ''}">${b.grand ? `<div class="cl-big">${rich(b.grand)}${b.sup ? `<sup>${b.sup}</sup>` : ''}${b.legende ? `<small>${rich(b.legende)}</small>` : ''}</div>` : ''}${b.titre ? `<h3>${rich(b.titre)}</h3>` : ''}${b.texte ? `<p>${rich(b.texte)}</p>` : ''}${b.svg ? svgFile(root, b.svg) : ''}</div>`;
     case 'liste':
       return `<div class="cl-liste">${b.items.map((it, k) => `<div class="cl-item">${b.mode === 'coche' ? `<span class="cl-ck">${TICK}</span>` : `<span class="cl-num">${k + 1}</span>`}<div><b>${rich(it.t)}</b>${it.d ? `<p>${rich(it.d)}</p>` : ''}</div></div>`).join('')}</div>`;
+    case 'photo':
+      return `<div class="cl-photo" style="height:${b.hauteur ?? 380}px"><div class="cl-photo-in">${imgTag({ image: { fichier: b.fichier, pos: b.pos } }, root, 'ph')}</div></div>`;
     case 'bouton':
       return `<div class="cl-btn">${rich(b.texte)} ${ARROW_SVG}</div>`;
     case 'garanties':
@@ -345,7 +374,9 @@ function inner(s, i, n, design, root) {
       return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
 <div class="txt">${lead}${s.valeur ? `<div class="chiffre">${rich(s.valeur)}</div>` : ''}${head}${body ? `<p class="corps">${rich(body)}</p>` : ''}${s.items ? listeHtml(s.items, s.puces) : ''}${s.mention ? `<p class="mention">${rich(s.mention)}</p>` : ''}${i === n - 1 ? `<div class="marque"><span>${esc(design.marque)}</span> · ${esc(design.signature)}</div>` : ''}</div>${arrow(i, n)}`;
     }
-    case 'clair': {
+    case 'clair':
+    case 'clair-photo': {
+      const cp = s.layout === 'clair-photo';
       const lg = design.charte?.logo ? readFileSync(join(root, 'assets', 'svg', design.charte.logo), 'utf8').replace('<svg ', '<svg class="cl-logo" ') : '';
       const head = `<header class="cl-head">${lg}<div><b>${esc(design.marque)}</b><small>${esc(design.charte?.sous_marque ?? '')}</small></div><span class="cl-pg">${i + 1} / ${n}</span></header>`;
       const big = s.grand ?? i === 0;
@@ -353,7 +384,10 @@ function inner(s, i, n, design, root) {
       const a = s.arche;
       const arche = a ? `<div class="cl-arche"><div class="cl-arche-in">${imgTag({ image: { fichier: a.fichier, pos: a.pos } }, root, 'ph')}</div>${a.badge ? `<div class="cl-badge"><b>${rich(a.badge.valeur)}</b><span>${rich(a.badge.texte)}</span></div>` : ''}</div>` : '';
       const titre = s.titre ? (big ? `<h1 ${fit(124, 420)}>${rich(s.titre)}</h1>` : `<h2 ${fit(128, 330)}>${rich(s.titre)}</h2>`) : '';
-      return `${head}<div class="cl-body${s.haut ? ' haut' : ''}">${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
+      const bodyCls = cp ? (s.pos === 'haut' ? ' haut' : s.pos === 'centre' ? ' centre' : ' bas') : s.haut ? ' haut' : '';
+      const bg = cp ? `${imgTag(s, root)}<div class="scrim"></div>` : '';
+      const badge = s.badge ? `<div class="cl-badge"><b>${rich(s.badge.valeur)}</b><span>${rich(s.badge.texte)}</span></div>` : '';
+      return `${bg}${head}<div class="cl-body${bodyCls}">${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
     }
     case 'typo': {
       const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';
