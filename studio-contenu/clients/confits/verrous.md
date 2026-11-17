@@ -7,3 +7,4 @@
 - Aucun prix ni promotion sans l'accord de Pascal.
 - Aucune photo générée pour représenter un pot, un fruit de Pascal ou une personne.
 - Rien n'est publié sans la validation de Pascal.
+- Savoir-faire général : le présenter comme « comment ça marche » ou « savoir-faire courant », jamais comme « notre recette » ou « notre secret » tant que Pascal n'a pas fourni sa méthode.

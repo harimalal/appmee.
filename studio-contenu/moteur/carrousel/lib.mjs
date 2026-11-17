@@ -79,7 +79,7 @@ mark{white-space:nowrap;background:var(--f);color:var(--ft);padding:0 .14em;bord
 /* bande : photo en bandeau, titre chevauchant, liste */
 .l-bande .bandeau{position:absolute;left:0;right:0;top:0;height:470px;overflow:hidden}
 .l-bande .bandeau::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,8,14,.4) 0,rgba(20,8,14,0) 28%)}
-.l-bande .corpsb{position:absolute;left:0;right:0;top:420px;bottom:0;padding:0 72px 64px;display:flex;flex-direction:column;gap:40px}
+.l-bande .corpsb{position:absolute;left:0;right:0;top:420px;bottom:0;padding:0 72px 150px;display:flex;flex-direction:column;gap:40px}
 .l-bande h2{align-self:flex-start;background:var(--f);color:var(--ft);padding:22px 38px;font-size:90px;border-radius:6px;max-width:100%;overflow:visible}
 .l-bande h2 mark{background:var(--encre);color:var(--papier)}
 .liste{display:flex;flex-direction:column;gap:44px;margin-top:10px}

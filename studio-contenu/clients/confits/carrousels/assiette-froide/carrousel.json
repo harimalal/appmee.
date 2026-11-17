@@ -1,0 +1,17 @@
+{
+  "client": "confits",
+  "template": "secret-fabrication",
+  "fruit": "framboise",
+  "titre_interne": "Secret de fabrication : l'assiette froide",
+  "legende": "Comment savoir si une confiture est prête ? Un vieux geste : l'assiette froide. Savoir-faire courant, [[à compléter avec la méthode de Pascal]]. #confiture #artisanal #savoirfaire #lesconfits",
+  "slides": [
+    { "kicker": "Secret de fabrication", "titre": "L'assiette *froide*", "sous": "Comment savoir si une confiture est prête.", "image": { "fichier": "fraises-assiette.jpg", "pos": "50% 35%" } },
+    { "kicker": "Le geste", "titre": "Une goutte, *une assiette*", "texte": "On dépose une goutte de confiture sur une assiette passée au froid, puis on attend une minute environ.", "image": { "fichier": "pot-pommes.jpg", "pos": "50% 55%" } },
+    { "titre": "Trois *signes*", "image": { "fichier": "pot-myrtilles.jpg", "pos": "60% 45%" }, "items": [
+      { "t": "On pousse la goutte", "d": "Elle se plisse : la confiture est prête." },
+      { "t": "Elle coule", "d": "Pas encore prête : on poursuit la cuisson." },
+      { "t": "On retire du feu", "d": "Pendant le test, pour ne pas trop cuire." }
+    ] },
+    { "titre": "Et chez *Pascal* ?", "texte": "[[Comment Pascal vérifie la prise de ses confitures : à fournir.]]", "image": { "fichier": "fraises-bol.jpg", "pos": "50% 30%" } }
+  ]
+}

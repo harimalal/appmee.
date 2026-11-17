@@ -26,7 +26,7 @@ const sections = readdirSync(join(root, 'carrousels')).sort().map((slug) => {
 </section>`;
 });
 
-const html = `<meta name="claude:viewport-fit-sides" content="cover">
+let html = `<meta name="claude:viewport-fit-sides" content="cover">
 <title>Carrousels Les Confits</title>
 <style>
 :root{--bg:#F6F5F8;--surface:#FFFFFF;--ink:#261A2C;--muted:#6B6074;--line:#DDD7E3;--accent:#8E2257;--warn-bg:#F6EAD0;--warn:#8F5B00}
@@ -51,7 +51,7 @@ ${css(loader(readdirSync(join(root, 'carrousels')).sort()[0]).design)}
 </style>
 <div class="wrap">
 <header><span class="eyebrow">Test du moteur de carrousel</span><h1>Les Confits</h1>
-<p class="lede">Trois carrousels construits autour de photos, produits par le même moteur à partir de templates et du pack client des Confits. Les photos viennent d'Unsplash : ce sont des photos d'illustration, pas celles de Pascal. Les zones jaunes sont des informations que seul Pascal peut donner.</p></header>
+<p class="lede">Six carrousels construits autour de photos, produits par le même moteur à partir de templates et du pack client des Confits. Les photos viennent d'Unsplash : ce sont des photos d'illustration, pas celles de Pascal. Les zones jaunes sont des informations que seul Pascal peut donner.</p></header>
 ${sections.join('\n')}
 <p class="note">Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Les images PNG et le PDF de chaque carrousel sont dans le dépôt, dossier studio-contenu/clients/confits/carrousels. Brouillons : rien n'est publié.</p>
 </div>
@@ -63,5 +63,13 @@ ${sections.join('\n')}
   if(window.ResizeObserver){document.querySelectorAll('.frame').forEach(function(f){new ResizeObserver(fit).observe(f);});}
 })();
 </script>`;
+// Dédoublonne les photos embarquées : chaque image n'est écrite qu'une fois.
+const uniq = new Map();
+html = html.replace(/src="data:image\/jpeg;base64,([A-Za-z0-9+/=]+)"/g, (m, b64) => {
+  if (!uniq.has(b64)) uniq.set(b64, uniq.size);
+  return `data-img="${uniq.get(b64)}"`;
+});
+const imgs = [...uniq.keys()];
+html = html.replace('<script>', `<script>window.IMGS=${JSON.stringify(imgs)};document.querySelectorAll('img[data-img]').forEach(function(i){i.src='data:image/jpeg;base64,'+window.IMGS[+i.getAttribute('data-img')];});</script>\n<script>`);
 writeFileSync(outFile, html);
 console.log('ok', outFile, Math.round(html.length / 1024) + ' KB');

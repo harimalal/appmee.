@@ -21,3 +21,10 @@ Règle : un fait cité dans un contenu doit figurer ici, ou être marqué « à 
 
 ## Faits manquants (à marquer « à compléter » tant que Pascal ne les donne pas)
 - Quantité de fruits par pot, liste des parfums, provenance exacte des fruits, label bio exact, date de création.
+
+## Savoir-faire général (usable en « savoir-faire courant », jamais présenté comme la méthode de Pascal)
+- Test de l'assiette froide : une goutte de confiture sur une assiette passée au froid ; si elle se plisse quand on la pousse du doigt, la confiture est prête.
+- Le citron apporte de l'acidité, qui aide la pectine du fruit à gélifier.
+- Le sucre aide à conserver et, avec la pectine et l'acidité, à faire prendre la confiture.
+- Pots propres, remplissage à chaud, fermeture aussitôt, refroidissement : le vide se forme dans le pot.
+- La méthode exacte de Pascal (dosages, durées, contrôles) n'est pas connue : toujours [[à compléter]].
