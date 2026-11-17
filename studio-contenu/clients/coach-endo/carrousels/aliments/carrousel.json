@@ -1,0 +1,106 @@
+{
+  "client": "coach-endo",
+  "template": "clair-aliments",
+  "fruit": "vert",
+  "titre_interne": "Top aliments pour accompagner les douleurs",
+  "legende": "Alimentation et endométriose : ce qui peut aider, sans promesse miracle. Aucun aliment ne soigne la maladie : les études sont encore limitées, surtout observationnelles. Pistes réalistes : poissons gras, légumes verts, fruits colorés, fibres, bonnes graisses ; gingembre et curcuma à nuancer. Parlez-en à un professionnel de santé ou à un diététicien avant de changer votre alimentation. Sources : sante.fr ; Frontiers in Nutrition 2023 (revue « Nutrition in the prevention and treatment of endometriosis »). Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Contenu à faire relire par un professionnel de santé ou un diététicien avant publication.]] #endométriose #alimentation #bienêtre",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "eyebrow": "Alimentation et endométriose",
+      "titre": "Ce qui peut *aider* au quotidien",
+      "texte": "6 aliments à la loupe, sans promesse miracle.",
+      "pos": "bas",
+      "image": { "fichier": "a-femme-cuisine.jpg", "pos": "50% 18%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Avant de commencer",
+      "titre": "Aucun aliment ne *soigne*",
+      "blocs": [
+        {
+          "type": "carte",
+          "fond": "band",
+          "texte": "Les études sont encore limitées. Bien manger peut accompagner votre prise en charge, pas la remplacer."
+        }
+      ],
+      "source": "Sources : sante.fr ; revue « Nutrition in the prevention and treatment of endometriosis », Frontiers in Nutrition, 2023. [[À faire relire par un diététicien ou un médecin.]]"
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Aliment n° 1",
+      "titre": "Les poissons *gras*",
+      "bande": { "fichier": "a-saumon-riz.jpg", "pos": "50% 42%", "hauteur": 520, "cote": "haut" },
+      "texte": "Sardine, maquereau, saumon : riches en oméga-3, aux effets anti-inflammatoires.",
+      "source": "Les études sur la douleur restent limitées."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Aliment n° 2",
+      "titre": "Les légumes *verts*",
+      "texte": "Épinards, brocoli, chou : des fibres et des antioxydants.",
+      "pos": "bas",
+      "image": { "fichier": "a-epinards.jpg", "pos": "50% 50%" }
+    },
+    {
+      "layout": "clair",
+      "haut": true,
+      "eyebrow": "Aliment n° 3",
+      "titre": "Les fruits *colorés*",
+      "texte": "Fruits rouges, agrumes : antioxydants et vitamine C.",
+      "arche": { "fichier": "a-fruits-rouges.jpg", "pos": "50% 35%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Aliment n° 4",
+      "titre": "Les *fibres*",
+      "bande": { "fichier": "a-pois-chiches.jpg", "pos": "50% 50%", "hauteur": 400, "cote": "bas" },
+      "texte": "Lentilles, pois chiches, avoine : les fibres peuvent contribuer à réduire les œstrogènes en circulation."
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Aliment n° 5",
+      "titre": "Les bonnes *graisses*",
+      "texte": "Noix, graines de lin, huile d'olive : la base du régime méditerranéen.",
+      "pos": "haut",
+      "image": { "fichier": "a-noix.jpg", "pos": "50% 60%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "À nuancer",
+      "titre": "Gingembre et *curcuma*",
+      "bande": { "fichier": "a-gingembre.jpg", "pos": "50% 40%", "hauteur": 460, "cote": "haut" },
+      "texte": "Un effet anti-inflammatoire surtout observé en laboratoire. Les preuves chez la femme restent limitées."
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "À limiter, sans culpabiliser",
+      "titre": "Ce qu'on *évite* plutôt",
+      "blocs": [
+        {
+          "type": "liste",
+          "mode": "num",
+          "items": [
+            { "t": "Les gras trans", "d": "Présents dans certains produits industriels." },
+            { "t": "L'ultra-transformé", "d": "Plats prêts, biscuits, snacks." },
+            { "t": "Les régimes stricts", "d": "Pas d'exclusion sans avis : risque de carences." }
+          ]
+        }
+      ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Manger mieux, *à votre rythme*",
+      "texte": "Un diététicien peut adapter ces pistes à votre situation. Le kit gratuit vous aide côté carrière. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "piece-lumineuse.jpg", "pos": "50% 50%" }
+    }
+  ]
+}
