@@ -10,6 +10,17 @@ Pack client : `studio-contenu/clients/<client>/` (change d'un client à l'autre)
 
 Commande : `carrousel client=<slug> sujet=<sujet>`
 
+## Règles permanentes (à appliquer à chaque carrousel, sans qu'on les redemande)
+1. **Chaque élément illustre parfaitement le sujet de SA slide** : photo, infographie, icône et schéma montrent exactement ce que dit le titre de la slide (pas seulement le thème du carrousel). Avant de choisir une photo, écrire en une phrase ce que la slide dit, puis chercher l'image littérale de cette phrase ; sinon, une infographie dessinée. Une photo « dans l'ambiance » mais hors sujet est refusée.
+2. **Variété entre les carrousels d'un même client** : ne pas répéter d'un carrousel à l'autre les mêmes photos, les mêmes types d'infographie, ni la même structure de slides.
+   - *Photos* : jamais la même photo dans deux carrousels ; varier les sujets (personnes, objets, lieux, détails).
+   - *Structures* : alterner photo plein cadre (`clair-photo`, `pos` bas/haut/centre), bande photo (`bande` haut/bas), arche (`arche`), rangée de portraits (`photos`), photo à forme décalée (`photo`), slide crème sans photo. Un carrousel doit en utiliser au moins 4 différentes, et ne pas calquer la suite d'un carrousel précédent.
+   - *Fonds et formes graphiques* : varier les fonds (crème, voile vert sur photo, carte colorée), les formes de photo (rectangle arrondi, arche, bande, ronde) et les emplacements du texte.
+   - *Infographies* : un type différent par slide dans un carrousel, et pas les mêmes d'un carrousel à l'autre (cercle fléché, frise verticale, flèches convergentes, courbe, batteries, arc horaire, bulles de dialogue, anatomie, comparaison, pétales, jauge…). Inventer un nouveau type plutôt que de recopier un ancien.
+3. **Textes validés = intouchables** : en refonte visuelle (photos, infographies, mise en page), ne pas modifier les textes que le client a validés.
+4. **Contrôle avant de livrer** : `node studio-contenu/moteur/carrousel/variete.mjs studio-contenu/clients/<client> <slug>` ne doit rien signaler (photos communes, infographies communes, structure identique à 50 % ou plus) ; `render.mjs` ne doit signaler aucun débordement. Corriger avant de livrer.
+5. **Un aperçu par carrousel** (`apercu.mjs <client> <sortie.html> <slug>`), à cause de la limite de 16 Mo.
+
 ## Flow
 1. **Charger** le pack du client : `marque.md`, `design.json`, `thematiques.md`, `verrous.md`, `templates/`. Ne rien lire d'un autre client.
 2. **Partir d'un template** (`templates/<nom>.json`) qui correspond au pilier du sujet : il fixe la suite des slides et leur layout. Si aucun ne convient, en proposer un nouveau à valider.

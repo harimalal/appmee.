@@ -6,22 +6,22 @@
   "legende": "Fatiguée, même après une nuit. La fatigue persistante fait partie des signes décrits dans l'endométriose, et les douleurs peuvent perturber le sommeil, ce qui l'aggrave. Plusieurs causes se cumulent : douleur chronique, inflammation, sommeil perturbé, charge mentale. Au travail, 60 % des femmes concernées notent une baisse de concentration pendant les crises (EndoVie 2020). Quelques repères de soirée peuvent aider à préparer la nuit ; parlez-en à votre médecin si les douleurs vous réveillent. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Chiffre EndoVie à vérifier ; contenu à faire relire par un professionnel de santé.]] #endométriose #fatigue #sommeil",
   "slides": [
     {
-      "layout": "clair-photo",
+      "layout": "clair",
+      "haut": true,
       "grand": true,
       "eyebrow": "Sommeil et fatigue",
       "titre": "Fatiguée, *même après une nuit*",
       "texte": "Une fatigue que le repos ne suffit pas toujours à effacer.",
-      "pos": "bas",
-      "image": { "fichier": "s-lit-mains-visage.jpg", "pos": "50% 30%" }
+      "etroit": true,
+      "arche": { "fichier": "s-lit-mains-visage.jpg", "pos": "50% 30%" }
     },
     {
-      "layout": "clair-photo",
+      "layout": "clair",
       "eyebrow": "La fatigue persistante",
       "titre": "Une fatigue qui *ne passe pas*",
+      "bande": { "fichier": "s-lit-allongee.jpg", "pos": "50% 50%", "hauteur": 480, "cote": "haut" },
       "texte": "Elle peut persister malgré des nuits complètes, et pèse sur tout le quotidien.",
-      "source": "Ministère de la Santé, sante.fr, « Endométriose ». [[À vérifier.]]",
-      "pos": "bas",
-      "image": { "fichier": "s-lit-allongee.jpg", "pos": "50% 45%" }
+      "source": "Ministère de la Santé, sante.fr, « Endométriose ». [[À vérifier.]]"
     },
     {
       "layout": "clair",
@@ -61,13 +61,12 @@
       "texte": "Une nuit agitée ne recharge pas complètement."
     },
     {
-      "layout": "clair-photo",
+      "layout": "clair",
       "eyebrow": "Au travail",
       "titre": "Au bureau, *le brouillard*",
+      "bande": { "fichier": "s-bureau-laptop.jpg", "pos": "50% 62%", "hauteur": 440, "cote": "bas" },
       "texte": "Fatigue, concentration en baisse, difficulté à enchaîner : le travail devient plus lourd.",
-      "source": "Enquête EndoVie, 2020 : 60 % des femmes concernées notent une baisse de concentration pendant les crises. [[À vérifier.]]",
-      "pos": "bas",
-      "image": { "fichier": "s-bureau-laptop.jpg", "pos": "50% 50%" }
+      "source": "Enquête EndoVie, 2020 : 60 % des femmes concernées notent une baisse de concentration pendant les crises. [[À vérifier.]]"
     },
     {
       "layout": "clair-photo",
