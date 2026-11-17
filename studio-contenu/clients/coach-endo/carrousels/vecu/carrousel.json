@@ -1,0 +1,98 @@
+{
+  "client": "coach-endo",
+  "template": "vecu-6-slides",
+  "fruit": "prune",
+  "marque": "couleur",
+  "titre_interne": "Ce que vivent ces femmes",
+  "legende": "Elles ont mal, et on ne le voit pas. Ce que vivent beaucoup de femmes atteintes d'endométriose, au travail comme ailleurs. [[Ajouter les mots de vos clientes, avec leur accord.]] Informations générales, elles ne remplacent pas un avis médical. #endométriose #maladieinvisible #travail",
+  "slides": [
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "kicker": "Endométriose au travail",
+      "titre": "Elles ont mal.\nOn ne le *voit pas*.",
+      "sous": "Ce que vivent beaucoup de femmes, en silence.",
+      "image": {
+        "fichier": "silhouette-sombre.jpg",
+        "pos": "50% 30%"
+      }
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "kicker": "Avant de savoir",
+      "valeur": "~7 ans",
+      "texte": "C'est le délai moyen avant qu'un diagnostic soit posé, en France. [[Chiffre à sourcer avant publication.]]",
+      "image": {
+        "fichier": "silhouette-regard.jpg",
+        "pos": "50% 20%"
+      }
+    },
+    {
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche",
+      "kicker": "Ce qu'elles entendent",
+      "titre": "« C'est normal d'avoir mal *pendant les règles*. »",
+      "texte": "Une phrase que beaucoup de femmes entendent, parfois pendant des années. [[Verbatims réels de clientes, à fournir.]]",
+      "image": {
+        "fichier": "silhouette-fenetre.jpg",
+        "pos": "50% 60%"
+      }
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "ombre": "fort",
+      "kicker": "Au travail",
+      "titre": "Le poids *du silence*",
+      "image": {
+        "fichier": "ordi-store.jpg",
+        "pos": "50% 40%"
+      },
+      "items": [
+        {
+          "t": "Cacher la douleur",
+          "d": "Sourire en réunion, malgré tout."
+        },
+        {
+          "t": "Compter ses absences",
+          "d": "Et s'en excuser à chaque fois."
+        },
+        {
+          "t": "Craindre le regard",
+          "d": "Se demander si on sera crue."
+        }
+      ]
+    },
+    {
+      "layout": "photo",
+      "pos": "haut",
+      "align": "gauche",
+      "kicker": "À retenir",
+      "titre": "Ce n'est pas *dans leur tête*",
+      "texte": "L'endométriose est une maladie chronique, reconnue médicalement. Elle mérite d'être prise au sérieux, aussi au travail.",
+      "image": {
+        "fichier": "lit-blanc.jpg",
+        "pos": "50% 50%"
+      },
+      "ombre": "fort"
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "titre": "Vous n'êtes pas *seule*",
+      "texte": "Parlons de votre situation professionnelle. [[Contact de la coach.]]",
+      "mention": "Informations générales : elles ne remplacent pas un avis médical.",
+      "image": {
+        "fichier": "bureau-bois.jpg",
+        "pos": "50% 50%"
+      },
+      "ombre": "fort"
+    }
+  ]
+}

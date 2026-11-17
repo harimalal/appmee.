@@ -184,6 +184,25 @@ mark{white-space:nowrap;background:var(--mkbg);color:var(--mkfg);padding:0 .14em
 .l-photo .item .d{font-size:38px;opacity:.95}
 .l-photo .marque{font-family:${T};font-weight:700;font-size:44px;letter-spacing:-.01em}
 .l-photo .marque span{color:var(--fc)}
+.mention{font-size:28px;line-height:1.35;opacity:.85;max-width:880px;margin:6px 0 0}
+/* typo : slide typographique sur fond uni (sombre par défaut), pour les contenus à lire */
+.l-typo{padding:150px 72px 150px;display:flex;flex-direction:column;justify-content:center;--mkline:var(--fc)}
+.l-typo.fond-encre{color:#fff}
+.l-typo .txt-typo{display:flex;flex-direction:column;gap:34px}
+.l-typo .kick,.l-photo .kick{font-size:28px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--fc);display:flex;align-items:center;gap:16px}
+.l-typo .kick::before{content:"";width:56px;height:4px;background:var(--fc);flex:none}
+.l-typo.fond-fruit .kick{color:var(--ft)}
+.l-typo.fond-fruit .kick::before{background:var(--ft)}
+.l-typo h2{font-size:130px}
+.l-typo .corps{font-size:48px;line-height:1.32;max-width:900px}
+.l-typo .liste{gap:38px;margin-top:6px}
+.l-typo .item{grid-template-columns:96px 1fr}
+.l-typo .item .n{font-size:84px;color:var(--fc)}
+.l-typo.fond-fruit .item .n{color:var(--ft)}
+.l-typo .item .t{font-size:56px}
+.l-typo .item .d{font-size:40px;opacity:.9}
+.l-typo .arrow{background:none;color:inherit;width:auto;height:auto;font-size:76px;bottom:60px}
+.l-typo.fond-encre .bar{color:#fff}
 .l-photo .arrow{background:none;color:#fff;width:auto;height:auto;font-size:76px;bottom:60px;text-shadow:0 2px 20px rgba(0,0,0,.6)}
 /* texte seul, sans photo (rétro-compatible) */
 .l-texte{padding:150px 72px 72px;display:flex;flex-direction:column;justify-content:center;gap:40px}
@@ -204,9 +223,9 @@ const bar = (i, n, design, sombre = false) =>
 const arrow = (i, n) => (i < n - 1 ? '<div class="arrow">→</div>' : '');
 const fit = (max, maxh) => `data-fit="${max}" data-maxh="${maxh}"`;
 
-const listeHtml = (items = []) =>
+const listeHtml = (items = [], mode = 'num') =>
   `<div class="liste">${items
-    .map((it, k) => `<div class="item"><div class="n">${k + 1}</div><div><div class="t">${rich(it.t)}</div>${it.d ? `<div class="d">${rich(it.d)}</div>` : ''}</div></div>`)
+    .map((it, k) => `<div class="item"><div class="n">${mode === 'coche' ? '✓' : k + 1}</div><div><div class="t">${rich(it.t)}</div>${it.d ? `<div class="d">${rich(it.d)}</div>` : ''}</div></div>`)
     .join('')}</div>`;
 
 function inner(s, i, n, design, root) {
@@ -233,7 +252,11 @@ function inner(s, i, n, design, root) {
       const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';
       const body = s.texte ?? s.sous;
       return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
-<div class="txt">${lead}${s.valeur ? `<div class="chiffre">${rich(s.valeur)}</div>` : ''}${head}${body ? `<p class="corps">${rich(body)}</p>` : ''}${s.items ? listeHtml(s.items) : ''}${i === n - 1 ? `<div class="marque"><span>${esc(design.marque)}</span> · ${esc(design.signature)}</div>` : ''}</div>${arrow(i, n)}`;
+<div class="txt">${lead}${s.valeur ? `<div class="chiffre">${rich(s.valeur)}</div>` : ''}${head}${body ? `<p class="corps">${rich(body)}</p>` : ''}${s.items ? listeHtml(s.items, s.puces) : ''}${s.mention ? `<p class="mention">${rich(s.mention)}</p>` : ''}${i === n - 1 ? `<div class="marque"><span>${esc(design.marque)}</span> · ${esc(design.signature)}</div>` : ''}</div>${arrow(i, n)}`;
+    }
+    case 'typo': {
+      const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';
+      return `${bar(i, n, design, s.fond === 'fruit')}<div class="txt-typo">${lead}${s.titre ? `<h2 ${fit(130, 400)}>${rich(s.titre)}</h2>` : ''}${s.texte ? `<p class="corps">${rich(s.texte)}</p>` : ''}${s.items ? listeHtml(s.items, s.puces) : ''}${s.mention ? `<p class="mention">${rich(s.mention)}</p>` : ''}</div>${arrow(i, n)}`;
     }
     case 'carte':
       return `${imgTag(s, root)}<div class="scrim"></div>${bar(i, n, design)}
@@ -257,7 +280,7 @@ function inner(s, i, n, design, root) {
 
 export function slideHtml(s, i, n, design, carousel, root) {
   const layout = s.layout ?? 'texte';
-  const fond = s.fond ?? 'papier';
+  const fond = s.fond ?? (layout === 'typo' ? 'encre' : 'papier');
   const cls = ['slide', `l-${layout}`, `mk-${carousel.marque ?? (layout === 'photo' ? 'couleur' : 'surligne')}`, s.pos ? `p-${s.pos}` : '', s.align ? `a-${s.align}` : '', s.encart ? `e-${s.encart}` : '', s.ombre ? `o-${s.ombre}` : '', fond === 'fruit' ? 'fond-fruit' : fond === 'encre' ? 'fond-encre' : ''].join(' ');
   const p = design.couleurs.fruits[carousel.fruit] ?? Object.values(design.couleurs.fruits)[0];
   return `<section class="${cls}" style="--f:${p.fond};--ft:${p.texte};--fc:${p.clair ?? p.fond}">${inner({ ...s, layout }, i, n, design, root)}</section>`;

@@ -48,5 +48,12 @@
     "Le texte se place là où il ne cache pas le produit (haut ou bas selon la photo)",
     "Pas de photo générée pour les pots, les fruits de Pascal ou les personnes : photos d'illustration ou vraies photos",
     "Une idée par slide, 35 mots maximum de texte courant"
-  ]
+  ],
+  "apercu": {
+    "titre": "Carrousels Les Confits",
+    "h1": "Les Confits",
+    "intro": "Six carrousels construits autour de photos, produits par le même moteur à partir de templates et du pack client des Confits. Les photos viennent d'Unsplash : ce sont des photos d'illustration, pas celles de Pascal. Les zones jaunes sont des informations que seul Pascal peut donner.",
+    "complement": "Pascal",
+    "note": "Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Les images PNG et le PDF de chaque carrousel sont dans le dépôt, dossier studio-contenu/clients/confits/carrousels. Brouillons : rien n'est publié."
+  }
 }

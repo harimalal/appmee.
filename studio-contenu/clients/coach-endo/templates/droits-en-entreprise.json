@@ -1,0 +1,31 @@
+{
+  "nom": "droits-en-entreprise",
+  "pour": "Pilier « Les droits en entreprise » : ce qu'une salariée peut demander (droit français).",
+  "regles": [
+    "Informations générales, jamais de conseil médical ou juridique individuel",
+    "Dernière slide : appel à l'action et mention « informations générales »",
+    "Titre court, un mot mis en valeur avec *mot*",
+    "Préciser « en France », « selon votre situation », « en principe »"
+  ],
+  "slides": [
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "typo"
+    },
+    {
+      "layout": "typo"
+    },
+    {
+      "layout": "typo",
+      "fond": "fruit"
+    },
+    {
+      "layout": "photo"
+    },
+    {
+      "layout": "photo"
+    }
+  ]
+}

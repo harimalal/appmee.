@@ -1,0 +1,80 @@
+{
+  "client": "coach-endo",
+  "template": "droits-en-entreprise",
+  "fruit": "sauge",
+  "marque": "double",
+  "titre_interne": "Ce qu'elles peuvent réclamer en entreprise",
+  "legende": "Endométriose au travail : ce que vous pouvez demander à votre entreprise, en France. Informations générales, à adapter à votre situation. [[Contact de la coach.]] #endométriose #droits #travail",
+  "slides": [
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "kicker": "Endométriose au travail",
+      "titre": "Ce que vous pouvez *demander*",
+      "sous": "À votre entreprise, en France.",
+      "image": {
+        "fichier": "bureau-bois.jpg",
+        "pos": "50% 40%"
+      },
+      "ombre": "fort"
+    },
+    {
+      "layout": "typo",
+      "kicker": "Premier droit",
+      "titre": "Vous n'avez pas à *tout dire*",
+      "texte": "Vous n'êtes pas obligée de dire le nom de votre maladie à votre employeur. Le secret médical vous protège."
+    },
+    {
+      "layout": "typo",
+      "kicker": "Ce que vous pouvez demander",
+      "titre": "Trois *demandes*",
+      "items": [
+        {
+          "t": "Un aménagement de poste",
+          "d": "Horaires, pauses, télétravail : selon votre situation."
+        },
+        {
+          "t": "Une visite à la médecine du travail",
+          "d": "Vous pouvez la demander à tout moment."
+        },
+        {
+          "t": "La RQTH",
+          "d": "Reconnaissance de la qualité de travailleur handicapé, auprès de la MDPH."
+        }
+      ]
+    },
+    {
+      "layout": "typo",
+      "fond": "fruit",
+      "kicker": "La RQTH",
+      "titre": "Un *outil*, pas une obligation",
+      "texte": "Elle peut ouvrir des droits à des aménagements et à des aides. La MDPH examine chaque dossier : elle n'est pas automatique. Vous décidez de la communiquer ou non."
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "kicker": "Vos protections",
+      "titre": "Pas de *discrimination*",
+      "texte": "Une décision défavorable fondée sur votre état de santé ou votre handicap est en principe interdite par le Code du travail. [[À valider par un juriste en droit du travail.]]",
+      "image": {
+        "fichier": "silhouette-regard.jpg",
+        "pos": "50% 40%"
+      }
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "titre": "Chaque situation est *différente*",
+      "texte": "Faisons le point sur la vôtre. [[Contact de la coach.]]",
+      "mention": "Informations générales sur le droit français, à adapter à votre situation. Elles ne remplacent pas un avis juridique ou médical.",
+      "image": {
+        "fichier": "lit-blanc.jpg",
+        "pos": "50% 50%"
+      },
+      "ombre": "fort"
+    }
+  ]
+}

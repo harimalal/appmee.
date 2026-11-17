@@ -1,0 +1,82 @@
+{
+  "client": "coach-endo",
+  "template": "signes-checklist",
+  "fruit": "jaune",
+  "marque": "souligne",
+  "titre_interne": "Les signes",
+  "legende": "Une maladie invisible, des signes bien réels. Les signes qui doivent conduire à consulter un professionnel de santé. Ils ne suffisent pas à poser un diagnostic. [[Contact de la coach.]] #endométriose #signes #santédesfemmes",
+  "slides": [
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "kicker": "Maladie invisible",
+      "titre": "Endométriose : les *signes* à ne pas ignorer",
+      "sous": "Des signes bien réels.",
+      "image": {
+        "fichier": "silhouette-fenetre.jpg",
+        "pos": "50% 55%"
+      }
+    },
+    {
+      "layout": "typo",
+      "kicker": "Les douleurs",
+      "titre": "Quand le corps *alerte*",
+      "puces": "coche",
+      "items": [
+        {
+          "t": "Règles très douloureuses",
+          "d": "Au point de gêner le quotidien."
+        },
+        {
+          "t": "Douleurs pendant les rapports",
+          "d": "Qui reviennent, ou s'installent."
+        },
+        {
+          "t": "Douleurs au bas du ventre",
+          "d": "Y compris en dehors des règles."
+        }
+      ]
+    },
+    {
+      "layout": "typo",
+      "kicker": "Au-delà des douleurs",
+      "titre": "Et *aussi*",
+      "puces": "coche",
+      "items": [
+        {
+          "t": "Troubles digestifs ou urinaires",
+          "d": "Souvent plus marqués autour des règles."
+        },
+        {
+          "t": "Fatigue persistante",
+          "d": "Qui ne passe pas avec le repos."
+        },
+        {
+          "t": "Difficultés à concevoir",
+          "d": "Parfois découvertes à cette occasion."
+        }
+      ]
+    },
+    {
+      "layout": "typo",
+      "fond": "fruit",
+      "kicker": "Important",
+      "titre": "Ce n'est *pas un diagnostic*",
+      "texte": "Ces signes peuvent avoir d'autres causes. Seul un professionnel de santé peut poser un diagnostic. Si vous vous reconnaissez, parlez-en à votre médecin ou à votre gynécologue."
+    },
+    {
+      "layout": "photo",
+      "pos": "bas",
+      "align": "gauche",
+      "titre": "Ces signes pèsent aussi sur *votre travail* ?",
+      "texte": "Parlons-en. [[Contact de la coach.]]",
+      "mention": "Informations générales : elles ne remplacent pas un avis médical.",
+      "image": {
+        "fichier": "ombres-plante.jpg",
+        "pos": "50% 40%"
+      },
+      "ombre": "fort"
+    }
+  ]
+}

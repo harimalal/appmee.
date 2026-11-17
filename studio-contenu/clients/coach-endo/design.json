@@ -1,0 +1,44 @@
+{
+  "statut": "provisoire : aucune charte fournie, à valider par la coach",
+  "marque": "Nom de la coach",
+  "signature": "coaching reconnaissance professionnelle · endométriose",
+  "polices": {
+    "titre": "Bricolage Grotesque",
+    "texte": "DM Sans"
+  },
+  "couleurs": {
+    "encre": "#17141F",
+    "papier": "#FAF8F5",
+    "fruits": {
+      "prune": {
+        "fond": "#5B2A5E",
+        "texte": "#FFFFFF",
+        "clair": "#EBB9F2"
+      },
+      "jaune": {
+        "fond": "#E8B500",
+        "texte": "#17141F",
+        "clair": "#FFD84D"
+      },
+      "sauge": {
+        "fond": "#3F6B5A",
+        "texte": "#FFFFFF",
+        "clair": "#BFE8D2"
+      }
+    }
+  },
+  "regles_visuelles": [
+    "Ton posé, rassurant et digne : couleurs sombres et chaudes, jaune d'accent (couleur du mois de sensibilisation à l'endométriose)",
+    "Photos sans visage identifiable (silhouettes, lieux, objets), jamais de mise en scène de la douleur",
+    "Contenus à lire (signes, droits) sur fond uni et typographique, pour la lisibilité",
+    "Une idée par slide, 35 mots maximum de texte courant",
+    "Dernière slide : appel à l'action et mention « informations générales »"
+  ],
+  "apercu": {
+    "titre": "Carrousels coach endométriose",
+    "h1": "Coach reconnaissance professionnelle · endométriose",
+    "intro": "Trois carrousels pour une coach qui accompagne des femmes atteintes d'endométriose : ce qu'elles vivent, les signes, ce qu'elles peuvent demander à leur entreprise. Contenu de santé et de droit : informations générales, à sourcer et à faire relire avant publication. Les photos sont des silhouettes d'illustration (Unsplash), sans visage identifiable. Les zones jaunes sont des informations que seule la coach peut donner.",
+    "complement": "la coach",
+    "note": "Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Droit présenté : droit français. Brouillons : rien n'est publié, chiffres et règles à vérifier avant publication."
+  }
+}

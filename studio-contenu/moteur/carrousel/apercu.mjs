@@ -7,6 +7,8 @@ import { load, css, slides, fitScript, W, H } from './lib.mjs';
 const [clientDir, outFile] = process.argv.slice(2);
 const root = resolve(clientDir);
 const loader = load(root);
+const D0 = loader(readdirSync(join(root, 'carrousels')).sort()[0]).design;
+const A = D0.apercu ?? {};
 const credits = JSON.parse(readFileSync(join(root, 'assets', 'unsplash', 'credits.json'), 'utf8')).photos;
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const todos = (c) => [...JSON.stringify(c.slides).matchAll(/\[\[(.+?)\]\]/g)].map((m) => m[1].replace(/\\u2019/g, '’'));
@@ -21,13 +23,13 @@ const sections = readdirSync(join(root, 'carrousels')).sort().map((slug) => {
   <div class="meta">
     <div><h3>Légende proposée</h3><p>${esc(c.legende).replace(/\[\[(.+?)\]\]/g, '<span class="todo-i">$1</span>')}</p></div>
     <div><h3>Photos Unsplash</h3><ul>${photos.map((f) => `<li>${esc(credits[f]?.auteur ?? f)}</li>`).join('')}</ul></div>
-    <div><h3>À compléter par Pascal</h3>${t.length ? `<ul>${t.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p>Rien.</p>'}</div>
+    <div><h3>À compléter par ${esc(A.complement ?? 'le client')}</h3>${t.length ? `<ul>${t.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p>Rien.</p>'}</div>
   </div>
 </section>`;
 });
 
 let html = `<meta name="claude:viewport-fit-sides" content="cover">
-<title>Carrousels Les Confits</title>
+<title>${esc(A.titre ?? 'Carrousels')}</title>
 <style>
 :root{--bg:#F6F5F8;--surface:#FFFFFF;--ink:#261A2C;--muted:#6B6074;--line:#DDD7E3;--accent:#8E2257;--warn-bg:#F6EAD0;--warn:#8F5B00}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17111A;--surface:#211828;--ink:#F0EAF3;--muted:#A99DB3;--line:#392C42;--accent:#E680AB;--warn-bg:#3A2E14;--warn:#E8B558;color-scheme:dark}}
@@ -50,10 +52,10 @@ p{margin:0;max-width:65ch}.lede{color:var(--muted);font-size:1.1rem;margin-top:1
 ${css(loader(readdirSync(join(root, 'carrousels')).sort()[0]).design)}
 </style>
 <div class="wrap">
-<header><span class="eyebrow">Test du moteur de carrousel</span><h1>Les Confits</h1>
-<p class="lede">Six carrousels construits autour de photos, produits par le même moteur à partir de templates et du pack client des Confits. Les photos viennent d'Unsplash : ce sont des photos d'illustration, pas celles de Pascal. Les zones jaunes sont des informations que seul Pascal peut donner.</p></header>
+<header><span class="eyebrow">Test du moteur de carrousel</span><h1>${esc(A.h1 ?? D0.marque)}</h1>
+<p class="lede">${esc(A.intro ?? '')}</p></header>
 ${sections.join('\n')}
-<p class="note">Format 1080 × 1350 (4:5) pour Instagram et LinkedIn. Les images PNG et le PDF de chaque carrousel sont dans le dépôt, dossier studio-contenu/clients/confits/carrousels. Brouillons : rien n'est publié.</p>
+<p class="note">${esc(A.note ?? '')}</p>
 </div>
 <script>
 (function(){
