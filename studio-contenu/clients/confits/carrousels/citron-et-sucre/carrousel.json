@@ -5,13 +5,61 @@
   "titre_interne": "Secret de fabrication : citron et sucre",
   "legende": "Dans une confiture, chaque ingrédient travaille. Le citron, le sucre : à quoi ils servent. Savoir-faire courant, [[à compléter avec la recette de Pascal]]. #confiture #artisanal #savoirfaire #lesconfits",
   "slides": [
-    { "kicker": "Secret de fabrication", "titre": "Pourquoi du *citron* ?", "sous": "Dans une confiture, chaque ingrédient travaille.", "image": { "fichier": "citrons.jpg", "pos": "30% 100%" } },
-    { "kicker": "Le citron", "titre": "Il aide à *prendre*", "texte": "Son acidité aide la pectine du fruit à gélifier, et garde un goût vif.", "image": { "fichier": "citrons.jpg", "pos": "35% 92%" } },
-    { "titre": "Le *sucre* travaille aussi", "image": { "fichier": "fraises-bol.jpg", "pos": "50% 60%" }, "items": [
-      { "t": "Il conserve", "d": "Il limite le développement des micro-organismes." },
-      { "t": "Il aide à prendre", "d": "Avec la pectine et l'acidité, il fait gélifier le fruit." },
-      { "t": "La dose de Pascal", "d": "[[Dose fruit et sucre : à fournir.]]" }
-    ] },
-    { "titre": "La recette de *Pascal*", "texte": "[[Liste exacte des ingrédients d'une confiture des Confits, à fournir.]]", "image": { "fichier": "pot-pommes.jpg", "pos": "50% 45%" } }
-  ]
+    {
+      "kicker": "Secret de fabrication",
+      "titre": "Pourquoi du *citron* ?",
+      "sous": "Dans une confiture, chaque ingrédient travaille.",
+      "image": {
+        "fichier": "citrons.jpg",
+        "pos": "30% 100%"
+      },
+      "layout": "cover-photo",
+      "pos": "bas",
+      "align": "droite"
+    },
+    {
+      "kicker": "Le citron",
+      "titre": "Il aide à *prendre*",
+      "texte": "Son acidité aide la pectine du fruit à gélifier, et garde un goût vif.",
+      "image": {
+        "fichier": "citrons.jpg",
+        "pos": "35% 92%"
+      },
+      "layout": "cercle"
+    },
+    {
+      "titre": "Le *sucre* travaille aussi",
+      "image": {
+        "fichier": "fraises-bol.jpg",
+        "pos": "50% 60%"
+      },
+      "items": [
+        {
+          "t": "Il conserve",
+          "d": "Il limite le développement des micro-organismes."
+        },
+        {
+          "t": "Il aide à prendre",
+          "d": "Avec la pectine et l'acidité, il fait gélifier le fruit."
+        },
+        {
+          "t": "La dose de Pascal",
+          "d": "[[Dose fruit et sucre : à fournir.]]"
+        }
+      ],
+      "layout": "bande",
+      "encart": "libre"
+    },
+    {
+      "titre": "La recette de *Pascal*",
+      "texte": "[[Liste exacte des ingrédients d'une confiture des Confits, à fournir.]]",
+      "image": {
+        "fichier": "pot-pommes.jpg",
+        "pos": "50% 45%"
+      },
+      "layout": "moitie",
+      "pos": "bas"
+    }
+  ],
+  "marque": "blanc"
 }

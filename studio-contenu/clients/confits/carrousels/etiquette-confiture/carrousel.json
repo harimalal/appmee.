@@ -5,14 +5,56 @@
   "titre_interne": "Lire une étiquette de confiture",
   "legende": "Avant d'acheter un pot, retournez-le. Trois repères pour lire une étiquette de confiture en trente secondes. Chez Les Confits, nous indiquons la quantité de fruits de chaque pot. #confiture #bio #artisanal #lesconfits",
   "slides": [
-    { "kicker": "Bien choisir", "titre": "Lire une *étiquette*", "sous": "Trois repères. Trente secondes.", "image": { "fichier": "pots-marmelade.jpg", "pos": "50% 62%" } },
-    { "titre": "Retournez *le pot*", "texte": "Le devant séduit. Le dos dit tout : les ingrédients et la quantité de fruits.", "image": { "fichier": "mains-pots-fruits.jpg", "pos": "50% 38%" } },
-    { "titre": "Trois *repères*", "image": { "fichier": "pots-marmelade.jpg", "pos": "50% 88%" }, "items": [
-      { "t": "Le premier ingrédient", "d": "La liste va du plus abondant au moins abondant." },
-      { "t": "La quantité de fruits", "d": "Elle est indiquée pour 100 g de confiture." },
-      { "t": "Le nombre d'ingrédients", "d": "Moins il y en a, plus la recette est lisible." }
-    ] },
-    { "valeur": "?? g", "texte": "de fruits pour 100 g dans nos pots. [[Chiffre exact par parfum, à fournir par Pascal.]]" },
-    { "titre": "Vérifiez, comparez, *goûtez*", "texte": "Les Confits en magasins bio, en boulangeries et aux Galeries Lafayette.", "image": { "fichier": "pots-marmelade.jpg", "pos": "20% 35%" } }
-  ]
+    {
+      "kicker": "Bien choisir",
+      "titre": "Lire une *étiquette*",
+      "sous": "Trois repères. Trente secondes.",
+      "image": {
+        "fichier": "pots-marmelade.jpg",
+        "pos": "50% 62%"
+      }
+    },
+    {
+      "titre": "Retournez *le pot*",
+      "texte": "Le devant séduit. Le dos dit tout : les ingrédients et la quantité de fruits.",
+      "image": {
+        "fichier": "mains-pots-fruits.jpg",
+        "pos": "50% 38%"
+      }
+    },
+    {
+      "titre": "Trois *repères*",
+      "image": {
+        "fichier": "pots-marmelade.jpg",
+        "pos": "50% 88%"
+      },
+      "items": [
+        {
+          "t": "Le premier ingrédient",
+          "d": "La liste va du plus abondant au moins abondant."
+        },
+        {
+          "t": "La quantité de fruits",
+          "d": "Elle est indiquée pour 100 g de confiture."
+        },
+        {
+          "t": "Le nombre d'ingrédients",
+          "d": "Moins il y en a, plus la recette est lisible."
+        }
+      ]
+    },
+    {
+      "valeur": "?? g",
+      "texte": "de fruits pour 100 g dans nos pots. [[Chiffre exact par parfum, à fournir par Pascal.]]"
+    },
+    {
+      "titre": "Vérifiez, comparez, *goûtez*",
+      "texte": "Les Confits en magasins bio, en boulangeries et aux Galeries Lafayette.",
+      "image": {
+        "fichier": "pots-marmelade.jpg",
+        "pos": "20% 35%"
+      }
+    }
+  ],
+  "marque": "surligne"
 }

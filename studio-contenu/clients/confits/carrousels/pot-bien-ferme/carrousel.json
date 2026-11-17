@@ -12,7 +12,9 @@
       "image": {
         "fichier": "pot-myrtilles.jpg",
         "pos": "50% 60%"
-      }
+      },
+      "layout": "carte",
+      "pos": "centre"
     },
     {
       "titre": "Trois *gestes*",
@@ -34,7 +36,8 @@
           "d": "En refroidissant, le vide se forme dans le pot."
         }
       ],
-      "layout": "bande"
+      "layout": "bande",
+      "encart": "contre"
     },
     {
       "kicker": "Le contrôle",
@@ -44,7 +47,9 @@
         "fichier": "pot-myrtilles.jpg",
         "pos": "75% 40%"
       },
-      "layout": "arche"
+      "layout": "plein",
+      "pos": "haut",
+      "align": "gauche"
     },
     {
       "titre": "Conditionné *à l'atelier*",
@@ -52,7 +57,11 @@
       "image": {
         "fichier": "pot-pommes.jpg",
         "pos": "50% 35%"
-      }
+      },
+      "layout": "duo",
+      "pos": "bas",
+      "align": "droite"
     }
-  ]
+  ],
+  "marque": "souligne"
 }
