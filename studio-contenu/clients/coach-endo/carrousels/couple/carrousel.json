@@ -1,0 +1,104 @@
+{
+  "client": "coach-endo",
+  "template": "clair-couple",
+  "fruit": "vert",
+  "titre_interne": "Endométriose et vie de couple : l'impact sur l'intimité",
+  "legende": "Quand la douleur s'invite à deux. L'endométriose peut toucher l'intimité : douleurs pendant ou après les rapports, appréhension, distance, culpabilité. Ce n'est pas un manque d'amour, et vous n'avez pas à gérer seule. Parler, élargir la notion d'intimité (tendresse, complicité, câlins), se faire accompagner (gynécologue, sexologue, psychologue) : des pistes existent. Sources : enquêtes EndoFrance 2020 et 2021 (échantillons non représentatifs). Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Chiffres à vérifier ; contenu à faire relire par un gynécologue ou un sexologue avant publication.]] #endométriose #couple #intimité",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "eyebrow": "Endométriose et couple",
+      "titre": "Quand la douleur s'invite *à deux*",
+      "texte": "Intimité, désir, dialogue : en parler change tout.",
+      "pos": "bas",
+      "image": { "fichier": "c-lecture-canape.jpg", "pos": "50% 40%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Un sujet rarement abordé",
+      "titre": "Ça touche *aussi le couple*",
+      "blocs": [
+        {
+          "type": "stats",
+          "items": [
+            { "valeur": "3 sur 4", "texte": "déclarent des douleurs pendant ou après les rapports", "sup": "1" },
+            { "valeur": "85 %", "texte": "estiment un impact sur leur vie affective", "sup": "1" },
+            { "valeur": "64 %", "texte": "des partenaires se disent préoccupés par la santé de la personne", "sup": "2" }
+          ]
+        }
+      ],
+      "source": "¹ Enquête EndoFrance / My S Life, 2021 (384 répondantes). ² Enquête EndoFrance, 2020. Échantillons non représentatifs. [[Chiffres à vérifier.]]"
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Comment la distance s'installe",
+      "titre": "Un cercle, *pas un reproche*",
+      "blocs": [{ "type": "schema", "fichier": "cercle-intime.svg" }]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Ce que ça n'est pas",
+      "titre": "Ce n'est *pas un manque d'amour*",
+      "texte": "Douleur, fatigue et stress changent le désir et la disponibilité. Ce n'est pas un rejet de l'autre.",
+      "pos": "bas",
+      "image": { "fichier": "c-mains-table.jpg", "pos": "50% 45%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Ce que vous pouvez ressentir",
+      "titre": "Des émotions *légitimes*",
+      "blocs": [
+        {
+          "type": "liste",
+          "mode": "coche",
+          "items": [
+            { "t": "La peur d'avoir mal", "d": "Avant même le moindre geste." },
+            { "t": "La culpabilité", "d": "Envers la personne qui partage votre vie." },
+            { "t": "Une image de soi qui change", "d": "Le corps devient source de douleur." }
+          ]
+        }
+      ]
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Côté partenaire",
+      "titre": "Votre partenaire aussi *se sent démuni*",
+      "texte": "Peur de faire mal, crainte d'insister : le silence s'installe des deux côtés.",
+      "pos": "bas",
+      "image": { "fichier": "c-fronts-unis.jpg", "pos": "50% 30%" }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Un premier pas",
+      "titre": "Parler, *sans se justifier*",
+      "blocs": [{ "type": "schema", "fichier": "dialogue.svg" }]
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Élargir le regard",
+      "titre": "L'intimité, *bien plus que les rapports*",
+      "blocs": [{ "type": "schema", "fichier": "intimite.svg" }]
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Se faire accompagner",
+      "titre": "Vous n'avez pas à *gérer seule*",
+      "texte": "Gynécologue, sexologue, psychologue : des professionnels peuvent aider, seule ou à deux.",
+      "bande": { "fichier": "c-canape-duo.jpg", "pos": "50% 38%", "hauteur": 460, "cote": "bas" }
+    },
+    {
+      "layout": "clair-photo",
+      "eyebrow": "Et maintenant ?",
+      "titre": "En parler, *à votre rythme*",
+      "texte": "Le kit gratuit « Carrière en cycles » vous aide à repérer vos cycles et à en parler. [[Lien à mettre en bio.]]",
+      "blocs": [
+        { "type": "bouton", "texte": "Recevoir mon kit gratuit" },
+        { "type": "garanties", "items": ["Gratuit", "Sans carte bancaire", "Confidentiel", "Désinscription en 1 clic"] }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "pos": "bas",
+      "image": { "fichier": "c-mains-couple.jpg", "pos": "50% 40%" }
+    }
+  ]
+}

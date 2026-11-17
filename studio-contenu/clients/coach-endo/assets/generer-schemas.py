@@ -114,30 +114,35 @@ for k in range(4):
 open(OUT + 'cycle.svg', 'w', encoding='utf8').write(svg(936, 296, b))
 import math
 
-# 5. Cercle vicieux
-CX, CY, R = 468, 350, 270
-pills = [(-90, 'Cycle et', 'douleurs'), (-18, 'Fatigue,', 'sommeil haché'), (54, 'Arrêts et', 'jours difficiles'), (126, 'Baisse de', 'productivité'), (198, 'Culpabilité,', 'stress, moral')]
-b = f'<circle cx="{CX}" cy="{CY}" r="{R}" fill="none" stroke="{STEP}" stroke-width="18"/>'
-for a in [-54, 18, 90, 162, 234]:
-    t = math.radians(a)
-    px, py = CX + R * math.cos(t), CY + R * math.sin(t)
-    dx, dy = -math.sin(t), math.cos(t)
-    nx, ny = math.cos(t), math.sin(t)
-    tip = (px + dx * 30, py + dy * 30)
-    b1 = (px - dx * 16 + nx * 24, py - dy * 16 + ny * 24)
-    b2 = (px - dx * 16 - nx * 24, py - dy * 16 - ny * 24)
-    b += f'<path d="M{tip[0]:.1f} {tip[1]:.1f} L{b1[0]:.1f} {b1[1]:.1f} L{b2[0]:.1f} {b2[1]:.1f} Z" fill="{ACC}" stroke="{ACC}" stroke-width="4" stroke-linejoin="round"/>'
-for k, (a, l1, l2) in enumerate(pills):
-    t = math.radians(a)
-    x, y = CX + R * math.cos(t), CY + R * math.sin(t)
-    b += f'<rect x="{x - 135:.1f}" y="{y - 50:.1f}" width="270" height="100" rx="30" fill="{SUN if k == 0 else CARD}" stroke="{INK}" stroke-width="5"/>'
-    b += f'<text x="{x:.1f}" y="{y - 6:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{l1}</text>'
-    b += f'<text x="{x:.1f}" y="{y + 30:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{l2}</text>'
-    b += f'<circle cx="{x - 135:.1f}" cy="{y - 50:.1f}" r="22" fill="{INK}"/><text x="{x - 135:.1f}" y="{y - 41:.1f}" font-size="26" font-weight="800" fill="#fff" text-anchor="middle">{k + 1}</text>'
-b += f'<text x="{CX}" y="{CY - 6}" font-size="58" font-weight="800" fill="{INK}" text-anchor="middle">Le cercle</text>'
-b += f'<text x="{CX}" y="{CY + 56}" font-size="58" font-weight="800" fill="{ACC}" text-anchor="middle">vicieux</text>'
-b += f'<text x="{CX}" y="{CY + 104}" font-size="30" font-weight="600" fill="{INK3}" text-anchor="middle">qui s\'auto-alimente</text>'
-open(OUT + 'cercle.svg', 'w', encoding='utf8').write(svg(936, 660, b))
+# 5. Cercle vicieux (fonction réutilisable : 5 étapes + titre central)
+def cercle(fichier, pills, centre):
+    CX, CY, R = 468, 350, 270
+    angles = [-90, -18, 54, 126, 198]
+    b = f'<circle cx="{CX}" cy="{CY}" r="{R}" fill="none" stroke="{STEP}" stroke-width="18"/>'
+    for a in [-54, 18, 90, 162, 234]:
+        t = math.radians(a)
+        px, py = CX + R * math.cos(t), CY + R * math.sin(t)
+        dx, dy = -math.sin(t), math.cos(t)
+        nx, ny = math.cos(t), math.sin(t)
+        tip = (px + dx * 30, py + dy * 30)
+        b1 = (px - dx * 16 + nx * 24, py - dy * 16 + ny * 24)
+        b2 = (px - dx * 16 - nx * 24, py - dy * 16 - ny * 24)
+        b += f'<path d="M{tip[0]:.1f} {tip[1]:.1f} L{b1[0]:.1f} {b1[1]:.1f} L{b2[0]:.1f} {b2[1]:.1f} Z" fill="{ACC}" stroke="{ACC}" stroke-width="4" stroke-linejoin="round"/>'
+    for k, (l1, l2) in enumerate(pills):
+        t = math.radians(angles[k])
+        x, y = CX + R * math.cos(t), CY + R * math.sin(t)
+        b += f'<rect x="{x - 135:.1f}" y="{y - 50:.1f}" width="270" height="100" rx="30" fill="{SUN if k == 0 else CARD}" stroke="{INK}" stroke-width="5"/>'
+        b += f'<text x="{x:.1f}" y="{y - 6:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{l1}</text>'
+        b += f'<text x="{x:.1f}" y="{y + 30:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{l2}</text>'
+        b += f'<circle cx="{x - 135:.1f}" cy="{y - 50:.1f}" r="22" fill="{INK}"/><text x="{x - 135:.1f}" y="{y - 41:.1f}" font-size="26" font-weight="800" fill="#fff" text-anchor="middle">{k + 1}</text>'
+    b += f'<text x="{CX}" y="{CY - 6}" font-size="58" font-weight="800" fill="{INK}" text-anchor="middle">{centre[0]}</text>'
+    b += f'<text x="{CX}" y="{CY + 56}" font-size="58" font-weight="800" fill="{ACC}" text-anchor="middle">{centre[1]}</text>'
+    b += f'<text x="{CX}" y="{CY + 104}" font-size="30" font-weight="600" fill="{INK3}" text-anchor="middle">{centre[2]}</text>'
+    open(OUT + fichier, 'w', encoding='utf8').write(svg(936, 660, b))
+
+
+cercle('cercle.svg', [('Cycle et', 'douleurs'), ('Fatigue,', 'sommeil haché'), ('Arrêts et', 'jours difficiles'), ('Baisse de', 'productivité'), ('Culpabilité,', 'stress, moral')], ('Le cercle', 'vicieux', "qui s'auto-alimente"))
+cercle('cercle-intime.svg', [('Douleur pendant', 'ou après'), ('Appréhension,', "peur d'avoir mal"), ('Évitement,', 'distance'), ('Culpabilité,', 'incompréhension'), ('Tension', 'dans le couple')], ('Le cercle', 'du silence', 'qui éloigne'))
 
 # 6. Leviers
 def lev(k):
@@ -157,4 +162,32 @@ for k in range(3):
     b += f'<circle cx="{cx}" cy="110" r="92" fill="{SUN if k == 1 else STEP}" stroke="{INK}" stroke-width="5"/><g transform="translate({cx} 112)">{lev(k)}</g>'
     b += f'<text x="{cx}" y="246" font-size="32" font-weight="800" fill="{INK}" text-anchor="middle">{labs[k][0]}</text><text x="{cx}" y="284" font-size="32" font-weight="800" fill="{INK}" text-anchor="middle">{labs[k][1]}</text>'
 open(OUT + 'leviers.svg', 'w', encoding='utf8').write(svg(936, 310, b))
+# 7. Dialogue : trois bulles
+bulles = [
+    (20, 20, SUN, 'left', ("Ce n'est pas vous,", "c'est la douleur.")),
+    (256, 210, CARD, 'right', ('Dites-moi ce qui vous', 'fait du bien.')),
+    (20, 400, STEP, 'left', ("On peut chercher d'autres", 'façons d\'être proches.')),
+]
+b = ''
+for x, y, col, cote, (l1, l2) in bulles:
+    w, h = 660, 150
+    b += f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="36" fill="{col}" stroke="{INK}" stroke-width="5"/>'
+    tx = x + 60 if cote == 'left' else x + w - 130
+    ty = y + h
+    b += f'<path d="M{tx} {ty} L{tx + (-10 if cote == "left" else 70)} {ty + 38} L{tx + 70} {ty} Z" fill="{col}" stroke="{INK}" stroke-width="5" stroke-linejoin="round"/>'
+    b += f'<rect x="{tx + 4}" y="{ty - 4}" width="62" height="9" fill="{col}"/>'
+    b += f'<text x="{x + 40}" y="{y + 68}" font-size="38" font-weight="800" fill="{INK}">{l1}</text><text x="{x + 40}" y="{y + 114}" font-size="38" font-weight="800" fill="{INK}">{l2}</text>'
+open(OUT + 'dialogue.svg', 'w', encoding='utf8').write(svg(936, 580, b))
+
+# 8. Intimité : bien plus que les rapports
+CX, CY, R = 468, 350, 250
+labs = ['Tendresse', 'Complicité', 'Dialogue', 'Câlins', 'Rapports']
+b = ''
+pos = [(CX + R * math.cos(math.radians(a)), CY + R * math.sin(math.radians(a))) for a in [-90, -18, 54, 126, 198]]
+for x, y in pos:
+    b += f'<path d="M{CX} {CY} L{x:.1f} {y:.1f}" stroke="{STEP}" stroke-width="12" stroke-linecap="round"/>'
+b += f'<circle cx="{CX}" cy="{CY}" r="104" fill="{SUN}" stroke="{INK}" stroke-width="5"/><text x="{CX}" y="{CY + 14}" font-size="42" font-weight="800" fill="{INK}" text-anchor="middle">Intimité</text>'
+for k, (x, y) in enumerate(pos):
+    b += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="92" fill="{STEP if k % 2 == 0 else CARD}" stroke="{INK}" stroke-width="5"/><text x="{x:.1f}" y="{y + 10:.1f}" font-size="30" font-weight="800" fill="{INK}" text-anchor="middle">{labs[k]}</text>'
+open(OUT + 'intimite.svg', 'w', encoding='utf8').write(svg(936, 660, b))
 print('ok', os.listdir(OUT))
