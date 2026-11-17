@@ -1,0 +1,33 @@
+{
+  "nom": "clair-chiffres",
+  "pour": "Pilier « Chiffres » : faire réaliser l'ampleur de la maladie, un chiffre par slide.",
+  "regles": [
+    "Un seul chiffre par slide, beaucoup d'air",
+    "Chaque chiffre porte sa source en pied de slide ; tout chiffre qui ne vient pas de la landing est marqué « à sourcer »",
+    "Une phrase de lecture simple sous le chiffre",
+    "Dernière slide : bouton, garanties et mention « informations générales »"
+  ],
+  "slides": [
+    {
+      "layout": "clair-photo"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair"
+    },
+    {
+      "layout": "clair-photo"
+    }
+  ]
+}

@@ -74,6 +74,16 @@ function clairCss(design, T) {
 .l-clair-photo .cl-src,.l-clair-photo .cl-mention{color:rgba(255,255,255,.84)}
 .l-clair-photo .cl-card{color:${ch.ink}}
 .l-clair-photo .cl-card h3{color:${ch.ink}}
+.cl-body.air{gap:46px}
+.cl-fig{display:flex;flex-direction:column;gap:30px;align-items:flex-start}
+.cl-fig-num{font-family:${T};font-weight:800;font-size:250px;letter-spacing:-.05em;line-height:.92;color:var(--cc-accent-ink);white-space:nowrap;max-width:100%}
+.cl-fig-num sup{font-size:.2em;font-weight:600;color:var(--cc-ink3);vertical-align:top;letter-spacing:0;margin-left:.12em}
+.cl-wave{width:112px;height:44px}
+.cl-fig-leg{font-size:56px;line-height:1.26;color:var(--cc-ink);margin:0;max-width:860px;font-weight:600}
+.cl-fig-det{font-size:40px;line-height:1.3;color:var(--cc-ink3);margin:0;max-width:860px}
+.cl-viz{width:100%;height:auto;margin-top:14px;display:block}
+.cl-viz text{font-family:inherit}
+.cl-viz.globe{width:290px;margin-top:6px}
 .cl-body.bas{justify-content:flex-end}
 .cl-body.centre{justify-content:center}
 .cl-body .cl-badge{position:static;align-self:flex-start}
@@ -324,7 +334,33 @@ const fit = (max, maxh) => `data-fit="${max}" data-maxh="${maxh}"`;
 const TICK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const ARROW_SVG = '<svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 const svgFile = (root, f) => readFileSync(join(root, 'assets', 'svg', f), 'utf8').replace('<svg ', '<svg class="cl-svg" ');
-function clairBloc(b, root) {
+const WAVE = '<svg class="cl-wave" viewBox="0 0 40 16"><path d="M2 8C10 0 14 0 20 8S30 16 38 6" fill="none" stroke="#F2B90F" stroke-width="4" stroke-linecap="round"/></svg>';
+function visuel(v, ch, root) {
+  if (!v) return '';
+  const W0 = 936;
+  switch (v.type) {
+    case 'foule':
+      return svgFile(root, 'foule.svg');
+    case 'barre': {
+      const f = Math.round((W0 * v.valeur) / 100);
+      return `<svg class="cl-viz" viewBox="0 0 ${W0} 96"><rect x="0" y="16" width="${W0}" height="48" rx="24" fill="${ch.step}"/><rect x="0" y="16" width="${f}" height="48" rx="24" fill="${ch.accent}"/><circle cx="${Math.max(f, 24)}" cy="40" r="24" fill="${ch.sun}" stroke="${ch.ink}" stroke-width="4"/><text x="0" y="92" font-size="26" font-weight="600" fill="${ch.ink3}">0 %</text><text x="${W0}" y="92" font-size="26" font-weight="600" fill="${ch.ink3}" text-anchor="end">100 %</text></svg>`;
+    }
+    case 'frise': {
+      const n = v.n, pl = v.pleins, r = 38, step = (W0 - 2 * r) / (n - 1);
+      const dots = Array.from({ length: n }, (_, k) => {
+        const cx = r + k * step, plein = k < pl;
+        return `<circle cx="${cx}" cy="50" r="${r}" fill="${plein ? ch.step : ch.sun}" stroke="${plein ? 'none' : ch.ink}" stroke-width="${plein ? 0 : 3}"/><text x="${cx}" y="62" font-size="34" font-weight="800" fill="${ch.ink}" text-anchor="middle">${k + 1}</text>`;
+      }).join('');
+      return `<svg class="cl-viz" viewBox="0 0 ${W0} 130">${dots}<text x="0" y="124" font-size="26" font-weight="600" fill="${ch.ink3}">années</text></svg>`;
+    }
+    case 'globe':
+      return `<svg class="cl-viz globe" viewBox="0 0 260 260"><g fill="none" stroke="${ch.accent}" stroke-width="6" stroke-linecap="round"><circle cx="130" cy="130" r="110"/><ellipse cx="130" cy="130" rx="46" ry="110"/><path d="M20 130h220M38 76h184M38 184h184"/></g><circle cx="176" cy="92" r="16" fill="${ch.sun}" stroke="${ch.ink}" stroke-width="4"/></svg>`;
+    default:
+      return '';
+  }
+}
+
+function clairBloc(b, root, design) {
   switch (b.type) {
     case 'stats':
       return `<div class="cl-stats">${b.items.map((it) => `<div class="cl-stat"><b>${rich(it.valeur)}</b><span>${rich(it.texte)}${it.sup ? `<sup>${it.sup}</sup>` : ''}</span></div>`).join('')}</div>`;
@@ -334,6 +370,8 @@ function clairBloc(b, root) {
       return `<div class="cl-liste">${b.items.map((it, k) => `<div class="cl-item">${b.mode === 'coche' ? `<span class="cl-ck">${TICK}</span>` : `<span class="cl-num">${k + 1}</span>`}<div><b>${rich(it.t)}</b>${it.d ? `<p>${rich(it.d)}</p>` : ''}</div></div>`).join('')}</div>`;
     case 'photo':
       return `<div class="cl-photo" style="height:${b.hauteur ?? 380}px"><div class="cl-photo-in">${imgTag({ image: { fichier: b.fichier, pos: b.pos } }, root, 'ph')}</div></div>`;
+    case 'chiffre':
+      return `<div class="cl-fig"><div class="cl-fig-num" data-fit="${b.taille ?? 250}" data-maxh="340">${rich(b.valeur)}${b.sup ? `<sup>${b.sup}</sup>` : ''}</div>${WAVE}<p class="cl-fig-leg">${rich(b.legende)}</p>${b.detail ? `<p class="cl-fig-det">${rich(b.detail)}</p>` : ''}${visuel(b.visuel, design.charte, root)}</div>`;
     case 'bouton':
       return `<div class="cl-btn">${rich(b.texte)} ${ARROW_SVG}</div>`;
     case 'garanties':
@@ -380,11 +418,12 @@ function inner(s, i, n, design, root) {
       const lg = design.charte?.logo ? readFileSync(join(root, 'assets', 'svg', design.charte.logo), 'utf8').replace('<svg ', '<svg class="cl-logo" ') : '';
       const head = `<header class="cl-head">${lg}<div><b>${esc(design.marque)}</b><small>${esc(design.charte?.sous_marque ?? '')}</small></div><span class="cl-pg">${i + 1} / ${n}</span></header>`;
       const big = s.grand ?? i === 0;
-      const blocs = (s.blocs ?? []).map((b) => clairBloc(b, root)).join('');
+      const blocs = (s.blocs ?? []).map((b) => clairBloc(b, root, design)).join('');
       const a = s.arche;
       const arche = a ? `<div class="cl-arche"><div class="cl-arche-in">${imgTag({ image: { fichier: a.fichier, pos: a.pos } }, root, 'ph')}</div>${a.badge ? `<div class="cl-badge"><b>${rich(a.badge.valeur)}</b><span>${rich(a.badge.texte)}</span></div>` : ''}</div>` : '';
       const titre = s.titre ? (big ? `<h1 ${fit(124, 420)}>${rich(s.titre)}</h1>` : `<h2 ${fit(128, 330)}>${rich(s.titre)}</h2>`) : '';
-      const bodyCls = cp ? (s.pos === 'haut' ? ' haut' : s.pos === 'centre' ? ' centre' : ' bas') : s.haut ? ' haut' : '';
+      const air = s.air ? ' air' : '';
+      const bodyCls = air + (cp ? (s.pos === 'haut' ? ' haut' : s.pos === 'centre' ? ' centre' : ' bas') : s.haut ? ' haut' : '');
       const bg = cp ? `${imgTag(s, root)}<div class="scrim"></div>` : '';
       const badge = s.badge ? `<div class="cl-badge"><b>${rich(s.badge.valeur)}</b><span>${rich(s.badge.texte)}</span></div>` : '';
       return `${bg}${head}<div class="cl-body${bodyCls}">${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;

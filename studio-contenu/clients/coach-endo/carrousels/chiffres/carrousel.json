@@ -1,0 +1,139 @@
+{
+  "client": "coach-endo",
+  "template": "clair-chiffres",
+  "fruit": "vert",
+  "titre_interne": "Les chiffres de l'endométriose",
+  "legende": "Ce que peu de gens savent : 1 femme sur 10 concernée, 190 millions dans le monde, 7 à 9 ans pour obtenir un diagnostic, 49 % qui estiment que la maladie a freiné leur carrière, plus de 25 % qui ont dû changer de métier ou de statut. Sources : sante.fr ; enquête CEET / EndoFrance 2020 ; OMS [[à vérifier]]. Le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. #endométriose #chiffres #carrière",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "pos": "bas",
+      "grand": true,
+      "image": {
+        "fichier": "lecture-canape.jpg",
+        "pos": "50% 62%"
+      },
+      "eyebrow": "Endométriose · en chiffres",
+      "titre": "Les chiffres que *peu de gens* connaissent",
+      "texte": "Cinq chiffres pour mesurer ce que vivent des millions de femmes."
+    },
+    {
+      "layout": "clair",
+      "air": true,
+      "eyebrow": "Une maladie fréquente",
+      "blocs": [
+        {
+          "type": "chiffre",
+          "valeur": "1 sur 10",
+          "sup": "1",
+          "legende": "femmes concernées par l'endométriose",
+          "detail": "Autour d'une table de dix femmes, en moyenne, l'une d'elles est concernée.",
+          "visuel": {
+            "type": "foule"
+          }
+        }
+      ],
+      "source": "¹ Ministère de la Santé, sante.fr, « Endométriose »."
+    },
+    {
+      "layout": "clair",
+      "air": true,
+      "eyebrow": "Dans le monde",
+      "blocs": [
+        {
+          "type": "chiffre",
+          "valeur": "190 millions",
+          "legende": "de femmes et de filles concernées",
+          "detail": "Dont environ 2 millions en France. [[Chiffre France à sourcer.]]",
+          "visuel": {
+            "type": "globe"
+          }
+        }
+      ],
+      "source": "Organisation mondiale de la santé, aide-mémoire « Endométriose ». [[Chiffre OMS à vérifier avant publication.]]"
+    },
+    {
+      "layout": "clair",
+      "air": true,
+      "eyebrow": "Avant de savoir",
+      "blocs": [
+        {
+          "type": "chiffre",
+          "valeur": "7 à 9 ans",
+          "sup": "1, 2",
+          "legende": "pour obtenir un diagnostic, en moyenne",
+          "detail": "Sept à neuf ans à chercher ce qui se passe.",
+          "visuel": {
+            "type": "frise",
+            "n": 9,
+            "pleins": 7
+          }
+        }
+      ],
+      "source": "¹ Ministère de la Santé, sante.fr. ² Enquête CEET / EndoFrance, 2020."
+    },
+    {
+      "layout": "clair",
+      "air": true,
+      "eyebrow": "Sur la carrière",
+      "blocs": [
+        {
+          "type": "chiffre",
+          "valeur": "49 %",
+          "sup": "2",
+          "legende": "des femmes concernées estiment que l'endométriose a freiné leur carrière",
+          "visuel": {
+            "type": "barre",
+            "valeur": 49
+          }
+        }
+      ],
+      "source": "² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
+    },
+    {
+      "layout": "clair",
+      "air": true,
+      "eyebrow": "Sur le parcours",
+      "blocs": [
+        {
+          "type": "chiffre",
+          "valeur": "+25 %",
+          "sup": "2",
+          "legende": "ont dû changer de métier ou de statut professionnel",
+          "visuel": {
+            "type": "barre",
+            "valeur": 25
+          }
+        }
+      ],
+      "source": "² Enquête CEET / EndoFrance, 2020, sur l'impact de l'endométriose dans la vie professionnelle."
+    },
+    {
+      "layout": "clair-photo",
+      "pos": "bas",
+      "image": {
+        "fichier": "bureau-maison.jpg",
+        "pos": "50% 55%"
+      },
+      "eyebrow": "Et maintenant ?",
+      "titre": "Derrière chaque chiffre, *une femme*",
+      "texte": "Reprenez la main sur votre carrière, à votre rythme. Le kit gratuit « Carrière en cycles ». [[Lien à mettre en bio.]]",
+      "blocs": [
+        {
+          "type": "bouton",
+          "texte": "Recevoir mon kit gratuit"
+        },
+        {
+          "type": "garanties",
+          "items": [
+            "Gratuit",
+            "Sans carte bancaire",
+            "Confidentiel",
+            "Désinscription en 1 clic"
+          ]
+        }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique."
+    }
+  ]
+}
