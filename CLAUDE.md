@@ -12,7 +12,8 @@ Hari coche, archive, supprime, et écrit des idées depuis la page.
 
 Projets affichés : `arteasy`, `reflexia`, `worthit`, `appmee`, `dropit`, `declic` (CoachSystem, dépôt `harimalal/COACHINGSYSTEM`),
 `masterai` (catalogue des skills/agents/workflows IA déjà en routine), `aiguy4cosmetic` (cas d'usage IA pour l'industrie
-cosmétique), `turf` (analyse des courses de trot : Vincennes, Caen ; dossier `turf/`, skills `turf-*`). Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`) ont `hidden = 1`.
+cosmétique), `turf` (analyse des courses de trot : Vincennes, Caen ; dossier `turf/`, skills `turf-*`),
+`endoreconversion` (carrousels de la coach EndoReconversion ; pack `studio-contenu/clients/coach-endo`, skill `contenu-carrousel`), `lesconfits` (carrousels de Pascal, confitures ; pack `studio-contenu/clients/confits`). Les autres (`yoitubesum`, `lyonjarrive`, `unclassified`) ont `hidden = 1`.
 
 **Tables**
 - `projects (id, name, icon, color, description, repo, position, hidden, created_at, updated_at)`
