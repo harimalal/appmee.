@@ -1,0 +1,30 @@
+diff --git a/dev/fd/63 b/studio-contenu/moteur/carrousel/lib.mjs
+index 0000000..60e67b9 100644
+--- a/dev/fd/63
++++ b/studio-contenu/moteur/carrousel/lib.mjs
+@@ -91,6 +91,10 @@ function clairCss(design, T) {
+ .cl-photo::after{content:"";position:absolute;right:-20px;top:-14px;left:36px;bottom:30px;background:var(--cc-sun);border-radius:34px 64px 34px 34px;z-index:0}
+ .cl-photo-in{position:absolute;inset:0;border-radius:34px;overflow:hidden;z-index:1;box-shadow:0 26px 50px -28px rgba(18,48,31,.55)}
+ .cl-photo-in img{width:100%;height:100%;object-fit:cover}
++.cl-cap{position:absolute;z-index:3;left:72px;bottom:18px;max-width:700px;font:italic 500 25px/1.25 Figtree,sans-serif;color:#fff;background:rgba(18,48,31,.78);padding:8px 16px;border-radius:12px}
++.cl-cap.top{bottom:auto;top:18px}
++.l-clair-photo>.cl-cap{bottom:auto;top:150px}
++.l-clair-photo.p-haut>.cl-cap{top:auto;bottom:118px}
+ .cl-head{display:flex;align-items:center;gap:18px;flex:none}
+ .cl-logo{width:68px;height:68px;flex:none}
+ .cl-head b{display:block;font-family:${T};font-weight:800;font-size:38px;letter-spacing:-.01em;line-height:1.05}
+@@ -449,11 +453,12 @@ function inner(s, i, n, design, root) {
+       const bodyCls = air + (cp ? (s.pos === 'haut' ? ' haut' : s.pos === 'centre' ? ' centre' : ' bas') : s.haut ? ' haut' : '');
+       const bd = s.bande;
+       const bh = bd?.hauteur ?? 560;
+-      const bande = bd ? `<div class="cl-bande ${bd.cote === 'bas' ? 'bas' : 'haut'}" style="height:${bh}px">${imgTag({ image: { fichier: bd.fichier, pos: bd.pos } }, root, 'ph')}</div>` : '';
++      const capTxt = s.legende_photo ? `<div class="cl-cap${s.legende_pos === 'haut' ? ' top' : ''}">${rich(s.legende_photo)}</div>` : '';
++      const bande = bd ? `<div class="cl-bande ${bd.cote === 'bas' ? 'bas' : 'haut'}" style="height:${bh}px">${imgTag({ image: { fichier: bd.fichier, pos: bd.pos } }, root, 'ph')}${capTxt}</div>` : '';
+       const bodyStyle = bd ? (bd.cote === 'bas' ? ` style="padding-bottom:${bh + 36}px"` : ` style="padding-top:${bh - 92}px"`) : '';
+       const bg = cp ? `${imgTag(s, root)}<div class="scrim"></div>` : bande;
+       const badge = s.badge ? `<div class="cl-badge"><b>${rich(s.badge.valeur)}</b><span>${rich(s.badge.texte)}</span></div>` : '';
+-      return `${bg}${head}<div class="cl-body${bodyCls}"${bodyStyle}>${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
++      return `${bg}${cp ? capTxt : ''}${head}<div class="cl-body${bodyCls}"${bodyStyle}>${badge}${s.eyebrow ? `<span class="cl-eyebrow">${rich(s.eyebrow)}</span>` : ''}${titre}${s.texte ? `<p class="cl-texte${s.etroit ? ' etroit' : ''}">${rich(s.texte)}</p>` : ''}${blocs}${s.source ? `<p class="cl-src">${rich(s.source)}</p>` : ''}${s.mention ? `<p class="cl-mention">${rich(s.mention)}</p>` : ''}</div>${arche}${i < n - 1 ? '<div class="cl-next">→</div>' : ''}`;
+     }
+     case 'typo': {
+       const lead = s.kicker ? `<div class="kick">${rich(s.kicker)}</div>` : '';

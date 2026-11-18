@@ -1,0 +1,158 @@
+{
+  "client": "coach-endo",
+  "template": "clair-cercle",
+  "fruit": "vert",
+  "titre_interne": "Les maladies invisibles au travail : photos légendées, vue d'ensemble puis zoom par zone",
+  "legende": "Migraine, endométriose, fibromyalgie, fatigue chronique... Beaucoup de maladies ne se lisent pas sur un visage, et pourtant elles pèsent sur une journée de travail. Vue d'ensemble, puis un zoom sur quatre zones du corps, et ce qu'une salariée peut demander. Recevez le kit gratuit « Carrière en cycles » : [[lien à mettre en bio]]. Informations d'ordre général, ni avis médical, ni avis juridique. [[Contenu à faire relire par un professionnel de santé et par un juriste en droit du travail.]] #maladiesinvisibles #endométriose #travail",
+  "slides": [
+    {
+      "layout": "clair-photo",
+      "grand": true,
+      "pos": "bas",
+      "eyebrow": "Maladies invisibles au travail",
+      "titre": "Malade, *mais ça ne se voit pas*",
+      "texte": "Des maladies qu'on ne lit pas sur un visage, et qui pèsent sur toute une journée de bureau.",
+      "legende_photo": "Un open space comme un autre : rien ne dit qui souffre.",
+      "image": {
+        "fichier": "mi-bureau.jpg",
+        "pos": "50% 40%"
+      }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Vue d'ensemble",
+      "titre": "La carte des *maladies invisibles*",
+      "texte": "Quatre zones du corps : la tête et les nerfs, le ventre et le bassin, les muscles et les articulations, l'énergie et l'humeur.",
+      "blocs": [
+        {
+          "type": "photos",
+          "hauteur": 360,
+          "items": [
+            {
+              "fichier": "mi-rideau.jpg",
+              "pos": "50% 40%",
+              "legende": "Tête et nerfs"
+            },
+            {
+              "fichier": "mi-ventre.jpg",
+              "pos": "50% 55%",
+              "legende": "Ventre et bassin"
+            },
+            {
+              "fichier": "mi-mains.jpg",
+              "pos": "40% 50%",
+              "legende": "Articulations"
+            }
+          ]
+        }
+      ],
+      "source": "Liste non exhaustive. Informations générales. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "pos": "bas",
+      "eyebrow": "Tête et nerfs",
+      "titre": "Le cerveau *en surcharge*",
+      "texte": "Migraine chronique, épilepsie, sclérose en plaques : lumière, bruit, fatigue, et un visage qui reste calme.",
+      "legende_photo": "Migraine : la lumière devient insupportable, on tire les rideaux.",
+      "image": {
+        "fichier": "mi-rideau.jpg",
+        "pos": "50% 40%"
+      }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Ventre et bassin",
+      "titre": "Des douleurs *qu'on tait*",
+      "bande": {
+        "fichier": "mi-ventre.jpg",
+        "pos": "50% 8%",
+        "hauteur": 600,
+        "cote": "haut"
+      },
+      "legende_photo": "Une bouillotte : le geste discret, au bureau comme à la maison.",
+      "texte": "Endométriose, SOPK, maladie de Crohn, RCH : des douleurs au ventre, qui reviennent par poussées.",
+      "source": "Pistes générales, non exhaustives. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Muscles et articulations",
+      "titre": "Un corps *qui lâche*",
+      "bande": {
+        "fichier": "mi-mains.jpg",
+        "pos": "50% 50%",
+        "hauteur": 520,
+        "cote": "bas"
+      },
+      "legende_photo": "Mains, poignets : raideur et gonflements, parfois dès le réveil.",
+      "texte": "Fibromyalgie, polyarthrite, lupus : des douleurs et une fatigue qui varient d'un jour à l'autre.",
+      "source": "Pistes générales, non exhaustives. [[À faire relire par un professionnel de santé.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "pos": "bas",
+      "eyebrow": "Énergie et humeur",
+      "titre": "Une batterie *qui se vide*",
+      "texte": "Fatigue chronique, diabète, anxiété, dépression : le repos ne suffit pas toujours, et rien ne se voit.",
+      "legende_photo": "Fin de journée : la batterie est à plat.",
+      "image": {
+        "fichier": "mi-fatigue.jpg",
+        "pos": "35% 50%"
+      }
+    },
+    {
+      "layout": "clair-photo",
+      "pos": "haut",
+      "eyebrow": "Une journée de bureau",
+      "titre": "Au bureau, on ne voit que *la pointe*",
+      "texte": "Dessous : des douleurs masquées, des rendez-vous à caser, des heures rattrapées le soir, des explications à répéter.",
+      "legende_photo": "Personne ne voit ce qui se cache sous la surface.",
+      "image": {
+        "fichier": "mi-loft.jpg",
+        "pos": "50% 60%"
+      }
+    },
+    {
+      "layout": "clair",
+      "eyebrow": "Vos droits en entreprise",
+      "titre": "Ce que vous *pouvez demander*",
+      "bande": {
+        "fichier": "mi-stetho.jpg",
+        "pos": "50% 50%",
+        "hauteur": 460,
+        "cote": "haut"
+      },
+      "legende_photo": "La médecine du travail : une visite peut être demandée à tout moment.",
+      "texte": "Pas obligée de nommer la maladie : le secret médical s'applique. Aménagements de poste possibles. La RQTH se demande à la MDPH, jamais automatiquement.",
+      "source": "Droit français, informations générales, selon votre situation. [[À faire valider par un juriste en droit du travail.]]"
+    },
+    {
+      "layout": "clair-photo",
+      "pos": "bas",
+      "eyebrow": "Et maintenant ?",
+      "titre": "Travailler *à votre rythme*",
+      "texte": "Le kit gratuit « Carrière en cycles » vous aide à repérer vos cycles d'énergie. [[Lien à mettre en bio.]]",
+      "legende_photo": "Reprendre la main sur son rythme.",
+      "blocs": [
+        {
+          "type": "bouton",
+          "texte": "Recevoir mon kit gratuit"
+        },
+        {
+          "type": "garanties",
+          "items": [
+            "Gratuit",
+            "Sans carte bancaire",
+            "Confidentiel",
+            "Désinscription en 1 clic"
+          ]
+        }
+      ],
+      "mention": "Les informations de ce contenu sont d'ordre général. Elles ne constituent ni un avis médical, ni un avis juridique.",
+      "image": {
+        "fichier": "mi-journal.jpg",
+        "pos": "50% 35%"
+      }
+    }
+  ]
+}
