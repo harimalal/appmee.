@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Carrousel animé arteasy (chocolatier) : voix Google (Gemini TTS) + zooms + transitions.
 Usage : python3 build.py   (GOOGLE_API_KEY dans l'environnement)"""
-import base64, json, os, subprocess, sys, time, wave
+import base64, json, os, re, subprocess, sys, time, wave
 
 D = os.path.dirname(os.path.abspath(__file__))
-VOIX, MODELE = "Charon", "gemini-2.5-flash-preview-tts"
-STYLE = "Raconte à la première personne, avec chaleur, un peu d'humour, comme un artisan qui se confie : "
-FPS, T, MARGE_DEBUT, MARGE_FIN, MIN_D = 30, 0.45, 0.35, 0.9, 3.6
+VOIX_NARRATEUR, VOIX_SOPHIE, MODELE = "Charon", "Aoede", "gemini-3.1-flash-tts-preview"
+FPS, T = 30, 0.45
 
 # (texte dit, zoom début, zoom fin, focale début (x,y), focale fin (x,y))
 S = [
@@ -28,41 +27,50 @@ S = [
 def sh(cmd, **kw):
     return subprocess.run(cmd, check=True, **kw)
 
-def tts(i, texte):
-    out = f"{D}/voix/{i:02d}.wav"
-    if os.path.exists(out):
-        return out
-    corps = {"contents": [{"parts": [{"text": STYLE + texte}]}],
-             "generationConfig": {"responseModalities": ["AUDIO"],
-               "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOIX}}}}}
-    for essai in range(6):
-        r = subprocess.run(["curl", "-s", "-H", f"x-goog-api-key: {os.environ['GOOGLE_API_KEY']}",
-            "-H", "Content-Type: application/json",
-            f"https://generativelanguage.googleapis.com/v1beta/models/{MODELE}:generateContent",
-            "-d", json.dumps(corps)], capture_output=True, text=True)
-        try:
-            d = json.loads(r.stdout)
-            pcm = base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
-            with wave.open(out, "wb") as w:
-                w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
-            return out
-        except Exception:
-            print(f"  voix {i}: essai {essai+1} échoué", r.stdout[:150], file=sys.stderr)
-            time.sleep(8 * (essai + 1))
-    sys.exit(f"voix {i} impossible")
-
 def duree(p):
     return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", p],
                                 capture_output=True, text=True).stdout)
 
+def appel(modele, corps):
+    open(f"{D}/tmp/req.json", "w").write(json.dumps(corps))
+    r = subprocess.run(["curl", "-s", "-H", f"x-goog-api-key: {os.environ['GOOGLE_API_KEY']}",
+        "-H", "Content-Type: application/json",
+        f"https://generativelanguage.googleapis.com/v1beta/models/{modele}:generateContent",
+        "-d", f"@{D}/tmp/req.json"], capture_output=True, text=True)
+    return json.loads(r.stdout)
+
 os.makedirs(f"{D}/tmp", exist_ok=True)
-voix = [tts(i + 1, s[0]) for i, s in enumerate(S)]
-durs = [max(MIN_D, MARGE_DEBUT + duree(v) + MARGE_FIN) for v in voix]
-starts, t = [], 0.0
-for d in durs:
-    starts.append(t); t += d - T
-total = starts[-1] + durs[-1]
-print("durées", [round(d, 1) for d in durs], "total", round(total, 1))
+PRISE = f"{D}/voix/histoire.wav"
+if not os.path.exists(PRISE):
+    texte = open(f"{D}/voix/histoire.txt").read()
+    corps = {"contents": [{"parts": [{"text": texte}]}],
+      "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {"multiSpeakerVoiceConfig": {"speakerVoiceConfigs": [
+        {"speaker": "Narrateur", "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOIX_NARRATEUR}}},
+        {"speaker": "Sophie", "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOIX_SOPHIE}}}]}}}}
+    for essai in range(4):
+        d = appel(MODELE, corps)
+        try:
+            pcm = base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"]); break
+        except Exception:
+            print("essai", essai + 1, str(d)[:200], file=sys.stderr); time.sleep(10)
+    else:
+        sys.exit("voix impossible")
+    with wave.open(PRISE, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
+AUDIO_D = duree(PRISE)
+
+# début de chaque diapo dans la prise : voix/alignement.json (transcription Gemini par fenêtres, recalée sur les silences)
+ALIGN = f"{D}/voix/alignement.json"
+B = json.load(open(ALIGN))["debuts"]
+assert len(B) == len(S) and all(x < y for x, y in zip(B, B[1:])), B
+print("débuts", [round(x, 1) for x in B], "audio", round(AUDIO_D, 1))
+
+# la diapo i entre à l'écran juste avant ses premiers mots ; la voix est continue (une seule prise)
+DECAL = 0.4
+starts = [0.0] + [B[i] + DECAL - 0.1 - T for i in range(1, len(S))]
+fin = AUDIO_D + DECAL + 1.2
+durs = [(starts[i + 1] + T if i + 1 < len(S) else fin) - starts[i] for i in range(len(S))]
+total = fin
 
 # clips avec zoom/déplacement continu
 for i, (_, z0, z1, f0, f1) in enumerate(S):
@@ -86,12 +94,10 @@ for i in range(1, len(S)):
     tr = "slideleft" if i % 3 else "fade"
     filt.append(f"[{prev}][{i}:v]xfade=transition={tr}:duration={T}:offset={starts[i]:.3f}[x{i}]")
     prev = f"x{i}"
-for i, v in enumerate(voix):
-    entrees += ["-i", v]
-    ms = int((starts[i] + MARGE_DEBUT) * 1000)
-    filt.append(f"[{len(S)+i}:a]aresample=44100,adelay={ms}|{ms}[a{i}]")
-filt.append("".join(f"[a{i}]" for i in range(len(S))) + f"amix=inputs={len(S)}:normalize=0,loudnorm=I=-16:TP=-1.5[aud]")
+entrees += ["-i", PRISE]
+ms = int(DECAL * 1000)
+filt.append(f"[{len(S)}:a]aresample=44100,adelay={ms}|{ms},loudnorm=I=-16:TP=-1.5[aud]")
 sh(["ffmpeg", "-y", "-loglevel", "error", *entrees, "-filter_complex", ";".join(filt),
     "-map", f"[{prev}]", "-map", "[aud]", "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p",
-    "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", f"{D}/sortie/arteasy-chocolatier-video-voix-4x5.mp4"])
+    "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", f"{D}/sortie/arteasy-chocolatier-video-voix-4x5.mp4"])
 print("ok", total)
