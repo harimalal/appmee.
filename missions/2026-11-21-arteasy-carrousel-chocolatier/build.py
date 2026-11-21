@@ -61,6 +61,43 @@ AUDIO_D = duree(PRISE)
 
 # début de chaque diapo dans la prise : voix/alignement.json (transcription Gemini par fenêtres, recalée sur les silences)
 ALIGN = f"{D}/voix/alignement.json"
+
+def aligner():
+    """Début de chaque diapo : transcription Gemini par fenêtres de 45 s, recalée sur la fin du silence le plus proche."""
+    blocs = open(f"{D}/voix/histoire.txt").read().split("\n\n")[1:]
+    am = [re.sub(r"\[[^\]]*\]", "", bl.split("\n")[0].split(": ", 1)[-1])[:70] for bl in blocs]
+    liste = " | ".join(f"{i+1}. {x}" for i, x in enumerate(am))
+    est, a = {1: 0.0}, 0.0
+    while a < AUDIO_D - 5:
+        b = min(a + 45, AUDIO_D)
+        sh(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(a), "-to", str(b), "-i", PRISE, "-b:a", "64k", f"{D}/tmp/w.mp3"])
+        q = ("Extrait d'une histoire racontée en passages numérotés. Ouvertures : " + liste +
+             ". Quels passages commencent dans cet extrait, et à quelle seconde depuis le début de l'extrait (précision 0,3 s) ? "
+             'Réponds uniquement par un objet JSON {"numéro": secondes}.')
+        d = appel("gemini-3.8-flash", {"contents": [{"parts": [{"text": q},
+            {"inlineData": {"mimeType": "audio/mpeg", "data": base64.b64encode(open(f"{D}/tmp/w.mp3", "rb").read()).decode()}}]}]})
+        try:
+            r = json.loads(re.search(r"\{.*\}", d["candidates"][0]["content"]["parts"][-1]["text"], re.S).group(0))
+            for k, v in r.items():
+                k, v = int(k), float(v)
+                if k not in est and 1.0 < v < (b - a) - 1.0:
+                    est[k] = a + v
+        except Exception as e:
+            print("fenêtre", a, "illisible", e, file=sys.stderr)
+        a += 35
+    manque = [i for i in range(1, len(S) + 1) if i not in est]
+    if manque:
+        sys.exit(f"passages sans horodatage : {manque}")
+    sil = subprocess.run(["ffmpeg", "-i", PRISE, "-af", "silencedetect=n=-35dB:d=0.4", "-f", "null", "-"], capture_output=True, text=True).stderr
+    fins = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", sil)]
+    deb = [0.0]
+    for i in range(2, len(S) + 1):
+        p = min(fins, key=lambda f: abs(f - est[i]))
+        deb.append(round(p if abs(p - est[i]) < 1.0 else est[i], 2))
+    json.dump({"methode": "Gemini par fenêtres, recalé sur les silences", "gemini": est, "debuts": deb}, open(ALIGN, "w"), ensure_ascii=False)
+
+if not os.path.exists(ALIGN):
+    aligner()
 B = json.load(open(ALIGN))["debuts"]
 assert len(B) == len(S) and all(x < y for x, y in zip(B, B[1:])), B
 print("débuts", [round(x, 1) for x in B], "audio", round(AUDIO_D, 1))
