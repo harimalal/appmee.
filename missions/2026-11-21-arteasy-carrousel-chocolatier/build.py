@@ -39,10 +39,11 @@ def appel(modele, corps):
         "-d", f"@{D}/tmp/req.json"], capture_output=True, text=True)
     return json.loads(r.stdout)
 
+SUF = os.environ.get("VARIANTE", "")
 os.makedirs(f"{D}/tmp", exist_ok=True)
-PRISE = f"{D}/voix/histoire.wav"
+PRISE = f"{D}/voix/histoire{SUF}.wav"
 if not os.path.exists(PRISE):
-    texte = open(f"{D}/voix/histoire.txt").read()
+    texte = open(f"{D}/voix/histoire{SUF}.txt").read()
     corps = {"contents": [{"parts": [{"text": texte}]}],
       "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {"multiSpeakerVoiceConfig": {"speakerVoiceConfigs": [
         {"speaker": "Narrateur", "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOIX_NARRATEUR}}},
@@ -59,12 +60,12 @@ if not os.path.exists(PRISE):
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
 AUDIO_D = duree(PRISE)
 
-# début de chaque diapo dans la prise : voix/alignement.json (transcription Gemini par fenêtres, recalée sur les silences)
-ALIGN = f"{D}/voix/alignement.json"
+# début de chaque diapo dans la prise : voix/alignement{SUF}.json (transcription Gemini par fenêtres, recalée sur les silences)
+ALIGN = f"{D}/voix/alignement{SUF}.json"
 
 def aligner():
     """Début de chaque diapo : transcription Gemini par fenêtres de 45 s, recalée sur la fin du silence le plus proche."""
-    blocs = open(f"{D}/voix/histoire.txt").read().split("\n\n")[1:]
+    blocs = open(f"{D}/voix/histoire{SUF}.txt").read().split("\n\n")[1:]
     am = [re.sub(r"\[[^\]]*\]", "", bl.split("\n")[0].split(": ", 1)[-1])[:70] for bl in blocs]
     liste = " | ".join(f"{i+1}. {x}" for i, x in enumerate(am))
     est, a = {1: 0.0}, 0.0
@@ -93,7 +94,7 @@ def aligner():
     deb = [0.0]
     for i in range(2, len(S) + 1):
         p = min(fins, key=lambda f: abs(f - est[i]))
-        deb.append(round(p if abs(p - est[i]) < 1.0 else est[i], 2))
+        deb.append(round((p if abs(p - est[i]) < 1.0 else est[i]) - 0.4, 2))  # voix mesurée ~0,4 s avant la fin du silence
     json.dump({"methode": "Gemini par fenêtres, recalé sur les silences", "gemini": est, "debuts": deb}, open(ALIGN, "w"), ensure_ascii=False)
 
 if not os.path.exists(ALIGN):
@@ -136,5 +137,5 @@ ms = int(DECAL * 1000)
 filt.append(f"[{len(S)}:a]aresample=44100,adelay={ms}|{ms},loudnorm=I=-16:TP=-1.5[aud]")
 sh(["ffmpeg", "-y", "-loglevel", "error", *entrees, "-filter_complex", ";".join(filt),
     "-map", f"[{prev}]", "-map", "[aud]", "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p",
-    "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", f"{D}/sortie/arteasy-chocolatier-video-voix-4x5.mp4"])
+    "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", f"{D}/sortie/arteasy-chocolatier-video-voix{SUF}-4x5.mp4"])
 print("ok", total)
