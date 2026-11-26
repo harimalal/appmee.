@@ -1,0 +1,68 @@
+# Le récit : schéma narratif, adaptation, fiche de faits, voix
+
+Dans ce document, `<skill>` désigne le dossier de ce skill. À lire pour écrire le brief puis `story.json`.
+
+## Le schéma narratif
+
+Cinq étages, toujours dans cet ordre. Chaque étage répond à **une** question du spectateur.
+
+| Étage | Question du spectateur | Part du temps | Dans le reel SEO |
+|---|---|---|---|
+| **1. Problème** (le renversement) | « Est-ce que ça me concerne ? » | ≈ 15 % | Titre (« Comment optimiser le SEO de ton site avec Claude Code ? ») puis « Ce n'est pas tes articles, ni ta boutique : c'est l'indexation » |
+| **2. Situation** (la preuve + la notion inconnue) | « De quoi on parle, concrètement ? » | ≈ 25 % | 285 pages non indexées sur 132 articles ; mots-clés vs indexation ; où ça se voit (Search Console) |
+| **3. Solution** (les causes trouvées) | « Qu'est-ce qui ne va pas ? » | ≈ 25 % | Trois causes « bêtes », une scène chacune, puis les articles oubliés |
+| **4. Process** (la méthode) | « Comment ils s'y sont pris ? » | ≈ 10 % | 5 corrections, 1 commit chacun, ≈ 23 minutes |
+| **5. Résultat** (avant/après, honnête) | « Qu'est-ce que ça a donné ? » | ≈ 25 % | 140→0, 23→0, 1→0, 0→27 ; site corrigé et vérifié ; réponse de Google attendue le 8 décembre ; objectif ≠ résultat |
+
+Durée cible **60 à 95 s** (le reel SEO : 95 s, c'est le haut de la fourchette ; au-delà, couper une cause ou le détail du process).
+
+Règles de l'enchaînement :
+1. **Le premier plan dit de quoi on parle et pour qui.** Jamais un chiffre seul en ouverture (c'est l'erreur de la v1).
+2. **On parle au spectateur (« tu »)** pour le problème, **à la 1re personne (« j'ai », « sur mon blog »)** pour le travail et la preuve. Jamais « vous ».
+3. **La notion inconnue se définit en une à trois phrases**, avant d'être utilisée (« indexation = que Google connaisse la page »).
+4. **Une idée par scène**, une scène par cause. Si deux causes se ressemblent, n'en garder qu'une et la dire dans le process.
+5. **Les chiffres arrivent après l'histoire**, sauf le chiffre paradoxal du hook qui sert de preuve (285 pour 132).
+6. **Le résultat sépare toujours** ce qui est vérifié (côté site), ce qui est attendu (côté externe, avec la date) et l'objectif (écrit « objectif »).
+7. **La fin reboucle sur le début** (même texte, même fond que le titre) pour le re-visionnage.
+
+### Adapter à un autre type de travail
+
+| Type de travail | Problème (côté spectateur) | « Causes » = | Avant / après | Résultat honnête |
+|---|---|---|---|---|
+| Correction technique / SEO | « Ton site n'est pas bien vu… et ce n'est pas ce que tu crois » | les défauts trouvés dans le code | compteurs de défauts → 0 | corrigé et vérifié côté site ; effet externe attendu à une date |
+| Automatisation (n8n, Make…) | « Tu refais chaque semaine la même tâche à la main » | les étapes manuelles et leur coût | temps / nombre d'actions par semaine avant → après | temps gagné **mesuré sur N exécutions**, pas projeté |
+| Test ou comparatif d'outils | « Tu hésites entre X et Y » | les critères qui départagent | scores ou coûts côte à côte | verdict par profil, avec la limite du test |
+| Construction d'un système IA | « Tu veux un agent qui fasse Z, mais tout casse » | les échecs rencontrés et la règle ajoutée | version 1 → version finale | ce qui marche, ce qui coince encore |
+| Migration / refonte | « Tu as peur de perdre ton trafic en changeant » | les risques identifiés | liste de risques → vérifs passées | ce qui est vérifié, ce qui reste à surveiller |
+| Audit | « Tu ne sais pas où ça coince » | les constats classés | état initial → plan | recommandations, sans résultat inventé |
+
+Si le travail n'a **pas d'avant/après chiffré**, supprimer l'étage « curseur » et finir sur la liste des vérifications faites. Ne jamais fabriquer un avant/après.
+
+---
+
+## La fiche de faits (avant de rédiger quoi que ce soit)
+
+Extraire du travail documenté, dans `story.json` (champ `nombres_autorises`) et dans `BRIEF.md` :
+- chaque **nombre** utilisable, sa **source** (fichier, section, mesure) et son **statut** : mesuré / attendu / objectif ;
+- les nombres **contradictoires entre sources** : on ne les utilise pas (dans le reel SEO : « 10 pages canonical » et « 6 liens restants » écartés) ;
+- ce qu'on **n'affirme pas** (gain d'indexation, trafic, classement) tant que ce n'est pas mesuré ;
+- les noms réels à montrer (fichiers, pages, URL) : **uniquement des éléments existants** (les hachages `search-index.0a086143.json` → `d7b4d2ce.json` étaient de vraies mises en ligne).
+
+Aucune donnée inventée, aucune commande ou capture factice : si un élément n'est pas réel, on le remplace par un schéma abstrait.
+
+---
+
+## Écrire la voix et les légendes
+
+Chaque phrase de `story.json` a **deux textes** :
+- `voice` : le texte lu. Nombres en toutes lettres (« deux cent quatre-vingt-cinq »), jamais de chiffre ni de signe, marque écrite comme elle se prononce (« Reflex IA point com »).
+- `cap` : la légende affichée, avec les chiffres.
+
+Règles :
+- 5 à 12 mots par phrase, une idée par phrase. Ouvrir par une **question** quand c'est le problème du spectateur.
+- **Débit ≤ 4,5 mots/s** (contrôlé). La synthèse lit parfois les phrases courtes trop vite : ajouter `"tempo": 0.8–0.95` à la phrase (ralentissement sans changer la hauteur), plutôt que de rallonger le texte.
+- Style : preuve avant promesse, le « mais », une limite (pour Reflex IA : `SKILL_STYLE_ECRITURE.md` et `SKILL_VOIX_REFLEXIA.md` du dépôt reflex-ia). Mots bannis : révolutionnaire, game changer, incroyable, magique, ultime, 10x, « secret », « fait tout à votre place ». Pas d'emoji.
+- **Pas d'appât d'engagement** (« commente X »). Le CTA est unique : le domaine du projet (Reflex IA : **reflex-ia.com**, jamais `reflexi-ai.com` ; réglé par `cta_contient` dans `story.json`).
+- Prononciations à écouter par l'utilisateur et à signaler : noms d'outils, « commit », sigles, domaines.
+
+---
