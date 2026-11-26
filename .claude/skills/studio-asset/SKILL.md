@@ -1,5 +1,5 @@
 ---
-name: studio-lancement-app
+name: studio-asset
 description: Studio de lancement d'application (web ou mobile) — crée, à partir des vraies captures de l'app et des mots de sa landing, tous les contenus pour la montrer et la lancer, à la carte ou en package complet, aux formats de chaque réseau. Film de lancement animé avec scénario, storyboard, voix off ElevenLabs et sous-titres ; vidéos de 6 s à 2 min en 16:9, 9:16, 1:1, 4:5 ; diaporamas animés avec transitions ; diaporamas statiques et carrousels (images + PDF LinkedIn) ; posts image ; galerie et vignette Product Hunt ; miniature YouTube ; image de partage ; captures de stores. Utilise ce skill dès que l'utilisateur veut montrer, présenter, promouvoir ou lancer une app ou un SaaS en images ou en vidéo — « une vidéo comme celle de Dropit », « un carrousel LinkedIn de mon app », « des visuels Instagram », « un reel », « un post pour annoncer la fonctionnalité X », « une démo animée », « tout le package réseaux » — même sans nommer le format.
 ---
 
