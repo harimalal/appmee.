@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appmee — Studio de développement d'applications</title>
+  <meta name="description" content="Appmee conçoit et développe des applications mobiles, web et cloud sur mesure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Teko:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ EN-TÊTE ============ -->
+<header class="header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo"><span class="logo-mark">A</span>ppmee</a>
+    <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+    <nav id="menu" class="menu">
+      <a href="#services">Services</a>
+      <a href="#projets">Projets</a>
+      <a href="#equipe">Équipe</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact" class="btn btn-primary btn-sm">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO / SLIDER ============ -->
+<section class="hero" aria-roledescription="carrousel">
+  <div class="slides">
+    <article class="slide is-active s1">
+      <div class="container">
+        <h1>Des logiciels primés</h1>
+        <p>Nos solutions ont été récompensées pour leur qualité, leur fiabilité et leur design soigné.</p>
+        <a href="#contact" class="btn btn-primary">Nous contacter</a>
+      </div>
+    </article>
+    <article class="slide s2">
+      <div class="container">
+        <h1>Développement mobile</h1>
+        <p>Des applications iOS et Android rapides, durables et agréables à utiliser, de l'idée au store.</p>
+        <a href="#contact" class="btn btn-primary">Nous contacter</a>
+      </div>
+    </article>
+    <article class="slide s3">
+      <div class="container">
+        <h1>Une équipe expérimentée</h1>
+        <p>Designers et développeurs réunis pour bâtir des produits uniques et performants.</p>
+        <a href="#contact" class="btn btn-primary">Nous contacter</a>
+      </div>
+    </article>
+  </div>
+  <button class="arrow prev" aria-label="Slide précédente">‹</button>
+  <button class="arrow next" aria-label="Slide suivante">›</button>
+  <div class="dots" role="tablist"></div>
+</section>
+
+<main>
+
+<!-- ============ OFFRES ============ -->
+<section class="section center" id="services">
+  <div class="container">
+    <h2>Ce que nous proposons</h2>
+    <div class="grid g3 offers">
+      <div class="offer">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3>Logiciels sur mesure</h3>
+        <p>Un besoin précis ? Nous concevons l'outil métier qui correspond exactement à votre activité.</p>
+      </div>
+      <div class="offer">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 14a4 4 0 0 1 3-6.9A5 5 0 0 1 17 8a3.5 3.5 0 0 1 .5 7H7"/></svg></div>
+        <h3>Solutions cloud</h3>
+        <p>Hébergement, migration et architecture cloud fiables pour faire grandir vos services.</p>
+      </div>
+      <div class="offer">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 14 0v3a2 2 0 0 1-2 2h-1v-5h3M5 12v0M3 12v3a2 2 0 0 0 2 2h1v-5H3"/><path d="M12 19v2"/></svg></div>
+        <h3>Centres d'appels</h3>
+        <p>Des plateformes de relation client complètes, intégrées à vos outils existants.</p>
+      </div>
+    </div>
+    <a href="#contact" class="btn btn-primary mt">Tous les services</a>
+  </div>
+</section>
+
+<!-- ============ BANDEAU CTA ============ -->
+<section class="cta">
+  <div class="container cta-inner">
+    <div>
+      <h3>Lançons votre prochaine grande application</h3>
+      <p>Besoin d'une solution unique pour votre entreprise ? Parlons-en, nous savons comment vous aider.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="#contact" class="btn btn-primary">Nous écrire</a>
+      <a href="#projets" class="btn btn-outline-light">En savoir plus</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJETS ============ -->
+<section class="section center" id="projets">
+  <div class="container wide">
+    <h2>Derniers projets</h2>
+    <p class="lead">Parcourez nos réalisations récentes, pensées avec nos clients pour des usages très variés.</p>
+    <div class="grid g4 projects" id="projects"></div>
+  </div>
+</section>
+
+<!-- ============ EXPÉRIENCE + CHIFFRES ============ -->
+<section class="section">
+  <div class="container split">
+    <div>
+      <h3 class="deco">Des années d'expérience</h3>
+      <p class="muted">Appmee réunit des concepteurs et développeurs aguerris qui créent des applications élégantes, robustes et faciles à maintenir. Notre méthode : écouter, prototyper vite, livrer souvent.</p>
+      <a href="#contact" class="btn btn-secondary mt">Prendre contact</a>
+    </div>
+    <div class="counters">
+      <div class="counter"><b data-count="320">0</b><span>applications livrées</span></div>
+      <div class="counter"><b data-count="45">0</b><span>consultants</span></div>
+      <div class="counter"><b data-count="28">0</b><span>prix remportés</span></div>
+      <div class="counter"><b data-count="120">0</b><span>collaborateurs</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉQUIPE ============ -->
+<section class="section center" id="equipe">
+  <div class="container wide">
+    <h2>Rencontrez l'équipe</h2>
+    <div class="grid g4 team">
+      <figure><div class="avatar" style="--h:210">LM</div><figcaption><h4>Léa Martin</h4><p>Directrice de production</p></figcaption></figure>
+      <figure><div class="avatar" style="--h:330">TB</div><figcaption><h4>Théo Bernard</h4><p>Designer UI</p></figcaption></figure>
+      <figure><div class="avatar" style="--h:150">SR</div><figcaption><h4>Sara Roux</h4><p>Développeuse senior</p></figcaption></figure>
+      <figure><div class="avatar" style="--h:35">NK</div><figcaption><h4>Nils Keller</h4><p>Développeur logiciel</p></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVANTAGES ============ -->
+<section class="section alt">
+  <div class="container">
+    <h2 class="center">En plus avec nous</h2>
+    <div class="grid g4 perks">
+      <div><h5>Apps gratuites</h5><p>De nouvelles applications gratuites sont régulièrement publiées et accessibles à tous.</p><a href="#contact" class="link">En savoir plus →</a></div>
+      <div><h5>Esprit social</h5><p>Chaque application intègre des fonctions sociales pour rester connecté à vos proches.</p><a href="#contact" class="link">En savoir plus →</a></div>
+      <div><h5>Service client</h5><p>Une équipe qualifiée et disponible 7j/7 pour répondre à toutes vos questions.</p><a href="#contact" class="link">En savoir plus →</a></div>
+      <div><h5>Ergonomie</h5><p>Des interfaces pensées pour être comprises et utilisées dès les premières secondes.</p><a href="#contact" class="link">En savoir plus →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TÉMOIGNAGES ============ -->
+<section class="section center">
+  <div class="container wide">
+    <h2>Ils nous font confiance</h2>
+    <div class="grid g3 quotes">
+      <blockquote><p>Une équipe réactive et compétente, qui a su transformer notre cahier des charges en produit abouti.</p><footer><span class="mini" style="--h:200">C</span><div><b>Camille D.</b><small>Cliente fidèle</small></div></footer></blockquote>
+      <blockquote><p>Appmee nous a fourni des profils pointus pour développer nos services bancaires en un temps record.</p><footer><span class="mini" style="--h:20">M</span><div><b>Marc L.</b><small>Client fidèle</small></div></footer></blockquote>
+      <blockquote><p>Un studio rigoureux, doté de talents rares. La qualité du code et du design nous a convaincus.</p><footer><span class="mini" style="--h:280">I</span><div><b>Inès P.</b><small>Cliente fidèle</small></div></footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TARIFS ============ -->
+<section class="section center alt" id="tarifs">
+  <div class="container">
+    <h2>Tarifs</h2>
+    <div class="grid g3 pricing">
+      <div class="plan"><h5>Essentiel</h5><div class="price">500 €</div><ul><li>1 application</li><li>Design standard</li><li>Support e-mail</li></ul><a href="#contact" class="btn btn-gray">Commencer</a></div>
+      <div class="plan featured"><h5>Optimal</h5><div class="price">800 €</div><ul><li>3 applications</li><li>Design personnalisé</li><li>Support prioritaire</li></ul><a href="#contact" class="btn btn-primary">Commencer</a></div>
+      <div class="plan"><h5>Ultime</h5><div class="price">1 200 €</div><ul><li>Applications illimitées</li><li>Design sur mesure</li><li>Support 24/7</li></ul><a href="#contact" class="btn btn-gray">Commencer</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section class="section" id="blog">
+  <div class="container wide">
+    <h2 class="center">Derniers articles</h2>
+    <div class="grid g3 posts">
+      <article><div class="thumb" style="--h:215"></div><time>12 mars 2026</time><h4>Maîtriser l'asynchrone en JavaScript</h4><p>Les fonctions asynchrones sont à la fois un atout et un piège : voici comment les apprivoiser.</p></article>
+      <article><div class="thumb" style="--h:160"></div><time>28 février 2026</time><h4>Réussir sa transformation numérique</h4><p>Adopter le cloud demande de repenser ses systèmes hérités, étape par étape.</p></article>
+      <article><div class="thumb" style="--h:300"></div><time>9 janvier 2026</time><h4>Introduction aux requêtes ORM</h4><p>Un tutoriel pour comprendre comment interroger vos données avec un langage orienté objet.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COORDONNÉES + CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="grid g3 contacts">
+      <div><h5>Adresse</h5><p>12 rue de l'Innovation<br>75002 Paris</p></div>
+      <div><h5>Téléphone</h5><p><a href="tel:+33100000000">+33 1 00 00 00 00</a></p></div>
+      <div><h5>E-mail</h5><p><a href="mailto:bonjour@appmee.example">bonjour@appmee.example</a></p></div>
+    </div>
+    <div class="split contact-box">
+      <div>
+        <h3 class="deco">Contactez-nous</h3>
+        <p class="muted">Une question, un projet ? Remplissez le formulaire et nous vous répondrons sous 24 h.</p>
+      </div>
+      <form id="contactForm" novalidate>
+        <div class="row">
+          <label>Nom<input name="name" required autocomplete="name"></label>
+          <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+        </div>
+        <label>Message<textarea name="message" rows="4" required></textarea></label>
+        <button class="btn btn-primary" type="submit">Envoyer</button>
+        <p class="form-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="#top" class="logo light"><span class="logo-mark">A</span>ppmee</a>
+    <p>© <span id="year"></span> Appmee. Tous droits réservés.</p>
+    <nav><a href="#services">Services</a><a href="#projets">Projets</a><a href="#contact">Contact</a></nav>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

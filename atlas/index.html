@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier Sorbier — Dessin botanique</title>
+  <meta name="description" content="Atelier Sorbier : dessin botanique et herbier d'atelier, présentés comme une planche d'atlas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sheet">
+
+  <header class="top">
+    <span class="stamp">Atelier Sorbier</span>
+    <span class="top-mid">Planche n° 1 — herbier d'atelier</span>
+    <span class="coords" id="coords" aria-hidden="true">45°46′ N · 4°50′ E</span>
+  </header>
+
+  <main class="board">
+
+    <!-- ========== LE MEUBLE À TIROIRS ========== -->
+    <div class="left">
+      <h1>Atelier<br><em>Sorbier</em></h1>
+      <p class="tagline">Dessin botanique &amp; herbier d'atelier. Tirez un tiroir pour consulter une fiche.</p>
+
+      <nav class="cabinet" aria-label="Rubriques">
+        <div class="slot"><button class="drawer" data-panel="atelier" aria-controls="p-atelier" aria-expanded="false">
+          <span class="num">I</span><span class="card"><b>Atelier</b><small>à propos · 3 fiches</small></span><span class="pull" aria-hidden="true"></span>
+        </button></div>
+        <div class="slot"><button class="drawer" data-panel="specimens" aria-controls="p-specimens" aria-expanded="false">
+          <span class="num">II</span><span class="card"><b>Spécimens</b><small>réalisations · 5 planches</small></span><span class="pull" aria-hidden="true"></span>
+        </button></div>
+        <div class="slot"><button class="drawer" data-panel="releves" aria-controls="p-releves" aria-expanded="false">
+          <span class="num">III</span><span class="card"><b>Relevés</b><small>tarifs · 3 formules</small></span><span class="pull" aria-hidden="true"></span>
+        </button></div>
+        <div class="slot"><button class="drawer" data-panel="correspondance" aria-controls="p-correspondance" aria-expanded="false">
+          <span class="num">IV</span><span class="card"><b>Correspondance</b><small>contact · 1 fiche vierge</small></span><span class="pull" aria-hidden="true"></span>
+        </button></div>
+      </nav>
+    </div>
+
+    <!-- ========== LA PLANCHE ========== -->
+    <section class="plate" id="plate" aria-live="polite">
+
+      <article class="panel" id="p-atelier" hidden>
+        <div class="main">
+          <p class="kicker">Fiche I — Atelier</p>
+          <h2>Observer d'abord,<br>dessiner ensuite.</h2>
+          <p>L'Atelier Sorbier réalise des planches botaniques à l'encre et à l'aquarelle pour l'édition, les marques et les lieux. Chaque plante est étudiée vivante, mesurée, puis redessinée jusqu'à ce que le trait devienne juste.</p>
+          <p>Le résultat se lit comme une page d'atlas : sobre, précis, annoté, et pourtant chaleureux.</p>
+          <table class="figures">
+            <tr><th>Planches réalisées</th><td>312</td></tr>
+            <tr><th>Espèces observées</th><td>48</td></tr>
+            <tr><th>Années de pratique</th><td>9</td></tr>
+          </table>
+        </div>
+        <figure class="fig"><svg id="fig-atelier" viewBox="0 0 300 380" role="img" aria-label="Fronde de fougère dessinée à l'encre"></svg><figcaption>fig. 1 — Fronde de fougère, encre sur papier.</figcaption></figure>
+        <aside class="notes">
+          <p><span>(1)</span> Papier chiffon 300 g, encres pigmentaires.</p>
+          <p><span>(2)</span> Chaque plante est mesurée au pied à coulisse.</p>
+          <p><span>(3)</span> Atelier ouvert sur rendez-vous.</p>
+        </aside>
+      </article>
+
+      <article class="panel" id="p-specimens" hidden>
+        <div class="main">
+          <p class="kicker">Fiche II — Spécimens</p>
+          <h2 id="sp-title">Polypodium</h2>
+          <p class="latin" id="sp-sub">Illustrations éditoriales</p>
+          <p id="sp-text"></p>
+          <div class="dial-wrap">
+            <div class="dial" id="dial" role="slider" tabindex="0" aria-label="Choisir une planche" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+              <svg viewBox="-70 -70 140 140" aria-hidden="true">
+                <circle r="52" class="ring"/><circle r="40" class="ring thin"/>
+                <g id="ticks"></g>
+                <g id="knob"><circle r="30" class="knob"/><path d="M0 -4 L0 -26" class="needle"/></g>
+              </svg>
+            </div>
+            <p class="dial-hint">Tournez le cadran, cliquez ou utilisez les flèches ← →</p>
+          </div>
+        </div>
+        <figure class="fig"><svg id="fig-specimen" viewBox="0 0 300 380" role="img" aria-label="Planche botanique"></svg><figcaption id="sp-cap">fig. 2 —</figcaption></figure>
+        <aside class="notes" id="sp-notes"></aside>
+      </article>
+
+      <article class="panel" id="p-releves" hidden>
+        <div class="main">
+          <p class="kicker">Fiche III — Relevés</p>
+          <h2>Trois formules,<br>un seul geste.</h2>
+          <ul class="rates">
+            <li><span class="r-name">Croquis d'étude</span><span class="r-dots"></span><span class="r-price">180 €</span><small>Une plante, deux allers-retours, format A5.</small></li>
+            <li><span class="r-name">Planche complète</span><span class="r-dots"></span><span class="r-price">480 €</span><small>Dessin légendé, encre et aquarelle, format A3.</small></li>
+            <li><span class="r-name">Série de six</span><span class="r-dots"></span><span class="r-price">2 400 €</span><small>Un ensemble cohérent, encadrement et fichiers HD inclus.</small></li>
+          </ul>
+          <p class="small">Devis gratuit. Droits d'usage éditorial inclus, autres usages sur demande.</p>
+        </div>
+        <figure class="fig"><svg id="fig-releves" viewBox="0 0 300 380" role="img" aria-label="Branche d'olivier dessinée à l'encre"></svg><figcaption>fig. 3 — Branche d'olivier, étude.</figcaption></figure>
+        <aside class="notes">
+          <p><span>(1)</span> Acompte de 30 % à la commande.</p>
+          <p><span>(2)</span> Délai moyen : trois semaines.</p>
+          <p><span>(3)</span> Livraison postale soignée.</p>
+        </aside>
+      </article>
+
+      <article class="panel" id="p-correspondance" hidden>
+        <div class="main">
+          <p class="kicker">Fiche IV — Correspondance</p>
+          <h2>Une plante, un projet,<br>une question&nbsp;?</h2>
+          <form id="contactForm" novalidate>
+            <label>Nom<input name="name" required autocomplete="name"></label>
+            <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+            <label>Votre projet<textarea name="message" rows="4" required></textarea></label>
+            <button type="submit" class="stampbtn">Envoyer la fiche</button>
+            <p class="status" role="status"></p>
+          </form>
+        </div>
+        <figure class="fig"><svg id="fig-contact" viewBox="0 0 300 380" role="img" aria-label="Pavot dessiné à l'encre"></svg><figcaption>fig. 4 — Pavot, détail de la corolle.</figcaption></figure>
+        <aside class="notes">
+          <p><span>(1)</span> 12 rue des Simples, 69001 Lyon.</p>
+          <p><span>(2)</span> bonjour@sorbier.example</p>
+          <p><span>(3)</span> Réponse sous 48 h.</p>
+        </aside>
+      </article>
+
+    </section>
+  </main>
+
+  <footer class="foot">© <span id="year"></span> Atelier Sorbier — dessiné à la main, codé à la main.</footer>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
