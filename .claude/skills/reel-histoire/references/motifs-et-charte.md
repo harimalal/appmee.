@@ -38,3 +38,11 @@ Un **fond pastel par scène**, jamais deux voisins identiques (`#EEECFB #FDEFF4 
 Uniquement des **fichiers officiels existants** (le dossier de logos du projet, ex. `CONTENT_FACTORY/carrousel/logos/` pour Reflex IA), sans modification autre que le détourage. Un logo livré sur fond blanc se détoure par canal alpha (couleur unie + masque issu de la luminance, ImageMagick) ; `mix-blend-mode` ne fonctionne pas dans un élément déjà transformé. Si le logo exact manque (mascotte de l'outil, etc.), **le dire** à l'utilisateur plutôt que de le redessiner.
 
 ---
+
+## Motifs ajoutés au 4e essai (reference-blog-factory)
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| Liste d'étapes en cascade avec boucle d'audit | Présenter un système : une rangée par étape (numéro, nom, sous-titre de 3 mots), une flèche courbe rouge qui repart de l'audit vers l'étape précédente, une étiquette « < 80 : on corrige » ; une note finale non lue. Limiter les sous-titres pour rester sous `max_mots_visibles` | `etapes` (reference-blog-factory) |
+| Grille de carrés qui se remplit | Donner l'échelle d'un nombre (64 articles) pendant qu'une phrase est dite, puis la remplacer par la carte du nombre ; casse aussi les plages figées | `chiffres` (reference-blog-factory) |
+| Cartes + puces d'idées | Une notion (« penser le SEO ») et ses trois composantes qui arrivent au rythme de la phrase (instants calculés sur la durée de la phrase, `words[...]`) | `probleme` (reference-blog-factory) |
+| Défilé de pages réelles à l'échelle mobile | Plusieurs pages (6) dans un cadre de téléphone : haut de page tenu environ 20 % du pas (titre lisible), défilement de 2 300 px, puis glissement latéral vers la page suivante ; étiquette de type de page sous le cadre (étiquettes à déclarer comme votre qualification, pas un champ de la source) | `exemples` (reference-blog-factory) |

@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Reel Blog Factory (histoire)</title>
+<!--
+  Reel Instagram 9:16 (1080x1920, 30 fps) — version « histoire » : on raconte POURQUOI des pages d'un site ne sont pas indexées par Google,
+  comment on a trouvé les causes, puis ce qui a été corrigé et mesuré.
+  Page PILOTÉE PAR LE TEMPS : window.__setTime(t) redessine l'état exact à l'instant t. Les instants viennent de timeline.js
+  (calculé par plan.py à partir de la durée réelle de la voix). Aucune animation sur l'horloge réelle : rendu déterministe.
+  window.EVENTS = événements sonores (type, instant) pour synth.cjs : une seule source de vérité pour l'image et le son.
+  ?debug=1 affiche les zones sûres.
+-->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--violet:#6C5CE7;--red:#E5383B;--green:#19A974;--night:#0B1433;
+  --font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.red{color:var(--red)} .green{color:var(--green)} .violet{color:var(--violet)}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 84%;
+  background-size:calc(var(--p,0)*100%) .5em;padding:0 .08em;border-radius:.12em;color:var(--ink);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.circle{border-radius:50%}
+.brand{display:flex;align-items:center;gap:9px;height:76px;padding:0 34px;background:#fff;border-radius:999px;font:900 36px/1 var(--font);letter-spacing:.02em;color:var(--ink);box-shadow:0 8px 26px rgba(20,20,60,.12)}
+.brand .dot{width:15px;height:15px;border-radius:50%;background:var(--red);display:inline-block}
+.counter{height:64px;line-height:64px;text-align:center;border-radius:999px;background:rgba(255,255,255,.62);font:600 28px/64px var(--mono);color:var(--muted)}
+.counter.dark{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+.big{font:900 410px/1 var(--font);letter-spacing:-.045em;text-align:center;font-variant-numeric:tabular-nums}
+.lab{font:900 92px/1.02 var(--font);letter-spacing:-.03em;text-align:center}
+.h1{font:900 84px/1.04 var(--font);letter-spacing:-.035em;text-align:center}
+.mono{font-family:var(--mono)}
+/* légendes : mot dit en jaune, mots passés en encre, mots à venir en gris (instants de mots proportionnels, approximatifs) */
+.cap{position:absolute;left:0;top:0;width:842px;font:900 54px/1.18 var(--font);letter-spacing:-.025em}
+.cap .w{padding:.02em .1em;margin:0 -.05em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cap .w.f{color:rgba(15,16,32,.28)} .cap .w.p{color:var(--ink)} .cap .w.c{background:var(--yellow);color:var(--ink)}
+.card{background:#fff;border-radius:40px;box-shadow:0 24px 64px rgba(40,30,120,.15)}
+/* S2 : mots-clés, catalogue Google, pages */
+.kw{background:#fff;border-radius:999px;padding:14px 28px;font:800 42px/1 var(--font);letter-spacing:-.02em;box-shadow:0 12px 32px rgba(120,40,80,.14);white-space:nowrap}
+.idx{background:#fff;border-radius:40px;border:3px solid #F3C6D4;box-shadow:0 24px 64px rgba(120,40,80,.16)}
+.idxh{position:absolute;left:92px;top:34px;font:700 30px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.idxmag{position:absolute;left:34px;top:26px;width:46px;height:46px}
+.idxline{position:absolute;left:44px;right:44px;height:12px;border-radius:6px;background:#F1E4EA}
+.pg{background:#fff;border:3px solid #E4E1F1;border-radius:20px;box-shadow:0 10px 28px rgba(60,40,120,.14);padding:16px}
+.pg.gray{background:#F0F1F5;border:3px dashed #BFC3CF;box-shadow:none}
+.pgbar{height:18px;border-radius:9px;background:var(--violet);width:55%;margin-bottom:14px}
+.pg.gray .pgbar{background:#B3B7C4}
+.pgl{height:11px;border-radius:6px;background:#DCD9EA;margin-top:12px}
+.badge{position:absolute;right:-16px;top:-16px;width:48px;height:48px;border-radius:50%;padding:11px;opacity:0}
+.nlab{font:700 26px/1 var(--mono);color:var(--red);text-align:center}
+/* S3 : rapport Search Console + terminal */
+.rep{background:#fff;border-radius:36px;box-shadow:0 24px 64px rgba(20,100,90,.16)}
+.rep .rh{position:absolute;left:40px;top:30px;font:600 23px/1 var(--mono);color:var(--muted);letter-spacing:.04em}
+.rep .rt{position:absolute;left:40px;top:68px;font:900 44px/1.1 var(--font);letter-spacing:-.02em}
+.rep .rn{position:absolute;left:36px;top:122px;font:900 190px/1 var(--font);letter-spacing:-.05em;color:var(--red);font-variant-numeric:tabular-nums}
+.rep .rl2{position:absolute;left:40px;top:312px;font:800 42px/1 var(--font);letter-spacing:-.02em}
+.crow{position:absolute;left:40px;right:40px;height:56px;display:flex;align-items:center;gap:16px;font:700 29px/1 var(--font);border-top:2px solid #EEF1F4}
+.crow .cd{width:16px;height:16px;border-radius:50%;background:#C7CBD6;flex:none}
+.crow .q{margin-left:auto;font:900 36px/1 var(--font);color:var(--muted)}
+.crow .n66{margin-left:auto;background:var(--violet);color:#fff;border-radius:999px;padding:6px 16px;font:900 28px/1 var(--font);font-style:normal}
+.term{background:#12132A;border-radius:30px;box-shadow:0 24px 64px rgba(10,10,40,.35);overflow:hidden}
+.term .tb{position:absolute;left:0;right:0;top:0;height:64px;background:#1C1E3D;display:flex;align-items:center;gap:10px;padding-left:24px}
+.term .tb i{width:16px;height:16px;border-radius:50%;background:#4A4D78;display:block}
+.term .tt{position:absolute;left:0;right:0;top:0;height:64px;line-height:64px;text-align:center;font:600 24px/64px var(--mono);color:rgba(255,255,255,.7)}
+.term .ln{position:absolute;left:34px;right:34px;height:60px;display:flex;align-items:center;font:500 28px/1 var(--mono);color:#E8E9FF;white-space:nowrap}
+.term .ln b{color:var(--yellow);font-weight:600;margin-right:14px}
+.scan{position:absolute;left:14px;right:14px;height:60px;border-radius:14px;background:rgba(255,217,59,.18);border:2px solid rgba(255,217,59,.7)}
+/* S4 : deux adresses */
+.brw{background:#fff;border-radius:30px;box-shadow:0 24px 64px rgba(40,70,140,.18);overflow:hidden}
+.brw .bar{position:absolute;left:0;right:0;top:0;height:72px;background:#EEF1F7}
+.brw .bd{position:absolute;top:26px;width:18px;height:18px;border-radius:50%;background:#C7CBD6}
+.brw .url{position:absolute;left:120px;right:26px;top:14px;height:44px;border-radius:999px;background:#fff;font:600 28px/44px var(--mono);padding-left:20px;color:var(--ink)}
+.urlc{background:#fff;border:5px solid var(--violet);border-radius:26px;font:700 46px/90px var(--mono);text-align:center;box-shadow:0 14px 36px rgba(40,70,140,.16)}
+.stamp{border:11px solid var(--red);border-radius:22px;color:var(--red);font:900 92px/1 var(--font);letter-spacing:.02em;text-align:center;padding:10px 24px;background:rgba(255,255,255,.72)}
+/* S5 : filtres */
+.shot{border-radius:36px;overflow:hidden;box-shadow:0 24px 64px rgba(40,60,120,.2);background:#fff}
+.shot img{display:block;width:100%;height:100%;transform-origin:20% 40%}
+.hbox{position:absolute;border:7px solid var(--yellow);background:rgba(255,217,59,.22);border-radius:14px}
+.fchip{background:#fff;border-radius:22px;box-shadow:0 12px 34px rgba(120,70,40,.14);height:74px}
+.fchip .u{position:absolute;left:26px;top:0;bottom:0;display:flex;align-items:center;font:600 26px/1 var(--mono);white-space:nowrap}
+.fchip .tg{position:absolute;right:18px;top:50%;margin-top:-21px;height:42px;line-height:42px;padding:0 18px;border-radius:999px;background:var(--red);color:#fff;font:700 21px/42px var(--mono)}
+/* S6 : fichier qui change de nom */
+.file{background:#fff;border-radius:28px;box-shadow:0 16px 44px rgba(60,40,140,.16);height:110px}
+.file .ic{position:absolute;left:28px;top:27px;width:56px;height:56px}
+.file .fn{position:absolute;left:104px;right:20px;top:0;bottom:0;display:flex;align-items:center;font:700 29px/1 var(--mono);white-space:nowrap}
+.flab{font:700 26px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+/* S8 : corrections */
+.step{background:#fff;border-radius:30px;box-shadow:0 14px 40px rgba(120,50,100,.14);height:96px}
+.step .sl{position:absolute;left:130px;right:24px;top:0;bottom:0;display:flex;align-items:center;font:800 46px/1 var(--font);letter-spacing:-.02em}
+.step .sc{position:absolute;left:24px;top:50%;margin-top:-34px;width:68px;height:68px;border-radius:50%;background:var(--green);padding:14px;opacity:0}
+.timer{background:var(--ink);color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:20px;font:900 62px/1 var(--font);letter-spacing:-.02em}
+.timer svg{width:62px;height:62px}
+/* S9 : avant / après */
+.tag{font:900 64px/1 var(--font);letter-spacing:-.03em}
+.mrow{background:#fff;border-radius:36px;box-shadow:0 20px 52px rgba(30,20,80,.14)}
+.ml{position:absolute;left:40px;top:26px;right:130px;font:700 34px/1.12 var(--font);color:var(--muted)}
+.mv{position:absolute;left:0;right:0;top:64px;text-align:center;font:900 150px/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.mk{position:absolute;right:30px;top:26px;width:66px;height:66px;border-radius:50%;background:var(--green);padding:13px;opacity:0}
+.cursor{background:#fff;box-shadow:0 0 0 2px rgba(20,20,60,.08),0 0 40px rgba(20,20,60,.25)}
+.handle{border-radius:50%;background:#fff;box-shadow:0 10px 36px rgba(20,20,60,.35);display:flex;align-items:center;justify-content:center}
+/* S10 : résultat */
+.res{background:#fff;border-radius:36px;box-shadow:0 20px 56px rgba(20,100,90,.16)}
+.res .ri{position:absolute;left:30px;top:50%;margin-top:-56px;width:112px;height:112px}
+.res .r1{position:absolute;left:170px;right:24px;top:44px;font:700 28px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.res .r2{position:absolute;left:170px;right:24px;top:92px;font:900 52px/1.05 var(--font);letter-spacing:-.025em}
+.cal{background:#fff;border-radius:22px;border:4px solid var(--violet);overflow:hidden}
+.cal .b{position:absolute;left:0;right:0;top:0;height:36px;background:var(--violet);color:#fff;text-align:center;font:800 20px/36px var(--font);letter-spacing:.08em}
+.cal .d{position:absolute;left:0;right:0;top:36px;bottom:0;display:flex;align-items:center;justify-content:center;font:900 62px/1 var(--font)}
+/* S11 : CTA */
+.cta{background:#fff;border-radius:48px;box-shadow:0 30px 90px rgba(0,0,0,.4)}
+.cta .ci{position:absolute;left:50%;margin-left:-60px;top:44px;width:120px;height:120px;border-radius:32px;background:#ECEAFD;padding:28px}
+.cta .c1{position:absolute;left:0;right:0;top:196px;text-align:center;font:900 62px/1 var(--font);letter-spacing:-.03em}
+.cta .c2{position:absolute;left:0;right:0;top:288px;text-align:center;font:900 78px/1.1 var(--font);letter-spacing:-.03em}
+/* S0 titre + S0b problème */
+.cdlogo{display:block;width:100%;height:100%;object-fit:contain}
+.ttl{font:900 88px/1.06 var(--font);letter-spacing:-.035em;text-align:center}
+.term2{background:#12132A;border-radius:30px;box-shadow:0 24px 64px rgba(10,10,40,.35);overflow:hidden}
+.term2 .tb{position:absolute;left:0;right:0;top:0;height:60px;background:#1C1E3D;display:flex;align-items:center;gap:10px;padding-left:24px}
+.term2 .tb i{width:15px;height:15px;border-radius:50%;background:#4A4D78;display:block}
+.term2 .tt{position:absolute;left:0;right:0;top:0;height:60px;text-align:center;font:600 24px/60px var(--mono);color:rgba(255,255,255,.7)}
+.term2 .cmd{position:absolute;left:30px;right:20px;top:96px;height:50px;white-space:nowrap;font:500 27px/50px var(--mono);color:#E8E9FF}
+.term2 .cmd b{color:var(--yellow);font-weight:600;margin-right:14px}
+.term2 .cur{display:inline-block;width:14px;height:30px;background:var(--yellow);vertical-align:-6px;margin-left:3px}
+.okpill{background:var(--green);color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:16px;font:900 52px/1 var(--font);letter-spacing:-.02em}
+.okpill i{display:block;width:52px;height:52px}
+.rpill{background:var(--red);color:#fff;border-radius:999px;padding:0 26px;height:60px;font:800 34px/60px var(--font);display:inline-block;letter-spacing:-.01em}
+.cause{background:#fff;border-radius:30px;box-shadow:0 14px 40px rgba(40,70,140,.16);height:112px}
+.cause.good{border:6px solid var(--violet);box-shadow:0 18px 52px rgba(108,92,231,.30)}
+.cause .cl{position:absolute;left:36px;top:0;bottom:0;display:flex;align-items:center;font:800 46px/1 var(--font);letter-spacing:-.025em}
+.cause .st{background-image:linear-gradient(var(--red),var(--red));background-repeat:no-repeat;background-position:0 56%;background-size:calc(var(--s,0)*100%) 7px}
+.cause .bd{position:absolute;right:26px;top:50%;margin-top:-34px;width:68px;height:68px;border-radius:50%;padding:15px;opacity:0}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:999}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="timeline.js"></script>
+<script>
+(() => {
+'use strict';
+const W = 1080, H = 1920;
+const SAFE = { x0: 84, x1: 930, y0: 200, y1: 1540 };
+const TL = window.TIMELINE, TOTAL = TL.total, NSC = TL.scenes.length;
+const stage = document.getElementById('stage');
+const EV = []; const ev = (type, t, o = {}) => EV.push(Object.assign({ type, t: Math.round(t * 1000) / 1000 }, o));
+
+/* ---------- utilitaires ---------- */
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const P = (t, a, d) => cl((t - a) / d);
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eoExp = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eoBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const io = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const mk = (parent, cls, html) => { const e = document.createElement('div'); e.className = cls; if (html != null) e.innerHTML = html; parent.appendChild(e); return e; };
+const place = (e, x, y, w, h) => { e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; return e; };
+const put = (e, o = {}) => { const { x = 0, y = 0, s = 1, r = 0, op = 1 } = o; e.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`; e.style.opacity = op; };
+const enter = (e, t, a, o = {}) => { const { dx = 0, dy = 40, s0 = .94, d = .5, back = true } = o; const p = P(t, a, d), k = back ? eoBack(p) : eo(p); put(e, { x: dx * (1 - k), y: dy * (1 - k), s: s0 + (1 - s0) * k, op: cl(p * 2.2) }); return p; };
+const capOp = (e, v) => { e.style.opacity = Math.min(parseFloat(e.style.opacity), v); };
+const hlSet = (root, p) => root.querySelectorAll('.hl').forEach(h => h.style.setProperty('--p', p));
+const txt = (parent, cls, html, x, y, w, h) => { const e = mk(parent, 'abs tx ' + cls, html); place(e, x, y, w, h); return e; };
+const circle = (root, col) => { const c = mk(root, 'abs circle', null); c.dataset.bleed = ''; place(c, 500, -330, 900, 900); c.style.background = col || 'rgba(108,92,231,.10)'; return c; };
+const drift = (c, t) => put(c, { x: Math.sin(t * .7) * 26, y: Math.cos(t * .55) * 22 });
+const svgNS = 'http://www.w3.org/2000/svg';
+
+const ICON = {
+  check: (c = '#fff') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M11 25l9 9 17-19" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:var(--d,0)"/></svg>`,
+  cross: (c = '#fff') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M13 13l22 22M35 13L13 35" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round"/></svg>`,
+  doc: (c = '#6C5CE7') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M12 5h17l9 9v29H12z" fill="none" stroke="${c}" stroke-width="3.6" stroke-linejoin="round"/><path d="M29 5v9h9M18 24h14M18 31h14M18 38h8" fill="none" stroke="${c}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  mag: (c = '#19A974') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="21" cy="21" r="12" fill="none" stroke="${c}" stroke-width="4"/><path d="M30 30l13 13" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/></svg>`,
+  clock: (c = '#FFD93B') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="24" cy="24" r="19" fill="none" stroke="${c}" stroke-width="4"/><path d="M24 12v13l9 5" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  chev: () => `<svg viewBox="0 0 48 48" width="52" height="52"><path d="M18 12l-12 12 12 12M30 12l12 12-12 12" fill="none" stroke="#0F1020" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  target: (c = '#6C5CE7') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="24" cy="24" r="19" fill="none" stroke="${c}" stroke-width="4"/><circle cx="24" cy="24" r="11" fill="none" stroke="${c}" stroke-width="4"/><circle cx="24" cy="24" r="3.5" fill="${c}"/></svg>`
+};
+
+/* ---------- chrome persistant ---------- */
+const chrome = mk(stage, 'chrome', null); chrome.style.cssText = 'position:absolute;inset:0;z-index:100;pointer-events:none';
+const brand = mk(chrome, 'abs brand', '<span data-deco>REFLEX</span><i class="dot"></i><span data-deco>IA</span>'); place(brand, 84, 206);
+const counter = mk(chrome, 'abs counter', '1/' + NSC); counter.dataset.deco = ''; place(counter, SAFE.x1 - 150, 212, 150, 64);
+
+/* ---------- légendes synchronisées sur la voix ---------- */
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+function caption(root, m) {
+  const wrap = mk(root, 'abs', null); place(wrap, 88, 1170, 842, 380);
+  const items = m.sent.map(s => { const el = mk(wrap, 'tx cap', s.words.map(w => `<span class="w f">${esc(w.w)}</span>`).join(' ')); el.style.display = 'none'; return { s, el, spans: [...el.querySelectorAll('.w')] }; });
+  return t => {
+    let act = -1; items.forEach((it, i) => { if (t >= it.s.start - .08) act = i; });
+    items.forEach((it, i) => {
+      const on = i === act; it.el.style.display = on ? 'block' : 'none'; if (!on) return;
+      const e = P(t, it.s.start - .08, .25); it.el.style.opacity = e; it.el.style.transform = `translateY(${(1 - eo(e)) * 22}px)`;
+      it.spans.forEach((sp, k) => { const w = it.s.words[k]; const c = t >= w.t1 ? 'p' : (t >= w.t0 ? 'c' : 'f'); if (sp.className !== 'w ' + c) sp.className = 'w ' + c; });
+    });
+  };
+}
+
+/* ---------- registre des scènes ---------- */
+const SC = [];
+const scene = (id, copy, fn) => {
+  const m = TL.scenes.find(s => s.id === id);
+  const root = mk(stage, 'scene', null); root.style.background = m.bg; root.style.zIndex = SC.length + 1;
+  const upd = fn(root, m);
+  const cap = m.caption ? caption(root, m) : null;
+  SC.push({ id, m, root, upd, cap, copy: [...copy, ...(m.caption ? m.sent.map(s => s.cap) : [])] });
+};
+const pageCard = () => '<div class="pgbar"></div><div class="pgl" style="width:80%"></div><div class="pgl"></div><div class="pgl" style="width:60%"></div>';
+const badge = (bg, icon) => `<div class="badge" style="background:${bg}">${icon}</div>`;
+const popBadge = (e, p) => { const b = e.querySelector('.badge'); b.style.opacity = p > 0 ? 1 : 0; b.style.transform = `scale(${p > 0 ? eoBack(p) : 0})`; };
+
+/* ===== SCÈNES du reel « Comment j'ai publié 81 articles de blog longs » ===== */
+const card = (root, name, sub, y, h, hot, ic) => { const e = mk(root, 'abs', `<div class="tx" style="position:absolute;left:34px;top:${hot ? 24 : 22}px;font:900 ${hot ? 50 : 44}px/1 var(--font);letter-spacing:-.025em">${name}</div><div class="tx" style="position:absolute;left:34px;top:${hot ? 92 : 82}px;right:${ic ? 140 : 30}px;font:600 ${hot ? 33 : 30}px/1.18 var(--font);color:${hot ? 'var(--ink)' : 'var(--muted)'}">${sub}</div>`); e.style.cssText += `;background:#fff;border-radius:30px;box-shadow:0 16px 44px rgba(30,60,90,.14)${hot ? ';border:6px solid var(--violet)' : ''}`; place(e, 84, y, 846, h); if (ic) { const l = mk(e, '', ic); l.style.cssText += ';position:absolute;right:28px;top:26px;width:92px;height:92px'; l.dataset.deco = ''; } return e; };
+const LOGO = '<img class="cdlogo" src="assets/claude.png" alt="">';
+
+/* 1 — titre */
+scene('titre', ["Comment j'ai publié 64 articles de blog en deux mois", 'articles longs', 'pensés pour le SEO'], (root, m) => {
+  const [t1, t2] = m.sent;
+  const c = circle(root, 'rgba(242,153,74,.14)');
+  const lg = mk(root, 'abs', LOGO); place(lg, 450, 330, 180, 180); lg.dataset.deco = '';
+  const ti = txt(root, 'ttl', "Comment j'ai publié <span class=\"hl\">64 articles</span> de blog en deux mois", 84, 560, 846, 330); ti.style.fontSize = '86px';
+  const pill = (s, col, y) => { const e = mk(root, 'abs tx', s); e.style.cssText += `;background:${col};color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:900 50px/1 var(--font);letter-spacing:-.02em`; place(e, 110, y, 800, 104); return e; };
+  const p1 = pill('articles longs', '#0F1020', 1000), p2 = pill('pensés pour le SEO', '#6C5CE7', 1130);
+  ev('thump', 0, { amp: .9 }); ev('pop', .1); ev('swipe', .8); ev('whoosh', t2.start - .05, { dur: .35 }); ev('pop', t2.start + .3); ev('pop', t2.start + 1.2); ev('ding', t2.start + 1.8, { f: 1046 });
+  return t => {
+    drift(c, t);
+    const lp = P(t, .02, .6); put(lg, { s: eoBack(lp), r: -90 * (1 - eo(lp)) + t * 14, op: cl(lp * 3) });
+    enter(ti, t, .15, { dy: 40, d: .55 }); hlSet(ti, P(t, .75, .5));
+    enter(p1, t, t2.start + .3, { dy: 50, d: .5 }); enter(p2, t, t2.start + 1.2, { dy: 50, d: .5 });
+  };
+});
+
+/* 2 — le problème : penser SEO (intention, mots-clés, angle original), puis la main et l'IA seule */
+scene('probleme', ['Penser le SEO', "ce que cherche l'utilisateur", 'stratégie de mots-clés', 'angle original', 'À la main : des jours', 'Une IA : un texte moyen'], (root, m) => {
+  const [p1, p1b, p2, p3] = m.sent;
+  const c = circle(root, 'rgba(229,56,100,.08)');
+  const mkCard = (label, y, red) => { const e = mk(root, 'abs cause', `<div class="cl"><span class="tx">${label}</span></div><div class="bd" style="background:${red ? 'var(--red)' : 'var(--violet)'}">${red ? ICON.cross() : ICON.mag('#fff')}</div>`); place(e, 84, y, 846, 120); e.querySelector('.cl').style.fontSize = '40px'; return { e, bd: e.querySelector('.bd') }; };
+  const A = mkCard('Penser le SEO', 320, false), B = mkCard('À la main : des jours', 740, true), C = mkCard('Une IA : un texte moyen', 890, true);
+  const chip = (txtv, y, col) => { const e = mk(root, 'abs tx', txtv); e.style.cssText += `;background:${col};border-radius:999px;display:flex;align-items:center;justify-content:center;font:800 32px/1 var(--font)`; place(e, 130, y, 640, 72); return e; };
+  const ch = [chip("ce que cherche l'utilisateur", 460, '#ECEAFD'), chip('stratégie de mots-clés', 548, '#E3F6EE'), chip('angle original', 636, '#FFF3CF')];
+  const d = p1b.words[p1b.words.length - 1].t1 - p1b.start, CT = [p1b.start + .05 * d, p1b.start + .42 * d, p1b.start + .72 * d];
+  const T = [p1.start + .15, p2.start + .15, p3.start + .15], X = [p1.start + 1.6, p2.start + 1.5, p3.start + 3.4];
+  ev('whoosh', p1.start, { dur: .4 }); ev('swipe', T[0]); ev('pop', X[0]); CT.forEach(a => ev('pop', a)); ev('swipe', T[1]); ev('swipe', T[2]); ev('thunk', X[1] + .1, { amp: .85 }); ev('thunk', X[2] + .1, { amp: .85 });
+  return t => {
+    drift(c, t);
+    enter(A.e, t, T[0], { dy: 50, d: .5 }); const xa = P(t, X[0], .4); A.bd.style.opacity = xa > 0 ? 1 : 0; A.bd.style.transform = `scale(${xa > 0 ? eoBack(xa) : 0})`;
+    ch.forEach((e, i) => enter(e, t, CT[i], { dx: -40, dy: 0, d: .4 }));
+    [[B, T[1], X[1]], [C, T[2], X[2]]].forEach(([o, a, x], i) => { enter(o.e, t, a, { dy: 50, d: .5 }); const xp = P(t, x, .4); o.bd.style.opacity = xp > 0 ? 1 : 0; o.bd.style.transform = `scale(${xp > 0 ? eoBack(xp) : 0})`; o.e.style.transform += ` translateY(${Math.sin(t * 1.9 + i * 1.3) * 6}px)`; });
+    A.e.style.transform += ` translateY(${Math.sin(t * 1.7) * 5}px)`;
+  };
+});
+
+/* 3 — les étapes du système, avec l'audit et sa boucle de correction */
+const STEPS = [['0', 'Questions réelles', 'Google · Reddit · angle'], ['1', 'Recherche web réelle', 'tarifs · notes · terrain'], ['2', 'Rédaction', 'titre · mot-clé · structure'], ['3', 'Audit', '5 critères · /100'], ['4', 'Publication', 'si le build passe']];
+scene('etapes', ['Système en 5 étapes', ...STEPS.flat(), '< 80 : on corrige', 'les audits corrigent le skill'], (root, m) => {
+  const [s1, s2, s3, s4, s5, s6] = m.sent;
+  const c = circle(root, 'rgba(25,169,116,.10)');
+  const head = mk(root, 'abs tx', 'Système en 5 étapes'); head.style.cssText += ';background:#0F1020;color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:900 40px/1 var(--font);letter-spacing:-.02em'; place(head, 84, 296, 520, 80);
+  const rows = STEPS.map(([n, name, sub], i) => { const e = mk(root, 'abs res', `<div class="tx" style="position:absolute;left:28px;top:0;bottom:0;width:70px;display:flex;align-items:center;font:900 52px/1 var(--font);color:var(--violet);letter-spacing:-.03em">${n}</div><div class="tx" style="position:absolute;left:112px;top:16px;font:900 42px/1 var(--font);letter-spacing:-.025em">${name}</div><div class="tx" style="position:absolute;left:112px;top:68px;right:20px;font:600 27px/1.1 var(--font);color:var(--muted)">${sub}</div>`); place(e, 84, 400 + i * 128, 780, 112); e.style.borderRadius = '28px'; return e; });
+  const arc = mk(root, 'abs', '<svg width="120" height="380" viewBox="0 0 120 380"><path id="loopp" d="M6 320 C 80 320, 80 192, 14 192" fill="none" stroke="#E5383B" stroke-width="9" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:var(--d,1)"/><path d="M30 168 L8 192 L34 212" fill="none" stroke="#E5383B" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" style="opacity:var(--h,0)"/></svg>'); place(arc, 860, 520, 120, 380); arc.dataset.deco = '';
+  const lab = mk(root, 'abs tx', '< 80 : on corrige'); lab.style.cssText += ';background:#FDE3E4;color:#B3262A;border-radius:999px;display:flex;align-items:center;justify-content:center;font:800 28px/1 var(--font)'; place(lab, 560, 1042, 370, 62);
+  const note = mk(root, 'abs tx', 'les audits corrigent le skill'); note.style.cssText += ';background:#FFF3CF;border-radius:999px;display:flex;align-items:center;justify-content:center;font:800 28px/1 var(--font)'; place(note, 84, 1042, 440, 62);
+  const R = [s2.start + .3, s3.start + .2, s4.start + .3, s5.start + .2, s6.start + .2], LP = s5.start + 2.6, NT = s6.start + 1.9;
+  ev('whoosh', s1.start, { dur: .4 }); ev('pop', s1.start + .6); R.forEach(a => ev('pop', a)); ev('swipe', LP); ev('ding', LP + .5, { f: 880 }); ev('pop', NT); ev('ding', NT + .2, { f: 1046 });
+  return t => {
+    drift(c, t);
+    enter(head, t, s1.start + .3, { dy: 30, d: .4 });
+    rows.forEach((e, i) => { enter(e, t, R[i], { dx: -60, dy: 0, d: .45 }); e.style.transform += ` translateY(${Math.sin(t * 1.8 + i * 1.2) * 4}px)`; });
+    const lp = P(t, LP, .7); arc.style.setProperty('--d', 1 - eo(lp)); arc.style.setProperty('--h', lp > .85 ? 1 : 0); arc.style.opacity = lp > 0 ? 1 : 0;
+    enter(lab, t, LP + .4, { dy: 24, d: .4 }); enter(note, t, NT, { dy: 24, d: .4 });
+  };
+});
+
+/* 4 — les chiffres (journal de production, 1er août au 30 septembre, et comptage de mots) */
+scene('chiffres', ['Même processus à chaque article', '64', 'articles de blog en deux mois', '≈ 5 200', 'mots chacun (comptage approximatif)', '85 → 100', 'notes sur 100 · auto-évaluées par le processus'], (root, m) => {
+  const [n0, n1, n2] = m.sent;
+  const c = circle(root, 'rgba(229,56,100,.08)');
+  const same = mk(root, 'abs tx', 'Même processus à chaque article'); same.style.cssText += ';background:#0F1020;color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:900 40px/1 var(--font);letter-spacing:-.02em'; place(same, 84, 296, 846, 90);
+  const cardC = (num, lab, y, col) => { const e = mk(root, 'abs res', `<div class="tx" style="position:absolute;left:34px;top:34px;font:900 96px/1 var(--font);letter-spacing:-.04em;color:${col}">${num}</div><div class="tx" style="position:absolute;left:34px;top:150px;right:30px;font:700 33px/1.15 var(--font);color:var(--ink)">${lab}</div>`); place(e, 84, y, 846, 250); return e; };
+  const e1 = cardC('64', 'articles de blog en deux mois', 430, 'var(--violet)'), e2 = cardC('≈ 5 200', 'mots chacun (comptage approximatif)', 710, 'var(--green)'), e3 = cardC('85 → 100', 'notes sur 100 · auto-évaluées par le processus', 990, 'var(--red)');
+  const grid = mk(root, 'abs', ''); place(grid, 84, 440, 846, 300); grid.dataset.deco = '';
+  const BAND = [[8, '#CFC9F5'], [50, '#6C5CE7'], [6, '#FFD93B']], sq = [];
+  BAND.forEach(([n, col]) => { for (let k = 0; k < n; k++) { const q = mk(grid, '', ''); const idx = sq.length; q.style.cssText = `position:absolute;left:${(idx % 16) * 53}px;top:${Math.floor(idx / 16) * 53}px;width:42px;height:42px;border-radius:10px;background:${col}`; sq.push(q); } });
+  const T = [n1.start + .1, n1.start + 1.9, n2.start + .9];
+  const G0 = n0.start + .5, GD = Math.max(1, (n1.start - .3) - G0);
+  ev('whoosh', m.start, { dur: .4 }); for (let k = 0; k < 8; k++) ev('pop', G0 + (k / 8) * GD * .9); ev('pop', n0.start + .3); ev('thump', T[0] + .3, { amp: .7 }); ev('ding', T[0] + .5, { f: 880 }); ev('thump', T[1] + .3, { amp: .6 }); ev('ding', T[1] + .5, { f: 988 }); ev('thump', T[2] + .3, { amp: .8 }); ev('ding', T[2] + .5, { f: 1175 });
+  return t => {
+    drift(c, t);
+    enter(same, t, n0.start + .2, { dy: 30, d: .45 });
+    const gf = 1 - eo(P(t, T[0] - .2, .35)); grid.style.opacity = gf; grid.style.display = gf <= 0 ? 'none' : 'block';
+    sq.forEach((q, k) => { const p = P(t, G0 + (k / 64) * GD, .25); q.style.opacity = p; q.style.transform = `scale(${.4 + .6 * eoBack(p)})`; });
+    [e1, e2, e3].forEach((e, i) => { enter(e, t, T[i], { dy: 60, d: .5 }); e.style.transform += ` translateY(${Math.sin(t * 1.8 + i) * 7}px) scale(${1 + .012 * Math.sin(t * 2.4 + i)})`; });
+  };
+});
+
+/* 5 — les exemples : vraies pages du blog qui défilent (captures du site construit en local) */
+const ORDER = [1, 2, 6, 5, 3, 4], KIND = ['Comparatif', 'Duel', 'Tutoriel', 'Analyse des risques', "Cas d'usage", 'Comparatif'];
+scene('exemples', ['Blog Reflex IA', '1 / 6', ...new Set(KIND)], (root, m) => {
+  const [e1, e2] = m.sent;
+  const c = circle(root, 'rgba(60,140,220,.12)');
+  const frame = mk(root, 'abs', ''); frame.style.cssText += ';background:#fff;border-radius:34px;box-shadow:0 28px 72px rgba(30,40,100,.25);overflow:hidden'; place(frame, 170, 300, 740, 990);
+  const hd = mk(frame, '', ''); hd.style.cssText += ';position:absolute;left:0;right:0;top:0;height:84px;background:#FFF';
+  const lab = mk(hd, 'tx', 'Blog Reflex IA'); lab.style.cssText += ';position:absolute;left:30px;top:0;bottom:0;display:flex;align-items:center;font:900 36px/1 var(--font);letter-spacing:-.02em';
+  const cnt = mk(hd, 'tx', '1 / 6'); cnt.dataset.count = ''; cnt.style.cssText += ';position:absolute;right:30px;top:0;bottom:0;display:flex;align-items:center;font:600 28px/1 var(--mono);color:var(--muted)';
+  const bar = mk(hd, '', ''); bar.style.cssText += ';position:absolute;left:0;right:0;bottom:0;height:5px;background:#6C5CE7';
+  const view = mk(frame, '', ''); view.style.cssText += ';position:absolute;left:20px;top:94px;width:700px;height:875px;overflow:hidden;border-radius:16px;background:#111'; view.dataset.deco = '';
+  const strip = mk(view, '', ''); strip.style.cssText += ';position:absolute;left:0;top:0;height:875px;width:' + (6 * 700) + 'px';
+  const pages = ORDER.map((n, k) => { const w = mk(strip, '', ''); w.style.cssText = `position:absolute;left:${k * 700}px;top:0;width:700px;height:875px;overflow:hidden`; const im = document.createElement('img'); im.src = 'assets/captures/art' + n + '.jpg'; im.style.cssText = 'display:block;width:700px;height:auto;position:absolute;left:0;top:0'; w.appendChild(im); return im; });
+  const kind = mk(root, 'abs tx', KIND[0]); kind.style.cssText += ';background:#0F1020;color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:900 46px/1 var(--font);letter-spacing:-.02em'; place(kind, 240, 1330, 600, 96);
+  const T0 = m.start + .4, END = m.end - .5, STEP = (END - T0) / 5.6, SCROLL = 2300;
+  ev('whoosh', m.start, { dur: .4 }); for (let k = 0; k < 5; k++) ev('swipe', T0 + (k + 1) * STEP - STEP * .12); ev('ding', e2.start + .2, { f: 1046 });
+  return t => {
+    drift(c, t);
+    enter(frame, t, m.start + .05, { dy: 70, d: .6 });
+    const u = Math.max(0, (t - T0) / STEP), k = Math.min(5, Math.floor(u)), fr = u - k;
+    const sw = k >= 5 ? 0 : io(cl((fr - .78) / .22));
+    strip.style.transform = `translateX(${-(k + sw) * 700}px)`;
+    const scr = k >= 5 ? 1 : io(cl((fr - .2) / .58));
+    pages.forEach((im, q) => { im.style.transform = `translateY(${-(q < k ? 1 : q === k ? scr : 0) * SCROLL}px)`; });
+    const shown = Math.min(5, Math.round(k + sw));
+    cnt.textContent = (shown + 1) + ' / 6'; kind.textContent = KIND[shown];
+    enter(kind, t, m.start + .5, { dy: 30, d: .4 });
+    frame.style.transform += ` translateY(${Math.sin(t * 1.6) * 5}px)`;
+  };
+});
+
+/* 6 — CTA sur bleu nuit, puis « Et ton blog ? » (la fin reboucle sur le titre) */
+scene('cta', ['Abonne-toi', "pour plus d'astuces IA", 'sans compétences techniques', 'rapides', 'terriblement efficaces', 'Et ton blog ?'], (root, m) => {
+  const [k1] = m.sent;
+  const c = circle(root, 'rgba(255,255,255,.05)');
+  const cta = mk(root, 'abs cta', `<div class="ci" style="padding:18px"><img class="cdlogo" src="assets/claude.png" alt=""></div><div class="tx c1" style="top:196px;font-size:78px"><span class="hl">Abonne-toi</span></div><div class="tx c2" style="top:300px;font-size:46px;line-height:1.1">pour plus d'astuces IA</div>`); place(cta, 84, 380, 846, 800);
+  const chips = ['sans compétences techniques', 'rapides', 'terriblement efficaces'].map((s, i) => { const e = mk(cta, 'tx', s); e.style.cssText += `;position:absolute;left:60px;right:60px;top:${430 + i * 110}px;height:86px;border-radius:999px;background:${['#ECEAFD', '#E3F6EE', '#FFF3CF'][i]};display:flex;align-items:center;justify-content:center;font:800 40px/1 var(--font);letter-spacing:-.02em`; return e; });
+  const big = txt(root, 'big', 'Et ton<br>blog ?', 84, 600, 846, 470); big.style.color = '#fff'; big.style.fontSize = '190px'; big.style.lineHeight = '1.02';
+  const exitAt = m.end - 1.05, ct = [k1.start + .9, k1.start + 3.0, k1.start + 3.9];
+  ev('whoosh', m.start, { dur: .4 }); ev('thump', m.start + .05, { amp: .45 }); ev('swipe', m.start + .6); ct.forEach(a => ev('pop', a)); ev('whoosh', exitAt, { dur: .35, down: true }); ev('thump', exitAt + .3, { amp: 1, big: true });
+  return t => {
+    drift(c, t);
+    enter(cta, t, m.start, { dy: 80, d: .5 }); hlSet(cta, P(t, m.start + .5, .4));
+    chips.forEach((e, i) => enter(e, t, ct[i], { dy: 30, d: .4 }));
+    if (t > m.start + .6 && t <= exitAt) cta.style.transform = `translateY(${Math.sin((t - m.start - .6) * 3.4) * 7}px)`;
+    if (t > exitAt) { const e = io(P(t, exitAt, .35)); cta.style.transform = `translateY(${-220 * e}px) scale(${1 - .1 * e})`; cta.style.opacity = 1 - e; }
+    const q = P(t, exitAt + .2, .45); put(big, { s: .8 + .2 * eoBack(q), op: cl(q * 2) });
+  };
+});
+
+/* ---------- pilotage temporel ---------- */
+window.__setTime = t => {
+  let idx = 0;
+  SC.forEach((s, i) => {
+    const last = i === SC.length - 1;
+    const vis = t >= s.m.start && t < (last ? TOTAL + 1 : s.m.end + .25);
+    s.root.style.display = vis ? 'block' : 'none';
+    if (t >= s.m.start) idx = i;
+    if (!vis) return;
+    const e = i === 0 ? 1 : P(t, s.m.start, .2);
+    s.root.style.opacity = e; s.root.style.transform = i === 0 ? 'none' : `translateY(${(1 - eo(e)) * 34}px)`;
+    s.upd(t); if (s.cap) s.cap(t);
+  });
+  counter.textContent = (idx + 1) + '/' + NSC; counter.classList.toggle('dark', SC[idx].id === 'cta');
+};
+window.REEL = { total: TOTAL, safe: SAFE, scenes: SC.map(s => ({ id: s.id, start: s.m.start, end: s.m.end, copy: s.copy, caps: s.m.caption ? s.m.sent.map(x => x.cap) : [] })) };
+window.EVENTS = EV;
+
+/* contrôle qualité : texte visible et boîtes réelles (Range) à l'instant t */
+window.__qa = t => {
+  window.__setTime(t);
+  const out = [];
+  stage.querySelectorAll('.tx, .cap').forEach(e => {
+    let op = 1, n = e;
+    while (n && n !== document.body) { const cs = getComputedStyle(n); op *= parseFloat(cs.opacity); if (cs.display === 'none') { op = 0; break; } n = n.parentElement; }
+    if (op < .35) return;
+    const r = document.createRange(); r.selectNodeContents(e);
+    const b = r.getBoundingClientRect();
+    if (!b.width || !b.height) return;
+    out.push({ text: (e.innerText || e.textContent).replace(/\s+/g, ' ').trim(), x0: b.left, y0: b.top, x1: b.right, y1: b.bottom,
+      deco: !!e.closest('[data-deco]'), count: !!e.closest('[data-count]'), bleed: !!e.closest('[data-bleed]') });
+  });
+  return out;
+};
+
+if (new URLSearchParams(location.search).get('debug')) {
+  const d = document.createElement('div'); d.className = 'dbg';
+  d.style.cssText += `;left:${SAFE.x0}px;top:${SAFE.y0}px;width:${SAFE.x1 - SAFE.x0}px;height:${SAFE.y1 - SAFE.y0}px`; stage.appendChild(d);
+}
+window.__setTime(0);
+})();
+</script>
+</body>
+</html>

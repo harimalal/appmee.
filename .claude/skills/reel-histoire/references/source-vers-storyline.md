@@ -47,3 +47,16 @@ Règle de fond : on peut retirer une scène pédagogique ou chiffrée, **jamais 
 
 ## 6. Résumé en 8 gestes
 1. Lire toute la source. 2. Fiche de faits sourcée. 3. Trier sourcé / apporté par l'utilisateur. 4. Ossature = ordre dicté, un motif par scène. 5. Phrases en clair, une idée chacune. 6. Preuve en vraies pièces. 7. Texte validé avant la voix. 8. Élaguer par scènes entières et relire l'ouverture.
+
+---
+
+## 7. Enseignements du 4e essai (reel Blog Factory : « 64 articles de blog en deux mois »)
+Matière : un playbook ancien (artefact du 23/08), un dépôt qui l'a dépassé (journal, skill), et un utilisateur qui dicte l'histoire **en plusieurs vagues** (V1 : 81 articles ; V2 : « en 2 mois », le SEO, la liste des étapes, moins de 90 s). Exemple rempli : `<skill>/assets/exemple-brief-blog-factory.md` ; implémentation : `<skill>/assets/reference-blog-factory/`.
+
+1. **Croiser le playbook avec le dépôt avant de citer un chiffre.** L'artefact annonçait 23 articles, une note moyenne de 89, 4 à 6 h par article, « 4 phases » : le journal donnait 81 articles notés, et le skill cinq étapes (0 à 4). Les chiffres périmés sont **écartés** (liste « Écartés » dans le brief), jamais corrigés de tête.
+2. **Vérifier une durée annoncée par une fenêtre de dates.** « En 2 mois » : les 81 articles notés couraient sur 5 mois ; 64 seulement tombaient en août-septembre. Titre et chiffres sont recalculés sur le **sous-ensemble exact** (notes, longueur, couverture), l'utilisateur tranche entre « 64 en 2 mois », « 81 sans durée » ou les deux, et la couverture est refaite.
+3. **Dire quand une note est auto-évaluée** (ici l'audit est fait par le processus lui-même) : mention **à l'écran** et dans `SCRIPT.md` ; « reproductible » n'est étayé que par l'étendue des notes.
+4. **Lister un système = une étape, une phrase, une rangée.** Cinq étapes, cinq phrases, cinq rangées en cascade ; la **boucle de correction** (« sous 80, on corrige et on recommence ») est dessinée comme une boucle ; ce qui est **règle du skill** est dit comme règle (le journal ne donne pas le nombre de corrections) ; l'effet d'amélioration du système (« les audits corrigent le skill ») ne s'affirme que s'il est daté dans le skill et se montre à l'écran seulement.
+5. **Budget de durée quand l'utilisateur donne un plafond** : écrire le budget par scène avant la voix (ici titre 7 s, problème 16 s, étapes 28 s, chiffres 13 s, exemples 12 s, appel 7 s = 82 s sous 90 s) ; remplacer une scène par une autre plutôt qu'en ajouter (la scène « système » est devenue la scène « étapes »).
+6. **Une phrase d'accroche dictée par l'utilisateur sur le fond (SEO, intention de recherche, mots-clés, angle original) reste signalée comme la sienne** dans `SCRIPT.md` ; on n'y ajoute aucune promesse de classement.
+7. **Montrer la preuve par de vraies pages** : voir `references/production.md` (captures du site construit en local, script `assets/capture-pages.cjs`).

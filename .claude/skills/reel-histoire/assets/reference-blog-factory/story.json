@@ -1,0 +1,167 @@
+{
+  "_note": "Reel « Comment j'ai publié 64 articles de blog en deux mois » (v2) : voice = texte lu, cap = légende. Voix Charon, modèle gemini-3.8-flash-lite-tts.",
+  "model": "gemini-3.8-flash-lite-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "nombres_autorises": [
+    "64",
+    "5",
+    "000",
+    "200",
+    "85",
+    "100",
+    "80",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "6"
+  ],
+  "cta_contient": "Abonne-toi",
+  "max_mots_visibles": 60,
+  "scenes": [
+    {
+      "id": "titre",
+      "bg": "#FBF1ED",
+      "min": 6.6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "t1",
+          "voice": "Comment j’ai publié soixante-quatre articles de blog en deux mois, avec Claude Code ?",
+          "cap": "Comment j’ai publié 64 articles de blog en deux mois, avec Claude Code ?"
+        },
+        {
+          "id": "t2",
+          "voice": "Des articles longs, pensés pour le SEO.",
+          "cap": "Des articles longs, pensés pour le SEO."
+        }
+      ]
+    },
+    {
+      "id": "probleme",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "p1",
+          "voice": "Un article de blog, ça se pense d’abord pour le SEO.",
+          "cap": "Un article de blog, ça se pense d’abord pour le SEO."
+        },
+        {
+          "id": "p1b",
+          "voice": "Ce que cherche vraiment l’utilisateur, la stratégie de mots-clés, un angle original.",
+          "cap": "Ce que cherche vraiment l’utilisateur, la stratégie de mots-clés, un angle original."
+        },
+        {
+          "id": "p2",
+          "voice": "À la main, ça prend des jours.",
+          "cap": "À la main, ça prend des jours."
+        },
+        {
+          "id": "p3",
+          "voice": "Et si tu le demandes à une IA, tu obtiens un texte moyen, que tout le monde a déjà écrit.",
+          "cap": "Et si tu le demandes à une IA, tu obtiens un texte moyen, que tout le monde a déjà écrit."
+        }
+      ]
+    },
+    {
+      "id": "etapes",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "s1",
+          "voice": "Grâce à ses skills, Claude Code suit un système en cinq étapes.",
+          "cap": "Grâce à ses skills, Claude Code suit un système en cinq étapes."
+        },
+        {
+          "id": "s2",
+          "voice": "D’abord, les vraies questions des lecteurs, et un angle que les autres n’ont pas pris.",
+          "cap": "D’abord, les vraies questions des lecteurs, et un angle que les autres n’ont pas pris."
+        },
+        {
+          "id": "s3",
+          "voice": "Ensuite, une recherche web réelle : les tarifs, les notes, les retours de terrain.",
+          "cap": "Ensuite, une recherche web réelle : les tarifs, les notes, les retours de terrain."
+        },
+        {
+          "id": "s4",
+          "voice": "Il rédige : un titre pensé pour ce que les gens tapent, un mot-clé principal, une structure adaptée au sujet.",
+          "cap": "Il rédige : un titre pensé pour ce que les gens tapent, un mot-clé principal, une structure adaptée au sujet."
+        },
+        {
+          "id": "s5",
+          "voice": "Puis un audit noté sur cent, sur cinq critères. Sous quatre-vingts, on corrige et on recommence.",
+          "cap": "Puis un audit noté sur cent, sur cinq critères. Sous quatre-vingts, on corrige et on recommence."
+        },
+        {
+          "id": "s6",
+          "voice": "Enfin, la publication, seulement si le build passe.",
+          "cap": "Enfin, la publication, seulement si le build passe."
+        }
+      ]
+    },
+    {
+      "id": "chiffres",
+      "bg": "#FDEFF4",
+      "min": 7,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n0",
+          "voice": "Le même processus à chaque article : la qualité reste dans la même fourchette.",
+          "cap": "Le même processus à chaque article : la qualité reste dans la même fourchette."
+        },
+        {
+          "id": "n1",
+          "voice": "Soixante-quatre articles, d’environ cinq mille mots chacun.",
+          "cap": "64 articles, d’environ 5 000 mots chacun."
+        },
+        {
+          "id": "n2",
+          "voice": "Notés entre quatre-vingt-cinq et cent sur cent, par le processus lui-même.",
+          "cap": "Notés entre 85 et 100 sur 100, par le processus lui-même."
+        }
+      ]
+    },
+    {
+      "id": "exemples",
+      "bg": "#ECF4FC",
+      "min": 12,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "e1",
+          "voice": "Voilà ce que ça donne : les pages défilent, comme sur le blog.",
+          "cap": "Voilà ce que ça donne : les pages défilent, comme sur le blog."
+        },
+        {
+          "id": "e2",
+          "voice": "Un comparatif, un duel, un tutoriel, une analyse de risques : à chaque fois, la structure suit le sujet.",
+          "cap": "Un comparatif, un duel, un tutoriel, une analyse de risques : à chaque fois, la structure suit le sujet."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Abonne-toi pour plus d’astuces IA : sans compétences techniques, rapides, et terriblement efficaces.",
+          "cap": "Abonne-toi pour plus d’astuces IA : sans compétences techniques, rapides, et terriblement efficaces."
+        }
+      ]
+    }
+  ]
+}

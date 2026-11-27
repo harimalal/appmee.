@@ -75,3 +75,12 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - **Logo PNG** : détourer en canal alpha (voir `motifs-et-charte.md`) ; `mix-blend-mode` inopérant dans un élément transformé.
 - **Vérification finale** : transcription du **mixage final** (pas seulement des segments) ≥ 0,98, −14 ± 1 LUFS, aucune image figée > 1,2 s, planche de contact relue ; modèle de voix de repli signalé dans `SCRIPT.md`.
 - **Livrer avec l'ancienne version gardée** (`out/*-long.mp4`, non versionnée) quand une scène est retirée sur demande.
+
+## Enseignements du 4e essai (reel Blog Factory)
+- **Captures de pages réelles** : `npm ci` puis `npm run build` (le build doit rester vert), serveur statique sur `dist/` (`python3 -m http.server`), puis `assets/capture-pages.cjs` (540 px de large en échelle 2, 4 200 px de haut au plus). **Ouvrir chaque image** avant usage ; choisir des structures différentes ; le dire dans `SCRIPT.md` (pages choisies, pas un échantillon).
+- **Homophones et sons proches** : « Avec des skills » entendu « Avec tes skills », « prix » entendu « prise », « l'angle » entendu « la langue ». Reformuler avec un mot de contexte (« à l'angle de l'article », « les tarifs ») et régénérer **la phrase seule** : un appel, le reste en cache.
+- **Comparer la transcription par mots**, pas par caractères : une comparaison de textes longs par caractères (`SequenceMatcher` avec `autojunk` actif) peut afficher 0,5 pour un texte correct ; passer `autojunk=False` et lister les écarts (pluriels, prix/prise, « sur/pour »).
+- **Plage figée sous une phrase longue** (une seule pastille à l'écran pendant 4 s) : remplir l'écran avec le sens, par exemple une grille de carrés qui se remplit, plutôt qu'un flottement de plus.
+- **`max_mots_visibles`** : une liste d'étapes demande 60 ; la limite s'applique aussi aux images de transition entre deux scènes (fondu de 0,25 s).
+- **Plafond de durée donné par l'utilisateur** : vérifier avec `plan.py` avant de lancer la voix ; la voix mesurée (74,8 s de parole) fixe la durée, pas l'inverse.
+- **Cache de voix** : les phrases inchangées ne coûtent aucune requête ; changer le texte d'une phrase ne régénère que celle-ci (ici : 13 requêtes pour la V2, plus 3 régénérations de phrases mal comprises).
