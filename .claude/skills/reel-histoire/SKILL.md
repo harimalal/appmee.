@@ -5,7 +5,7 @@ description: Transforme n'importe quel travail terminé et documenté (correctio
 
 # Reel « histoire » — raconter un travail terminé
 
-Dans ce document, `<skill>` désigne le dossier de ce skill. Né du reel « SEO d'indexation avec Claude Code » (novembre 2026, projet Reflex IA) : la première version, un montage de chiffres, était belle et incompréhensible (« on ne sait pas de quoi on parle »). Ce skill impose l'inverse : **partir de la situation du spectateur, expliquer la notion qu'il ne connaît pas, raconter ce qui s'est passé, puis seulement la méthode et les chiffres**, avec une voix qui porte le récit et des visuels qui l'illustrent.
+Dans ce document, `<skill>` désigne le dossier de ce skill. Né du reel « SEO d'indexation avec Claude Code » (novembre 2026, projet Reflex IA), complété par « Tri Watch Later » puis « Créer des carrousels automatiquement » : la première version, un montage de chiffres, était belle et incompréhensible (« on ne sait pas de quoi on parle »). Ce skill impose l'inverse : **partir de la situation du spectateur, expliquer la notion qu'il ne connaît pas, raconter ce qui s'est passé, puis seulement la méthode et les chiffres**, avec une voix qui porte le récit et des visuels qui l'illustrent.
 
 Pour tout travail **terminé et documenté**. Pas pour un travail non terminé ni non mesuré : on ne raconte pas un résultat qui n'existe pas.
 
@@ -46,16 +46,18 @@ Format : `BRIEF.md` dans le dossier du reel (modèle : `<skill>/assets/brief-mod
 
 | Besoin | Fichier |
 |---|---|
+| **De la source à la story line** : fiche de faits, tri « sourcé / apporté par l'utilisateur », histoire dictée, élagage de scènes | `<skill>/references/source-vers-storyline.md` |
 | Schéma narratif, adaptation à un type de travail, fiche de faits, écriture de la voix et des légendes | `<skill>/references/recit.md` |
 | Catalogue des motifs de scène, charte graphique, logos | `<skill>/references/motifs-et-charte.md` |
 | Étapes de production et commandes, seuils de contrôle, pièges rencontrés, limites | `<skill>/references/production.md` |
-| Brief à remplir et à faire valider (modèle + exemple rempli) | `<skill>/assets/brief-modele.md`, `<skill>/assets/exemple-brief-seo-indexation.md` |
+| Brief à remplir et à faire valider (modèle + exemples remplis) | `<skill>/assets/brief-modele.md`, `<skill>/assets/exemple-brief-seo-indexation.md`, `<skill>/assets/exemple-brief-carrousels-ia.md` |
 | Outils prêts à l'emploi : voix (`tts.py`), plan de montage (`plan.py`), contrôle (`qa.cjs`), événements sonores (`events.cjs`), son (`synth.cjs`), rendu (`render.cjs`), mixage (`mix.py`), couverture (`cover.cjs`, `cover.html`), gabarit de page (`story.template.html`) et de récit (`story.json`) | `<skill>/assets/modele/` |
 | Implémentation de référence 1 : correction SEO (13 scènes, 31 phrases, couverture, comparaison avant/après) | `<skill>/assets/reference-seo/` |
 | Implémentation de référence 2 : playbook « Tri Watch Later » (10 scènes, vraies captures en défilé, critères, comparaison d'outils, suppression accélérée) + brief rempli | `<skill>/assets/reference-tri/`, `<skill>/assets/exemple-brief-tri-watch-later.md` |
+| Implémentation de référence 3 : « Créer des carrousels automatiquement » (5 scènes, 11 phrases, histoire dictée, vraies slides en défilement) + SCRIPT.md et brief initial | `<skill>/assets/reference-carrousels/` |
 
 ## Déroulé en un coup d'œil
-1. Lire la source du travail (artefact, playbook, journal) → fiche de faits.
+1. Lire **toute** la source du travail (artefact, playbook, journal, étude) → fiche de faits sourcée, puis tri « établi par la source / apporté par l'utilisateur » et ossature de l'histoire (`references/source-vers-storyline.md`).
 2. **Porte de validation** : `BRIEF.md` + `couverture.png` montrés à l'utilisateur ; attendre son accord.
 3. Écrire `story.json` (récit, voix, légendes) → voix → plan de montage → scènes `story.html`.
 4. Contrôle (`qa.cjs` vert) → son → rendu → mixage → vérifications finales.

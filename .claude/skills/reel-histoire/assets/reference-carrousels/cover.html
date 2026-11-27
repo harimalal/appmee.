@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Couverture reel carrousels IA</title>
+<!-- Couverture 9:16 (1080x1920). Texte dans le carré central 1080x1080 (y 420-1500). ?debug=1 affiche les cadres 3:4 et 1:1. -->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--violet:#6C5CE7;--red:#E5383B;--green:#19A974;--font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F1EFFD}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);background:#F1EFFD}
+.abs{position:absolute}
+.circ{left:470px;top:-230px;width:980px;height:980px;border-radius:50%;background:rgba(108,92,231,.12)}
+.circ2{left:-380px;top:1230px;width:760px;height:760px;border-radius:50%;background:rgba(229,56,100,.07)}
+.brand{left:84px;top:440px;display:flex;align-items:center;gap:9px;height:76px;padding:0 34px;background:#fff;border-radius:999px;font:900 36px/1 var(--font);letter-spacing:.02em;box-shadow:0 8px 26px rgba(20,20,60,.12)}
+.brand .dot{width:15px;height:15px;border-radius:50%;background:var(--red)}
+.ttl{left:84px;top:575px;width:912px;font:900 98px/1.03 var(--font);letter-spacing:-.04em}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 84%;background-size:100% .5em;padding:0 .08em;border-radius:.12em}
+.violet{color:var(--violet)}
+.pill{left:84px;top:960px;height:118px;padding:0 44px;border-radius:999px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:22px;font:900 62px/1 var(--font);letter-spacing:-.025em}
+.pill b{color:var(--yellow);font-weight:900}
+.groups{left:84px;top:1130px;width:912px;height:110px;display:flex;justify-content:space-between}
+.g{position:relative;width:128px;height:110px}
+.g i{position:absolute;width:28px;height:28px;border-radius:7px;background:var(--violet)}
+.sub{left:84px;top:1290px;width:912px;font:800 46px/1.14 var(--font);letter-spacing:-.025em}
+.sub .m{color:var(--muted);font:600 26px/1 var(--mono);display:block;margin-bottom:14px;letter-spacing:.04em}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:9}
+</style></head><body>
+<div id="c">
+  <div class="abs circ"></div><div class="abs circ2"></div>
+  <div class="abs brand">REFLEX<i class="dot"></i>IA</div>
+  <div class="abs ttl">Créer des<br>carrousels<br><span class="hl">automatiquement</span></div>
+  <div class="abs pill"><b>0,051 €</b> la slide avec image</div>
+  <div class="abs groups" id="groups"></div>
+  <div class="abs sub"><span class="m">62 SLIDES · 6 CARROUSELS RÉELS</span>Ta charte, ton point de vue, ta maquette.</div>
+</div>
+<script>
+// Un carré = une slide réelle : 6 carrousels de 8, 11, 10, 11, 11 et 11 slides (journal LOG_CARROUSELS_IA.md).
+const SIZES = [8, 11, 10, 11, 11, 11], g = document.getElementById('groups');
+SIZES.forEach(n => { const d = document.createElement('div'); d.className = 'g'; for (let i = 0; i < n; i++) { const e = document.createElement('i'); e.style.left = (i % 4) * 33 + 'px'; e.style.top = Math.floor(i / 4) * 33 + 'px'; d.appendChild(e); } g.appendChild(d); });
+if (new URLSearchParams(location.search).get('debug')) { const c = document.getElementById('c'); [[0,240,1080,1440],[0,420,1080,1080]].forEach(([x,y,w,h]) => { const d = document.createElement('div'); d.className='dbg'; d.style.cssText += `;left:${x}px;top:${y}px;width:${w}px;height:${h}px`; c.appendChild(d); }); }
+</script>
+</body></html>

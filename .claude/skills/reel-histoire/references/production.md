@@ -66,3 +66,12 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - **Plages figées** : un `translateY(sin(t))` de ±4 px sur les cartes suffit à casser un plateau.
 - **Couper un reel** : supprimer l'entrée de `story.json` **et** le bloc `scene(...)` correspondant ; le moteur ignore une scène absente du récit. Une version courte réutilise le cache de voix (copier `trim/` et filtrer `voice-report.json`) : coût 0.
 - **Captures d'une source** : les extraire du HTML de l'artefact (images base64), les regarder une par une ; trop petites pour un gros plan → défilé seulement, gros plans redessinés.
+
+## Enseignements du 3e essai (reel « Créer des carrousels automatiquement »)
+- **Quota de la voix par modèle** : `gemini-3.8-flash-tts` plafonne à 100 requêtes par jour (palier 1, erreur 429 `RESOURCE_EXHAUSTED`, reprise annoncée après ≈ 1 h 18). Chaque phrase est une requête ; un reel de 17 à 31 phrases plus les régénérations atteint le plafond après trois ou quatre reels dans la journée. Repli : un autre modèle TTS (`gemini-3.8-flash-lite-tts`, quota séparé) **avec la même voix** (le champ `model` de `story.json`) ; la voix change légèrement, le dire. Les seuils pour monter de palier sont sur la page des limites de Google (non vérifiés ici).
+- **Cache par texte et par modèle** (`audio/voice-raw/<id>-<hash>.wav`) : retirer une scène ne coûte aucune requête ; changer de modèle régénère tout.
+- **Plages figées** après une scène de cartes ou de compteurs : ±6 à 7 px de flottement (`translateY(sin(t*1.9+i*1.3)*6px)`) et une pulsation d'échelle de 1 %, plutôt qu'une animation gratuite.
+- **Chiffres de légende** : `data-count` sur les compteurs animés ; `max_mots_visibles` réglé par reel (50 pour une scène de cartes denses).
+- **Logo PNG** : détourer en canal alpha (voir `motifs-et-charte.md`) ; `mix-blend-mode` inopérant dans un élément transformé.
+- **Vérification finale** : transcription du **mixage final** (pas seulement des segments) ≥ 0,98, −14 ± 1 LUFS, aucune image figée > 1,2 s, planche de contact relue ; modèle de voix de repli signalé dans `SCRIPT.md`.
+- **Livrer avec l'ancienne version gardée** (`out/*-long.mp4`, non versionnée) quand une scène est retirée sur demande.

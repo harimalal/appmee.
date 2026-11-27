@@ -1,6 +1,6 @@
 # Le récit : schéma narratif, adaptation, fiche de faits, voix
 
-Dans ce document, `<skill>` désigne le dossier de ce skill. À lire pour écrire le brief puis `story.json`.
+Dans ce document, `<skill>` désigne le dossier de ce skill. À lire pour écrire le brief puis `story.json`. **Pour passer d'une source (playbook, journal, étude) à l'histoire, et quand l'utilisateur dicte l'ordre de l'histoire : `<skill>/references/source-vers-storyline.md`** (fiche de faits, tri « sourcé / apporté par l'utilisateur », élagage de scènes).
 
 ## Le schéma narratif
 
@@ -72,3 +72,6 @@ Une liste affichée (les 6 étapes, les critères) n'a pas à être lue en entie
 
 ### Comparer des outils : ne dire que ce que la source établit
 Une scène « pourquoi cet outil plutôt que X ou Y » n'affirme **rien** sur les capacités de X et Y (« pas utilisé pour ce tri ») et donne la raison positive tirée de la source (ex. « travaille dans mon onglet déjà connecté, aucun mot de passe »). Le texte de cette scène est montré à l'utilisateur **avant** la voix.
+
+### Quand l'utilisateur dicte l'histoire
+Si l'utilisateur donne l'ordre des scènes (problèmes → système → exemples → appel), cet ordre **remplace** le tableau des 5 étages : on garde seulement les règles d'enchaînement (premier plan = de quoi on parle ; « tu » pour le problème, « je » pour le travail ; une idée par scène ; chiffres après l'histoire ; fin qui reboucle). Ses propres mots pour les problèmes sont repris tels quels et signalés comme siens dans `SCRIPT.md` (voir `source-vers-storyline.md`).
