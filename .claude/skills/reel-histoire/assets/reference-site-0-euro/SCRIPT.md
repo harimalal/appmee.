@@ -1,6 +1,6 @@
-# SCRIPT — Reel « Mon site tourne à 0 € » (v7) — GitHub + Cloudflare + Astro
+# SCRIPT — Reel « Mon site tourne à 0 € » (v9) — GitHub + Cloudflare + Astro
 Skill : reel-histoire (appmee, branche `claude/skill-reel-histoire`). Source : le dépôt Reflex IA lui-même + ce que Hari dit. Aucune source tierce.
-Fichier principal : `out/reel-mon-site-0-euro.mp4`, rangé aussi sous `CONTENT/REELS_INSTAGRAM/reel-instagram-reflexia-6.mp4` (une seule version) · **sans musique** (voix + petits bruitages synchronisés ; Hari ajoute sa musique sur Instagram) · 1080×1920 · 30 i/s · **80,1 s** · −14,1 LUFS · aucune image figée · aucun texte qui en chevauche un autre.
+Fichier principal : `out/reel-mon-site-0-euro.mp4`, rangé aussi sous `CONTENT/REELS_INSTAGRAM/reel-instagram-reflexia-6.mp4` (une seule version) · **sans musique** (voix + petits bruitages synchronisés ; Hari ajoute sa musique sur Instagram) · 1080×1920 · 30 i/s · **71,6 s** · −14,1 LUFS · aucune image figée · aucun texte qui en chevauche un autre.
 Voix : Gemini TTS, voix Charon, **modèle `gemini-3.8-flash-tts`** (le modèle « lite » des reels précédents a atteint son plafond de 100 requêtes par jour) ; **elle diffère légèrement de celle des reels précédents.**
 **Débit plus rapide (dernier retour de Hari)** : voix accélérée de **16 %** (`tempo` 1,16, hauteur conservée ; 10 % à la version précédente), silences entre phrases réduits à 0,08 s (0,14 s avant), maintiens des pages raccourcis (1,6 à 2,6 s). Le texte garde le ton « copain » de la version précédente. Une consigne de style dans la requête de voix a été essayée et abandonnée (lue à voix haute ou durée doublée).
 
@@ -10,19 +10,17 @@ Voix : Gemini TTS, voix Charon, **modèle `gemini-3.8-flash-tts`** (le modèle �
 2. Les plus simples, les plus fiables, les plus efficaces, avec leurs vraies limites, pour ton besoin !
 3. Et en plus, sa mise en ligne me coûte zéro euro !
 
-**Face aux solutions classiques**
-4. Y a plein de solutions : une page statique à la main, Wix, WordPress, et d'autres, même avec de l'IA.
-5. Moi, j'ai rien à ouvrir, rien à manipuler !
-6. Pas de serveur à gérer, pas d'extensions à mettre à jour, pas d'hébergement à payer. Tranquille !
+**Face aux solutions classiques (v8 : une seule phrase)**
+4. Il existe plein d'autres moyens de faire un site, mais là, on va bien plus vite ! *(« plus vite » = dit de Hari, non mesuré ici)*
 
-**Le stack minimum (« le système le plus simple »)**
-7. Mon système, c'est le plus simple : le stack minimum. GitHub, Cloudflare et Astro !
-8. GitHub, il héberge le code du site.
-9. Cloudflare gère les évolutions : je change un truc, et c'est en ligne, tout seul !
-10. Et Astro crée les pages, à partir de mes articles !
+**Le stack minimum, puis le rôle de chaque outil**
+5. Mon système, c'est le stack minimum !
+6. GitHub, il héberge le code du site.
+7. Cloudflare gère les évolutions : je change un truc, et c'est en ligne, tout seul !
+8. Et Astro crée les pages, à partir de mes articles !
 
-**Claude Code, avant la présentation des pages (retour de Hari)**
-11. Là, c'est Claude Code : j'ai pas tapé une ligne de code, il s'en charge sur mes instructions !
+**Claude Code pilote le tout, en langage naturel (v8)**
+9. Et tout ça, c'est Claude Code qui le pilote : je lui parle normalement, j'ai pas tapé une ligne de code ! *(dit de Hari)*
 
 **Les pages obtenues (défilement lent, swipe d'une fenêtre à l'autre)**
 12. Et voilà ce qu'on obtient : la page d'accueil ! 13. Les articles. 14. Les comparatifs. 15. Les rubriques.
@@ -41,6 +39,19 @@ Voix : Gemini TTS, voix Charon, **modèle `gemini-3.8-flash-tts`** (le modèle �
 
 Écran seulement (non lu) : « hors nom de domaine et abonnement Claude » · « 132 articles dans le dépôt » · « démo « océan » / « forêt » : build de démonstration » · « 0 ligne de code tapée » · « illustration : une seule demande » · « Optimise tous les articles » · « 132 articles » · « Liens vérifiés / Champs vérifiés / Build vert ».
 
+## v9 — ouverture refaite (retours de Hari du 27/11) : on voit les comparatifs par type d'outils, puis un article
+- **Texte, voix, durée inchangés** (71,6 s) ; seule la mise en scène des ~11 premières secondes change. Le clic sur la puce « Limites à savoir » est retiré (la phrase « vraies limites » reste dite et affichée en sous-titre).
+- **Nouvelle séquence** : accueil (zoom sur le titre) → clic sur « Comparatifs » → clic sur le filtre « Image & vidéo » (les comparatifs de ce type d'outils s'affichent) → la carte « HeyGen ou ElevenLabs » ressort vers l'avant, zoom lisible → clic sur le filtre « Automatisation & agents » → clic sur la carte « Combien coûte OpenClaw ? » qui ressort → plongée dans l'article.
+- Ce que fait ressortir l'écran : les **cartes de comparatifs** (pas les petits filtres ni le menu). Captures réelles du site (build local du 27/11/2026) : `assets/pc3/comparatifs-f0|f1|f2.jpg` (aucun filtre / Image & vidéo / Automatisation & agents), positions dans `assets/pc3/pages-f.json`. Le clic sur un filtre est un vrai clic fait à la capture ; le curseur et le montage sont de la mise en scène.
+- Contrôles v9 : `qa.cjs` vert · chevauchements 0 sur 716 instants · 71,6 s · −14,2 LUFS · freezedetect 0.
+
+## v8 — retours de Hari du 27/11 (ouverture lisible, scène raccourcie, terminal Claude Code)
+- **Ouverture** : les étiquettes étaient passées *sous* le voile blanc de la page (d'où l'aspect flou) ; elles sont maintenant au-dessus, le voile est plus net sous la bande de texte et le sous-titre est plus gros et plus foncé.
+- **« Rien à ouvrir… » raccourci** : trois phrases → une (« Il existe plein d'autres moyens… on va bien plus vite ! ») ; à l'écran, les solutions classiques se posent vite à gauche, une carte verte « Plus rapide avec mon système » à droite. La liste « pas de serveur, pas d'extension… » est retirée.
+- **Stack minimum** : « Mon système, c'est le stack minimum ! » puis directement le rôle de chaque outil (inchangé), puis Claude Code.
+- **Claude Code** : le décor de barres colorées abstraites est remplacé par un terminal lisible : une instruction en langage naturel tapée (« Passe la charte du site en bleu océan, et mets-le en ligne »), trois lignes de réponse cochées, puis « 0 ligne de code tapée ». **Illustration (mot affiché à l'écran), pas un enregistrement de Claude Code** : l'instruction et les réponses sont un exemple de mise en scène.
+- Contrôles v8 : `qa.cjs` vert · chevauchements 0 sur 716 instants · 1080×1920 / 30 i/s / 71,6 s · −14,2 LUFS · freezedetect 0 · transcription 0,993 · voix : 3 phrases nouvelles facturées (v1, s1, n1), le reste en cache.
+
 ## v7 — démo « souris » plein cadre (dernier retour de Hari)
 Retour : « Je valide le langage, le ton, le rythme verbal. Par contre reviens sur enchaînement et séquence précédente, avec comme même effet : effet de clic avec la souris, zoom et dézoom, scroll. »
 - **Inchangés** : texte lu (23 phrases, mot pour mot, cache de voix : 0 requête facturée), ton, rythme (tempo 1,16, silences 0,08 s), ordre des scènes (ouverture → solutions classiques → stack minimum → Claude Code → pages → charte → tous les articles → CTA), fonds actuels, « REFLEX·IA » en haut au milieu, aucun texte au-dessus d'un autre.
@@ -49,7 +60,7 @@ Retour : « Je valide le langage, le ton, le rythme verbal. Par contre reviens s
 - **Pages** : navigation continue, un clic par phrase : accueil → menu « Comparatifs »/« Guides » → carte d'article → comparatif → rubrique systèmes (page de vente, voir limites) → bouton « Newsletter gratuite » qui ressort, puis le bloc newsletter.
 - **Charte** : l'accueil plein cadre change de charte en balayage (océan puis forêt), puis swipes vers article, page de vente et formulaire. Les chartes alternatives sont des **builds de démonstration**, pas des versions du site.
 - Captures : Playwright, pages entières en 1 280 px (échelle 1,5), positions des liens/cartes relevées sur les vraies pages (`assets/pc3/pages.json`). **Curseur, clics et swipes sont de la mise en scène** posée sur ces captures, pas un enregistrement d'écran.
-- Contrôles v7 : `qa.cjs` vert · chevauchements 0 (balayage tous les 0,1 s) · 1080×1920 / 30 i/s / 80,1 s · −14,1 LUFS · freezedetect 0 · transcription 0,984.
+- Contrôles v7 : `qa.cjs` vert · chevauchements 0 (balayage tous les 0,1 s) · 1080×1920 / 30 i/s / 71,6 s · −14,1 LUFS · freezedetect 0 · transcription 0,984.
 
 ## Retouches v6 (dernier retour de Hari)
 - **CTA** : « Tu veux le même système ? Commente « site », et je te l'envoie pour le répliquer à ta sauce ! » (écran : « Commente « site » », « Tu veux le même système ? »).
@@ -101,13 +112,13 @@ Retour : « Je valide le langage, le ton, le rythme verbal. Par contre reviens s
 - « Sans code », « rien à ouvrir ni à manipuler », « meilleurs, simples, fiables, efficaces » et « le système IA » sont des paroles de Hari, non prouvées ici.
 - « Reflex IA » : la voix prononce « Reflex » à la française (« réflexe »), ce qui est l'usage ; la transcription du mixage l'a écrit « Réflexe IA » (même prononciation).
 - Phrase 11 (ancienne phrase « Claude Code l'écrit ») : plusieurs reformulations successives (« c'est Claude Code qui l'écrit », puis « qui écrit tout ») avaient été comprises à tort au passé (« l'a écrit ») par la transcription ; la version retenue (« Claude Code, il s'en charge sur mes instructions ») est comprise correctement dans le mixage final. Phrase 19 : « Et hop, toutes les pages suivent » était comprise « tout de suite » ; reformulée (« Et toutes les pages suivent, d'un seul coup »).
-- Durée : 80,1 s, sous le plafond de 90 s ; durées de maintien (« hold ») dans `story.json` pour laisser défiler chaque page.
+- Durée : 71,6 s, sous le plafond de 90 s ; durées de maintien (« hold ») dans `story.json` pour laisser défiler chaque page.
 - Son non écouté par moi ; rendu non vu sur téléphone (vérifié par planches de contact et images isolées).
 - La fin « Commente site » **remplace** le « Abonne-toi pour plus d'astuces IA… » des reels précédents (hypothèse retenue : décision non tranchée explicitement par Hari).
 - Captures : article et comparatif coupés à leurs 4 200 / 4 800 premiers pixels de hauteur CSS, rubrique à 3 200 (poids).
 
 ## Contrôles passés
-`qa.cjs` vert (plusieurs dizaines d'instants : nombres autorisés `0` et `132`, zones sûres, texte déclaré, CTA « Commente ») · chevauchements : 0 sur 761 instants · ffprobe 1080×1920 / 30 i/s / 80,1 s · −14,1 LUFS · freezedetect (n=0,0008, d=1,2 s) : 0 · transcription du mixage final comparée par mots : **0,988**.
+`qa.cjs` vert (plusieurs dizaines d'instants : nombres autorisés `0` et `132`, zones sûres, texte déclaré, CTA « Commente ») · chevauchements : 0 sur 761 instants · ffprobe 1080×1920 / 30 i/s / 71,6 s · −14,1 LUFS · freezedetect (n=0,0008, d=1,2 s) : 0 · transcription du mixage final comparée par mots : **0,988**.
 
 ## Pipeline (depuis ce dossier, `GOOGLE_API_KEY` en variable d'environnement, jamais affichée)
 `python3 -I tts.py $W` → `python3 -I plan.py` → `node events.cjs` → `node qa.cjs` → `node synth.cjs $W` → `node render.cjs --out out/reel-muet.mp4 --frames $W/frames --workers 4` → `python3 -I mix.py $W out/reel-muet.mp4 out/reel-mon-site-0-euro.mp4`

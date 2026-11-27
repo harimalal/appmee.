@@ -47,21 +47,9 @@
       "sentences": [
         {
           "id": "v1",
-          "voice": "Y a plein de solutions : une page statique à la main, Wix, WordPress, et d'autres, même avec de l'IA.",
-          "cap": "Les solutions classiques",
-          "hold": 4.6
-        },
-        {
-          "id": "v2",
-          "voice": "Moi, j'ai rien à ouvrir, rien à manipuler !",
-          "cap": "Rien à ouvrir, rien à manipuler",
-          "hold": 2.2
-        },
-        {
-          "id": "v3",
-          "voice": "Pas de serveur à gérer, pas d'extensions à mettre à jour, pas d'hébergement à payer. Tranquille !",
-          "cap": "Pas de serveur, pas d'extension",
-          "hold": 3.4
+          "voice": "Il existe plein d'autres moyens de faire un site, mais là, on va bien plus vite !",
+          "cap": "D'autres moyens, mais plus vite",
+          "hold": 5.0
         }
       ]
     },
@@ -73,8 +61,9 @@
       "sentences": [
         {
           "id": "s1",
-          "voice": "Mon système, c'est le plus simple : le stack minimum. GitHub, Cloudflare et Astro !",
-          "cap": "Le système le plus simple : le stack minimum"
+          "voice": "Mon système, c'est le stack minimum !",
+          "cap": "Le stack minimum",
+          "hold": 3.0
         },
         {
           "id": "s2",
@@ -99,13 +88,13 @@
     {
       "id": "code",
       "bg": "#FFF8E1",
-      "min": 5.2,
+      "min": 6.0,
       "caption": false,
       "sentences": [
         {
           "id": "n1",
-          "voice": "Là, c'est Claude Code : j'ai pas tapé une ligne de code, il s'en charge sur mes instructions !",
-          "cap": "Claude Code, sur mes instructions",
+          "voice": "Et tout ça, c'est Claude Code qui le pilote : je lui parle normalement, j'ai pas tapé une ligne de code !",
+          "cap": "Claude Code pilote tout",
           "hold": 0
         }
       ]

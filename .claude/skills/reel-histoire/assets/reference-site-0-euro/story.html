@@ -27,9 +27,10 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .brand{display:flex;align-items:center;gap:9px;height:76px;padding:0 38px;background:#fff;border-radius:999px;font:900 38px/1 var(--font);letter-spacing:.02em;color:var(--ink);box-shadow:0 8px 26px rgba(20,20,60,.14);white-space:nowrap}
 .brand .dot{width:16px;height:16px;border-radius:50%;background:var(--red);display:inline-block}
 /* étiquettes : une seule à la fois dans la bande du haut */
+.lbl,.sublbl{z-index:50}
 .lbl{display:flex;align-items:center;justify-content:center;text-align:center;font:900 64px/1.06 var(--font);letter-spacing:-.03em}
 .lbl.w{color:#fff}
-.sublbl{display:flex;align-items:center;justify-content:center;text-align:center;font:700 31px/1 var(--mono);letter-spacing:.02em;color:#3B3C58}
+.sublbl{display:flex;align-items:center;justify-content:center;text-align:center;font:700 34px/1 var(--mono);letter-spacing:.02em;color:#1F2040}
 .sublbl.w{color:rgba(255,255,255,.72)}
 .lbl .wd{padding:0 .1em;margin:0 -.04em;border-radius:.2em;transition:none}
 /* fenêtre navigateur : cadre de la caméra */
@@ -70,6 +71,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .chk .cn2{position:absolute;left:76px;right:12px;top:0;bottom:0;display:flex;align-items:center;font:800 30px/1.05 var(--font);letter-spacing:-.02em}
 .pgf{position:absolute;display:block;background:#fff}
 .scrim{position:absolute;left:0;top:0;width:1080px;height:640px;background:linear-gradient(#fff 0%,#fff 72%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:40}
+.scrim.mid{height:640px;background:linear-gradient(#fff 0%,#fff 84%,rgba(255,255,255,0) 100%)}
 .scrim.soft{height:560px;background:linear-gradient(#fff 0%,rgba(255,255,255,.94) 52%,rgba(255,255,255,0) 100%)}
 .cur{pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
 .rip{width:120px;height:120px;border-radius:50%;border:7px solid var(--violet);background:rgba(108,92,231,.18);pointer-events:none;opacity:0}
@@ -88,6 +90,12 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .term .tt{position:absolute;left:92px;top:0;height:86px;display:flex;align-items:center;font:700 34px/1 var(--mono);color:rgba(255,255,255,.82)}
 .bars{position:absolute;left:44px;height:30px;overflow:hidden}
 .bars div{position:absolute;top:0;height:30px;border-radius:15px}
+.term .cv{position:absolute;left:40px;font:900 40px/1 var(--mono);color:var(--yellow)}
+.term .pr{position:absolute;left:84px;font:700 37px/1 var(--mono);color:#fff;white-space:nowrap}
+.term .ill{position:absolute;left:44px;top:108px;font:700 28px/1 var(--mono);color:rgba(255,255,255,.55);letter-spacing:.04em}
+.term .rs{position:absolute;left:44px;right:30px;height:84px;display:flex;align-items:center;gap:22px;font:800 44px/1.05 var(--font);color:#fff;letter-spacing:-.02em}
+.term .rs .ck{width:50px;height:50px;border-radius:50%;background:var(--green);padding:10px;flex:none}
+.term .box{position:absolute;left:30px;right:30px;border-radius:22px;background:#1F2150;border:3px solid #3A3D80}
 .pillok{background:var(--green);color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;font:900 54px/1 var(--font);letter-spacing:-.025em}
 /* S6 : commentaire */
 .cm{background:#fff;border-radius:40px;box-shadow:0 30px 90px rgba(0,0,0,.45)}
@@ -192,12 +200,12 @@ const addPage = (cv, k, x, y) => { const i = img(cv, SRC(k), 'pg'); i.style.left
 const NLY = PW * RAT.sys + 70;   // la fenêtre newsletter est posée sous la page de vente
 
 /* ---------- plein cadre façon site : vraies pages (version ordinateur 1 280 px) à l'échelle F, curseur, clics, scroll, zoom, swipe ; l'élément cliqué ressort ---------- */
-const F = 1080 / 1280, PS = {"home": {"H": 3175, "nav": {"Comparatifs": {"x": 208, "y": 4, "w": 99, "h": 57}, "Guides": {"x": 432, "y": 4, "w": 64, "h": 57}, "Outils IA": {"x": 333, "y": 4, "w": 73, "h": 57}}, "sub": {"x": 1023, "y": 13, "w": 185, "h": 38}, "chip": {"x": 780, "y": 600, "w": 106, "h": 26}, "newsletter": {"x": 0, "y": 2265, "w": 1280, "h": 283}, "h1": {"x": 72, "y": 162, "w": 584, "h": 155}, "card": {"x": 105, "y": 1860, "w": 256, "h": 324}, "cardHref": "/blog/combien-coute-openclaw-prix-reel-alternatives-2026/"}, "article": {"H": 21438, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "newsletter": {"x": 963, "y": 581, "w": 255, "h": 254}, "h1": {"x": 294, "y": 201, "w": 692, "h": 101}}, "comparatifs": {"H": 11557, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 77, "h": 16}, "Guides": {"x": 399, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 319, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 169, "w": 1136, "h": 44}}, "guides": {"H": 3747, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 169, "w": 1136, "h": 44}}, "systemes": {"H": 994, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 182, "w": 760, "h": 99}, "sq": [{"x": 72, "y": 303, "w": 269, "h": 269}, {"x": 361, "y": 303, "w": 269, "h": 269}, {"x": 650, "y": 303, "w": 269, "h": 269}, {"x": 939, "y": 303, "w": 269, "h": 269}, {"x": 72, "y": 592, "w": 269, "h": 269}, {"x": 361, "y": 592, "w": 269, "h": 269}, {"x": 650, "y": 592, "w": 269, "h": 269}, {"x": 939, "y": 592, "w": 269, "h": 269}]}}, CAPH = { home: 3175, article: 6400, comparatifs: 4200, guides: 3747, systemes: 994 };
+const F = 1080 / 1280, PS = {"home": {"H": 3175, "nav": {"Comparatifs": {"x": 208, "y": 4, "w": 99, "h": 57}, "Guides": {"x": 432, "y": 4, "w": 64, "h": 57}, "Outils IA": {"x": 333, "y": 4, "w": 73, "h": 57}}, "sub": {"x": 1023, "y": 13, "w": 185, "h": 38}, "chip": {"x": 780, "y": 600, "w": 106, "h": 26}, "newsletter": {"x": 0, "y": 2265, "w": 1280, "h": 283}, "h1": {"x": 72, "y": 162, "w": 584, "h": 155}, "card": {"x": 105, "y": 1860, "w": 256, "h": 324}, "cardHref": "/blog/combien-coute-openclaw-prix-reel-alternatives-2026/"}, "article": {"H": 21438, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "newsletter": {"x": 963, "y": 581, "w": 255, "h": 254}, "h1": {"x": 294, "y": 201, "w": 692, "h": 101}}, "comparatifs": {"H": 11557, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 77, "h": 16}, "Guides": {"x": 399, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 319, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 169, "w": 1136, "h": 44}}, "guides": {"H": 3747, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 169, "w": 1136, "h": 44}}, "systemes": {"H": 994, "nav": {"Comparatifs": {"x": 214, "y": 22, "w": 76, "h": 16}, "Guides": {"x": 398, "y": 22, "w": 44, "h": 16}, "Outils IA": {"x": 318, "y": 22, "w": 52, "h": 16}}, "sub": {"x": 1098, "y": 14, "w": 110, "h": 32}, "h1": {"x": 72, "y": 182, "w": 760, "h": 99}, "sq": [{"x": 72, "y": 303, "w": 269, "h": 269}, {"x": 361, "y": 303, "w": 269, "h": 269}, {"x": 650, "y": 303, "w": 269, "h": 269}, {"x": 939, "y": 303, "w": 269, "h": 269}, {"x": 72, "y": 592, "w": 269, "h": 269}, {"x": 361, "y": 592, "w": 269, "h": 269}, {"x": 650, "y": 592, "w": 269, "h": 269}, {"x": 939, "y": 592, "w": 269, "h": 269}]}}, CAPH = { home: 3175, article: 6400, comparatifs: 4200, guides: 3747, systemes: 994, 'comparatifs-f0': 2600, 'comparatifs-f1': 1245, 'comparatifs-f2': 2600 };
 const proj = (c, px, py) => ({ x: (px - c.x) * c.z + 540, y: (py - c.y) * c.z + 960 });
 const applyScr = (cv, c) => { cv.style.transform = `scale(${c.z}) translate(${-(c.x - 540 / c.z)}px,${-(c.y - 960 / c.z)}px)`; };
 const lyr = root => { const w = mk(root, 'abs lyr', null); w.style.cssText += ';width:1080px;height:1920px;overflow:hidden;transform-origin:50% 60%'; const cv = mk(w, 'canvas', null); return { w, cv }; };
 const pgS = (cv, key) => { const i = img(cv, 'assets/pc3/' + key + '.jpg', 'pgf'); i.style.left = '0px'; i.style.top = '0px'; i.style.width = '1080px'; i.style.height = (CAPH[key] * F) + 'px'; return i; };
-const scrim = (root, soft) => { const s = mk(root, 'abs scrim' + (soft ? ' soft' : ''), null); s.dataset.deco = ''; return s; };
+const scrim = (root, soft) => { const s = mk(root, 'abs scrim' + (soft ? ' ' + (soft === true ? 'soft' : soft) : ''), null); s.dataset.deco = ''; return s; };
 const ARROW = '<svg viewBox="0 0 32 40" width="64" height="80"><path d="M4 2l22 20-10 1.5 6 12-5 2.5-6-12L4 34z" fill="#111" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>';
 function makeCursor(root, pts) {
   const el = mk(root, 'abs cur', ARROW); el.dataset.deco = ''; el.style.zIndex = 50;
@@ -224,57 +232,81 @@ const rc = (r, pad = 6) => ({ x: r.x * F - pad, y: r.y * F - pad, w: r.w * F + 2
 const ctr = r => ({ x: (r.x + r.w / 2) * F, y: (r.y + r.h / 2) * F });
 const camTop = (z, x = 540) => ({ x, y: 320 / z, z });   // haut de page à 640 px de l'écran : l'en-tête du site se voit sous l'étiquette
 
-/* ===== 1 — ouverture : le vrai site plein cadre, zoom fort, scroll, clic sur « Limites à savoir » qui ressort ===== */
+/* ===== 1 — ouverture : l'accueil (zoom sur le titre), clic sur « Comparatifs », clics sur deux filtres de types d'outils, clic sur un comparatif → l'article ===== */
 scene('ouverture', ['Les meilleurs outils et systèmes IA', 'Simples · fiables · efficaces', 'et leurs vraies limites, pour ton besoin', 'Mise en ligne : 0 €', 'hors nom de domaine et abonnement Claude'], (root, m) => {
   const o0 = S(m, 'o0'), o1 = S(m, 'o1'), o2 = S(m, 'o2');
   const dO = dv(o1), wsT = [o1.start + dO * .17, o1.start + dO * .36, o1.start + dO * .55];
-  const { w, cv } = lyr(root); pgS(cv, 'home');
-  const pops = makePops(cv, 'assets/pc3/home.jpg', 1080, CAPH.home * F, 0, 0);
-  scrim(root, true);
+  const L = { H: lyr(root), C: lyr(root), D: lyr(root), E: lyr(root), A: lyr(root) };
+  pgS(L.H.cv, 'home'); pgS(L.C.cv, 'comparatifs-f0'); pgS(L.D.cv, 'comparatifs-f1'); pgS(L.E.cv, 'comparatifs-f2'); pgS(L.A.cv, 'article');
+  const CH = { H: 'home', C: 'comparatifs-f0', D: 'comparatifs-f1', E: 'comparatifs-f2', A: 'article' };
+  const PO = {}; for (const k of Object.keys(L)) PO[k] = makePops(L[k].cv, 'assets/pc3/' + CH[k] + '.jpg', 1080, CAPH[CH[k]] * F, 0, 0);
+  scrim(root, 'mid');
   const lab = swap(root, 'lbl', [
     { html: 'Les meilleurs outils et systèmes IA', a: o0.start + .1 },
     { html: '<span class="wd">Simples</span> · <span class="wd">fiables</span> · <span class="wd">efficaces</span>', a: o1.start, fs: 54, upd: (e, t) => wordHl(e, wsT, t) },
     { html: 'Mise en ligne : <span class="hl">0 €</span>', a: o2.start, upd: (e, t) => hlSet(e, P(t, o2.start + 1.2, .5)) }], 84, 304, 846, 150);
   const sub = swap(root, 'sublbl', [{ html: 'et leurs vraies limites, pour ton besoin', a: o1.start + dO * .64 }, { html: 'hors nom de domaine et abonnement Claude', a: o2.start + .9 }], 84, 466, 846, 36);
-  const h1 = ctr(PS.home.h1), chip = ctr(PS.home.chip), tcl = o1.start + dO * .8;
-  const K = [{ t: m.start, x: 540, y: 960, z: 1 }, { t: m.start + .2, x: 540, y: 960, z: 1 },
-    { t: o0.start + 1.0, x: h1.x, y: h1.y - 10, z: 1.85 }, { t: o1.start - .1, x: h1.x + 30, y: h1.y + 10, z: 1.95 },
-    { t: o1.start + .9, x: 600, y: 430, z: 1.7, dip: .15 }, { t: tcl - .5, x: chip.x - 20, y: chip.y - 120, z: 2.3, dip: .1 }, { t: tcl + .6, x: chip.x - 10, y: chip.y - 100, z: 2.4 },
-    { t: o2.start + 1.5, x: 540, y: 1100, z: .95, dip: .1 }, { t: m.end + .45, x: 540, y: 1300, z: .9 }];
-  const at = (t, px, py) => { const q = proj(camAt(K, t), px, py); return { t, x: q.x, y: q.y }; };
-  const R = rc(PS.home.chip, 10); pops.add(R, tcl, o2.start + 1.2, 1.3);
-  const cur = makeCursor(root, [{ t: m.start, x: 930, y: 1500 }, { t: o0.start + 1.2, x: 720, y: 1120 }, { t: o1.start + .6, x: 540, y: 1000 }, at(tcl - .45, chip.x - 80, chip.y + 70), at(tcl, chip.x, chip.y)]);
-  const clk = makeClicks(root, cur, [tcl]);
-  ev('thump', m.start + .3, { amp: .8 }); ev('whoosh', m.start + .4, { dur: .6 }); ev('ding', o0.start + 1.0, { f: 988 }); ev('whoosh', o1.start + .7, { dur: .6, down: true });
-  ev('tick', tcl, { f: 1800 }); ev('pop', tcl + .1); ev('ding', tcl + .4, { f: 1046 }); ev('pop', o2.start); ev('whoosh', o2.start + 1.2, { dur: .8, down: true });
-  return t => { lab(t); sub(t); applyScr(cv, camAt(K, t)); pops.upd(t); cur.upd(t, t > o2.start + 1.1 ? Math.max(0, 1 - P(t, o2.start + 1.1, .3)) : 1); clk(t); };
+  // instants des clics
+  const tN = o0.end - .25, tc1 = o1.start + 1.1, tc2 = tc1 + 1.3, tcard = tc2 + 1.25, tdv = tcard + .18;
+  // rectangles réels (pixels CSS de la capture)
+  const NAV = { x: 208, y: 4, w: 99, h: 57 }, CH1 = { x: 1043, y: 296, w: 122, h: 33 }, CH2 = { x: 189, y: 296, w: 187, h: 33 }, CARD = { x: 72, y: 507, w: 363, h: 288 };
+  const h1 = ctr(PS.home.h1), navC = ctr(NAV), ch1 = ctr(CH1), ch2 = ctr(CH2), cardC = ctr(CARD);
+  const KH = [{ t: m.start, x: 540, y: 960, z: 1 }, { t: m.start + .2, x: 540, y: 960, z: 1 },
+    { t: o0.start + 1.0, x: h1.x, y: h1.y - 10, z: 1.85 }, { t: tN - 1.1, x: h1.x + 30, y: h1.y + 10, z: 1.95 }, { t: tN - .35, ...camTop(1.2), dip: .12 }, { t: tN + .4, ...camTop(1.2) }];
+  const KC = [{ t: tN, ...camTop(1.15) }, { t: tc2 + .5, x: 540, y: camTop(1.15).y + 8, z: 1.17 }];
+  const kc2 = { t: tc2 - .05, x: 540, y: camTop(1.15).y + 6, z: 1.165 };
+  const KD = [{ t: tN, ...camTop(1.15) }, { t: tc1 + .3, x: 540, y: camTop(1.15).y + 4, z: 1.16 }, { t: tc1 + .85, x: cardC.x + 60, y: cardC.y, z: 1.5, dip: .08 }, { t: tc2 - .7, x: cardC.x + 60, y: cardC.y + 8, z: 1.53 }, kc2];
+  const KE = [{ t: tN, ...camTop(1.15) }, { t: tc2 + .5, x: 540, y: camTop(1.15).y + 8, z: 1.17 }, { t: tcard - .35, x: cardC.x + 60, y: cardC.y, z: 1.5, dip: .1 }, { t: tcard, x: cardC.x + 60, y: cardC.y, z: 1.52 }, { t: tdv + .8, x: cardC.x, y: cardC.y, z: 3.6 }];
+  const KA = [{ t: tdv, ...camTop(1.4, 400) }, { t: m.end + .45, x: 400, y: camTop(1.4).y + 150, z: 1.46 }];
+  const at = (K, t, px, py) => { const q = proj(camAt(K, t), px, py); return { t, x: q.x, y: q.y }; };
+  const pad = (r, p) => ({ x: r.x - p, y: r.y - p, w: r.w + 2 * p, h: r.h + 2 * p });
+  PO.D.add(rc(CARD, 8), tc1 + .75, tc2 - .25, 1.1);
+  PO.E.add(rc(CARD, 8), tcard, tdv + .6, 1.08);
+  const cur = makeCursor(root, [{ t: m.start, x: 930, y: 1500 }, { t: o0.start + 1.2, x: 720, y: 1120 }, { t: tN - 1.0, x: 600, y: 1000 },
+    at(KH, tN - .4, navC.x + 150, navC.y + 130), at(KH, tN, navC.x, navC.y),
+    at(KC, tc1 - .5, ch1.x - 170, ch1.y + 200), at(KC, tc1, ch1.x, ch1.y),
+    at(KC, tc2 - .5, ch2.x + 190, ch2.y + 210), at(KC, tc2, ch2.x, ch2.y),
+    at(KE, tcard - .4, cardC.x + 200, cardC.y + 120), at(KE, tcard, cardC.x + 10, cardC.y + 10), { t: tdv + .5, x: 900, y: 1200 }]);
+  const clk = makeClicks(root, cur, [tN, tc1, tc2, tcard]);
+  ev('thump', m.start + .3, { amp: .8 }); ev('whoosh', m.start + .4, { dur: .6 }); ev('ding', o0.start + 1.0, { f: 988 });
+  [tN, tc1, tc2, tcard].forEach(t => { ev('tick', t, { f: 1800 }); ev('pop', t + .08); });
+  ev('whoosh', tN + .15, { dur: .4 }); ev('whoosh', tc1 + .1, { dur: .3 }); ev('whoosh', tc2 + .1, { dur: .3 }); ev('whoosh', tdv, { dur: .7, up: true }); ev('pop', o2.start); ev('ding', tdv + .9, { f: 1046 });
+  return t => {
+    lab(t); sub(t);
+    L.H.w.style.opacity = t < tN + .3 ? 1 : 1 - P(t, tN + .3, .3); applyScr(L.H.cv, camAt(KH, t));
+    L.C.w.style.opacity = P(t, tN + .15, .3) * (1 - P(t, tc1 + .3, .01)); L.C.w.style.transform = `scale(${lerp(1.04, 1, eo(P(t, tN + .15, .5)))})`; applyScr(L.C.cv, camAt(KC, t));
+    L.D.w.style.opacity = P(t, tc1 + .1, .15) * (1 - P(t, tc2 + .45, .01)); applyScr(L.D.cv, camAt(KD, t));
+    L.E.w.style.opacity = P(t, tc2 + .1, .15) * (1 - P(t, tdv + .3, .3)); applyScr(L.E.cv, camAt(KE, t));
+    L.A.w.style.opacity = P(t, tdv + .12, .4); L.A.w.style.transform = `scale(${lerp(.6, 1, eo(P(t, tdv, .75)))})`; applyScr(L.A.cv, camAt(KA, t));
+    for (const k of Object.keys(PO)) PO[k].upd(t);
+    cur.upd(t, t > tdv + .4 ? Math.max(0, 1 - P(t, tdv + .4, .25)) : 1); clk(t);
+  };
 });
 
-/* ===== 5b — face aux solutions classiques : à gauche elles apparaissent toutes, à droite ce dont je n'ai pas besoin ===== */
-scene('compare', ['Les solutions classiques', 'Rien à ouvrir, rien à manipuler', 'Pas de serveur, pas d’extension',
-  'Une page statique à la main', 'Wix', 'WordPress', 'D’autres, même avec de l’IA',
-  'Rien à ouvrir', 'Rien à manipuler', 'Pas de serveur à gérer', 'Pas d’extension à mettre à jour', 'Pas d’hébergement à payer'], (root, m) => {
-  const v1 = S(m, 'v1'), v2 = S(m, 'v2'), v3 = S(m, 'v3'), D1 = dv(v1), D2 = dv(v2), D3 = dv(v3);
+/* ===== 5b — « il existe plein d'autres moyens, mais là on va plus vite » : une seule phrase, cartes de gauche vite posées, une carte verte à droite ===== */
+scene('compare', ['D’autres moyens de faire un site', 'Mais là, on va plus vite',
+  'Une page statique à la main', 'Wix', 'WordPress', 'D’autres, même avec de l’IA', 'Plus rapide avec mon système'], (root, m) => {
+  const v1 = S(m, 'v1'), D1 = dv(v1);
   const c = circle(root, 'rgba(108,92,231,.10)', -300, 1150, 800);
-  const lab = swap(root, 'lbl', [{ html: 'Les solutions classiques', a: v1.start }, { html: 'Rien à ouvrir, rien à manipuler', a: v2.start }, { html: 'Pas de serveur, pas d’extension', a: v3.start }], 84, 304, 846, 190);
-  const L = ['Une page statique à la main', 'Wix', 'WordPress', 'D’autres, même avec de l’IA'], LT = [v1.start + D1 * .30, v1.start + D1 * .55, v1.start + D1 * .67, v1.start + D1 * .80];
-  const R = ['Rien à ouvrir', 'Rien à manipuler', 'Pas de serveur à gérer', 'Pas d’extension à mettre à jour', 'Pas d’hébergement à payer'], RT = [v2.start + D2 * .45, v2.start + D2 * .82, v3.start + D3 * .04, v3.start + D3 * .38, v3.start + D3 * .70];
+  const lab = swap(root, 'lbl', [{ html: 'D’autres moyens de faire un site', a: v1.start, fs: 58 }, { html: 'Mais là, on va <span class="hl">plus vite</span>', a: v1.start + D1 * .6, upd: (e, t) => hlSet(e, P(t, v1.start + D1 * .72, .5)) }], 84, 304, 846, 190);
+  const L = ['Une page statique à la main', 'Wix', 'WordPress', 'D’autres, même avec de l’IA'], LT = [v1.start + D1 * .16, v1.start + D1 * .27, v1.start + D1 * .38, v1.start + D1 * .48], TR = v1.start + D1 * .66;
   const lefts = L.map((n, i) => { const e = mk(root, 'abs cl', `<div class="tx cn">${n}</div>`); e.dataset.bleed = ''; place(e, 84, 540 + i * 252, 406, 228); return e; });
-  const rights = R.map((n, i) => { const e = mk(root, 'abs cr', `<div class="tx cn">${n}</div><div class="ck">${ICON.check()}</div>`); e.dataset.bleed = ''; place(e, 524, 540 + i * 201, 406, 180); return e; });
-  LT.forEach(t => ev('pop', t)); RT.forEach(t => ev('pop', t)); ev('whoosh', m.start + .35, { dur: .5 }); ev('ding', RT[4] + .5, { f: 1046 });
+  const big = mk(root, 'abs cr', `<div class="tx cn" style="font-size:58px;right:34px;left:34px;padding-top:0">Plus rapide avec mon système</div>`); big.dataset.bleed = ''; place(big, 524, 540, 406, 984);
+  const bck = mk(big, 'ck', ICON.check()); bck.style.cssText += ';width:130px;height:130px;margin-top:0;top:auto;bottom:70px;right:138px;padding:30px';
+  LT.forEach(t => ev('pop', t)); ev('whoosh', m.start + .35, { dur: .5 }); ev('pop', TR); ev('ding', TR + .35, { f: 1046 });
   return t => {
     drift(c, t, 1.4); lab(t);
-    lefts.forEach((e, i) => { const p = P(t, LT[i], .5), k = eoBack(p), dim = P(t, v2.start + .5, .6); put(e, { x: -420 * (1 - k), y: Math.sin(t * 1.5 + i * 1.1) * 7 * p, s: .94 + .06 * k, op: cl(p * 2.4) * (1 - .45 * dim) }); });
-    rights.forEach((e, i) => { const p = P(t, RT[i], .5), k = eoBack(p); put(e, { x: 420 * (1 - k), y: Math.sin(t * 1.6 + i) * 7 * p, s: .94 + .06 * k, op: cl(p * 2.4) }); const ck = e.querySelector('.ck'), q = P(t, RT[i] + .25, .35); ck.style.transform = `scale(${eoBack(q)})`; ck.style.opacity = q > 0 ? 1 : 0; });
+    lefts.forEach((e, i) => { const p = P(t, LT[i], .5), k = eoBack(p), dim = P(t, TR, .6); put(e, { x: -420 * (1 - k), y: Math.sin(t * 1.5 + i * 1.1) * 7 * p, s: .94 + .06 * k, op: cl(p * 2.4) * (1 - .5 * dim) }); });
+    { const p = P(t, TR, .55), k = eoBack(p); put(big, { x: 420 * (1 - k), y: Math.sin(t * 1.6) * 7 * p, s: .94 + .06 * k, op: cl(p * 2.4) }); const q = P(t, TR + .3, .4); bck.style.transform = `scale(${eoBack(q)})`; bck.style.opacity = q > 0 ? 1 : 0; }
   };
 });
 
 /* ===== 2 — le stack minimum : trois couches qui s'empilent, Astro crée les pages sous nos yeux ===== */
-scene('pieces', ['Le système le plus simple : le stack minimum', 'GitHub héberge le code', 'Cloudflare gère les évolutions', 'Astro crée les pages', 'GitHub', 'Cloudflare', 'Astro', 'héberge le code du site', 'gère les évolutions, met en ligne', 'crée les pages du site'], (root, m) => {
-  const s1 = S(m, 's1'), s2 = S(m, 's2'), s3 = S(m, 's3'), s4 = S(m, 's4'), D = dv(s1);
+scene('pieces', ['Le stack minimum', 'GitHub héberge le code', 'Cloudflare gère les évolutions', 'Astro crée les pages', 'GitHub', 'Cloudflare', 'Astro', 'héberge le code du site', 'gère les évolutions, met en ligne', 'crée les pages du site'], (root, m) => {
+  const s1 = S(m, 's1'), s2 = S(m, 's2'), s3 = S(m, 's3'), s4 = S(m, 's4'), D = Math.max(dv(s1), 3.0);
   const c = circle(root, 'rgba(59,139,212,.12)');
   const lab = swap(root, 'lbl', [
-    { html: 'Le système le plus simple : le stack minimum', a: s1.start, fs: 56 }, { html: 'GitHub héberge le code', a: s2.start },
+    { html: 'Le <span class="hl">stack minimum</span>', a: s1.start, upd: (e, t) => hlSet(e, P(t, s1.start + .5, .5)) }, { html: 'GitHub héberge le code', a: s2.start },
     { html: 'Cloudflare gère les évolutions', a: s3.start }, { html: 'Astro crée les pages', a: s4.start }], 84, 304, 846, 190);
   // aperçu du site : six pages réelles qui se posent dans le cadre
   const site = mk(root, 'abs sitef', '<div class="bar"><i></i><i></i><i></i></div>'); site.dataset.bleed = ''; place(site, 84, 520, 846, 320);
@@ -305,30 +337,34 @@ scene('pieces', ['Le système le plus simple : le stack minimum', 'GitHub héber
   };
 });
 
-/* ===== 5 — Claude Code écrit le code (barres abstraites : aucune ligne de code réelle montrée) ===== */
-scene('code', ['Claude Code, sur mes instructions', 'Claude Code', '0 ligne de code tapée'], (root, m) => {
-  const n1 = S(m, 'n1');
+/* ===== 5 — Claude Code : une instruction en langage naturel tapée, trois lignes de réponse (illustration, pas un enregistrement) ===== */
+scene('code', ['Claude Code pilote tout', 'Claude Code', 'illustration', 'Passe la charte du site', 'en bleu océan, et mets-le en ligne', 'Couleurs modifiées partout', 'Build vérifié', 'Mis en ligne', '0 ligne de code tapée'], (root, m) => {
+  const n1 = S(m, 'n1'), D = dv(n1);
   const c = circle(root, 'rgba(255,193,7,.20)', -300, 1180, 820);
-  const lab = swap(root, 'lbl', [{ html: 'Claude Code, sur mes instructions', a: n1.start }], 84, 304, 846, 150);
-  const term = mk(root, 'abs term', '<div class="tb"><i style="left:30px"></i><i style="left:58px"></i><i style="left:86px"></i></div>'); place(term, 84, 540, 846, 760);
+  const lab = swap(root, 'lbl', [{ html: 'Claude Code <span class="hl">pilote tout</span>', a: n1.start, upd: (e, t) => hlSet(e, P(t, n1.start + 1.3, .5)) }], 84, 304, 846, 150);
+  const term = mk(root, 'abs term', '<div class="tb"><i style="left:30px"></i><i style="left:58px"></i><i style="left:86px"></i></div>'); place(term, 84, 520, 846, 800);
   const tt = mk(term, 'tx tt', 'Claude Code'); tt.style.left = '130px';
   const lg = mk(term.querySelector('.tb'), 'lg', null); lg.dataset.deco = ''; img(lg, 'assets/claude.png', '').style.cssText = 'display:block;width:100%;height:100%;object-fit:contain';
-  const COLS = ['#6C5CE7', '#FFD93B', '#19A974', '#E84393', 'rgba(255,255,255,.55)'];
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const rows = [];
-  for (let i = 0; i < 13; i++) {
-    const row = mk(term, 'bars', null); place(row, 44, 124 + i * 48, 758, 30);
-    let x = (i % 3) * 34; const n = 2 + Math.floor(rnd() * 3);
-    for (let j = 0; j < n; j++) { const w = 80 + Math.floor(rnd() * 190); const b = mk(row, '', null); b.style.left = x + 'px'; b.style.width = w + 'px'; b.style.background = COLS[Math.floor(rnd() * COLS.length)]; x += w + 14; }
-    rows.push({ row, a: n1.start + .5 + i * .2 });
-  }
-  const ok = mk(root, 'abs pillok tx', '0 ligne de code tapée'); place(ok, 84, 1370, 846, 116); ok.style.cssText += ';white-space:nowrap';
-  ev('whoosh', m.start + .3, { dur: .5 }); ev('ticks', n1.start + .5, { n: 22, dur: 2.7 }); ev('pop', n1.start + 3.3); ev('ding', n1.start + 3.5, { f: 1046 });
-  const okAt = n1.start + 3.3;
+  mk(term, 'tx ill', 'illustration');
+  const box = mk(term, 'box', null); box.dataset.deco = ''; place(box, null, 170, null, 170);
+  const cv = mk(term, 'cv', '›'); cv.dataset.deco = ''; cv.style.top = '208px';
+  const l1 = mk(term, 'tx pr', 'Passe la charte du site'); l1.style.top = '206px';
+  const l2 = mk(term, 'tx pr', 'en bleu océan, et mets-le en ligne'); l2.style.top = '262px'; l2.style.left = '84px'; l2.style.top = '264px'; l1.style.fontSize = l2.style.fontSize = '35px';
+  const caret = mk(term, 'tx', ''); caret.dataset.deco = ''; caret.style.cssText = 'position:absolute;top:204px;width:20px;height:40px;background:#FFD93B';
+  const RS = ['Couleurs modifiées partout', 'Build vérifié', 'Mis en ligne'];
+  const t0 = n1.start + 1.0, t1 = t0 + .8, t2 = t1 + .5, RT = [t2 + .2, t2 + .7, t2 + 1.2];
+  const rs = RS.map((n, i) => { const e = mk(term, 'rs', `<div class="ck">${ICON.check()}</div><div class="tx">${n}</div>`); e.style.top = (410 + i * 124) + 'px'; return e; });
+  const ok = mk(root, 'abs pillok tx', '0 ligne de code tapée'); place(ok, 84, 1380, 846, 116); ok.style.cssText += ';white-space:nowrap';
+  const okAt = Math.max(RT[2] + .4, n1.start + D * .8);
+  ev('whoosh', m.start + .3, { dur: .5 }); ev('ticks', t0, { n: 20, dur: t2 - t0 - .2 }); RT.forEach(t => { ev('pop', t); }); ev('ding', RT[2] + .15, { f: 1046 }); ev('pop', okAt); ev('ding', okAt + .2, { f: 1174 });
+  const typed = (e, a, b, n, t) => { const p = cl((t - a) / (b - a)); e.style.clipPath = `inset(-6px ${(1 - Math.floor(p * n) / n) * 100}% -6px -6px)`; return p; };
   return t => {
     drift(c, t, 1.8); lab(t);
-    const p = P(t, m.start + .2, .5); put(term, { x: -260 * (1 - eoBack(p)), s: (.94 + .06 * eoBack(p)) * (1 + .045 * P(t, m.start, m.end - m.start)), op: cl(p * 3) });
-    rows.forEach(({ row, a }, i) => { const q = P(t, a, .5); row.style.clipPath = `inset(0 ${(1 - eo(q)) * 100}% 0 0)`; row.style.opacity = q >= 1 ? .72 + .28 * Math.sin(t * 3.2 - i * .7) : 1; });
+    const p = P(t, m.start + .2, .5); put(term, { x: -260 * (1 - eoBack(p)), s: (.94 + .06 * eoBack(p)) * (1 + .03 * P(t, m.start, m.end - m.start)), op: cl(p * 3) });
+    const pa = typed(l1, t0, t0 + .55, 23, t), pb = typed(l2, t0 + .6, t1 + .2, 34, t);
+    const bl = Math.floor(t * 2.6) % 2 === 0 || t < t2;
+    caret.style.opacity = t < t0 ? 0 : (t > t2 + .3 ? 0 : (bl ? 1 : .25)); caret.style.left = (pb > 0 ? 84 + 34 * 21 * pb + 6 : 84 + 23 * 21 * pa + 6) + 'px'; caret.style.top = (pb > 0 ? 268 : 204) + 'px';
+    rs.forEach((e, i) => { const q = P(t, RT[i], .4); put(e, { x: (1 - eoBack(q)) * 70, op: cl(q * 2.6) }); });
     const q = P(t, okAt, .45); put(ok, { y: (1 - eoBack(q)) * 120, s: (.9 + .1 * eoBack(q)) * (q >= 1 ? 1 + .025 * Math.sin((t - okAt) * 5) : 1), op: cl(q * 2.4) });
   };
 });
