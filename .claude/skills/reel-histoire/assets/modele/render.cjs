@@ -16,7 +16,7 @@ const pad = n => String(n).padStart(5, '0');
   const N = LIMIT ? Math.min(LIMIT, Math.ceil(TOTAL * FPS)) : Math.ceil(TOTAL * FPS);
   console.log(`${N} images (${(N / FPS).toFixed(2)} s)`);
   const t0 = Date.now(); const browser = await chromium.launch(); const pages = [];
-  for (let w = 0; w < WORKERS; w++) { const pg = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 }); await pg.goto(FILE); await pg.evaluate(() => document.fonts.ready); pages.push(pg); }
+  for (let w = 0; w < WORKERS; w++) { const pg = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 }); await pg.goto(FILE); await pg.evaluate(() => Promise.all([document.fonts.ready, window.__ready || 0])); pages.push(pg); }
   let done = 0;
   await Promise.all(pages.map(async (pg, w) => { for (let i = w; i < N; i += WORKERS) {
     await pg.evaluate(t => window.__setTime(t), i / FPS);

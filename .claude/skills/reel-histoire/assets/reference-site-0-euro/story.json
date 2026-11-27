@@ -1,0 +1,216 @@
+{
+  "_note": "Reel « Mon site tourne à 0 € » (v2) : voice = texte lu, cap = légende / étiquette à l'écran. Voix Charon, modèle gemini-3.8-flash-lite-tts. Texte validé par Hari le 27/11/2026.",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.08,
+  "gap_scene": 0.5,
+  "lead": 0.2,
+  "tail": 0.25,
+  "nombres_autorises": [
+    "0",
+    "132"
+  ],
+  "cta_contient": "Commente",
+  "max_mots_visibles": 40,
+  "scenes": [
+    {
+      "id": "ouverture",
+      "bg": "#F1EFFD",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "o0",
+          "voice": "Voilà mon site, Reflex IA, pour trouver les meilleurs outils et systèmes IA !",
+          "cap": "Les meilleurs outils et systèmes IA"
+        },
+        {
+          "id": "o1",
+          "voice": "Les plus simples, les plus fiables, les plus efficaces, avec leurs vraies limites, pour ton besoin !",
+          "cap": "Simples · fiables · efficaces",
+          "hold": 3.6
+        },
+        {
+          "id": "o2",
+          "voice": "Et en plus, sa mise en ligne me coûte zéro euro !",
+          "cap": "Mise en ligne : 0 €",
+          "hold": 2.4
+        }
+      ]
+    },
+    {
+      "id": "compare",
+      "bg": "#F3F1FA",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "v1",
+          "voice": "Y a plein de solutions : une page statique à la main, Wix, WordPress, et d'autres, même avec de l'IA.",
+          "cap": "Les solutions classiques",
+          "hold": 4.6
+        },
+        {
+          "id": "v2",
+          "voice": "Moi, j'ai rien à ouvrir, rien à manipuler !",
+          "cap": "Rien à ouvrir, rien à manipuler",
+          "hold": 2.2
+        },
+        {
+          "id": "v3",
+          "voice": "Pas de serveur à gérer, pas d'extensions à mettre à jour, pas d'hébergement à payer. Tranquille !",
+          "cap": "Pas de serveur, pas d'extension",
+          "hold": 3.4
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "s1",
+          "voice": "Mon système, c'est le plus simple : le stack minimum. GitHub, Cloudflare et Astro !",
+          "cap": "Le système le plus simple : le stack minimum"
+        },
+        {
+          "id": "s2",
+          "voice": "GitHub, il héberge le code du site.",
+          "cap": "GitHub héberge le code",
+          "hold": 1.6
+        },
+        {
+          "id": "s3",
+          "voice": "Cloudflare gère les évolutions : je change un truc, et c'est en ligne, tout seul !",
+          "cap": "Cloudflare gère les évolutions",
+          "hold": 2.2
+        },
+        {
+          "id": "s4",
+          "voice": "Et Astro crée les pages, à partir de mes articles !",
+          "cap": "Astro crée les pages",
+          "hold": 2.8
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "bg": "#FFF8E1",
+      "min": 5.2,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n1",
+          "voice": "Là, c'est Claude Code : j'ai pas tapé une ligne de code, il s'en charge sur mes instructions !",
+          "cap": "Claude Code, sur mes instructions",
+          "hold": 0
+        }
+      ]
+    },
+    {
+      "id": "pages",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "g1",
+          "voice": "Et voilà ce qu'on obtient : la page d'accueil !",
+          "cap": "Accueil",
+          "hold": 1.7
+        },
+        {
+          "id": "g2",
+          "voice": "Les articles.",
+          "cap": "Articles",
+          "hold": 1.6
+        },
+        {
+          "id": "g3",
+          "voice": "Les comparatifs.",
+          "cap": "Comparatifs",
+          "hold": 1.6
+        },
+        {
+          "id": "g4",
+          "voice": "Les rubriques.",
+          "cap": "Rubriques",
+          "hold": 1.6
+        },
+        {
+          "id": "g5",
+          "voice": "La page de vente !",
+          "cap": "Page de vente",
+          "hold": 2.0
+        },
+        {
+          "id": "g6",
+          "voice": "Et le formulaire de la newsletter !",
+          "cap": "Formulaire newsletter",
+          "hold": 2.2
+        }
+      ]
+    },
+    {
+      "id": "charte",
+      "bg": "#FBF1ED",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "c1",
+          "voice": "Je change la charte graphique ? Une seule fois !",
+          "cap": "Une charte, une seule fois"
+        },
+        {
+          "id": "c2",
+          "voice": "Et toutes les pages suivent, d'un seul coup !",
+          "cap": "Toutes les pages suivent"
+        }
+      ]
+    },
+    {
+      "id": "masse",
+      "bg": "#EAF7F1",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "m1",
+          "voice": "Et si je veux optimiser tous les articles ?",
+          "cap": "Tous les articles",
+          "hold": 1.8
+        },
+        {
+          "id": "m2",
+          "voice": "Une seule demande, et tout se fait en une fois !",
+          "cap": "Une seule demande",
+          "hold": 3.0
+        },
+        {
+          "id": "m3",
+          "voice": "Et rien ne casse : le site se vérifie tout seul avant d'être mis en ligne.",
+          "cap": "Sans que rien ne casse",
+          "hold": 3.4
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7.0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Tu veux le même système ? Commente « site », et je te l'envoie pour le répliquer à ta sauce !",
+          "cap": "Commente « site »"
+        }
+      ]
+    }
+  ],
+  "tempo": 1.16
+}

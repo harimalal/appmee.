@@ -74,3 +74,16 @@ Matière : un moteur qui fabrique des comparatifs (artefact + skill + 28 pages p
 6. **Quand l'utilisateur dicte par vagues** (hook gardé, partie retirée, 3 exemples, puis skill et piège) : réécrire le texte complet à chaque vague, le faire valider, ne régénérer que les phrases changées (cache), recompter la durée avant la voix.
 7. **Quand la source est la synthèse d'une vidéo tierce** : **créditer l'auteur à l'écran et à la voix, et ne jamais conjuguer ses démos à « je »** ; « je » = seulement ce que l'utilisateur a fait ou dit. Les notes de qualité de l'artefact et les chiffres non sourcés d'un modèle de présentation (« 3 h vs 3 semaines ») sont écartés.
 8. **Une preuve « avant / après » se reconstruit depuis l'historique git** (`git archive <commit> | tar -x`, build, captures), sans reconstitution ; on ne prétend pas que l'après est « meilleur » ou « moins IA » : c'est un jugement de goût, et rien ne prouve qu'un outil précis a servi.
+
+---
+
+## 9. Enseignements du 6e essai (reel « Mon site tourne à 0 € », sans source tierce)
+Matière : le dépôt du site lui-même + un utilisateur qui dicte tout (angle, ordre, ton). Exemple rempli : `<skill>/assets/reference-site-0-euro/` (BRIEF.md initial, SCRIPT.md à jour, story.json, story.html).
+1. **Une source tierce rejetée se retire entièrement** (fichiers, couverture, mentions) ; l'historique git garde l'ancienne version.
+2. **Quand l'exemple est le projet de l'utilisateur, la source = le dépôt** : lire `package.json`, la config, `CLAUDE.md`, les pages ; chaque phrase de présentation (« Cloudflare met en ligne à chaque push ») cite un fichier.
+3. **Un prix annoncé par l'utilisateur** (« 0 € ») : vérifier ce qui se vérifie (doc officielle consultée, datée), signaler ce qui ne l'est pas (autre fournisseur), afficher les exclusions (domaine, abonnement).
+4. **Comparer avec des solutions classiques sans les juger** : les nommer à gauche, dire à droite ce que l'utilisateur n'a pas à faire ; aucun défaut ni prix affirmé sur elles ; lire les noms dictés avec prudence (« Mix » → Wix) et le dire.
+5. **Preuve « une charte, tout le site »** : copie du site, une table de remplacement de couleurs, build, captures ; sur les seules variables globales presque rien ne bougeait (couleurs écrites en dur) : dire que l'effet vient d'un remplacement dans tout le code, fait par script.
+6. **Un schéma n'est pas une preuve** : « tout se fait en une demande, sans que rien ne casse » est illustré par un schéma annoncé comme tel ; seuls les contrôles du build (liens, champs, doublons) reposent sur du réel et **réduisent** le risque sans le supprimer.
+7. **Ordre dicté et réordonné plusieurs fois** (avantages avant le stack, Claude Code avant les pages) : réordonner les scènes dans `story.json` **et** dans `story.html`, recalculer la durée ; les instants internes d'une scène suivent la durée de parole (`dv`).
+8. **Ton, CTA et musique** : voir `references/recit.md` (registre « ami », CTA à mot-clé) et `references/production.md` (6e essai).

@@ -63,7 +63,7 @@ const words = s => s.trim().split(/\s+/).filter(Boolean).length;
   const allCopy = reel.scenes.map(sc => norm(sc.copy.join(' | ')));
   let samples = 0, maxVis = 0;
   for (const t of [...times].sort((a, b) => a - b)) {
-    const items = await page.evaluate(t => window.__qa(t), t); samples++;
+    const items = (await page.evaluate(t => window.__qa(t), t)).filter(it => it.y1 > 0 && it.y0 < 1920 && it.x1 > 0 && it.x0 < 1080); samples++;   // hors cadre = invisible
     const idx = reel.scenes.reduce((k, sc, i) => (t >= sc.start ? i : k), 0);
     const pool = allCopy[idx] + ' | ' + (idx > 0 ? allCopy[idx - 1] : '');
     let vis = 0; const seen = new Set();
@@ -78,6 +78,11 @@ const words = s => s.trim().split(/\s+/).filter(Boolean).length;
         if (!pool.includes(norm(it.text))) fail(`t=${t}s texte absent du script déclaré : « ${it.text} »`);
         if (!it.cap && !seen.has(norm(it.text))) { seen.add(norm(it.text)); vis += words(it.text); }  // textes identiques des deux calques avant/après : comptés une fois
       }
+    }
+    // règle : aucun texte visible ne doit en chevaucher un autre (marge de 4 px)
+    for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) {
+      const A = items[i], B = items[j]; const ox = Math.min(A.x1, B.x1) - Math.max(A.x0, B.x0), oy = Math.min(A.y1, B.y1) - Math.max(A.y0, B.y0);
+      if (ox > 4 && oy > 4) fail(`t=${t}s textes qui se chevauchent : « ${A.text.slice(0, 30)} » / « ${B.text.slice(0, 30)} »`);
     }
     maxVis = Math.max(maxVis, vis);
     if (vis > MAX_VISIBLE) fail(`t=${t}s : ${vis} mots visibles en même temps (> ${MAX_VISIBLE})`);

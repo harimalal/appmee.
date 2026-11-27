@@ -4,12 +4,15 @@ de chaque phrase de la timeline (aucun changement de vitesse), plus bruitages et
   - chaque segment est ramené à un niveau moyen commun ; la nappe et les bruitages baissent sous la voix (sidechain) ;
   - normalisation EBU R128 à -14 LUFS, crête vraie <= -1,5 dBTP (deux passes) ;
   - la vidéo n'est PAS ré-encodée (copie) : seul le son est ajouté.
-Usage : python3 -I mix.py <dossier_de_travail> <video_muette.mp4> <sortie.mp4>
+Usage : python3 -I mix.py <dossier_de_travail> <video_muette.mp4> <sortie.mp4> [--sans-nappe | --nappe 0.5]
 Le dossier de travail contient trim/<id>.wav (voix) et sfx.wav / bed.wav (synth.cjs).
 """
 import json, os, re, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+NAPPE = 1.0   # niveau de la nappe : --sans-nappe (0) ou --nappe 0.5
+if '--sans-nappe' in sys.argv: NAPPE = 0.0; sys.argv.remove('--sans-nappe')
+if '--nappe' in sys.argv: i = sys.argv.index('--nappe'); NAPPE = float(sys.argv[i + 1]); del sys.argv[i:i + 2]
 WORK, VIDEO, OUT = os.path.abspath(sys.argv[1]), os.path.abspath(sys.argv[2]), os.path.abspath(sys.argv[3])
 TL = json.load(open(os.path.join(HERE, 'timeline.json'), encoding='utf-8'))
 SEGS = [s for sc in TL['scenes'] for s in sc['sent']]
@@ -47,7 +50,7 @@ sfx, bed = os.path.join(WORK, 'sfx.wav'), os.path.join(WORK, 'bed.wav')
 mix = (
     '[0:a]pan=stereo|c0=c0|c1=c0,volume=1.0[v];'
     '[v]asplit=3[vm][vk1][vk2];'
-    '[2:a]volume=0.62[b];[b][vk1]sidechaincompress=threshold=0.015:ratio=9:attack=15:release=350:makeup=1[bd];'
+    f'[2:a]volume={0.62 * NAPPE:.3f}[b];[b][vk1]sidechaincompress=threshold=0.015:ratio=9:attack=15:release=350:makeup=1[bd];'
     '[1:a]volume=0.5[x];[x][vk2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=200:makeup=1[xd];'
     '[vm][bd][xd]amix=inputs=3:normalize=0:duration=first[m]'
 )

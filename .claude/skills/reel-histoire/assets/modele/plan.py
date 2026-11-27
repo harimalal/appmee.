@@ -26,7 +26,7 @@ for sc in S['scenes']:
             ws.append({'w': w, 't0': round(a + (b - a) * acc / tot, 3), 't1': round(a + (b - a) * (acc + wt) / tot, 3)})
             acc += wt
         sents.append({'id': s['id'], 'voice': s['voice'], 'cap': s['cap'], 'start': round(t, 3), 'end': round(t + d, 3), 'words': ws})
-        t = t + d + (S['gap_sentence'] if k < len(sc['sentences']) - 1 else 0)
+        t = t + max(d, s.get('hold', 0)) + (S['gap_sentence'] if k < len(sc['sentences']) - 1 else 0)   # hold = durée mini de la phrase à l'image (défilement lent d'une page)
     end = max(t + S['tail'], start + sc.get('min', 0))   # min = durée mini d'une scène dont l'animation est plus longue que la phrase
     scenes.append({'id': sc['id'], 'bg': sc['bg'], 'caption': sc['caption'], 'start': round(start, 3), 'end': round(end, 3), 'sent': sents})
     cursor = end

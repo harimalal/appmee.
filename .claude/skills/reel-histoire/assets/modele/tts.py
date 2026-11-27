@@ -67,7 +67,7 @@ for sc in CFG['scenes']:
             open(raw, 'wb').write(base64.b64decode(d['candidates'][0]['content']['parts'][0]['inlineData']['data'])); spent += 1
         tr = os.path.join(WORK, 'trim', s['id'] + '.wav')
         af = 'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse'
-        if s.get('tempo'): af += ',atempo=%s' % s['tempo']   # ralentissement ponctuel d'une phrase lue trop vite par la synthèse
+        if s.get('tempo') or CFG.get('tempo'): af += ',atempo=%s' % (s.get('tempo') or CFG.get('tempo'))   # ralentissement ponctuel d'une phrase lue trop vite par la synthèse
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', raw, '-af', af, '-ar', '24000', '-ac', '1', tr], check=True)
         prompt = ("Transcris exactement, en français, ce qui est dit dans cet audio. Écris tous les nombres en toutes lettres "
                   "(par exemple « vingt-trois »). Les noms propres anglais (Claude in Chrome, YouTube, SaaS) s'écrivent tels quels. Réponds uniquement par la transcription.")

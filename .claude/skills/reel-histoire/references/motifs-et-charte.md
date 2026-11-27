@@ -54,3 +54,15 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | Cartes qui apparaissent vides puis se remplissent de critères réels | Montrer que ce qui compte change d'un cas à l'autre (3 types d'outils, 4 critères chacun, tirés des en-têtes publiés) ; les cartes arrivent pendant la phrase d'accroche, les critères au rythme des phrases suivantes | `criteres` |
 | Tableau réel agrandi avec balayage horizontal | Un tableau large (10 colonnes) : l'image est montée à l'échelle 1,5, on balaie les colonnes, puis on revient sur la ligne surlignée ; trois tableaux se succèdent en glissant | `tableau` |
 | Fenêtre agrandie (1 000 × 1 150) | « Plus gros » : le cadre occupe presque tout l'écran, mais le texte d'en-tête du cadre reste dans les zones sûres (gauche ≥ 84, droite ≤ 930) | `tableau`, `usages`, `profils` |
+
+## Motifs ajoutés au 6e essai (reference-site-0-euro)
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| **Ouverture = la vraie chose, zoom avant fort puis dézoom** (jamais un titre qui apparaît) | Dès la 1re seconde : la page réelle dans une grande fenêtre navigateur, caméra sur la toile (`camAt`) qui zoome sur le titre, puis sur un détail réel (ici l'étiquette « Limites à savoir »), puis dézoome | `ouverture` |
+| **Caméra façon Prezi** sur une toile de pages réelles | Zoom, dézoom (`dip`) et glissement d'une page à l'autre au lieu d'apparitions/disparitions | `ouverture`, `pages` |
+| **Pile en couches qui construit** | Présenter un « stack » : les couches (outils) s'empilent de bas en haut, puis le résultat (pages réelles) se pose dans un cadre au-dessus | `pieces` |
+| **Fenêtres de pages en défilement lent + swipe** | Une page de chaque type : une fenêtre par type, défilement lent (230 unités/s), glissement horizontal vers la suivante ; la phrase dure au moins le temps du défilement (`hold`) | `pages` |
+| **Deux colonnes : solutions classiques à gauche, ce dont on n'a pas besoin à droite** | Se comparer à des solutions connues **sans rien affirmer sur elles** : la gauche se grise quand la droite prend la parole | `compare` |
+| **Grille de cartes qui passe au vert en vague** + compteur + contrôles | « Tout en une fois » : **schéma annoncé « illustration »** quand l'opération n'est pas réellement montrable | `masse` |
+| **Poussée verticale entre scènes** | L'une monte, l'autre descend ; rien ne se superpose | `__setTime` |
+| **Étiquette unique dans la bande du haut** (`swap`) | Aucun texte au-dessus d'un autre : l'ancienne sort par le haut avant que la suivante monte du bas ; `qa.cjs` vérifie l'absence de chevauchement | toutes |
