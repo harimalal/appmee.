@@ -87,3 +87,10 @@ Matière : le dépôt du site lui-même + un utilisateur qui dicte tout (angle, 
 6. **Un schéma n'est pas une preuve** : « tout se fait en une demande, sans que rien ne casse » est illustré par un schéma annoncé comme tel ; seuls les contrôles du build (liens, champs, doublons) reposent sur du réel et **réduisent** le risque sans le supprimer.
 7. **Ordre dicté et réordonné plusieurs fois** (avantages avant le stack, Claude Code avant les pages) : réordonner les scènes dans `story.json` **et** dans `story.html`, recalculer la durée ; les instants internes d'une scène suivent la durée de parole (`dv`).
 8. **Ton, CTA et musique** : voir `references/recit.md` (registre « ami », CTA à mot-clé) et `references/production.md` (6e essai).
+
+---
+
+## 10. Enseignement du 7e essai (reel « 28 comparatifs » v6)
+1. **Une consigne dictée ambiguë (« oublie l'instruction précédente… la version précédente ») : poser la question** (quelle vidéo, quelle version) avant de produire ; deux questions courtes valent mieux qu'un reel refait dans la mauvaise direction.
+2. **Revenir à une version antérieure = reprendre son contenu et sa structure, pas son habillage** : la v4 (contenu complet) + la mise en scène demandée ensuite (sans cadre, démo façon site, ton ami).
+3. **La démo d'un site se fait sur de vraies pages avec de vraies cibles** (positions mesurées) ; ce qui est mise en scène (curseur, clics, swipes) est dit comme tel dans `SCRIPT.md`.

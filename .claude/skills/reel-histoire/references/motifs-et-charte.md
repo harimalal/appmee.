@@ -66,3 +66,12 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | **Grille de cartes qui passe au vert en vague** + compteur + contrôles | « Tout en une fois » : **schéma annoncé « illustration »** quand l'opération n'est pas réellement montrable | `masse` |
 | **Poussée verticale entre scènes** | L'une monte, l'autre descend ; rien ne se superpose | `__setTime` |
 | **Étiquette unique dans la bande du haut** (`swap`) | Aucun texte au-dessus d'un autre : l'ancienne sort par le haut avant que la suivante monte du bas ; `qa.cjs` vérifie l'absence de chevauchement | toutes |
+
+## Motifs ajoutés au 7e essai (reference-comparatif-site, reel « 28 comparatifs » v6)
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| **Démo plein cadre façon site (sans fenêtre)** | Toute preuve par pages réelles : la page (version ordinateur 1 280 px) occupe tout l'écran 1 080 × 1 920 (échelle 1080/1280), étiquette unique sur un bandeau blanc (`scrim`) en haut ; **jamais** de barre de navigateur ni de bordure (retour de Hari : « arrête la démo dans la fenêtre, fais sans cadre ») | toutes les scènes de page |
+| **Curseur + clic + surbrillance** | Montrer ce qu'on explique en « cliquant » dessus : flèche (`makeCursor`, positions en pixels écran projetées depuis les coordonnées de page à l'instant du clic), onde (`makeClicks`), boîte jaune sur la cible réelle (`colBox`, `cardBox`) | `criteres`, `tableau`, `usages`, `profils` |
+| **Scroll + zoom pilotés par la caméra** | `camAt` (centre, zoom, `dip`) : défilement lent, zoom sur la cible au moment où la voix la nomme | toutes |
+| **Swipe** | Doigt translucide (`makeSwipes`) + glissement de caméra d'une page à l'autre (3 comparatifs côte à côte sur la toile), ou glissement horizontal d'un tableau qui défile (colonnes cachées révélées) | `criteres`, `tableau`, `profils` |
+| **Plongée** | Clic sur une carte de la liste, zoom jusqu'à remplir l'écran, la page cible apparaît en dézoomant (`cvB` de 0,55 à 1) | `ouverture` |
