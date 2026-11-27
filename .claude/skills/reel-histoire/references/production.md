@@ -84,3 +84,12 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - **`max_mots_visibles`** : une liste d'étapes demande 60 ; la limite s'applique aussi aux images de transition entre deux scènes (fondu de 0,25 s).
 - **Plafond de durée donné par l'utilisateur** : vérifier avec `plan.py` avant de lancer la voix ; la voix mesurée (74,8 s de parole) fixe la durée, pas l'inverse.
 - **Cache de voix** : les phrases inchangées ne coûtent aucune requête ; changer le texte d'une phrase ne régénère que celle-ci (ici : 13 requêtes pour la V2, plus 3 régénérations de phrases mal comprises).
+
+## Enseignements du 5e essai (reel Comparatif Factory)
+- **Capturer des éléments, pas des pages** : `assets/capture-elements.cjs` (sélecteur CSS, rendu mobile ou `@large`) masque l'en-tête collant, la barre de lecture et le panneau latéral (sinon ils s'impriment au milieu de l'image) et passe en `overflow: visible` tous les ancêtres d'un tableau qui défile horizontalement (sinon un ancêtre à `overflow: hidden` coupe les colonnes de droite).
+- **Pronoms courts et verbes proches mal transcrits** : « Il part » entendu « Ils partent », « je pars de » entendu « je parle de », « six à huit » entendu « six SaaS » : reformuler (« Le moteur part de », « je commence par », « entre six et huit ») et régénérer la phrase seule. Une phrase du cache transcrite tronquée à la relecture : la régénérer plutôt que d'ignorer l'échec.
+- **Plage figée avec peu d'éléments** : faire apparaître les cartes à venir (titres seuls) pendant la phrase d'accroche plutôt qu'ajouter un flottement ; remplir une grille pendant une phrase longue.
+- **`max_mots_visibles` à 60** pour une scène de liste avec carte barrée ; déclarer les symboles affichés (« ✓ », numéros) dans la liste des textes de la scène.
+- **Un rendu = un seul contrôle de gel** : relancer `freezedetect` après chaque modification de scène, pas seulement au premier rendu ; corriger, re-rendre, remixer.
+- **Plafond de durée** (< 90 s) : la durée de parole mesurée (≈ 77 s ici) plus les `min` des scènes donne la durée réelle ; supprimer une phrase redondante avec le titre (ici « 28 comparatifs ») économise 3 s.
+- **Réponse à une demande dictée floue** : dire à l'utilisateur, en deux phrases, comment elle a été comprise, puis livrer ; ne pas la lui renvoyer sous forme de question.

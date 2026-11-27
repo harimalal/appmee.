@@ -60,3 +60,17 @@ Matière : un playbook ancien (artefact du 23/08), un dépôt qui l'a dépassé 
 5. **Budget de durée quand l'utilisateur donne un plafond** : écrire le budget par scène avant la voix (ici titre 7 s, problème 16 s, étapes 28 s, chiffres 13 s, exemples 12 s, appel 7 s = 82 s sous 90 s) ; remplacer une scène par une autre plutôt qu'en ajouter (la scène « système » est devenue la scène « étapes »).
 6. **Une phrase d'accroche dictée par l'utilisateur sur le fond (SEO, intention de recherche, mots-clés, angle original) reste signalée comme la sienne** dans `SCRIPT.md` ; on n'y ajoute aucune promesse de classement.
 7. **Montrer la preuve par de vraies pages** : voir `references/production.md` (captures du site construit en local, script `assets/capture-pages.cjs`).
+
+---
+
+## 8. Enseignements du 5e essai (reel Comparatif Factory : « 28 comparatifs »)
+Matière : un moteur qui fabrique des comparatifs (artefact + skill + 28 pages publiées), un utilisateur qui dicte l'histoire en quatre vagues. Exemple rempli : `<skill>/assets/exemple-brief-comparatif-factory.md` ; implémentation : `<skill>/assets/reference-comparatif/`.
+
+1. **« Un skill et un système » face à « une simple demande à ChatGPT ou à Claude » se dit comme le constat de l'utilisateur, jamais comme un test.** La phrase est marquée `[À CONFIRMER]` dans le texte à valider, signalée « non testé ici » dans `SCRIPT.md`, et ne dit rien sur les capacités des outils au-delà de son expérience.
+2. **Le piège du critère unique se montre au lieu de s'affirmer** : trois exemples réels qui diffèrent (les en-têtes de critères lus dans trois tableaux publiés : voix IA, code, CRM) valent mieux qu'une phrase ; la voix reste courte (trois critères par type), le reste est à l'écran.
+3. **Valider un contrôle avec un parseur permissif avant de l'annoncer.** « 2 tableaux sur 28 ne sont pas triés par score » est devenu « 5 sur 28 » quand le contrôle a lu toutes les formes de cellule de score ; l'annonce a été corrigée devant l'utilisateur. Un chiffre de contrôle se recompte avec une deuxième méthode.
+4. **Ne pas montrer un défaut de la source** : les exemples sont choisis parmi ceux qui passent le contrôle (tableaux bien triés), et le choix est dit dans `SCRIPT.md` (« 3 comparatifs sur 28, choisis… »).
+5. **Source avec un intérêt commercial** (ici des fichiers d'affiliation) : poser la question de l'endroit où le dire (à l'écran, à la voix ou seulement dans `SCRIPT.md`) ; appliquer la réponse sans la contourner ; dire une phrase neutre (« les notes viennent de mes sources, pas d'un test indépendant ») seulement si elle est validée.
+6. **Quand l'utilisateur dicte par vagues** (hook gardé, partie retirée, 3 exemples, puis skill et piège) : réécrire le texte complet à chaque vague, le faire valider, ne régénérer que les phrases changées (cache), recompter la durée avant la voix.
+7. **Quand la source est la synthèse d'une vidéo tierce** : **créditer l'auteur à l'écran et à la voix, et ne jamais conjuguer ses démos à « je »** ; « je » = seulement ce que l'utilisateur a fait ou dit. Les notes de qualité de l'artefact et les chiffres non sourcés d'un modèle de présentation (« 3 h vs 3 semaines ») sont écartés.
+8. **Une preuve « avant / après » se reconstruit depuis l'historique git** (`git archive <commit> | tar -x`, build, captures), sans reconstitution ; on ne prétend pas que l'après est « meilleur » ou « moins IA » : c'est un jugement de goût, et rien ne prouve qu'un outil précis a servi.

@@ -46,3 +46,11 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | Grille de carrés qui se remplit | Donner l'échelle d'un nombre (64 articles) pendant qu'une phrase est dite, puis la remplacer par la carte du nombre ; casse aussi les plages figées | `chiffres` (reference-blog-factory) |
 | Cartes + puces d'idées | Une notion (« penser le SEO ») et ses trois composantes qui arrivent au rythme de la phrase (instants calculés sur la durée de la phrase, `words[...]`) | `probleme` (reference-blog-factory) |
 | Défilé de pages réelles à l'échelle mobile | Plusieurs pages (6) dans un cadre de téléphone : haut de page tenu environ 20 % du pas (titre lisible), défilement de 2 300 px, puis glissement latéral vers la page suivante ; étiquette de type de page sous le cadre (étiquettes à déclarer comme votre qualification, pas un champ de la source) | `exemples` (reference-blog-factory) |
+
+## Motifs ajoutés au 5e essai (reference-comparatif)
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| Carte barrée (rouge) face à une rangée validée (coche verte) | Opposer une pratique courante et la méthode, sans test chiffré (« simple demande » / « skill + système ») | `systeme` (reference-comparatif) |
+| Cartes qui apparaissent vides puis se remplissent de critères réels | Montrer que ce qui compte change d'un cas à l'autre (3 types d'outils, 4 critères chacun, tirés des en-têtes publiés) ; les cartes arrivent pendant la phrase d'accroche, les critères au rythme des phrases suivantes | `criteres` |
+| Tableau réel agrandi avec balayage horizontal | Un tableau large (10 colonnes) : l'image est montée à l'échelle 1,5, on balaie les colonnes, puis on revient sur la ligne surlignée ; trois tableaux se succèdent en glissant | `tableau` |
+| Fenêtre agrandie (1 000 × 1 150) | « Plus gros » : le cadre occupe presque tout l'écran, mais le texte d'en-tête du cadre reste dans les zones sûres (gauche ≥ 84, droite ≤ 930) | `tableau`, `usages`, `profils` |

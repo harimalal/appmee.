@@ -5,7 +5,7 @@ description: Transforme n'importe quel travail terminé et documenté (correctio
 
 # Reel « histoire » — raconter un travail terminé
 
-Dans ce document, `<skill>` désigne le dossier de ce skill. Né du reel « SEO d'indexation avec Claude Code » (novembre 2026, projet Reflex IA), complété par « Tri Watch Later » puis « Créer des carrousels automatiquement » et « 64 articles de blog en deux mois » : la première version, un montage de chiffres, était belle et incompréhensible (« on ne sait pas de quoi on parle »). Ce skill impose l'inverse : **partir de la situation du spectateur, expliquer la notion qu'il ne connaît pas, raconter ce qui s'est passé, puis seulement la méthode et les chiffres**, avec une voix qui porte le récit et des visuels qui l'illustrent.
+Dans ce document, `<skill>` désigne le dossier de ce skill. Né du reel « SEO d'indexation avec Claude Code » (novembre 2026, projet Reflex IA), complété par « Tri Watch Later » puis « Créer des carrousels automatiquement » « 64 articles de blog en deux mois » et « 28 comparatifs d'outils IA » : la première version, un montage de chiffres, était belle et incompréhensible (« on ne sait pas de quoi on parle »). Ce skill impose l'inverse : **partir de la situation du spectateur, expliquer la notion qu'il ne connaît pas, raconter ce qui s'est passé, puis seulement la méthode et les chiffres**, avec une voix qui porte le récit et des visuels qui l'illustrent.
 
 Pour tout travail **terminé et documenté**. Pas pour un travail non terminé ni non mesuré : on ne raconte pas un résultat qui n'existe pas.
 
@@ -50,12 +50,14 @@ Format : `BRIEF.md` dans le dossier du reel (modèle : `<skill>/assets/brief-mod
 | Schéma narratif, adaptation à un type de travail, fiche de faits, écriture de la voix et des légendes | `<skill>/references/recit.md` |
 | Catalogue des motifs de scène, charte graphique, logos | `<skill>/references/motifs-et-charte.md` |
 | Étapes de production et commandes, seuils de contrôle, pièges rencontrés, limites | `<skill>/references/production.md` |
-| Brief à remplir et à faire valider (modèle + exemples remplis) | `<skill>/assets/brief-modele.md`, `<skill>/assets/exemple-brief-seo-indexation.md`, `<skill>/assets/exemple-brief-carrousels-ia.md`, `<skill>/assets/exemple-brief-blog-factory.md` |
+| Brief à remplir et à faire valider (modèle + exemples remplis) | `<skill>/assets/brief-modele.md`, `<skill>/assets/exemple-brief-seo-indexation.md`, `<skill>/assets/exemple-brief-carrousels-ia.md`, `<skill>/assets/exemple-brief-blog-factory.md`, `<skill>/assets/exemple-brief-comparatif-factory.md` |
 | Outils prêts à l'emploi : voix (`tts.py`), plan de montage (`plan.py`), contrôle (`qa.cjs`), événements sonores (`events.cjs`), son (`synth.cjs`), rendu (`render.cjs`), mixage (`mix.py`), couverture (`cover.cjs`, `cover.html`), gabarit de page (`story.template.html`) et de récit (`story.json`) | `<skill>/assets/modele/` |
 | Implémentation de référence 1 : correction SEO (13 scènes, 31 phrases, couverture, comparaison avant/après) | `<skill>/assets/reference-seo/` |
 | Implémentation de référence 2 : playbook « Tri Watch Later » (10 scènes, vraies captures en défilé, critères, comparaison d'outils, suppression accélérée) + brief rempli | `<skill>/assets/reference-tri/`, `<skill>/assets/exemple-brief-tri-watch-later.md` |
 | Implémentation de référence 3 : « Créer des carrousels automatiquement » (5 scènes, 11 phrases, histoire dictée, vraies slides en défilement) + SCRIPT.md et brief initial | `<skill>/assets/reference-carrousels/` |
 | Implémentation de référence 4 : « Blog Factory » (6 scènes, 18 phrases, 82 s : titre, problème SEO, liste des 5 étapes avec boucle d'audit, chiffres, défilé de vraies pages, appel) + texte validé, SCRIPT.md, BRIEF.md | `<skill>/assets/reference-blog-factory/` |
+| Implémentation de référence 5 : « Comparatif Factory » (8 scènes, 18 phrases, 86,8 s : hook, skill et système face à une simple demande, piège des critères uniques, 3 vrais tableaux, cas d'usage, profils, chiffres, appel) + texte validé, SCRIPT.md, BRIEF.md | `<skill>/assets/reference-comparatif/` |
+| Capturer des éléments réels d'une page (tableau large, grille de cartes) | `<skill>/assets/capture-elements.cjs` |
 | Capturer de vraies pages d'un site construit en local pour un défilé (script paramétré) | `<skill>/assets/capture-pages.cjs` |
 
 ## Déroulé en un coup d'œil
