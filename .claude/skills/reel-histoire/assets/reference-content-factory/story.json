@@ -1,5 +1,5 @@
 {
-  "_note": "Reel n°8 « Content Factory ». Voix Charon, modèle gemini-3.1-flash-tts-preview : les quotas journaliers (100 requêtes) de gemini-3.8-flash-tts et gemini-3.8-flash-lite-tts étaient atteints le 27/11/2026. Texte validé par Hari (« Go »).",
+  "_note": "Reel n°8 v2 « Content Factory » : les avantages d'abord. Voix Charon, modèle gemini-3.1-flash-tts-preview (voix de la v1, choisie par Hari). Texte validé par Hari (« Voix v1 »).",
   "model": "gemini-3.1-flash-tts-preview",
   "voice": "Charon",
   "asr_model": "gemini-3.5-flash",
@@ -7,107 +7,100 @@
   "gap_scene": 0.5,
   "lead": 0.2,
   "tail": 0.25,
-  "nombres_autorises": [],
+  "nombres_autorises": [
+    "0"
+  ],
   "cta_contient": "Commente",
   "max_mots_visibles": 40,
   "scenes": [
     {
-      "id": "ouverture",
+      "id": "hook",
       "bg": "#F1EFFD",
-      "min": 0,
+      "min": 4.8,
       "caption": false,
       "sentences": [
         {
-          "id": "o1",
-          "voice": "Un seul article de blog, et tous tes posts sortent d'un coup !",
-          "cap": "Un article → tous tes posts",
-          "hold": 3.6
-        },
-        {
-          "id": "o2",
-          "voice": "Moi, je pars d'un article : le coût réel d'OpenClaw.",
-          "cap": "Le coût réel d’OpenClaw",
-          "hold": 3.6
+          "id": "h1",
+          "voice": "Une seule source, et ton contenu se fabrique tout seul, pour tous tes réseaux !",
+          "cap": "Une source, tout ton contenu"
         }
       ]
     },
     {
-      "id": "fiche",
-      "bg": "#E8F3FB",
-      "min": 0,
-      "caption": false,
-      "sentences": [
-        {
-          "id": "f1",
-          "voice": "Le système en sort d'abord une fiche : les faits de l'article, chaque chiffre avec sa source.",
-          "cap": "Une fiche, chaque chiffre sourcé",
-          "hold": 6.6
-        }
-      ]
-    },
-    {
-      "id": "position",
-      "bg": "#FBF1ED",
-      "min": 0,
-      "caption": false,
-      "sentences": [
-        {
-          "id": "p1",
-          "voice": "Ensuite, il me propose une position, et c'est moi qui la valide.",
-          "cap": "Une position, je valide",
-          "hold": 5.0
-        }
-      ]
-    },
-    {
-      "id": "fabriques",
+      "id": "avantages",
       "bg": "#EAF7F1",
       "min": 0,
       "caption": false,
       "sentences": [
         {
-          "id": "b1",
-          "voice": "Et de là, trois fabriques : un post LinkedIn, un fil X, et un carrousel !",
-          "cap": "Trois fabriques",
-          "hold": 3.8
+          "id": "a1",
+          "voice": "Un article, un test ou une idée : tu le donnes une seule fois.",
+          "cap": "Une seule fois",
+          "hold": 3.4
         },
         {
-          "id": "b2",
-          "voice": "Le post LinkedIn, avec le verdict pour chaque profil.",
-          "cap": "Le post LinkedIn",
+          "id": "a2",
+          "voice": "Et tu récupères tes posts pour LinkedIn, X, Instagram, Pinterest et TikTok.",
+          "cap": "Tous tes réseaux",
           "hold": 4.6
         },
         {
-          "id": "b3",
-          "voice": "Le fil X, en six posts.",
-          "cap": "Le fil X",
-          "hold": 3.8
+          "id": "a3",
+          "voice": "Trente jours de contenu, prêts à l'avance !",
+          "cap": "Trente jours prêts à l’avance",
+          "hold": 3.6
         },
         {
-          "id": "b4",
-          "voice": "Et le carrousel : sept slides, prêtes pour Instagram, LinkedIn, Pinterest et TikTok.",
-          "cap": "Le carrousel",
-          "hold": 5.6
+          "id": "a4",
+          "voice": "Et zéro euro d'outil en plus : tout tourne avec Claude.",
+          "cap": "Tout tourne avec Claude",
+          "hold": 3.4
         }
       ]
     },
     {
-      "id": "controle",
+      "id": "anatomie",
+      "bg": "#FFF8E1",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n1",
+          "voice": "Dedans, un skill en cinq pièces : ta voix, ton style, une fabrique par réseau, une direction artistique, et un contrôle.",
+          "cap": "Un skill, cinq pièces",
+          "hold": 6.4
+        }
+      ]
+    },
+    {
+      "id": "apports",
       "bg": "#F3F1FA",
       "min": 0,
       "caption": false,
       "sentences": [
         {
-          "id": "c1",
-          "voice": "Avant de publier, un contrôle : un chiffre qui n'est pas dans la fiche, il est refusé !",
-          "cap": "Le contrôle",
-          "hold": 5.4
+          "id": "r1",
+          "voice": "Résultat : ça sonne comme toi, pas comme une IA.",
+          "cap": "Ça sonne comme toi",
+          "hold": 3.0
         },
         {
-          "id": "c2",
-          "voice": "Résultat : des posts fidèles à l'article, sans chiffre inventé.",
-          "cap": "Fidèle à l’article",
+          "id": "r2",
+          "voice": "Chaque chiffre vient de ta source : rien d'inventé.",
+          "cap": "Rien d’inventé",
           "hold": 3.6
+        },
+        {
+          "id": "r3",
+          "voice": "Chaque carrousel change de style, pour ne pas lasser.",
+          "cap": "Un style à chaque carrousel",
+          "hold": 3.0
+        },
+        {
+          "id": "r4",
+          "voice": "Toi, tu relis, tu valides, et tu publies.",
+          "cap": "Toi, tu valides",
+          "hold": 3.4
         }
       ]
     },
@@ -119,7 +112,7 @@
       "sentences": [
         {
           "id": "k1",
-          "voice": "Tu veux le même système pour tes articles ? Commente « contenu », et je te l'envoie pour l'adapter à ta sauce !",
+          "voice": "Tu veux le même système ? Commente « contenu », et je te l'envoie pour l'adapter à ta sauce !",
           "cap": "Commente « contenu »"
         }
       ]

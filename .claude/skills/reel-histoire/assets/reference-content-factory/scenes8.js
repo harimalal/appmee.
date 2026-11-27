@@ -10,157 +10,128 @@ const partC = (id, p, ox, oy) => { const q = CM[id].parts[p]; return { x: ox + q
 const thumb = (parent, src, x, y, w, h, pos = '50% 0%', rad = 18) => { const d = mk(parent, 'abs', null); d.dataset.deco = ''; place(d, x, y, w, h); d.style.cssText += `;overflow:hidden;border-radius:${rad}px;box-shadow:${SHADOW};background:#fff`; const i = img(d, src); i.style.cssText += `;display:block;width:100%;height:100%;object-fit:cover;object-position:${pos}`; return d; };
 const camAtP = (K, t, px, py) => { const q = proj(camAt(K, t), px, py); return { t, x: q.x, y: q.y }; };
 function makeVSwipe(root, a, b, x, y0, y1) { const e = mk(root, 'abs swp', null); e.dataset.deco = ''; e.style.zIndex = 48; return t => { const p = P(t, a, b - a); if (p <= 0 || p >= 1) { e.style.opacity = 0; return; } const k = io(p); e.style.transform = `translate(${x - 46}px,${lerp(y0, y1, k) - 46}px) scale(${1 - .18 * Math.sin(p * Math.PI)})`; e.style.opacity = Math.min(1, Math.sin(p * Math.PI) * 2.2); }; }
+const pill = (root, text, x, y, w, h, css = '') => { const e = mk(root, 'abs tx', text); place(e, x, y, w, h); e.style.cssText += ';display:flex;align-items:center;justify-content:center;border-radius:999px;font:900 46px/1 var(--font);letter-spacing:-.02em;white-space:nowrap;' + css; return e; };
+const RENDERS = [[CARD('linkedin'), '50% 0%'], [SL('oc1'), '50% 50%'], [CARD('x'), '50% 0%'], [SL('oc2'), '50% 50%'], [CARD('fiche'), '50% 0%'], [SL('oc5'), '50% 50%'], [SL('tik1'), '50% 30%'], [SL('oc7'), '50% 50%'], [SL('pin1'), '50% 20%'], [CARD('position'), '50% 0%']];
 
-/* ----- 1 — ouverture : l'article, d'où sortent les posts ; puis zoom sur le titre ----- */
-scene('ouverture', ['Un article → tous tes posts', 'Le coût réel d’OpenClaw'], (root, m) => {
-  const o1 = S(m, 'o1'), o2 = S(m, 'o2');
-  const L = lyr(root); const art = img(L.cv, 'assets/pc/article.jpg', 'pgf'); place(art, 0, 0, 1080, ARTH);
-  const pops = makePops(L.cv, 'assets/pc/article.jpg', 1080, ARTH, 0, 0);
-  const H1 = { x: 294 * ARTF - 10, y: 201 * ARTF - 10, w: 692 * ARTF + 20, h: 101 * ARTF + 20 }, h1c = { x: H1.x + H1.w / 2, y: H1.y + H1.h / 2 };
-  const dim = mk(root, 'abs', null); dim.dataset.deco = ''; place(dim, 0, 0, 1080, 1920); dim.style.background = 'rgba(15,16,32,.5)'; dim.style.opacity = 0;
+/* ----- 1 — hook : une seule source se démultiplie en tout ton contenu ----- */
+scene('hook', ['Une source, tout ton contenu', 'production automatique · publication par toi'], (root, m) => {
+  const h1 = S(m, 'h1'), D = dv(h1);
+  const c = circle(root, 'rgba(108,92,231,.12)', -300, 1180, 820);
   scrim(root, 'mid');
-  const lab = swap(root, 'lbl', [{ html: 'Un article → <span class="hl">tous tes posts</span>', a: o1.start + .1, upd: (e, t) => hlSet(e, P(t, o1.start + 1.1, .5)) }, { html: 'Le coût réel d’OpenClaw', a: o2.start }], 84, 304, 846, 150);
-  // les trois sorties réelles jaillissent de l'article
-  const FAN = [[CARD('linkedin'), '50% 0%'], [SL('oc1'), '50% 50%'], [CARD('x'), '50% 0%']];
-  const fan = FAN.map(([src, pos], i) => thumb(root, src, 540 - 170, 1060, 340, 425, pos, 22));
-  fan[1].style.zIndex = 3;
-  const tIn = o1.start + .8, tOut = o2.start - .15;
-  const K = [{ t: m.start, ...camTop(1) }, { t: o1.start + 1.5, x: 540, y: camTop(1).y + 40, z: 1.05 }, { t: o2.start + .1, x: 560, y: camTop(1).y + 30, z: 1.08 },
-    { t: o2.start + 1.0, x: h1c.x, y: h1c.y + 40, z: 1.7, dip: .06 }, { t: m.end + .45, x: h1c.x + 10, y: h1c.y + 46, z: 1.76 }];
-  const tc = o2.start + 1.35; pops.add(H1, tc, m.end + 2, 1.08);
-  const cur = makeCursor(root, [{ t: o2.start + .2, x: 950, y: 1640 }, camAtP(K, tc - .45, h1c.x + 160, h1c.y + 110), camAtP(K, tc, h1c.x + 60, h1c.y + 18)]);
-  const clk = makeClicks(root, cur, [tc]);
-  ev('thump', m.start + .25, { amp: .7 }); fan.forEach((_, i) => ev('pop', tIn + i * .14)); ev('ding', tIn + .7, { f: 988 }); ev('whoosh', tOut, { dur: .5, down: true }); ev('tick', tc, { f: 1800 }); ev('pop', tc + .1);
+  const lab = swap(root, 'lbl', [{ html: 'Une source, tout ton contenu', a: h1.start + .1, fs: 58 }], 84, 304, 846, 150);
+  const sub = swap(root, 'sublbl', [{ html: 'production automatique · publication par toi', a: h1.start + D * .55, b: m.end + 1, fs: 26 }], 84, 466, 846, 40);
+  const tBurst = h1.start + 1.5;
+  // les rendus réels, en grille 3 × 3 qui remplit l'écran
+  const GW = 300, GH = 375, GX = 24, GY = 24, X0 = (1080 - 3 * GW - 2 * GX) / 2, Y0 = 600;
+  const grid = RENDERS.slice(0, 9).map(([src, pos], i) => { const e = thumb(root, src, X0 + (i % 3) * (GW + GX), Y0 + Math.floor(i / 3) * (GH + GY), GW, GH, pos, 18); return e; });
+  // la source : la vraie page de l'article, au centre, devant
+  const src = thumb(root, 'assets/pc/article.jpg', 540 - 210, 780, 420, 520, '50% 0%', 22); src.style.zIndex = 5; src.style.border = '6px solid #fff';
+  ev('thump', m.start + .25, { amp: .7 }); ev('whoosh', tBurst - .1, { dur: .5, up: true }); grid.forEach((_, i) => ev('pop', tBurst + i * .07)); ev('ding', tBurst + .8, { f: 988 });
   return t => {
-    lab(t); applyScr(L.cv, camAt(K, t)); pops.upd(t);
-    const out = P(t, tOut, .5);
-    dim.style.opacity = .55 * P(t, tIn - .2, .4) * (1 - out);
-    fan.forEach((e, i) => { const p = P(t, tIn + i * .14, .6), k = eoBack(p), d = i - 1;
-      put(e, { x: d * 300 * k, y: (1 - k) * 60 + Math.abs(d) * 50 * k + Math.sin(t * 1.6 + i) * 8 * p + out * 900, r: d * 9 * k, s: .35 + .65 * k, op: cl(p * 3) * (1 - out) }); });
-    cur.upd(t, t > tc + .6 ? Math.max(0, 1 - P(t, tc + .6, .3)) : 1); clk(t);
+    drift(c, t, 1.6); lab(t); sub(t);
+    const ps = P(t, m.start + .15, .5), shrink = eo(P(t, tBurst + .7, .6));
+    put(src, { y: (1 - eoBack(ps)) * 200 + shrink * 560 + Math.sin(t * 1.4) * 6, s: (.9 + .1 * eoBack(ps)) * (1 - .55 * shrink), op: cl(ps * 3) * (1 - .9 * shrink) });
+    grid.forEach((e, i) => { const p = P(t, tBurst + i * .07, .55), k = eoBack(p); const cx = X0 + (i % 3) * (GW + GX) + GW / 2, cy = Y0 + Math.floor(i / 3) * (GH + GY) + GH / 2;
+      put(e, { x: (540 - cx) * (1 - k), y: (1040 - cy) * (1 - k) + Math.sin(t * 1.5 + i) * 6 * p, r: (1 - k) * (i % 2 ? 12 : -12), s: .3 + .7 * k, op: cl(p * 3) }); });
   };
 });
 
-/* ----- 2 — la fiche d'atomes : les faits, chaque chiffre avec sa source ----- */
-scene('fiche', ['Une fiche, chaque chiffre sourcé'], (root, m) => {
-  const f1 = S(m, 'f1'), D = dv(f1), OX = 40, OY = 600;
-  const L = lyr(root); cardImg(L.cv, 'fiche', OX, OY);
-  const pops = makePops(L.cv, CARD('fiche'), CM.fiche.w, CM.fiche.h, OX, OY);
-  const ids = ['A1', 'A2', 'A6', 'A8', 'A12', 'A14'];
-  const covers = ids.map(id => { const r = partR('fiche', 'at-' + id, OX, OY, 0); const c = mk(L.cv, 'abs', null); c.dataset.deco = ''; place(c, r.x, r.y + 2, r.w, r.h - 2); c.style.background = '#fff'; return c; });
+/* ----- 2 — les avantages : une fois, tous les réseaux, trente jours, zéro outil en plus ----- */
+scene('avantages', ['Une seule fois', 'Tous tes réseaux', 'Trente jours prêts à l’avance', 'Tout tourne avec Claude', 'Article', 'Test', 'Idée', 'LinkedIn', 'X', 'Instagram', 'Pinterest', 'TikTok', 'prêts, pas encore publiés', '0 €', 'd’outil en plus', 'hors abonnement Claude'], (root, m) => {
+  const a1 = S(m, 'a1'), a2 = S(m, 'a2'), a3 = S(m, 'a3'), a4 = S(m, 'a4');
+  const c = circle(root, 'rgba(25,169,116,.12)', -300, 1180, 820);
   scrim(root, 'mid');
-  const lab = swap(root, 'lbl', [{ html: 'Une fiche, chaque <span class="hl">chiffre sourcé</span>', a: f1.start + .1, fs: 58, upd: (e, t) => hlSet(e, P(t, f1.start + D * .7, .5)) }], 84, 304, 846, 190);
-  const RT = ids.map((_, i) => f1.start + .3 + i * .3), a6 = partC('fiche', 'at-A6', OX, OY), tc = f1.start + D * .72;
-  const K = [{ t: m.start, x: 540, y: 980, z: 1 }, { t: tc - .5, x: 540, y: 1000, z: 1.02 }, { t: tc + .3, x: a6.x + 20, y: a6.y + 40, z: 1.5, dip: .05 }, { t: tc + 1.8, x: a6.x + 26, y: a6.y + 46, z: 1.52 }, { t: tc + 2.5, x: 540, y: 1040, z: 1.0 }, { t: m.end + .45, x: 545, y: 1060, z: 1.03 }];
-  pops.add(partR('fiche', 'at-A6', OX, OY, 10), tc, tc + 1.9, 1.06);
-  const cur = makeCursor(root, [{ t: tc - 1.2, x: 950, y: 1650 }, camAtP(K, tc - .4, a6.x + 220, a6.y + 120), camAtP(K, tc, a6.x + 120, a6.y + 20)]);
-  const clk = makeClicks(root, cur, [tc]);
-  ev('whoosh', m.start + .3, { dur: .5 }); RT.forEach(t => ev('tick', t, { f: 2400 })); ev('tick', tc, { f: 1800 }); ev('pop', tc + .1); ev('ding', tc + .5, { f: 1046 });
+  const lab = swap(root, 'lbl', [{ html: 'Une seule fois', a: a1.start + .1 }, { html: 'Tous tes réseaux', a: a2.start }, { html: 'Trente jours prêts à l’avance', a: a3.start, fs: 58 }, { html: 'Tout tourne avec Claude', a: a4.start }], 84, 304, 846, 150);
+  const sub = swap(root, 'sublbl', [{ html: 'prêts, pas encore publiés', a: a3.start + .6 }, { html: 'hors abonnement Claude', a: a4.start + .9, b: m.end + 1 }], 84, 466, 846, 40);
+  // (a1) trois entrées qui convergent
+  const IN = ['Article', 'Test', 'Idée'].map((n, i) => pill(root, n, 84 + i * 293, 700, 260, 110, 'background:#fff;color:var(--ink);box-shadow:0 12px 30px rgba(20,20,60,.14)'));
+  const one = pill(root, '', 290, 1040, 500, 500, 'background:transparent'); one.classList.remove('tx'); one.dataset.deco = '';
+  const srcT = thumb(one, 'assets/pc/article.jpg', 50, 0, 400, 500, '50% 0%', 22);
+  // (a2) cinq réseaux + le vrai rendu de chacun
+  const NETS = [['LinkedIn', CARD('linkedin'), '50% 0%'], ['X', CARD('x'), '50% 0%'], ['Instagram', SL('oc1'), '50% 50%'], ['Pinterest', SL('pin1'), '50% 20%'], ['TikTok', SL('tik1'), '50% 30%']];
+  const chips = NETS.map(([n], i) => pill(root, n, i < 3 ? 84 + i * 289 : 230 + (i - 3) * 330, i < 3 ? 600 : 712, i < 3 ? 268 : 290, 90, 'background:#fff;color:var(--ink);font-size:38px;box-shadow:0 10px 24px rgba(20,20,60,.12)'));
+  const shots = NETS.map(([, src, pos]) => thumb(root, src, 540 - 230, 850, 460, 640, pos, 24));
+  const tN = NETS.map((_, i) => a2.start + .35 + i * (dv(a2) * .82 / 5));
+  // (a3) calendrier de trente cases
+  const CW = 132, CH = 150, CG = 12, CX0 = (1080 - (6 * CW + 5 * CG)) / 2, CY0 = 620;
+  const cells = Array.from({ length: 30 }, (_, i) => { const w = mk(root, 'abs', null); w.dataset.deco = ''; place(w, CX0 + (i % 6) * (CW + CG), CY0 + Math.floor(i / 6) * (CH + CG), CW, CH); w.style.cssText += ';border-radius:14px;background:#fff;border:3px solid #E4E1F3;overflow:hidden'; const [s, p] = RENDERS[i % RENDERS.length]; const t = thumb(w, s, 0, 0, CW - 6, CH - 6, p, 10); t.style.boxShadow = 'none'; return { w, t }; });
+  const tC = i => a3.start + .3 + i * .055;
+  // (a4) zéro euro d'outil en plus
+  const big = mk(root, 'abs tx', '0 €'); place(big, 84, 680, 846, 300); big.style.cssText += ';display:flex;align-items:center;justify-content:center;font:900 300px/1 var(--font);letter-spacing:-.05em;color:var(--green)';
+  const bigS = mk(root, 'abs tx', 'd’outil en plus'); place(bigS, 84, 1110, 846, 90); bigS.style.cssText += ';display:flex;align-items:center;justify-content:center;font:900 64px/1 var(--font);letter-spacing:-.03em';
+  ev('whoosh', m.start + .3, { dur: .5 }); IN.forEach((_, i) => ev('pop', a1.start + .2 + i * .25)); ev('whoosh', a1.start + 1.6, { dur: .4 });
+  tN.forEach(t => { ev('tick', t, { f: 2000 }); ev('pop', t + .05); }); for (let i = 0; i < 30; i += 3) ev('tick', tC(i), { f: 2400 + i * 20 }); ev('ding', tC(29) + .3, { f: 1174 }); ev('pop', a4.start + .2); ev('ding', a4.start + .6, { f: 1568 });
   return t => {
-    lab(t); applyScr(L.cv, camAt(K, t)); pops.upd(t);
-    covers.forEach((c, i) => { const p = P(t, RT[i], .35); c.style.opacity = 1 - p; c.style.transform = `translateX(${60 * eo(p)}px)`; });
-    cur.upd(t, t > tc + .7 ? Math.max(0, 1 - P(t, tc + .7, .3)) : 1); clk(t);
+    drift(c, t, 3); lab(t); sub(t);
+    const out1 = P(t, a2.start - .3, .3), out2 = P(t, a3.start - .3, .3), out3 = P(t, a4.start - .3, .3);
+    // a1
+    IN.forEach((e, i) => { const p = P(t, a1.start + .2 + i * .25, .45), conv = io(P(t, a1.start + 1.5, .6)); const cx = 84 + i * 293 + 130; put(e, { x: (540 - cx) * conv, y: (1 - eoBack(p)) * 120 + conv * 330, s: 1 - .5 * conv, op: cl(p * 3) * (1 - conv) * (1 - out1) }); });
+    { const p = P(t, a1.start + 1.8, .5); put(one, { y: (1 - eoBack(p)) * 120 - 70 + Math.sin(t * 1.4) * 6, s: .8 + .2 * eoBack(p), op: cl(p * 3) * (1 - out1) }); }
+    // a2
+    chips.forEach((e, i) => { const p = P(t, a2.start + i * .08, .4), on = t >= tN[i] && (i === 4 || t < tN[i + 1]); put(e, { y: (1 - eoBack(p)) * 60, s: on ? 1.08 : 1, op: cl(p * 3) * (1 - out2) }); e.style.background = on ? 'var(--violet)' : '#fff'; e.style.color = on ? '#fff' : 'var(--ink)'; });
+    shots.forEach((e, i) => { const on = P(t, tN[i], .3), off = i < 4 ? P(t, tN[i + 1], .3) : out2; put(e, { x: (1 - eo(on)) * 500 - eo(off) * 500, y: Math.sin(t * 1.5) * 6, r: (1 - on) * 6 - off * 6, op: cl(on * 3) * (1 - off) }); });
+    // a3
+    cells.forEach(({ w, t: im }, i) => { const p = P(t, a3.start - .1, .4); put(w, { y: (1 - eoBack(p)) * 80, op: cl(p * 3) * (1 - out3) }); const q = P(t, tC(i), .3); im.style.opacity = q; im.style.transform = `scale(${.6 + .4 * eoBack(q)})`; w.style.borderColor = q >= 1 ? 'var(--green)' : '#E4E1F3'; });
+    // a4
+    const b = P(t, a4.start + .2, .5); put(big, { y: (1 - eoBack(b)) * 160 + Math.sin(t * 1.7) * 12 * b, r: Math.sin(t * 1.1) * 1.5 * b, s: (.7 + .3 * eoBack(b)) * (1 + .02 * Math.sin(t * 3)), op: cl(b * 3) });
+    const bs = P(t, a4.start + .6, .45); put(bigS, { y: (1 - eoBack(bs)) * 90 + Math.sin(t * 1.5 + 1) * 8 * bs, op: cl(bs * 2.4) });
   };
 });
 
-/* ----- 3 — la position : proposée, puis validée par Hari ----- */
-scene('position', ['Une position, je valide', 'Valider', '✓ Validée'], (root, m) => {
-  const p1 = S(m, 'p1'), D = dv(p1), OX = 40, OY = 590;
-  const L = lyr(root); cardImg(L.cv, 'position', OX, OY);
-  const pops = makePops(L.cv, CARD('position'), CM.position.w, CM.position.h, OX, OY);
+/* ----- 3 — l'anatomie du skill : cinq pièces (vrais fichiers) ----- */
+scene('anatomie', ['Un skill, cinq pièces', 'Ta voix', 'Ton style', 'Une fabrique par réseau', 'Direction artistique', 'Le contrôle', 'SKILL_VOIX_REFLEXIA.md', 'SKILL_STYLE_ECRITURE.md', 'SKILL_POST_LINKEDIN · X · CARROUSEL', 'SKILL_DIRECTION_ARTISTIQUE.md', 'content-qa.mjs'], (root, m) => {
+  const n1 = S(m, 'n1'), D = dv(n1);
+  const c = circle(root, 'rgba(255,193,7,.20)', -300, 1180, 820);
   scrim(root, 'mid');
-  const lab = swap(root, 'lbl', [{ html: 'Une position, <span class="hl">je valide</span>', a: p1.start + .1, upd: (e, t) => hlSet(e, P(t, p1.start + D * .75, .5)) }], 84, 304, 846, 150);
-  const st = partC('position', 'pos-statut', OX, OY), ts = p1.start + .5, tv = p1.start + D * .72;
-  pops.add(partR('position', 'pos-statut', OX, OY, 8), ts, tv - .4, 1.06);
-  const K = [{ t: m.start, x: 540, y: 980, z: 1 }, { t: ts + .3, x: st.x, y: st.y + 160, z: 1.22 }, { t: tv - .5, x: st.x + 10, y: st.y + 170, z: 1.24 }, { t: tv + .2, x: 540, y: 990, z: 1 }, { t: m.end + .45, x: 545, y: 1005, z: 1.03 }];
-  const btn = mk(root, 'abs', null); btn.dataset.deco = ''; place(btn, 300, 1446, 480, 92); btn.style.cssText += ';border-radius:999px;background:#fff;border:5px solid var(--violet);box-shadow:0 14px 34px rgba(60,40,140,.25)';
-  const b1 = mk(root, 'abs tx', 'Valider'); place(b1, 300, 1446, 480, 92); b1.style.cssText += ';display:flex;align-items:center;justify-content:center;font:900 46px/1 var(--font);color:var(--violet)';
-  const b2 = mk(root, 'abs tx', '✓ Validée'); place(b2, 300, 1446, 480, 92); b2.style.cssText += ';display:flex;align-items:center;justify-content:center;font:900 46px/1 var(--font);color:#fff;visibility:hidden';
-  const bc = { x: 540, y: 1492 };
-  const cur = makeCursor(root, [{ t: tv - 1.1, x: 950, y: 1700 }, { t: tv - .35, x: bc.x + 120, y: bc.y + 70 }, { t: tv, x: bc.x + 30, y: bc.y + 10 }]);
-  const clk = makeClicks(root, cur, [tv]);
-  ev('whoosh', m.start + .3, { dur: .5 }); ev('pop', ts); ev('tick', tv, { f: 1800 }); ev('ding', tv + .15, { f: 1174 });
+  const lab = swap(root, 'lbl', [{ html: 'Un skill, cinq pièces', a: n1.start + .1 }], 84, 304, 846, 150);
+  const PIECES = [['Ta voix', 'SKILL_VOIX_REFLEXIA.md', '#6C5CE7'], ['Ton style', 'SKILL_STYLE_ECRITURE.md', '#E84393'], ['Une fabrique par réseau', 'SKILL_POST_LINKEDIN · X · CARROUSEL', '#3B8BD4'], ['Direction artistique', 'SKILL_DIRECTION_ARTISTIQUE.md', '#F2994A'], ['Le contrôle', 'content-qa.mjs', '#19A974']];
+  const cards = PIECES.map(([n, f, col], i) => { const e = mk(root, 'abs lay', `<div class="dot" style="position:absolute;left:30px;top:34px;width:84px;height:84px;border-radius:24px;background:${col}"></div><div class="tx nm" style="left:140px;top:28px;font-size:52px">${n}</div><div class="tx sb" style="left:142px;top:96px;font:700 26px/1.1 var(--mono);color:#5A5B75;white-space:nowrap">${f}</div>`); place(e, 84, 590 + i * 172, 846, 152); return e; });
+  const TT = [.12, .3, .48, .66, .84].map(k => n1.start + D * k);
+  ev('whoosh', m.start + .3, { dur: .5 }); TT.forEach((t, i) => { ev('pop', t); ev('tick', t + .1, { f: 2000 + i * 150 }); }); ev('ding', TT[4] + .5, { f: 1174 });
   return t => {
-    lab(t); applyScr(L.cv, camAt(K, t)); pops.upd(t);
-    const pin = P(t, p1.start + .8, .5); [btn, b1, b2].forEach(e => put(e, { y: (1 - eoBack(pin)) * 160, s: t >= tv ? 1 + .06 * Math.sin(P(t, tv, .4) * Math.PI) : 1, op: cl(pin * 3) }));
-    const ok = t >= tv; btn.style.background = ok ? 'var(--green)' : '#fff'; btn.style.borderColor = ok ? 'var(--green)' : 'var(--violet)';
-    b1.style.visibility = ok ? 'hidden' : 'visible'; b2.style.visibility = ok ? 'visible' : 'hidden';
-    cur.upd(t, t > tv + .6 ? Math.max(0, 1 - P(t, tv + .6, .3)) : 1); clk(t);
+    drift(c, t, 1.6); lab(t);
+    cards.forEach((e, i) => { const p = P(t, TT[i] - .15, .45), k = eoBack(p), lit = t >= TT[i]; put(e, { x: (i % 2 ? 1 : -1) * 120 * (1 - k) + Math.sin(t * 1.2 + i) * 4 * p, y: Math.sin(t * 1.6 + i * 1.3) * 6 * p, s: (.94 + .06 * k) * (lit && t < TT[i] + .5 ? 1 + .04 * Math.sin(P(t, TT[i], .5) * Math.PI) : 1), op: cl(p * 2.4) }); e.style.borderColor = lit ? 'var(--violet)' : 'transparent'; });
   };
 });
 
-/* ----- 4 — trois fabriques : LinkedIn, fil X, carrousel ----- */
-scene('fabriques', ['Trois fabriques', 'Le post LinkedIn', 'Le fil X', 'Le carrousel', 'LinkedIn', 'X', 'Carrousel', 'le verdict pour chaque profil', 'un fil de six posts', 'Instagram · LinkedIn · Pinterest · TikTok'], (root, m) => {
-  const b1 = S(m, 'b1'), b2 = S(m, 'b2'), b3 = S(m, 'b3'), b4 = S(m, 'b4');
-  const OX = 40, OY = 600;
-  // couche LinkedIn
-  const LL = lyr(root); cardImg(LL.cv, 'linkedin', OX, OY);
-  const popL = makePops(LL.cv, CARD('linkedin'), CM.linkedin.w, CM.linkedin.h, OX, OY);
-  const pq = CM.linkedin.parts['pp-2'], pr = CM.linkedin.parts['pp-3'];
-  const R2 = { x: OX + 22, y: OY + pq.y - 12, w: CM.linkedin.w - 44, h: pr.y - pq.y + 4 }, r2c = { x: R2.x + R2.w / 2, y: R2.y + R2.h / 2 };
-  const t2c = b2.start + 1.7;
-  popL.add(R2, t2c, b3.start + .2, 1.05);
-  const KL = [{ t: b2.start - .2, x: 540, y: 960, z: 1 }, { t: t2c - .2, x: 540, y: r2c.y - 140, z: 1.02 }, { t: t2c + .4, x: r2c.x, y: r2c.y - 120, z: 1.18 }, { t: b3.start + .3, x: r2c.x, y: r2c.y - 110, z: 1.2 }];
-  // couche fil X
-  const LX = lyr(root); cardImg(LX.cv, 'x', OX, OY);
-  const KX = [{ t: b3.start - .2, x: 540, y: 960, z: 1 }, { t: b3.start + .5, x: 540, y: 1000, z: 1 }, { t: b4.start, x: 540, y: 1700, z: 1 }];
-  // couche carrousel (7 vraies slides)
-  const LC = mk(root, 'abs', null); LC.dataset.deco = ''; place(LC, 0, 0, 1080, 1920);
-  const SWd = 1080 * .74, SHt = 1350 * .74, GAP = 34, STEP = SWd + GAP, CY = 1150, TOP = CY - SHt / 2;
-  const tr = mk(LC, 'abs', null); place(tr, 0, TOP, 7 * STEP + 1080, SHt);
-  for (let i = 1; i <= 7; i++) { const s = thumb(tr, SL('oc' + i), 540 - SWd / 2 + (i - 1) * STEP, 0, SWd, SHt, '50% 50%', 24); }
-  const SWT = Array.from({ length: 6 }, (_, i) => b4.start + .55 + i * .42), tp = SWT[5] + .75;
-  const veil = mk(LC, 'abs', null); place(veil, 0, 0, 1080, 1920); veil.style.cssText += ';background:#fff;opacity:0';
-  const pp = thumb(LC, SL('oc7'), 540 - SWd / 2, TOP, SWd, SHt, '50% 50%', 24); pp.style.opacity = 0;
-  // tuiles des trois fabriques
-  const TILES = [['LinkedIn', CARD('linkedin'), '50% 0%'], ['X', CARD('x'), '50% 0%'], ['Carrousel', SL('oc1'), '50% 50%']];
-  const tiles = TILES.map(([nm, src, pos], i) => { const w = mk(root, 'abs', null); w.dataset.deco = ''; place(w, 84 + i * 293, 640, 260, 430); thumb(w, src, 0, 0, 260, 340, pos, 18); const n = mk(w, 'tx', nm); n.style.cssText += ';position:absolute;left:0;top:362px;width:260px;text-align:center;font:900 44px/1 var(--font);letter-spacing:-.02em'; return w; });
-  scrim(root, 'mid');
-  const lab = swap(root, 'lbl', [{ html: 'Trois <span class="hl">fabriques</span>', a: b1.start + .1, upd: (e, t) => hlSet(e, P(t, b1.start + .8, .5)) }, { html: 'Le post LinkedIn', a: b2.start }, { html: 'Le fil X', a: b3.start }, { html: 'Le carrousel', a: b4.start }], 84, 304, 846, 150);
-  const sub = swap(root, 'sublbl', [{ html: 'le verdict pour chaque profil', a: b2.start + .6 }, { html: 'un fil de six posts', a: b3.start + .4 }, { html: 'Instagram · LinkedIn · Pinterest · TikTok', a: b4.start + .5, b: m.end + 1 }], 84, 466, 846, 40);
-  const vs = makeVSwipe(root, b3.start + .5, b4.start - .3, 900, 1560, 860);
-  const sws = makeSwipes(root, SWT.map(t => ({ a: t - .12, b: t + .32, y: CY, x0: 900, x1: 300 })));
-  const cur = makeCursor(root, [{ t: t2c - 1.0, x: 950, y: 1650 }, camAtP(KL, t2c - .35, r2c.x + 260, r2c.y + 60), camAtP(KL, t2c, r2c.x + 180, r2c.y - 10), { t: t2c + .9, x: 990, y: 1500 }, { t: tp - .5, x: 900, y: 1500 }, { t: tp, x: 620, y: CY + 70 }]);
-  const clk = makeClicks(root, cur, [t2c, tp]);
-  ev('whoosh', m.start + .3, { dur: .5 }); tiles.forEach((_, i) => ev('pop', b1.start + .5 + i * .3)); ev('whoosh', b2.start - .1, { dur: .5, up: true }); ev('tick', t2c, { f: 1800 }); ev('pop', t2c + .1);
-  ev('swipe', b3.start - .1); ev('swipe', b4.start - .1); SWT.forEach(t => ev('swipe', t)); ev('tick', tp, { f: 1800 }); ev('pop', tp + .1); ev('ding', tp + .4, { f: 1046 });
-  return t => {
-    lab(t); sub(t);
-    tiles.forEach((w, i) => { const p = P(t, b1.start + .5 + i * .3, .5), k = eoBack(p), out = P(t, b2.start - .35, .35); put(w, { y: (1 - k) * 200 * (i % 2 ? -1 : 1) + Math.sin(t * 1.5 + i) * 7 * p - out * 300, s: .9 + .1 * k, op: cl(p * 3) * (1 - out) }); });
-    // LinkedIn : entre en plongée, sort par la gauche au swipe vers le fil X
-    const lin = P(t, b2.start - .25, .45), lout = io(P(t, b3.start - .15, .45));
-    LL.w.style.opacity = lin; LL.w.style.transform = `translateX(${-1080 * lout}px) scale(${lerp(.86, 1, eo(lin))})`; applyScr(LL.cv, camAt(KL, t)); popL.upd(t);
-    const xin = io(P(t, b3.start - .15, .45)), xout = io(P(t, b4.start - .15, .45));
-    LX.w.style.opacity = t < b3.start - .2 ? 0 : 1; LX.w.style.transform = `translateX(${1080 * (1 - xin) - 1080 * xout}px)`; applyScr(LX.cv, camAt(KX, t));
-    const cin = io(P(t, b4.start - .15, .45)); LC.style.opacity = t < b4.start - .2 ? 0 : 1; LC.style.transform = `translateX(${1080 * (1 - cin)}px)`;
-    let idx = 0; SWT.forEach(tt => { idx += io(P(t, tt, .38)); }); put(tr, { x: -idx * STEP });
-    const pop = eo(P(t, tp, .3)); veil.style.opacity = .62 * pop; pp.style.opacity = pop > .01 ? 1 : 0; pp.style.transform = `translateY(${-14 * pop}px) scale(${1 + .14 * pop})`;
-    vs(t); sws(t); cur.upd(t, (t > t2c + .7 && t < tp - 1.0) ? 0 : (t > tp + .6 ? Math.max(0, 1 - P(t, tp + .6, .3)) : 1)); clk(t);
-  };
-});
-
-/* ----- 5 — le contrôle : sortie réelle de content-qa ; un chiffre absent de la fiche est refusé ----- */
-scene('controle', ['Le contrôle', 'Fidèle à l’article', 'Chiffre absent de la fiche : refusé', 'Aucun chiffre inventé'], (root, m) => {
-  const c1 = S(m, 'c1'), c2 = S(m, 'c2'), D = dv(c1), OX = 40, OY = 620;
-  const L = lyr(root); cardImg(L.cv, 'term', OX, OY);
-  const pops = makePops(L.cv, CARD('term'), CM.term.w, CM.term.h, OX, OY);
+/* ----- 4 — ce que ça t'apporte : ta voix, rien d'inventé, un style à chaque fois, toi tu valides ----- */
+scene('apports', ['Ça sonne comme toi', 'Rien d’inventé', 'Un style à chaque carrousel', 'Toi, tu valides', 'Chiffre absent de la fiche : refusé', 'Relire', 'Valider', 'Publier', '✓ Relire', '✓ Valider', '✓ Publier'], (root, m) => {
+  const r1 = S(m, 'r1'), r2 = S(m, 'r2'), r3 = S(m, 'r3'), r4 = S(m, 'r4');
+  const c = circle(root, 'rgba(108,92,231,.12)', -300, 1180, 820);
+  // (r1) le vrai post LinkedIn : le début ressort
+  const LL = lyr(root); cardImg(LL.cv, 'linkedin', 40, 600);
+  const popL = makePops(LL.cv, CARD('linkedin'), CM.linkedin.w, CM.linkedin.h, 40, 600);
+  popL.add({ x: 52, y: 600 + 104, w: 976, h: 260 }, r1.start + .7, r2.start - .2, 1.06);
+  // (r2) la vraie sortie du contrôle : la ligne verte ressort
+  const LT = lyr(root); cardImg(LT.cv, 'term', 40, 640);
   const NL = Object.keys(CM.term.parts).filter(k => k.startsWith('tl-')).length;
-  const covers = Array.from({ length: NL }, (_, i) => { const r = partR('term', 'tl-' + i, OX, OY, 2); const c = mk(L.cv, 'abs', null); c.dataset.deco = ''; place(c, r.x, r.y, r.w + 30, r.h); c.style.background = '#12132A'; return c; });
-  const T0 = c1.start + .25, TL = i => i === 0 ? T0 : T0 + .95 + (i - 1) * .2, tok = TL(NL - 1) + .35;
-  const ok = partC('term', 'tl-' + (NL - 1), OX, OY);
-  pops.add(partR('term', 'tl-' + (NL - 1), OX, OY, 10), tok, c2.start + .6, 1.1);
-  const K = [{ t: m.start, x: 540, y: 960, z: 1 }, { t: tok - .2, x: 540, y: 960, z: 1.02 }, { t: tok + .4, x: ok.x, y: ok.y + 120, z: 1.32 }, { t: c2.start + .2, x: ok.x, y: ok.y + 130, z: 1.33 }, { t: c2.start + .9, x: 540, y: 960, z: 1 }, { t: m.end + .45, x: 545, y: 975, z: 1.03 }];
+  const popT = makePops(LT.cv, CARD('term'), CM.term.w, CM.term.h, 40, 640);
+  popT.add(partR('term', 'tl-' + (NL - 1), 40, 640, 10), r2.start + .5, r3.start, 1.1);
+  const red = pill(root, 'Chiffre absent de la fiche : refusé', 84, 1330, 846, 110, 'background:#FDECEC;color:#C62828;border:4px solid #E5383B;font-size:40px');
+  // (r3) trois carrousels, trois styles
+  const STY = ['oc1', 'rf4', 'rf2'];
+  const sty = STY.map((k, i) => thumb(root, SL(k), 45 + i * 335, 700, 320, 400, '50% 50%', 18));
+  // (r4) relire, valider, publier
+  const NB = ['Relire', 'Valider', 'Publier'];
+  const btns = NB.map((n, i) => { const e = mk(root, 'abs', null); e.dataset.deco = ''; place(e, 240, 650 + i * 200, 600, 130); e.style.cssText += ';border-radius:999px;background:#fff;border:5px solid var(--violet);box-shadow:0 14px 34px rgba(60,40,140,.2)'; const a = pill(root, n, 240, 650 + i * 200, 600, 130, 'color:var(--violet);font-size:54px'); const b = pill(root, '✓ ' + n, 240, 650 + i * 200, 600, 130, 'color:#fff;font-size:54px;visibility:hidden'); return { e, a, b }; });
+  const TB = [0, 1, 2].map(i => r4.start + .4 + i * (dv(r4) * .8 / 3));
   scrim(root, 'mid');
-  const lab = swap(root, 'lbl', [{ html: 'Le <span class="hl">contrôle</span>', a: c1.start + .1, upd: (e, t) => hlSet(e, P(t, c1.start + .7, .5)) }, { html: 'Fidèle à l’article', a: c2.start }], 84, 304, 846, 150);
-  const tRef = c1.start + D * .5;
-  const red = mk(root, 'abs tx', 'Chiffre absent de la fiche : refusé'); place(red, 84, 1330, 846, 110); red.style.cssText += ';display:flex;align-items:center;justify-content:center;background:#FDECEC;color:#C62828;border:4px solid #E5383B;border-radius:999px;font:900 40px/1 var(--font);letter-spacing:-.02em;white-space:nowrap';
-  const grn = mk(root, 'abs tx', 'Aucun chiffre inventé'); place(grn, 84, 1330, 846, 110); grn.style.cssText += ';display:flex;align-items:center;justify-content:center;background:var(--green);color:#fff;border-radius:999px;font:900 50px/1 var(--font);letter-spacing:-.02em;white-space:nowrap';
-  ev('whoosh', m.start + .3, { dur: .5 }); ev('ticks', T0, { n: 14, dur: .8 }); for (let i = 1; i < NL; i++) ev('tick', TL(i), { f: 2200 + i * 60 }); ev('pop', tok); ev('ding', tok + .2, { f: 1174 }); ev('pop', tRef); ev('pop', c2.start + .3); ev('ding', c2.start + .6, { f: 1568 });
+  const lab = swap(root, 'lbl', [{ html: 'Ça sonne comme toi', a: r1.start + .1 }, { html: 'Rien d’inventé', a: r2.start }, { html: 'Un style à chaque carrousel', a: r3.start, fs: 58 }, { html: 'Toi, tu valides', a: r4.start }], 84, 304, 846, 150);
+  const cur = makeCursor(root, [{ t: TB[0] - .8, x: 960, y: 1700 }, { t: TB[0], x: 600, y: 650 + 75 }, { t: TB[1], x: 610, y: 850 + 75 }, { t: TB[2], x: 620, y: 1050 + 75 }]);
+  const clk = makeClicks(root, cur, TB);
+  ev('whoosh', m.start + .3, { dur: .5 }); ev('pop', r1.start + .7); ev('whoosh', r2.start - .1, { dur: .4 }); ev('pop', r2.start + .5); ev('ding', r2.start + .7, { f: 1174 }); ev('pop', r2.start + 1.6);
+  STY.forEach((_, i) => ev('pop', r3.start + .2 + i * .25)); TB.forEach((t, i) => { ev('tick', t, { f: 1800 }); ev('ding', t + .1, { f: 988 + i * 180 }); });
   return t => {
-    lab(t); applyScr(L.cv, camAt(K, t)); pops.upd(t);
-    covers.forEach((c, i) => { if (i === 0) { const p = P(t, T0, .8); c.style.clipPath = `inset(0 0 0 ${Math.floor(p * 40) / 40 * 100}%)`; } else { c.style.opacity = t >= TL(i) ? 0 : 1; } });
-    const rp = P(t, tRef, .45), rout = P(t, c2.start - .1, .3); put(red, { y: (1 - eoBack(rp)) * 120 + rout * 140, op: cl(rp * 2.4) * (1 - rout) });
-    const gp = P(t, c2.start + .3, .45); put(grn, { y: (1 - eoBack(gp)) * 120, s: gp >= 1 ? 1 + .02 * Math.sin((t - c2.start) * 5) : 1, op: cl(gp * 2.4) });
+    drift(c, t, 1.6); lab(t);
+    const l1 = P(t, m.start + .1, .4), o1 = P(t, r2.start - .25, .3);
+    LL.w.style.opacity = l1 * (1 - o1); applyScr(LL.cv, camAt([{ t: m.start, x: 540, y: 960, z: 1 }, { t: r2.start, x: 545, y: 1000, z: 1.06 }], t)); popL.upd(t);
+    const l2 = P(t, r2.start - .2, .35), o2 = P(t, r3.start - .25, .3);
+    LT.w.style.opacity = l2 * (1 - o2); LT.w.style.transform = `translateY(${(1 - eo(l2)) * 120}px)`; applyScr(LT.cv, camAt([{ t: r2.start, x: 540, y: 960, z: 1 }, { t: r3.start, x: 545, y: 975, z: 1.05 }], t)); popT.upd(t);
+    const rp = P(t, r2.start + 1.6, .45); put(red, { y: (1 - eoBack(rp)) * 120, op: cl(rp * 2.4) * (1 - o2) });
+    const o3 = P(t, r4.start - .25, .3);
+    sty.forEach((e, i) => { const p = P(t, r3.start + .2 + i * .25, .5), k = eoBack(p); put(e, { y: (1 - k) * 300 * (i % 2 ? -1 : 1) + Math.sin(t * 1.5 + i) * 7 * p, r: (i - 1) * 4 * k, s: .9 + .1 * k, op: cl(p * 3) * (1 - o3) }); });
+    btns.forEach(({ e, a, b }, i) => { const p = P(t, r4.start + i * .1, .4), ok = t >= TB[i]; [e, a, b].forEach(x => put(x, { s: (.7 + .3 * eoBack(p)) * (ok && t < TB[i] + .4 ? 1 + .05 * Math.sin(P(t, TB[i], .4) * Math.PI) : 1), op: cl(p * 3) })); e.style.background = ok ? 'var(--green)' : '#fff'; e.style.borderColor = ok ? 'var(--green)' : 'var(--violet)'; a.style.visibility = ok ? 'hidden' : 'visible'; b.style.visibility = ok ? 'visible' : 'hidden'; });
+    cur.upd(t, t > TB[2] + .6 ? Math.max(0, 1 - P(t, TB[2] + .6, .3)) : 1); clk(t);
   };
 });
 

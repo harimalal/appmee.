@@ -77,3 +77,8 @@ Une scène « pourquoi cet outil plutôt que X ou Y » n'affirme **rien** sur le
 
 ### Quand l'utilisateur dicte l'histoire
 Si l'utilisateur donne l'ordre des scènes (problèmes → système → exemples → appel), cet ordre **remplace** le tableau des 5 étages : on garde seulement les règles d'enchaînement (premier plan = de quoi on parle ; « tu » pour le problème, « je » pour le travail ; une idée par scène ; chiffres après l'histoire ; fin qui reboucle). Ses propres mots pour les problèmes sont repris tels quels et signalés comme siens dans `SCRIPT.md` (voir `source-vers-storyline.md`).
+
+## Vidéo « pub » d'un système (retour de Hari sur le reel n°8)
+- **Les avantages d'abord, le process en une phrase** : hook = le bénéfice (« une seule source, tout ton contenu »), puis 3 ou 4 avantages concrets (une fois, tous les réseaux, trente jours prêts, zéro outil en plus), puis l'anatomie du système en **une** phrase, puis ce que ça apporte, puis le CTA à mot-clé.
+- **Promesse non prouvée = limite affichée** : quand l'utilisateur veut dire « automatique », « 30 jours », « 0 € », garder sa phrase (signalée comme son dit) et poser la limite en sous-titre à l'écran (« production automatique · publication par toi », « prêts, pas encore publiés », « hors abonnement Claude »).
+
