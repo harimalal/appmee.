@@ -57,3 +57,12 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - Il ne génère ni image ni vidéo ; la couverture, les scènes et les logos sont dessinés en HTML/SVG ou viennent de fichiers réels.
 - Il ne publie rien et ne commite rien sans demande explicite.
 - Les zones sûres sont celles du dépôt (TikTok), pas des valeurs officielles Reels.
+
+## Enseignements du 2e essai (playbook Tri Watch Later)
+- **Transcription des noms anglais** : « Claude in Chrome » est transcrit n'importe comment par la vérification si le prompt ne dit pas que les noms anglais s'écrivent tels quels (déjà corrigé dans `assets/modele/tts.py`). Un faible score sur une seule phrase = relancer la transcription avant de régénérer ; une phrase régénérée coûte un appel.
+- **Mots visibles en même temps** : limite réglable par reel (`max_mots_visibles` dans `story.json`, 34 par défaut ; 56 pour une scène de critères). Ne l'augmenter que pour une carte d'instruction voulue dense.
+- **Phrases courtes lues trop vite** : `tempo` 0,7 à 0,95 dans `story.json` (jusqu'à 0,7 pour une phrase de 7 mots).
+- **Compteur qui change de valeur** : le marquer `data-count`, sinon le contrôle voit des nombres non autorisés (510, 506…).
+- **Plages figées** : un `translateY(sin(t))` de ±4 px sur les cartes suffit à casser un plateau.
+- **Couper un reel** : supprimer l'entrée de `story.json` **et** le bloc `scene(...)` correspondant ; le moteur ignore une scène absente du récit. Une version courte réutilise le cache de voix (copier `trim/` et filtrer `voice-report.json`) : coût 0.
+- **Captures d'une source** : les extraire du HTML de l'artefact (images base64), les regarder une par une ; trop petites pour un gros plan → défilé seulement, gros plans redessinés.

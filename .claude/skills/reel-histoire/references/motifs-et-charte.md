@@ -4,7 +4,7 @@ Dans ce document, `<skill>` désigne le dossier de ce skill. À lire pour écrir
 
 ## Motifs de scène (catalogue éprouvé)
 
-Chaque scène = une fonction `scene(id, copy, fn)` dans `story.html`, qui redessine l'état exact à l'instant `t` (aucune animation sur horloge réelle). Les motifs ci-dessous existent déjà dans `<skill>/assets/reference-seo/story.html` (le nom de la scène sert de repère).
+Chaque scène = une fonction `scene(id, copy, fn)` dans `story.html`, qui redessine l'état exact à l'instant `t` (aucune animation sur horloge réelle). Les motifs ci-dessous existent déjà dans `<skill>/assets/reference-seo/story.html` et `<skill>/assets/reference-tri/story.html` (le nom de la scène sert de repère).
 
 | Motif | Quand l'utiliser | Scène de référence |
 |---|---|---|
@@ -20,6 +20,10 @@ Chaque scène = une fonction `scene(id, copy, fn)` dans `story.html`, qui redess
 | Liste de coches + minuteur | Le process : N étapes, durée totale | `corrections` |
 | **Curseur avant / après** | Le plan signature : les mesures avant et après | `avantapres` |
 | Trois cartes de résultat | Vérifié / attendu / objectif | `resultat` |
+| Défilé de vraies captures | Montrer le **volume** (une liste de centaines d'éléments) ; captures basse résolution acceptables car floutées par le mouvement, jamais en gros plan | `hook` (reference-tri) |
+| Critères en deux colonnes (supprimer / garder) | Montrer l'instruction donnée à un outil quand le prompt exact n'est pas dans la source : afficher des **critères**, pas une citation | `criteres` (reference-tri) |
+| Trois cartes d'outils, une surlignée | « Pourquoi cet outil » (voir recit.md : ne dire que ce que la source établit) | `extension` (reference-tri) |
+| Suppression successive accélérée | Une boucle répétitive montrée au rythme réel puis accélérée, **étiquetée « accéléré »** à l'écran et à la voix ; compteur qui décroît ; lignes redessinées (aucun titre réel) | `suppression` (reference-tri) |
 | CTA sur fond nuit + retour du titre | Fin et boucle | `cta` |
 
 Un **nouveau motif** se construit avec les mêmes outils (`enter`, `put`, `P`, `eo`, `eoBack`, `io`, `hlSet`, `ev`, `circle`, `drift`, `caption`) et doit respecter la charte (ci-dessous). Ne pas réutiliser deux fois le même motif dans une vidéo.

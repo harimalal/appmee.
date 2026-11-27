@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Couverture reel Tri Watch Later</title>
+<!-- Couverture 9:16 (1080x1920). Tout le texte reste dans le carré central 1080x1080 (y 420-1500). ?debug=1 affiche les cadres 3:4 et 1:1. -->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--violet:#6C5CE7;--red:#E5383B;--green:#19A974;--font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#ECFAF9}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);background:#ECFAF9}
+.abs{position:absolute}
+.circ{left:470px;top:-230px;width:980px;height:980px;border-radius:50%;background:rgba(25,169,116,.12)}
+.circ2{left:-380px;top:1230px;width:760px;height:760px;border-radius:50%;background:rgba(108,92,231,.07)}
+.brand{left:84px;top:440px;display:flex;align-items:center;gap:9px;height:76px;padding:0 34px;background:#fff;border-radius:999px;font:900 36px/1 var(--font);letter-spacing:.02em;box-shadow:0 8px 26px rgba(20,20,60,.12)}
+.brand .dot{width:15px;height:15px;border-radius:50%;background:var(--red)}
+.logo{left:816px;top:424px;width:180px;height:180px}
+.logo img{display:block;width:100%;height:100%;object-fit:contain}
+.ttl{left:84px;top:625px;width:912px;font:900 94px/1.04 var(--font);letter-spacing:-.04em}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 84%;background-size:100% .5em;padding:0 .08em;border-radius:.12em}
+.violet{color:var(--violet)}
+.pill{left:84px;top:985px;height:118px;padding:0 44px;border-radius:999px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:22px;font:900 64px/1 var(--font);letter-spacing:-.025em}
+.pill b{color:var(--yellow);font-weight:900}
+.pill i{font-style:normal;color:#5CE0A8}
+.grid{left:84px;top:1150px;width:912px;height:112px}
+.grid i{position:absolute;width:10px;height:10px;border-radius:2.5px;background:#C9CED6}
+.grid i.k{background:var(--green)}
+.sub{left:84px;top:1305px;width:912px;font:800 46px/1.14 var(--font);letter-spacing:-.025em;color:var(--ink)}
+.sub .m{color:var(--muted);font:600 28px/1 var(--mono);display:block;margin-bottom:14px;letter-spacing:.04em}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:9}
+</style></head><body>
+<div id="c">
+  <div class="abs circ"></div><div class="abs circ2"></div>
+  <div class="abs brand">REFLEX<i class="dot"></i>IA</div>
+  <div class="abs logo"><img src="assets/claude.png" alt=""></div>
+  <div class="abs ttl">Trier <span class="hl">511 vidéos</span><br>YouTube avec<br><span class="violet">Claude in Chrome</span></div>
+  <div class="abs pill"><b>511</b> <i>→</i> <b>48</b> vidéos</div>
+  <div class="abs grid" id="grid"></div>
+  <div class="abs sub"><span class="m">À REGARDER PLUS TARD</span>Tri par titre, chaîne et durée.</div>
+</div>
+<script>
+// 511 carrés : 48 conservés (vert, positions fixées par un tirage déterministe), les autres supprimés (gris). Décor : une représentation, pas une donnée par vidéo.
+const g = document.getElementById('grid'), cols = 64, pitch = 14; let seed = 20261126; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+const keep = new Set(); while (keep.size < 48) keep.add(Math.floor(rnd() * 511));
+for (let i = 0; i < 511; i++) { const e = document.createElement('i'); e.style.left = (i % cols) * pitch + 'px'; e.style.top = Math.floor(i / cols) * pitch + 'px'; if (keep.has(i)) e.className = 'k'; g.appendChild(e); }
+if (new URLSearchParams(location.search).get('debug')) { const c = document.getElementById('c'); [[0,240,1080,1440],[0,420,1080,1080]].forEach(([x,y,w,h]) => { const d = document.createElement('div'); d.className='dbg'; d.style.cssText += `;left:${x}px;top:${y}px;width:${w}px;height:${h}px`; c.appendChild(d); }); }
+</script>
+</body></html>

@@ -22,7 +22,7 @@ const ALLOWED = new Set((CFG.nombres_autorises || []).map(String));
 const CTA = new RegExp((CFG.cta_contient || 'reflex-ia.com').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 const BANNED = [/révolutionnaire/i, /game[ -]?changer/i, /incroyable/i, /magique/i, /ultime/i, /\b10x\b/i, /\bsecret/i, /fait tout à votre place/i];
 const EMOJI = /\p{Extended_Pictographic}/u;
-const MAX_VISIBLE = 34, MAX_WPS = 4.5, TOL = 6;   // tolérance : ressort d'entrée (échelle < 1 pendant 0,5 s)
+const MAX_VISIBLE = (typeof CFG !== "undefined" && CFG.max_mots_visibles) || 34, MAX_WPS = 4.5, TOL = 6;   // tolérance : ressort d'entrée (échelle < 1 pendant 0,5 s)
 const norm = s => s.replace(/\s+/g, ' ').replace(/ /g, ' ').trim().toLowerCase();
 const words = s => s.trim().split(/\s+/).filter(Boolean).length;
 

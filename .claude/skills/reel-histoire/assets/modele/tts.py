@@ -70,7 +70,7 @@ for sc in CFG['scenes']:
         if s.get('tempo'): af += ',atempo=%s' % s['tempo']   # ralentissement ponctuel d'une phrase lue trop vite par la synthèse
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', raw, '-af', af, '-ar', '24000', '-ac', '1', tr], check=True)
         prompt = ("Transcris exactement, en français, ce qui est dit dans cet audio. Écris tous les nombres en toutes lettres "
-                  "(par exemple « vingt-trois »). Réponds uniquement par la transcription.")
+                  "(par exemple « vingt-trois »). Les noms propres anglais (Claude in Chrome, YouTube, SaaS) s'écrivent tels quels. Réponds uniquement par la transcription.")
         body = {'contents': [{'parts': [{'text': prompt}, {'inlineData': {'mimeType': 'audio/wav', 'data': base64.b64encode(open(tr, 'rb').read()).decode()}}]}]}
         heard = call(CFG['asr_model'], body, 'asr-' + s['id'])['candidates'][0]['content']['parts'][0]['text'].strip()
         sim = difflib.SequenceMatcher(None, norm(s['voice']), norm(heard)).ratio()

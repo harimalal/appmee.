@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Reel Tri Watch Later (histoire)</title>
+<!--
+  Reel Instagram 9:16 (1080x1920, 30 fps) — version « histoire » : on raconte POURQUOI des pages d'un site ne sont pas indexées par Google,
+  comment on a trouvé les causes, puis ce qui a été corrigé et mesuré.
+  Page PILOTÉE PAR LE TEMPS : window.__setTime(t) redessine l'état exact à l'instant t. Les instants viennent de timeline.js
+  (calculé par plan.py à partir de la durée réelle de la voix). Aucune animation sur l'horloge réelle : rendu déterministe.
+  window.EVENTS = événements sonores (type, instant) pour synth.cjs : une seule source de vérité pour l'image et le son.
+  ?debug=1 affiche les zones sûres.
+-->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--violet:#6C5CE7;--red:#E5383B;--green:#19A974;--night:#0B1433;
+  --font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.red{color:var(--red)} .green{color:var(--green)} .violet{color:var(--violet)}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 84%;
+  background-size:calc(var(--p,0)*100%) .5em;padding:0 .08em;border-radius:.12em;color:var(--ink);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.circle{border-radius:50%}
+.brand{display:flex;align-items:center;gap:9px;height:76px;padding:0 34px;background:#fff;border-radius:999px;font:900 36px/1 var(--font);letter-spacing:.02em;color:var(--ink);box-shadow:0 8px 26px rgba(20,20,60,.12)}
+.brand .dot{width:15px;height:15px;border-radius:50%;background:var(--red);display:inline-block}
+.counter{height:64px;line-height:64px;text-align:center;border-radius:999px;background:rgba(255,255,255,.62);font:600 28px/64px var(--mono);color:var(--muted)}
+.counter.dark{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+.big{font:900 410px/1 var(--font);letter-spacing:-.045em;text-align:center;font-variant-numeric:tabular-nums}
+.lab{font:900 92px/1.02 var(--font);letter-spacing:-.03em;text-align:center}
+.h1{font:900 84px/1.04 var(--font);letter-spacing:-.035em;text-align:center}
+.mono{font-family:var(--mono)}
+/* légendes : mot dit en jaune, mots passés en encre, mots à venir en gris (instants de mots proportionnels, approximatifs) */
+.cap{position:absolute;left:0;top:0;width:842px;font:900 54px/1.18 var(--font);letter-spacing:-.025em}
+.cap .w{padding:.02em .1em;margin:0 -.05em;border-radius:.22em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cap .w.f{color:rgba(15,16,32,.28)} .cap .w.p{color:var(--ink)} .cap .w.c{background:var(--yellow);color:var(--ink)}
+.card{background:#fff;border-radius:40px;box-shadow:0 24px 64px rgba(40,30,120,.15)}
+/* S2 : mots-clés, catalogue Google, pages */
+.kw{background:#fff;border-radius:999px;padding:14px 28px;font:800 42px/1 var(--font);letter-spacing:-.02em;box-shadow:0 12px 32px rgba(120,40,80,.14);white-space:nowrap}
+.idx{background:#fff;border-radius:40px;border:3px solid #F3C6D4;box-shadow:0 24px 64px rgba(120,40,80,.16)}
+.idxh{position:absolute;left:92px;top:34px;font:700 30px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.idxmag{position:absolute;left:34px;top:26px;width:46px;height:46px}
+.idxline{position:absolute;left:44px;right:44px;height:12px;border-radius:6px;background:#F1E4EA}
+.pg{background:#fff;border:3px solid #E4E1F1;border-radius:20px;box-shadow:0 10px 28px rgba(60,40,120,.14);padding:16px}
+.pg.gray{background:#F0F1F5;border:3px dashed #BFC3CF;box-shadow:none}
+.pgbar{height:18px;border-radius:9px;background:var(--violet);width:55%;margin-bottom:14px}
+.pg.gray .pgbar{background:#B3B7C4}
+.pgl{height:11px;border-radius:6px;background:#DCD9EA;margin-top:12px}
+.badge{position:absolute;right:-16px;top:-16px;width:48px;height:48px;border-radius:50%;padding:11px;opacity:0}
+.nlab{font:700 26px/1 var(--mono);color:var(--red);text-align:center}
+/* S3 : rapport Search Console + terminal */
+.rep{background:#fff;border-radius:36px;box-shadow:0 24px 64px rgba(20,100,90,.16)}
+.rep .rh{position:absolute;left:40px;top:30px;font:600 23px/1 var(--mono);color:var(--muted);letter-spacing:.04em}
+.rep .rt{position:absolute;left:40px;top:68px;font:900 44px/1.1 var(--font);letter-spacing:-.02em}
+.rep .rn{position:absolute;left:36px;top:122px;font:900 190px/1 var(--font);letter-spacing:-.05em;color:var(--red);font-variant-numeric:tabular-nums}
+.rep .rl2{position:absolute;left:40px;top:312px;font:800 42px/1 var(--font);letter-spacing:-.02em}
+.crow{position:absolute;left:40px;right:40px;height:56px;display:flex;align-items:center;gap:16px;font:700 29px/1 var(--font);border-top:2px solid #EEF1F4}
+.crow .cd{width:16px;height:16px;border-radius:50%;background:#C7CBD6;flex:none}
+.crow .q{margin-left:auto;font:900 36px/1 var(--font);color:var(--muted)}
+.crow .n66{margin-left:auto;background:var(--violet);color:#fff;border-radius:999px;padding:6px 16px;font:900 28px/1 var(--font);font-style:normal}
+.term{background:#12132A;border-radius:30px;box-shadow:0 24px 64px rgba(10,10,40,.35);overflow:hidden}
+.term .tb{position:absolute;left:0;right:0;top:0;height:64px;background:#1C1E3D;display:flex;align-items:center;gap:10px;padding-left:24px}
+.term .tb i{width:16px;height:16px;border-radius:50%;background:#4A4D78;display:block}
+.term .tt{position:absolute;left:0;right:0;top:0;height:64px;line-height:64px;text-align:center;font:600 24px/64px var(--mono);color:rgba(255,255,255,.7)}
+.term .ln{position:absolute;left:34px;right:34px;height:60px;display:flex;align-items:center;font:500 28px/1 var(--mono);color:#E8E9FF;white-space:nowrap}
+.term .ln b{color:var(--yellow);font-weight:600;margin-right:14px}
+.scan{position:absolute;left:14px;right:14px;height:60px;border-radius:14px;background:rgba(255,217,59,.18);border:2px solid rgba(255,217,59,.7)}
+/* S4 : deux adresses */
+.brw{background:#fff;border-radius:30px;box-shadow:0 24px 64px rgba(40,70,140,.18);overflow:hidden}
+.brw .bar{position:absolute;left:0;right:0;top:0;height:72px;background:#EEF1F7}
+.brw .bd{position:absolute;top:26px;width:18px;height:18px;border-radius:50%;background:#C7CBD6}
+.brw .url{position:absolute;left:120px;right:26px;top:14px;height:44px;border-radius:999px;background:#fff;font:600 28px/44px var(--mono);padding-left:20px;color:var(--ink)}
+.urlc{background:#fff;border:5px solid var(--violet);border-radius:26px;font:700 46px/90px var(--mono);text-align:center;box-shadow:0 14px 36px rgba(40,70,140,.16)}
+.stamp{border:11px solid var(--red);border-radius:22px;color:var(--red);font:900 92px/1 var(--font);letter-spacing:.02em;text-align:center;padding:10px 24px;background:rgba(255,255,255,.72)}
+/* S5 : filtres */
+.shot{border-radius:36px;overflow:hidden;box-shadow:0 24px 64px rgba(40,60,120,.2);background:#fff}
+.shot img{display:block;width:100%;height:100%;transform-origin:20% 40%}
+.hbox{position:absolute;border:7px solid var(--yellow);background:rgba(255,217,59,.22);border-radius:14px}
+.fchip{background:#fff;border-radius:22px;box-shadow:0 12px 34px rgba(120,70,40,.14);height:74px}
+.fchip .u{position:absolute;left:26px;top:0;bottom:0;display:flex;align-items:center;font:600 26px/1 var(--mono);white-space:nowrap}
+.fchip .tg{position:absolute;right:18px;top:50%;margin-top:-21px;height:42px;line-height:42px;padding:0 18px;border-radius:999px;background:var(--red);color:#fff;font:700 21px/42px var(--mono)}
+/* S6 : fichier qui change de nom */
+.file{background:#fff;border-radius:28px;box-shadow:0 16px 44px rgba(60,40,140,.16);height:110px}
+.file .ic{position:absolute;left:28px;top:27px;width:56px;height:56px}
+.file .fn{position:absolute;left:104px;right:20px;top:0;bottom:0;display:flex;align-items:center;font:700 29px/1 var(--mono);white-space:nowrap}
+.flab{font:700 26px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+/* S8 : corrections */
+.step{background:#fff;border-radius:30px;box-shadow:0 14px 40px rgba(120,50,100,.14);height:96px}
+.step .sl{position:absolute;left:130px;right:24px;top:0;bottom:0;display:flex;align-items:center;font:800 46px/1 var(--font);letter-spacing:-.02em}
+.step .sc{position:absolute;left:24px;top:50%;margin-top:-34px;width:68px;height:68px;border-radius:50%;background:var(--green);padding:14px;opacity:0}
+.timer{background:var(--ink);color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:20px;font:900 62px/1 var(--font);letter-spacing:-.02em}
+.timer svg{width:62px;height:62px}
+/* S9 : avant / après */
+.tag{font:900 64px/1 var(--font);letter-spacing:-.03em}
+.mrow{background:#fff;border-radius:36px;box-shadow:0 20px 52px rgba(30,20,80,.14)}
+.ml{position:absolute;left:40px;top:26px;right:130px;font:700 34px/1.12 var(--font);color:var(--muted)}
+.mv{position:absolute;left:0;right:0;top:64px;text-align:center;font:900 150px/1 var(--font);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.mk{position:absolute;right:30px;top:26px;width:66px;height:66px;border-radius:50%;background:var(--green);padding:13px;opacity:0}
+.cursor{background:#fff;box-shadow:0 0 0 2px rgba(20,20,60,.08),0 0 40px rgba(20,20,60,.25)}
+.handle{border-radius:50%;background:#fff;box-shadow:0 10px 36px rgba(20,20,60,.35);display:flex;align-items:center;justify-content:center}
+/* S10 : résultat */
+.res{background:#fff;border-radius:36px;box-shadow:0 20px 56px rgba(20,100,90,.16)}
+.res .ri{position:absolute;left:30px;top:50%;margin-top:-56px;width:112px;height:112px}
+.res .r1{position:absolute;left:170px;right:24px;top:44px;font:700 28px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.res .r2{position:absolute;left:170px;right:24px;top:92px;font:900 52px/1.05 var(--font);letter-spacing:-.025em}
+.cal{background:#fff;border-radius:22px;border:4px solid var(--violet);overflow:hidden}
+.cal .b{position:absolute;left:0;right:0;top:0;height:36px;background:var(--violet);color:#fff;text-align:center;font:800 20px/36px var(--font);letter-spacing:.08em}
+.cal .d{position:absolute;left:0;right:0;top:36px;bottom:0;display:flex;align-items:center;justify-content:center;font:900 62px/1 var(--font)}
+/* S11 : CTA */
+.cta{background:#fff;border-radius:48px;box-shadow:0 30px 90px rgba(0,0,0,.4)}
+.cta .ci{position:absolute;left:50%;margin-left:-60px;top:44px;width:120px;height:120px;border-radius:32px;background:#ECEAFD;padding:28px}
+.cta .c1{position:absolute;left:0;right:0;top:196px;text-align:center;font:900 62px/1 var(--font);letter-spacing:-.03em}
+.cta .c2{position:absolute;left:0;right:0;top:288px;text-align:center;font:900 78px/1.1 var(--font);letter-spacing:-.03em}
+/* S0 titre + S0b problème */
+.cdlogo{display:block;width:100%;height:100%;object-fit:contain}
+.ttl{font:900 88px/1.06 var(--font);letter-spacing:-.035em;text-align:center}
+.term2{background:#12132A;border-radius:30px;box-shadow:0 24px 64px rgba(10,10,40,.35);overflow:hidden}
+.term2 .tb{position:absolute;left:0;right:0;top:0;height:60px;background:#1C1E3D;display:flex;align-items:center;gap:10px;padding-left:24px}
+.term2 .tb i{width:15px;height:15px;border-radius:50%;background:#4A4D78;display:block}
+.term2 .tt{position:absolute;left:0;right:0;top:0;height:60px;text-align:center;font:600 24px/60px var(--mono);color:rgba(255,255,255,.7)}
+.term2 .cmd{position:absolute;left:30px;right:20px;top:96px;height:50px;white-space:nowrap;font:500 27px/50px var(--mono);color:#E8E9FF}
+.term2 .cmd b{color:var(--yellow);font-weight:600;margin-right:14px}
+.term2 .cur{display:inline-block;width:14px;height:30px;background:var(--yellow);vertical-align:-6px;margin-left:3px}
+.okpill{background:var(--green);color:#fff;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:16px;font:900 52px/1 var(--font);letter-spacing:-.02em}
+.okpill i{display:block;width:52px;height:52px}
+.rpill{background:var(--red);color:#fff;border-radius:999px;padding:0 26px;height:60px;font:800 34px/60px var(--font);display:inline-block;letter-spacing:-.01em}
+.cause{background:#fff;border-radius:30px;box-shadow:0 14px 40px rgba(40,70,140,.16);height:112px}
+.cause.good{border:6px solid var(--violet);box-shadow:0 18px 52px rgba(108,92,231,.30)}
+.cause .cl{position:absolute;left:36px;top:0;bottom:0;display:flex;align-items:center;font:800 46px/1 var(--font);letter-spacing:-.025em}
+.cause .st{background-image:linear-gradient(var(--red),var(--red));background-repeat:no-repeat;background-position:0 56%;background-size:calc(var(--s,0)*100%) 7px}
+.cause .bd{position:absolute;right:26px;top:50%;margin-top:-34px;width:68px;height:68px;border-radius:50%;padding:15px;opacity:0}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:999}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="timeline.js"></script>
+<script>
+(() => {
+'use strict';
+const W = 1080, H = 1920;
+const SAFE = { x0: 84, x1: 930, y0: 200, y1: 1540 };
+const TL = window.TIMELINE, TOTAL = TL.total, NSC = TL.scenes.length;
+const stage = document.getElementById('stage');
+const EV = []; const ev = (type, t, o = {}) => EV.push(Object.assign({ type, t: Math.round(t * 1000) / 1000 }, o));
+
+/* ---------- utilitaires ---------- */
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const P = (t, a, d) => cl((t - a) / d);
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eoExp = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eoBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const io = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const mk = (parent, cls, html) => { const e = document.createElement('div'); e.className = cls; if (html != null) e.innerHTML = html; parent.appendChild(e); return e; };
+const place = (e, x, y, w, h) => { e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; return e; };
+const put = (e, o = {}) => { const { x = 0, y = 0, s = 1, r = 0, op = 1 } = o; e.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`; e.style.opacity = op; };
+const enter = (e, t, a, o = {}) => { const { dx = 0, dy = 40, s0 = .94, d = .5, back = true } = o; const p = P(t, a, d), k = back ? eoBack(p) : eo(p); put(e, { x: dx * (1 - k), y: dy * (1 - k), s: s0 + (1 - s0) * k, op: cl(p * 2.2) }); return p; };
+const capOp = (e, v) => { e.style.opacity = Math.min(parseFloat(e.style.opacity), v); };
+const hlSet = (root, p) => root.querySelectorAll('.hl').forEach(h => h.style.setProperty('--p', p));
+const txt = (parent, cls, html, x, y, w, h) => { const e = mk(parent, 'abs tx ' + cls, html); place(e, x, y, w, h); return e; };
+const circle = (root, col) => { const c = mk(root, 'abs circle', null); c.dataset.bleed = ''; place(c, 500, -330, 900, 900); c.style.background = col || 'rgba(108,92,231,.10)'; return c; };
+const drift = (c, t) => put(c, { x: Math.sin(t * .7) * 26, y: Math.cos(t * .55) * 22 });
+const svgNS = 'http://www.w3.org/2000/svg';
+
+const ICON = {
+  check: (c = '#fff') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M11 25l9 9 17-19" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:var(--d,0)"/></svg>`,
+  cross: (c = '#fff') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M13 13l22 22M35 13L13 35" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round"/></svg>`,
+  doc: (c = '#6C5CE7') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><path d="M12 5h17l9 9v29H12z" fill="none" stroke="${c}" stroke-width="3.6" stroke-linejoin="round"/><path d="M29 5v9h9M18 24h14M18 31h14M18 38h8" fill="none" stroke="${c}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  mag: (c = '#19A974') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="21" cy="21" r="12" fill="none" stroke="${c}" stroke-width="4"/><path d="M30 30l13 13" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/></svg>`,
+  clock: (c = '#FFD93B') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="24" cy="24" r="19" fill="none" stroke="${c}" stroke-width="4"/><path d="M24 12v13l9 5" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  chev: () => `<svg viewBox="0 0 48 48" width="52" height="52"><path d="M18 12l-12 12 12 12M30 12l12 12-12 12" fill="none" stroke="#0F1020" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  target: (c = '#6C5CE7') => `<svg viewBox="0 0 48 48" width="100%" height="100%"><circle cx="24" cy="24" r="19" fill="none" stroke="${c}" stroke-width="4"/><circle cx="24" cy="24" r="11" fill="none" stroke="${c}" stroke-width="4"/><circle cx="24" cy="24" r="3.5" fill="${c}"/></svg>`
+};
+
+/* ---------- chrome persistant ---------- */
+const chrome = mk(stage, 'chrome', null); chrome.style.cssText = 'position:absolute;inset:0;z-index:100;pointer-events:none';
+const brand = mk(chrome, 'abs brand', '<span data-deco>REFLEX</span><i class="dot"></i><span data-deco>IA</span>'); place(brand, 84, 206);
+const counter = mk(chrome, 'abs counter', '1/' + NSC); counter.dataset.deco = ''; place(counter, SAFE.x1 - 150, 212, 150, 64);
+
+/* ---------- légendes synchronisées sur la voix ---------- */
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+function caption(root, m) {
+  const wrap = mk(root, 'abs', null); place(wrap, 88, 1170, 842, 380);
+  const items = m.sent.map(s => { const el = mk(wrap, 'tx cap', s.words.map(w => `<span class="w f">${esc(w.w)}</span>`).join(' ')); el.style.display = 'none'; return { s, el, spans: [...el.querySelectorAll('.w')] }; });
+  return t => {
+    let act = -1; items.forEach((it, i) => { if (t >= it.s.start - .08) act = i; });
+    items.forEach((it, i) => {
+      const on = i === act; it.el.style.display = on ? 'block' : 'none'; if (!on) return;
+      const e = P(t, it.s.start - .08, .25); it.el.style.opacity = e; it.el.style.transform = `translateY(${(1 - eo(e)) * 22}px)`;
+      it.spans.forEach((sp, k) => { const w = it.s.words[k]; const c = t >= w.t1 ? 'p' : (t >= w.t0 ? 'c' : 'f'); if (sp.className !== 'w ' + c) sp.className = 'w ' + c; });
+    });
+  };
+}
+
+/* ---------- registre des scènes ---------- */
+const SC = [];
+const scene = (id, copy, fn) => {
+  const m = TL.scenes.find(s => s.id === id);
+  if (!m) return;   // scène absente de story.json (version courte) : ignorée
+  const root = mk(stage, 'scene', null); root.style.background = m.bg; root.style.zIndex = SC.length + 1;
+  const upd = fn(root, m);
+  const cap = m.caption ? caption(root, m) : null;
+  SC.push({ id, m, root, upd, cap, copy: [...copy, ...(m.caption ? m.sent.map(s => s.cap) : [])] });
+};
+const pageCard = () => '<div class="pgbar"></div><div class="pgl" style="width:80%"></div><div class="pgl"></div><div class="pgl" style="width:60%"></div>';
+const badge = (bg, icon) => `<div class="badge" style="background:${bg}">${icon}</div>`;
+const popBadge = (e, p) => { const b = e.querySelector('.badge'); b.style.opacity = p > 0 ? 1 : 0; b.style.transform = `scale(${p > 0 ? eoBack(p) : 0})`; };
+
+/* ===== SCÈNES du reel Tri Watch Later ===== */
+const NCAP = 17, CAPH = 541;
+
+/* 1 — titre : la promesse */
+scene('titre', ['Comment trier 511 vidéos YouTube avec Claude in Chrome ?', '≈ 15 min', 'avec mes propres critères'], (root, m) => {
+  const [t1, t2] = m.sent;
+  const c = circle(root, 'rgba(242,153,74,.14)');
+  const lg = mk(root, 'abs', '<img class="cdlogo" src="assets/claude.png" alt="">'); place(lg, 450, 330, 180, 180); lg.dataset.deco = '';
+  const ti = txt(root, 'ttl', 'Comment trier <span class="hl">511&nbsp;vidéos</span> YouTube<br><span style="font-size:66px"><span style="color:var(--ink)">avec</span> <span class="violet">Claude&nbsp;in&nbsp;Chrome</span>&nbsp;?</span>', 84, 560, 846, 330); ti.style.fontSize = '88px';
+  const pill = mk(root, 'abs timer', `${ICON.clock()}<span class="tx">≈ 15 min</span>`); place(pill, 252, 1000, 576, 116);
+  const sub = txt(root, 'lab', 'avec mes propres critères', 84, 1150, 846, 90); sub.style.fontSize = '58px';
+  ev('thump', 0, { amp: .9 }); ev('pop', .1); ev('swipe', .8); ev('whoosh', t2.start - .05, { dur: .35 }); ev('pop', t2.start + .35); ev('ding', t2.start + .9, { f: 1046 });
+  return t => {
+    drift(c, t);
+    const lp = P(t, .02, .6); put(lg, { s: eoBack(lp), r: -90 * (1 - eo(lp)) + t * 14, op: cl(lp * 3) });
+    enter(ti, t, .15, { dy: 40, d: .55 }); hlSet(ti, P(t, .75, .5));
+    enter(pill, t, t2.start + .3, { dy: 50, d: .5 }); enter(sub, t, t2.start + .9, { dy: 30, d: .45 });
+  };
+});
+
+/* 2 — le renversement : pas un problème de temps, un problème de tri */
+scene('probleme', ['À regarder plus tard', 'Un problème de temps', 'Un problème de tri'], (root, m) => {
+  const [p1, p2, p3] = m.sent;
+  const c = circle(root, 'rgba(60,140,220,.10)');
+  const box = mk(root, 'abs', `<div class="tx" style="position:absolute;left:30px;top:22px;font:900 44px/1 var(--font);letter-spacing:-.02em">À regarder plus tard</div>`);
+  box.style.cssText += ';background:#fff;border-radius:32px;box-shadow:0 20px 56px rgba(40,70,140,.16);overflow:hidden'; place(box, 84, 320, 846, 330);
+  for (let i = 0; i < 5; i++) { const r = mk(box, '', `<div style="position:absolute;left:0;top:0;width:96px;height:54px;border-radius:8px;background:hsl(${(i * 67) % 360},45%,72%)"></div><div style="position:absolute;left:116px;top:6px;width:${360 + (i * 53) % 220}px;height:14px;border-radius:7px;background:#D8D6E6"></div><div style="position:absolute;left:116px;top:32px;width:${200 + (i * 41) % 160}px;height:12px;border-radius:6px;background:#E8E6F1"></div>`); r.style.cssText += `;position:absolute;left:30px;right:30px;top:${86 + i * 66}px;height:54px`; }
+  const fade = mk(box, '', ''); fade.style.cssText += ';position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(rgba(255,255,255,0),#fff)';
+  const mkRow = (label, y, good) => { const e = mk(root, 'abs cause' + (good ? ' good' : ''), `<div class="cl"><span class="tx st">${label}</span></div><div class="bd" style="background:${good ? 'var(--green)' : 'var(--red)'}">${good ? ICON.check() : ICON.cross()}</div>`); place(e, 84, y, 846, 112); return { e, st: e.querySelector('.st'), bd: e.querySelector('.bd'), good }; };
+  const R = [mkRow('Un problème de temps', 700, false), mkRow('Un problème de tri', 850, true)];
+  const A = [p2.start + .1, p3.start + .1], X = [p2.start + 1.1, p3.start + .8];
+  ev('whoosh', p1.start, { dur: .4 }); ev('pop', p1.start + .2); ev('swipe', A[0]); ev('thunk', X[0] + .1, { amp: .9 }); ev('swipe', A[1]); ev('thump', X[1], { amp: .7 }); ev('ding', X[1] + .02, { f: 1046 }); ev('ding', X[1] + .04, { f: 1318 });
+  return t => {
+    drift(c, t);
+    enter(box, t, p1.start + .05, { dy: 50, d: .5 });
+    box.children.length && [...box.children].forEach((r, i) => { if (i > 0 && i < 6) { const k = P(t, p1.start + .2 + i * .08, .3); r.style.opacity = k; } });
+    R.forEach((o, i) => {
+      enter(o.e, t, A[i], { dy: 50, d: .5 });
+      const xp = P(t, X[i], .4); o.bd.style.opacity = xp > 0 ? 1 : 0; o.bd.style.transform = `scale(${xp > 0 ? eoBack(xp) : 0})`;
+      if (!o.good) { o.st.style.setProperty('--s', eo(P(t, X[i] + .05, .35))); capOp(o.e, 1 - .4 * eo(xp)); }
+      else { const h = Math.sin(P(t, X[i], .5) * Math.PI); if (t > X[i]) o.e.style.transform = `scale(${1 + .04 * h + .008 * Math.sin(t * 4)})`; }
+    });
+  };
+});
+
+/* 3 — la preuve : le volume (585 annoncées, 511 chargées), défilé des vraies captures */
+scene('hook', ['585', 'vidéos annoncées', '511', 'chargées dans la page'], (root, m) => {
+  const [h1, h2] = m.sent, o = m.start;
+  const c = circle(root, 'rgba(108,92,231,.10)');
+  const n1 = txt(root, 'big red', '0', 84, 280, 846, 230); n1.style.fontSize = '230px'; n1.dataset.count = '';
+  const l1 = txt(root, 'lab', 'vidéos annoncées', 84, 520, 846, 90); l1.style.fontSize = '58px';
+  const n2 = txt(root, 'big violet', '511', 84, 280, 846, 230); n2.style.fontSize = '230px';
+  const l2 = txt(root, 'lab', 'chargées dans la page', 84, 520, 846, 90); l2.style.fontSize = '58px';
+  const win = mk(root, 'abs', ''); win.style.cssText += ';overflow:hidden;border-radius:30px;box-shadow:0 24px 64px rgba(30,30,70,.3);background:#111'; place(win, 84, 660, 846, 760); win.dataset.deco = '';
+  const strip = mk(win, '', ''); strip.style.cssText += ';position:absolute;left:0;top:0;width:846px';
+  for (let k = 0; k < NCAP * 2; k++) { const im = document.createElement('img'); im.src = 'assets/captures/cap' + String(k % NCAP + 1).padStart(2, '0') + '.jpg'; im.style.cssText = `display:block;width:846px;height:${CAPH}px`; strip.appendChild(im); }
+  ev('thump', o + .05, { amp: .9 }); ev('riser', o + .05, { dur: 1.0 }); ev('ticks', o + .3, { dur: 1.6, n: 28 }); ev('whoosh', h2.start - .1, { dur: .4 }); ev('thump', h2.start + .15, { amp: .7 }); ev('ding', h2.start + .5, { f: 880 });
+  const T0 = o + .15, T1 = m.end - .35;
+  return t => {
+    drift(c, t);
+    n1.textContent = Math.round(585 * eoExp(P(t, h1.start, .9)));
+    const sw = io(P(t, h2.start - .05, .35));
+    put(n1, { op: 1 - sw, y: -30 * sw, s: 1 + .05 * Math.sin(P(t, h1.start + .8, .4) * Math.PI) }); put(l1, { op: 1 - sw });
+    put(n2, { op: sw, y: 30 * (1 - sw), s: sw > 0 ? 1 + .05 * Math.sin(P(t, h2.start + .1, .4) * Math.PI) : 1 }); put(l2, { op: sw });
+    enter(win, t, o + .05, { dy: 60, d: .55 });
+    const u = cl((t - T0) / (T1 - T0)), pos = 1 - Math.pow(1 - u, 1.7);   // départ vif, arrêt progressif
+    const dist = pos * (NCAP * CAPH * 1.6);
+    strip.style.transform = `translateY(${-(dist % (NCAP * CAPH))}px)`; strip.style.filter = `blur(${(1 - u) * (1 - u) * 1.6}px)`;
+  };
+});
+
+/* 4 — l'instruction donnée à Claude : mes critères (supprimer / garder) */
+const KILL = ['Mangas et animés', 'Moins de 10 minutes', 'Hors IA et business', 'Titres putaclic', 'Revues de personnalités', "Tutos d'outils"], KEEP = ['Formations', 'Startups', 'SaaS', 'Plus de 40 min sur Claude Code'];
+scene('criteres', ['Mes critères', 'À SUPPRIMER', 'À GARDER', ...KILL, ...KEEP], (root, m) => {
+  const [c1, c2, c3, c4] = m.sent;
+  const c = circle(root, 'rgba(229,56,100,.08)');
+  const ti = txt(root, 'h1', '<span class="hl">Mes critères</span>', 84, 310, 846, 100); ti.style.fontSize = '84px';
+  const hk = txt(root, 'flab', 'À SUPPRIMER', 84, 450, 410, 36); hk.style.color = 'var(--red)'; hk.style.fontSize = '30px';
+  const hg = txt(root, 'flab', 'À GARDER', 520, 450, 410, 36); hg.style.color = 'var(--green)'; hg.style.fontSize = '30px';
+  const chip = (label, x, y, w, col) => { const e = mk(root, 'abs tx', label); e.style.cssText += `;background:#fff;border-radius:22px;border-left:10px solid ${col};box-shadow:0 12px 30px rgba(40,40,100,.12);padding:0 18px;display:flex;align-items:center;font:800 31px/1.1 var(--font);letter-spacing:-.02em`; place(e, x, y, w, 96); return e; };
+  const K = KILL.map((s, i) => chip(s, 84, 500 + i * 112, 410, 'var(--red)'));
+  const G = KEEP.map((s, i) => chip(s, 520, 500 + i * 112, 410, 'var(--green)'));
+  const kt = [c2.start + .15, c2.start + .95, c2.start + 1.9, c3.start + .1, c3.start + .85, c3.start + 1.5], gt = [c4.start + .1, c4.start + .7, c4.start + 1.2, c4.start + 1.9];
+  ev('whoosh', c1.start, { dur: .4 }); ev('swipe', c1.start + .4); kt.forEach(a => { ev('pop', a + .1); ev('thunk', a + .3, { amp: .45 }); }); gt.forEach((a, i) => { ev('pop', a + .1); ev('ding', a + .2, { f: 784 + 110 * i }); });
+  return t => {
+    drift(c, t);
+    enter(ti, t, c1.start, { dy: 30, d: .5 }); hlSet(ti, P(t, c1.start + .3, .5));
+    enter(hk, t, c2.start, { dy: 14, d: .4, back: false }); enter(hg, t, c4.start, { dy: 14, d: .4, back: false });
+    K.forEach((e, i) => enter(e, t, kt[i], { dx: -40, dy: 0, d: .45 })); G.forEach((e, i) => enter(e, t, gt[i], { dx: 40, dy: 0, d: .45 }));
+  };
+});
+
+/* 5 — pourquoi l'extension Chrome (ce que le playbook établit) */
+scene('extension', ['Claude Code', 'Claude Cowork', 'Claude in Chrome', 'pas utilisé pour ce tri', 'Dans mon onglet YouTube, déjà connecté', 'Aucun mot de passe'], (root, m) => {
+  const [x1, x2, x3] = m.sent;
+  const c = circle(root, 'rgba(25,169,116,.10)');
+  const card = (name, sub, y, h, hot) => { const e = mk(root, 'abs', `<div class="tx" style="position:absolute;left:34px;top:${hot ? 24 : 22}px;font:900 ${hot ? 52 : 44}px/1 var(--font);letter-spacing:-.025em">${name}</div><div class="tx" style="position:absolute;left:34px;top:${hot ? 92 : 80}px;font:600 ${hot ? 34 : 30}px/1.15 var(--font);color:${hot ? 'var(--ink)' : 'var(--muted)'}">${sub}</div>`); e.style.cssText += `;background:#fff;border-radius:30px;box-shadow:0 16px 44px rgba(30,60,90,.14)${hot ? ';border:6px solid var(--violet)' : ''}`; place(e, 84, y, 846, h); return e; };
+  const a = card('Claude Code', 'pas utilisé pour ce tri', 330, 140, false), b = card('Claude Cowork', 'pas utilisé pour ce tri', 500, 140, false), d = card('Claude in Chrome', 'Dans mon onglet YouTube, déjà connecté', 690, 190, true);
+  const lg = mk(d, '', '<img class="cdlogo" src="assets/claude.png" alt="">'); lg.style.cssText += ';position:absolute;right:26px;top:22px;width:92px;height:92px'; lg.dataset.deco = '';
+  const pw = mk(root, 'abs okpill', `<i>${ICON.check()}</i><span class="tx">Aucun mot de passe</span>`); place(pw, 130, 930, 760, 100);
+  ev('whoosh', x1.start, { dur: .4 }); ev('pop', x1.start + .5); ev('pop', x1.start + .9); ev('swipe', x2.start + .2); ev('thump', x2.start + .9, { amp: .7 }); ev('ding', x3.start + 1.5, { f: 1046 });
+  return t => {
+    drift(c, t);
+    enter(a, t, x1.start + .35, { dy: 40, d: .45 }); enter(b, t, x1.start + .75, { dy: 40, d: .45 });
+    enter(d, t, x2.start + .1, { dy: 60, d: .55 }); if (t > x2.start + .8) d.style.transform = `scale(${1 + .018 * Math.sin((t - x2.start) * 3)})`;
+    capOp(a, 1 - .35 * eo(P(t, x2.start + .3, .5))); capOp(b, 1 - .35 * eo(P(t, x2.start + .3, .5)));
+    enter(pw, t, x3.start + 1.3, { dy: 40, d: .45 }); pw.querySelector('svg path').style.setProperty('--d', 1 - eo(P(t, x3.start + 1.45, .35)));
+  };
+});
+
+/* 6 — la méthode en six étapes */
+const STP = ['Ouvrir la playlist', 'Charger toute la liste', 'Extraire titre, chaîne, durée', 'Classer', 'Supprimer en boucle', 'Documenter'];
+scene('methode', ['6 étapes', ...STP, 'règle de durée + mots-clés + ma relecture'], (root, m) => {
+  const [m2, m3] = m.sent, m1 = m2;   // la liste des 6 étapes n'est pas lue : elle s'affiche pendant la 1re phrase
+  const c = circle(root, 'rgba(108,92,231,.12)');
+  const ti = txt(root, 'h1', '<span class="hl">6 étapes</span>', 84, 310, 846, 100); ti.style.fontSize = '84px';
+  const rows = STP.map((s, i) => { const e = mk(root, 'abs step', `<div class="sc">${ICON.check()}</div><div class="tx sl">${s}</div>`); place(e, 84, 450 + i * 112, 846, 96); return { e, sc: e.querySelector('.sc') }; });
+  const note = txt(root, 'flab', 'règle de durée + mots-clés + ma relecture', 330, 450 + 3 * 112 + 34, 580, 30); note.style.fontSize = '22px'; note.style.color = 'var(--violet)'; note.style.textAlign = 'right'; note.style.zIndex = 5;
+  const st = i => m2.start + .15 + i * .4;
+  ev('whoosh', m1.start, { dur: .4 }); ev('swipe', m1.start + .4); STP.forEach((s, i) => { ev('pop', st(i) + .05); ev('tick', st(i) + .25, { f: 2200 + 200 * i }); }); ev('pop', m3.start + .6);
+  return t => {
+    drift(c, t);
+    enter(ti, t, m1.start, { dy: 30, d: .5 }); hlSet(ti, P(t, m1.start + .3, .5));
+    rows.forEach((o, i) => { enter(o.e, t, st(i), { dy: 40, d: .4 }); const q = P(t, st(i) + .2, .3); put(o.sc, { s: q > 0 ? eoBack(q) : 0, op: q > 0 ? 1 : 0 }); o.sc.querySelector('path').style.setProperty('--d', 1 - eo(P(t, st(i) + .25, .3))); });
+    rows.forEach((o, i) => { o.e.style.transform += ` translateY(${Math.sin(t * 1.9 + i * 1.1) * 4}px)`; });
+    const hot = (i, a, b) => { const k = Math.sin(P(t, a, b) * Math.PI); if (k > 0) rows[i].e.style.transform += ` scale(${1 + .04 * k})`; };
+    hot(1, m2.start + .5, 1.2); hot(2, m2.start + 2.4, 1.2); hot(3, m3.start + .2, 1.4);
+    put(note, { op: P(t, m3.start + .5, .4) });
+  };
+});
+
+/* 7 — la suppression, une par une, de plus en plus vite */
+scene('suppression', ['Supprimer de À regarder plus tard', '511', '48', 'vidéos restantes', 'accéléré', 'pause de 350 à 450 ms entre deux gestes'], (root, m) => {
+  const [s1, s2] = m.sent;
+  const c = circle(root, 'rgba(229,56,100,.08)');
+  const num = txt(root, 'big', '511', 84, 270, 846, 220); num.style.fontSize = '210px'; num.dataset.count = '';
+  const lab = txt(root, 'lab', 'vidéos restantes', 84, 490, 846, 80); lab.style.fontSize = '52px';
+  const tag = mk(root, 'abs tx rpill', 'accéléré'); place(tag, 84, 330); tag.style.background = 'var(--ink)';
+  const note = txt(root, 'flab', 'pause de 350 à 450 ms entre deux gestes', 84, 590, 846, 30); note.style.textAlign = 'center'; note.style.fontSize = '24px';
+  const win = mk(root, 'abs', ''); win.style.cssText += ';overflow:hidden;border-radius:30px;background:#fff;box-shadow:0 24px 64px rgba(120,50,50,.18)'; place(win, 84, 650, 846, 640);
+  const RH = 92, NR = 9, rows = [];
+  for (let i = 0; i < NR + 2; i++) { const r = mk(win, '', ''); r.style.cssText += `;position:absolute;left:24px;right:24px;height:76px;border-radius:14px`; r.innerHTML = '<div class="th" style="position:absolute;left:0;top:6px;width:104px;height:64px;border-radius:9px"></div><div class="b1" style="position:absolute;left:126px;top:12px;height:15px;border-radius:7px;background:#D8D6E6"></div><div class="b2" style="position:absolute;left:126px;top:40px;height:12px;border-radius:6px;background:#E8E6F1"></div>'; rows.push(r); }
+  const menu = mk(root, 'abs', `<div class="tx" style="position:absolute;left:20px;top:0;bottom:0;display:flex;align-items:center;font:700 26px/1 var(--font)">Supprimer de À regarder plus tard</div>`); menu.style.cssText += ';background:#fff;border:3px solid var(--red);border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.25)'; place(menu, 330, 700, 560, 64);
+  const grid = mk(root, 'abs', ''); const gw = 12 * 52 - 10; place(grid, (1080 - gw) / 2, 700, gw, 4 * 52); const kept = []; for (let i = 0; i < 48; i++) { const e = mk(grid, '', ''); e.style.cssText += `;position:absolute;left:${(i % 12) * 52}px;top:${Math.floor(i / 12) * 52}px;width:42px;height:42px;border-radius:10px;background:#19A974`; kept.push(e); }
+  // loi du nombre de suppressions : rythme réel (≈ 1,25 par seconde) puis exponentielle jusqu'à 463 à Te
+  const a = s1.start + .3, b = s2.start - .2, n0 = 1.25 * (b - a), Te = m.end - 1.7, TOT = 463;
+  const nOf = t => { if (t <= a) return 0; if (t <= b) return 1.25 * (t - a); const kf = k => n0 + (1.25 / k) * (Math.exp(k * (Te - b)) - 1) - TOT; let lo = .05, hi = 3; for (let i = 0; i < 40; i++) { const mid = (lo + hi) / 2; if (kf(mid) < 0) lo = mid; else hi = mid; } const k = (lo + hi) / 2; return Math.min(TOT, n0 + (1.25 / k) * (Math.exp(k * (t - b)) - 1)); };
+  for (let i = 0; i < 9; i++) ev('thunk', a + i * .8 + .4, { amp: .35 }), ev('tick', a + i * .8 + .15, { f: 2400 });
+  ev('whoosh', b + .1, { dur: Te - b, up: true }); ev('riser', b + .1, { dur: Te - b }); ev('thump', Te + .05, { amp: .9 }); ev('ding', Te + .1, { f: 1046 }); ev('ding', Te + .12, { f: 1318 });
+  const hue = k => (k * 47) % 360;
+  return t => {
+    drift(c, t);
+    enter(win, t, s1.start, { dy: 60, d: .5 }); enter(num, t, s1.start, { dy: 30, d: .4 }); enter(lab, t, s1.start + .1, { dy: 20, d: .4 }); enter(note, t, s1.start + .4, { dy: 14, d: .4, back: false });
+    put(tag, { op: P(t, s2.start + .5, .3), s: .9 + .1 * eoBack(P(t, s2.start + .5, .3)) });
+    const n = nOf(t), nf = Math.floor(n), fr = n - nf, done = n >= TOT - .01, ge = P(t, Te, .6);
+    num.textContent = Math.max(48, 511 - Math.floor(n)); num.style.color = done ? '#19A974' : '#0F1020';
+    const speed = 1.25 * Math.pow(Math.max(1, n / Math.max(n0, 1)), 0) ; 
+    rows.forEach((r, i) => {
+      const k = nf + i, y = 20 + (i - eo(fr)) * RH, vis = !done && y > -RH && y < 640;
+      r.style.display = vis ? 'block' : 'none'; if (!vis) return;
+      const th = r.querySelector('.th'); th.style.background = `hsl(${hue(k)},45%,70%)`; r.querySelector('.b1').style.width = (300 + (k * 53) % 260) + 'px'; r.querySelector('.b2').style.width = (180 + (k * 37) % 200) + 'px';
+      const dying = i === 0; r.style.transform = `translateY(${y}px) translateX(${dying ? -eo(fr) * 120 : 0}px)`; r.style.opacity = dying ? 1 - fr * fr : 1; r.style.background = dying ? `rgba(229,56,100,${.18 * Math.sin(fr * Math.PI)})` : 'transparent';
+    });
+    win.style.opacity = parseFloat(win.style.opacity) * (1 - ge);
+    const showMenu = n > .15 && n < 9 && !done && fr > .15 && fr < .75;
+    menu.style.opacity = showMenu ? 1 : 0; menu.style.transform = `translateY(${24 + (1 - 0) * 0}px)`;
+    kept.forEach((e, i) => { const p = P(t, Te + .1 + i * .012, .3); e.style.opacity = p > 0 ? 1 : 0; e.style.transform = `scale(${p > 0 ? eoBack(p) : 0})`; });
+    put(lab, { op: P(t, s1.start + .1, .4) });
+  };
+});
+
+/* 9 — résultat : le curseur avant / après */
+scene('resultat', ['AVANT', 'APRÈS', 'Vidéos dans la liste', 'Supprimées automatiquement', '511', '48', '0 %', '≈ 90 %', '≈ 15 min'], (root, m) => {
+  const [r1, r2] = m.sent;
+  const layer = mode => {
+    const L = mk(root, 'abs', ''); place(L, 0, 0, W, H); L.style.background = mode === 'b' ? '#FDECEC' : '#E3F6EE';
+    const tag = mk(L, 'abs tx tag ' + (mode === 'b' ? 'red' : 'green'), mode === 'b' ? 'AVANT' : 'APRÈS'); place(tag, 84, 330, 846, 70); tag.style.textAlign = mode === 'b' ? 'left' : 'right';
+    const V = mode === 'b' ? ['511', '0 %'] : ['48', '≈ 90 %'], LB = ['Vidéos dans la liste', 'Supprimées automatiquement'];
+    const rows = LB.map((lb, i) => { const r = mk(L, 'abs mrow', `<div class="tx ml">${lb}</div><div class="tx mv ${mode === 'b' ? 'red' : 'green'}">${V[i]}</div>` + (mode === 'a' ? `<div class="mk">${ICON.check()}</div>` : '')); place(r, 84, 470 + i * 262, 846, 236); return { r, mk: r.querySelector('.mk') }; });
+    return { L, tag, rows };
+  };
+  const B = layer('b'), A = layer('a');
+  const dur = mk(root, 'abs timer', `${ICON.clock()}<span class="tx">≈ 15 min</span>`); place(dur, 252, 1030, 576, 116);
+  const cur = mk(root, 'abs cursor', null); cur.dataset.deco = ''; place(cur, 0, 0, 8, H);
+  const hd = mk(root, 'abs handle', ICON.chev()); hd.dataset.deco = ''; place(hd, 0, 880, 104, 104);
+  const swD = 1.4, sw0 = r1.start + .9;
+  ev('whoosh', m.start, { dur: .4 }); ev('pop', m.start + .3); ev('pop', m.start + .5); ev('whoosh', sw0, { dur: swD, up: true }); ev('riser', sw0, { dur: swD });
+  ev('ding', sw0 + swD * .5, { f: 784 }); ev('thump', sw0 + swD * .5, { amp: .7 }); ev('ding', r2.start + .6, { f: 1046 }); ev('ding', r2.start + .62, { f: 1318 }); ev('pop', r2.start + 1.5);
+  return t => {
+    B.rows.forEach((o, i) => { enter(o.r, t, m.start + .3 + .2 * i, { dy: 50, d: .5 }); o.r.style.transform += ` translateY(${Math.sin(t * 1.8 + i) * 4}px)`; });
+    enter(B.tag, t, m.start + .1, { dy: 20, d: .4 });
+    const sw = io(P(t, sw0, swD)), x = 1100 - 1140 * sw;
+    A.L.style.clipPath = `inset(0 0 0 ${Math.max(0, x)}px)`;
+    const showCur = P(t, sw0 - .3, .3) * (1 - P(t, sw0 + swD + .1, .3)); put(cur, { x: x - 4, op: showCur }); put(hd, { x: x - 52, op: showCur });
+    A.rows.forEach((o, i) => { const a = i === 0 ? sw0 + swD * .5 : r2.start + .5, p = P(t, a, .5); o.r.style.opacity = 1; o.r.style.transform = `scale(${1 + .05 * Math.sin(p * Math.PI)}) translateY(${Math.sin(t * 1.8 + i) * 4}px)`; const q = P(t, a + .1, .4); o.mk.style.opacity = q > 0 ? 1 : 0; o.mk.style.transform = `scale(${q > 0 ? eoBack(q) : 0})`; o.mk.querySelector('svg path').style.setProperty('--d', 1 - eo(P(t, a + .15, .35))); });
+    enter(dur, t, r2.start + 1.4, { dy: 40, d: .45 }); dur.style.transform += ` translateY(${Math.sin(t * 2.1) * 4}px)`;
+  };
+});
+
+/* 11 — CTA sur bleu nuit, puis « Et ta liste ? » (la fin reboucle sur le titre) */
+scene('cta', ['Abonne-toi', "pour plus d'astuces IA", 'sans compétences techniques', 'rapides', 'terriblement efficaces', 'Et ta liste ?'], (root, m) => {
+  const [k1] = m.sent;
+  const c = circle(root, 'rgba(255,255,255,.05)');
+  const cta = mk(root, 'abs cta', `<div class="ci" style="padding:18px"><img class="cdlogo" src="assets/claude.png" alt=""></div><div class="tx c1" style="top:196px;font-size:78px"><span class="hl">Abonne-toi</span></div><div class="tx c2" style="top:300px;font-size:46px;line-height:1.1">pour plus d'astuces IA</div>`); place(cta, 84, 380, 846, 800);
+  const chips = ['sans compétences techniques', 'rapides', 'terriblement efficaces'].map((s, i) => { const e = mk(cta, 'tx', s); e.style.cssText += `;position:absolute;left:60px;right:60px;top:${430 + i * 110}px;height:86px;border-radius:999px;background:${['#ECEAFD', '#E3F6EE', '#FFF3CF'][i]};display:flex;align-items:center;justify-content:center;font:800 40px/1 var(--font);letter-spacing:-.02em`; return e; });
+  const big = txt(root, 'big', 'Et ta<br>liste ?', 84, 600, 846, 470); big.style.color = '#fff'; big.style.fontSize = '230px'; big.style.lineHeight = '1.02';
+  const exitAt = m.end - 1.05, ct = [k1.start + .9, k1.start + 3.0, k1.start + 3.9];
+  ev('whoosh', m.start, { dur: .4 }); ev('thump', m.start + .05, { amp: .45 }); ev('swipe', m.start + .6); ct.forEach(a => ev('pop', a)); ev('whoosh', exitAt, { dur: .35, down: true }); ev('thump', exitAt + .3, { amp: 1, big: true });
+  return t => {
+    drift(c, t);
+    enter(cta, t, m.start, { dy: 80, d: .5 }); hlSet(cta, P(t, m.start + .5, .4));
+    chips.forEach((e, i) => enter(e, t, ct[i], { dy: 30, d: .4 }));
+    if (t > m.start + .6 && t <= exitAt) cta.style.transform = `translateY(${Math.sin((t - m.start - .6) * 3.4) * 7}px)`;
+    if (t > exitAt) { const e = io(P(t, exitAt, .35)); cta.style.transform = `translateY(${-220 * e}px) scale(${1 - .1 * e})`; cta.style.opacity = 1 - e; }
+    const q = P(t, exitAt + .2, .45); put(big, { s: .8 + .2 * eoBack(q), op: cl(q * 2) });
+  };
+});
+
+/* ---------- pilotage temporel ---------- */
+window.__setTime = t => {
+  let idx = 0;
+  SC.forEach((s, i) => {
+    const last = i === SC.length - 1;
+    const vis = t >= s.m.start && t < (last ? TOTAL + 1 : s.m.end + .25);
+    s.root.style.display = vis ? 'block' : 'none';
+    if (t >= s.m.start) idx = i;
+    if (!vis) return;
+    const e = i === 0 ? 1 : P(t, s.m.start, .2);
+    s.root.style.opacity = e; s.root.style.transform = i === 0 ? 'none' : `translateY(${(1 - eo(e)) * 34}px)`;
+    s.upd(t); if (s.cap) s.cap(t);
+  });
+  counter.textContent = (idx + 1) + '/' + NSC; counter.classList.toggle('dark', SC[idx].id === 'cta');
+};
+window.REEL = { total: TOTAL, safe: SAFE, scenes: SC.map(s => ({ id: s.id, start: s.m.start, end: s.m.end, copy: s.copy, caps: s.m.caption ? s.m.sent.map(x => x.cap) : [] })) };
+window.EVENTS = EV;
+
+/* contrôle qualité : texte visible et boîtes réelles (Range) à l'instant t */
+window.__qa = t => {
+  window.__setTime(t);
+  const out = [];
+  stage.querySelectorAll('.tx, .cap').forEach(e => {
+    let op = 1, n = e;
+    while (n && n !== document.body) { const cs = getComputedStyle(n); op *= parseFloat(cs.opacity); if (cs.display === 'none') { op = 0; break; } n = n.parentElement; }
+    if (op < .35) return;
+    const r = document.createRange(); r.selectNodeContents(e);
+    const b = r.getBoundingClientRect();
+    if (!b.width || !b.height) return;
+    out.push({ text: (e.innerText || e.textContent).replace(/\s+/g, ' ').trim(), x0: b.left, y0: b.top, x1: b.right, y1: b.bottom,
+      deco: !!e.closest('[data-deco]'), count: !!e.closest('[data-count]'), bleed: !!e.closest('[data-bleed]') });
+  });
+  return out;
+};
+
+if (new URLSearchParams(location.search).get('debug')) {
+  const d = document.createElement('div'); d.className = 'dbg';
+  d.style.cssText += `;left:${SAFE.x0}px;top:${SAFE.y0}px;width:${SAFE.x1 - SAFE.x0}px;height:${SAFE.y1 - SAFE.y0}px`; stage.appendChild(d);
+}
+window.__setTime(0);
+})();
+</script>
+</body>
+</html>

@@ -62,7 +62,13 @@ Règles :
 - 5 à 12 mots par phrase, une idée par phrase. Ouvrir par une **question** quand c'est le problème du spectateur.
 - **Débit ≤ 4,5 mots/s** (contrôlé). La synthèse lit parfois les phrases courtes trop vite : ajouter `"tempo": 0.8–0.95` à la phrase (ralentissement sans changer la hauteur), plutôt que de rallonger le texte.
 - Style : preuve avant promesse, le « mais », une limite (pour Reflex IA : `SKILL_STYLE_ECRITURE.md` et `SKILL_VOIX_REFLEXIA.md` du dépôt reflex-ia). Mots bannis : révolutionnaire, game changer, incroyable, magique, ultime, 10x, « secret », « fait tout à votre place ». Pas d'emoji.
-- **Pas d'appât d'engagement** (« commente X »). Le CTA est unique : le domaine du projet (Reflex IA : **reflex-ia.com**, jamais `reflexi-ai.com` ; réglé par `cta_contient` dans `story.json`).
+- **Pas d'appât d'engagement** (« commente X »). Le CTA est **unique et choisi par l'utilisateur** (domaine du projet, abonnement, lien du playbook ; réglé par `cta_contient` dans `story.json`). Si la formule contient une promesse que le reel ne prouve pas (« terriblement efficaces »), la signaler à l'utilisateur dans le message de livraison ; c'est son choix éditorial. Pour Reflex IA : domaine **reflex-ia.com**, jamais `reflexi-ai.com`.
 - Prononciations à écouter par l'utilisateur et à signaler : noms d'outils, « commit », sigles, domaines.
 
 ---
+
+### Phrases qui ne sont pas lues
+Une liste affichée (les 6 étapes, les critères) n'a pas à être lue en entier : supprimer la phrase de voix qui l'énumère et laisser la voix décrire **ce qui se passe**. La scène (cascade de coches) se cale alors sur la 1re phrase conservée (`const [m2, m3] = m.sent, m1 = m2`).
+
+### Comparer des outils : ne dire que ce que la source établit
+Une scène « pourquoi cet outil plutôt que X ou Y » n'affirme **rien** sur les capacités de X et Y (« pas utilisé pour ce tri ») et donne la raison positive tirée de la source (ex. « travaille dans mon onglet déjà connecté, aucun mot de passe »). Le texte de cette scène est montré à l'utilisateur **avant** la voix.

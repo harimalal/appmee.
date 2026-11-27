@@ -51,7 +51,8 @@ Format : `BRIEF.md` dans le dossier du reel (modèle : `<skill>/assets/brief-mod
 | Étapes de production et commandes, seuils de contrôle, pièges rencontrés, limites | `<skill>/references/production.md` |
 | Brief à remplir et à faire valider (modèle + exemple rempli) | `<skill>/assets/brief-modele.md`, `<skill>/assets/exemple-brief-seo-indexation.md` |
 | Outils prêts à l'emploi : voix (`tts.py`), plan de montage (`plan.py`), contrôle (`qa.cjs`), événements sonores (`events.cjs`), son (`synth.cjs`), rendu (`render.cjs`), mixage (`mix.py`), couverture (`cover.cjs`, `cover.html`), gabarit de page (`story.template.html`) et de récit (`story.json`) | `<skill>/assets/modele/` |
-| Implémentation de référence complète (13 scènes, 31 phrases, couverture) | `<skill>/assets/reference-seo/` |
+| Implémentation de référence 1 : correction SEO (13 scènes, 31 phrases, couverture, comparaison avant/après) | `<skill>/assets/reference-seo/` |
+| Implémentation de référence 2 : playbook « Tri Watch Later » (10 scènes, vraies captures en défilé, critères, comparaison d'outils, suppression accélérée) + brief rempli | `<skill>/assets/reference-tri/`, `<skill>/assets/exemple-brief-tri-watch-later.md` |
 
 ## Déroulé en un coup d'œil
 1. Lire la source du travail (artefact, playbook, journal) → fiche de faits.
