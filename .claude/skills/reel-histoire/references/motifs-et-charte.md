@@ -86,3 +86,10 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | **Terminal Claude Code lisible** | Remplace le décor de barres colorées : une instruction en langage naturel **tapée** (révélation par pas de caractère, texte entier dans le DOM), puis 3 lignes de réponse cochées, mot « illustration » affiché, pastille « 0 ligne de code tapée ». Polices ≥ 35 px (mono) et 44 px (réponses) | `code` du site |
 | **Étiquette au-dessus du voile** | `.lbl, .sublbl { z-index: 50 }` : un voile blanc (`.scrim`, z-index 40) posé sur la page **voile aussi** une étiquette qui le précède dans le DOM (effet « flou ») ; voile `mid` (blanc plein jusqu'à 84 %) sous la bande de texte | toutes les scènes sur page réelle |
 
+## Motifs ajoutés aux 10e et 11e essais
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| **Mur d'exemples d'un même système** | Prouver « un système, plein de résultats » : rangées de vraies slides qui défilent en sens opposés, puis une visionneuse par univers (swipe, la dernière slide ressort), puis les trois côte à côte | `reference-carousel-factory` |
+| **Chaîne de fichiers animée** | Montrer un système de production : fichier source → fiche → position → sorties → contrôle, chaque étape en rendu fidèle du vrai fichier, avec un clic qui fait ressortir la ligne clé | `reference-content-factory` |
+| **Couverture mur 3D** | Couverture d'un reel « système » : vrais rendus en perspective, titre en deux lignes avec un mot surligné, bandeau « 1 … = / → … » | `cover.html` des deux références |
+

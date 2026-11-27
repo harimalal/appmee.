@@ -134,3 +134,13 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - **Dictée ambiguë et réponse courte** : « va rien changer, juste le début » = ne toucher qu'à la mise en scène d'une zone ; un message envoyé en cours de travail précise souvent *ce qui doit ressortir* (ici : les comparatifs par filtre). Quand deux fragments restent incompréhensibles, le dire et demander plutôt que de deviner.
 - **Voix** : changer 3 phrases sur 23 = 3 requêtes facturées, le reste vient du cache ; prévoir de garder au maximum les phrases déjà validées.
 
+## Enseignements des 10e et 11e essais (reels « Carousel Factory » et « Content Factory »)
+- **Toujours mixer avec `--sans-nappe`** : le 1er envoi du reel n°7 contenait la nappe par oubli de l'option ; Hari l'a entendue (« tous les bruits sont trop forts »). Bruitages bas par défaut : `mix.py --sfx 0.3`, balayages de transition 0,3, swipes 0,2 (`synth.cjs`).
+- **Montrer un système par ses vrais fichiers** : rendre fidèlement les fichiers de la chaîne (fiche, position, posts, sortie du contrôle) avec un générateur qui **lit** les fichiers et n'en réécrit aucun texte (`cards.py` + `cards.cjs`), puis animer ces rendus (lignes qui apparaissent, zoom, l'élément cliqué ressort). Le texte dans une image échappe au contrôle de mots : relire chaque rendu à l'œil.
+- **Exemples hors dépôt** : des carrousels peuvent vivre dans des artefacts claude.ai (`Artifact list`/`read`) ; les rendre en PNG 1080×1350 avec Playwright, ne montrer que les slides sans bandeau « à fournir » ni tag « À vérifier ».
+- **Zooms sur une carte pleine largeur** : au-delà de ×1,1 le texte sort du cadre à gauche ; préférer un zoom ×1,08-1,12 recentré, le « ressort » fait le reste.
+- **Libellé en flex + surlignage** : un `<span class="hl">` dans une étiquette longue la coupe en colonnes ; garder l'étiquette courte (une ligne).
+- **Mot banni « secret »** (contrôle qualité) : reformuler même un nom de modèle (« secret de fabrication » → « fabrication pas à pas ») et le dire.
+- **Quotas voix** : 100 requêtes/jour par modèle (`gemini-3.8-flash-tts`, `gemini-3.8-flash-lite-tts`). Si les deux sont épuisés, générer **toute** la vidéo avec un même autre modèle (`gemini-3.1-flash-tts-preview`, qui renvoie du PCM brut `audio/l16` : `tts.py` ajoute l'en-tête WAV) plutôt que mélanger deux voix ; le dire à l'utilisateur.
+- **Couverture « limite 3D »** : mur de vrais rendus en perspective CSS (`perspective`, `rotateX/Y`, `translateZ`), titre en haut sur fond net, bandeau sombre ; contrôler les recadrages 3:4 et 1:1.
+

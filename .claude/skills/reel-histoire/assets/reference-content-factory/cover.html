@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Couverture reel : Content Factory</title>
+<!-- Couverture 9:16 (1080x1920) : mur 3D des vrais rendus de la Content Factory (fiche, post LinkedIn, fil X, carrousel, contrôle) + titre « Content Factory ». ?debug=1 affiche les cadres 3:4 et 1:1. -->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--violet:#6C5CE7;--red:#E5383B;--font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F1EFFD}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);background:linear-gradient(180deg,#F1EFFD 0%,#E6E2FB 55%,#DAD4F7 100%)}
+.abs{position:absolute}
+.circ{left:470px;top:-230px;width:980px;height:980px;border-radius:50%;background:rgba(108,92,231,.16)}
+.circ2{left:-380px;top:1230px;width:760px;height:760px;border-radius:50%;background:rgba(229,56,100,.09)}
+.brand{left:50%;top:150px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;height:80px;padding:0 40px;background:#fff;border-radius:999px;font:900 40px/1 var(--font);letter-spacing:.02em;box-shadow:0 10px 30px rgba(20,20,60,.16);z-index:6}
+.brand .dot{width:17px;height:17px;border-radius:50%;background:var(--red)}
+.clip3d{position:absolute;left:0;top:590px;width:1080px;height:1330px;overflow:hidden;z-index:2}
+.stage3d{position:absolute;left:0;top:0;width:1080px;height:1330px;perspective:1900px;perspective-origin:50% 30%}
+.wall{position:absolute;left:50%;top:44%;width:0;height:0;transform-style:preserve-3d;transform:rotateX(26deg) rotateY(-24deg) rotateZ(4deg)}
+.sl{position:absolute;width:360px;height:450px;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 28px 60px rgba(30,20,80,.38),0 6px 14px rgba(30,20,80,.22);transform-style:preserve-3d}
+.sl img{display:block;width:100%;height:100%;object-fit:cover}
+.sl.hero{box-shadow:0 60px 110px rgba(30,20,80,.55),0 10px 24px rgba(30,20,80,.3);border:6px solid #fff}
+.ttl{left:60px;top:262px;width:960px;text-align:center;font:900 132px/.96 var(--font);letter-spacing:-.045em;z-index:7;text-shadow:0 6px 0 rgba(255,255,255,.9)}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 86%;background-size:100% .46em;padding:0 .06em;border-radius:.1em}
+.pill{left:50%;top:1556px;transform:translateX(-50%);height:104px;padding:0 44px;border-radius:999px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:16px;font:900 44px/1 var(--font);letter-spacing:-.02em;z-index:7;white-space:nowrap;box-shadow:0 18px 40px rgba(15,16,32,.4)}
+.pill b{color:var(--yellow);font-weight:900}
+.topfade{left:0;top:560px;width:1080px;height:150px;background:linear-gradient(#F1EFFD,rgba(241,239,253,0));z-index:3;pointer-events:none}
+.fade{left:0;top:1380px;width:1080px;height:300px;background:linear-gradient(rgba(226,221,250,0),rgba(226,221,250,.85) 70%);z-index:5;pointer-events:none}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:9}
+</style></head><body>
+<div id="c">
+  <div class="abs circ"></div><div class="abs circ2"></div>
+  <div class="abs brand">REFLEX<i class="dot"></i>IA</div>
+  <div class="clip3d"><div class="stage3d"><div class="wall" id="wall"></div></div></div>
+  <div class="abs topfade"></div>
+  <div class="abs fade"></div>
+  <div class="abs ttl">Content<br><span class="hl">Factory</span></div>
+  <div class="abs pill">1 article <b>→</b> tous tes posts</div>
+</div>
+<script>
+const SRCS = ['cards/linkedin.png','slides/oc1.jpg','cards/x.png','cards/fiche.png','slides/oc2.jpg','cards/term.png','slides/oc3.jpg','cards/position.png','slides/oc5.jpg','cards/x.png','slides/oc7.jpg','cards/linkedin.png','slides/oc4.jpg','cards/fiche.png','slides/oc6.jpg','cards/x.png','slides/oc1.jpg','cards/linkedin.png'];
+const wall = document.getElementById('wall'); const W = 360, H = 450, GX = 50, GY = 50, COLS = 3;
+SRCS.forEach((k, i) => {
+  const c = i % COLS, r = Math.floor(i / COLS);
+  const d = document.createElement('div'); d.className = 'sl' + (i === 4 ? ' hero' : '');
+  const x = (c - (COLS - 1) / 2) * (W + GX) - W / 2, y = (r - 0.6) * (H + GY) - H / 2;
+  const z = i === 4 ? 170 : ((c + r) % 3) * 26 - 20;
+  d.style.cssText += `;left:${x}px;top:${y}px;transform:translateZ(${z}px)`;
+  const im = document.createElement('img'); im.src = 'assets/' + k; if (k.startsWith('cards')) im.style.objectPosition = '50% 0%'; d.appendChild(im); wall.appendChild(d);
+});
+if (new URLSearchParams(location.search).get('debug')) { const c = document.getElementById('c'); [[0,240,1080,1440],[0,420,1080,1080]].forEach(([x,y,w,h]) => { const d = document.createElement('div'); d.className = 'dbg'; d.style.cssText += `;left:${x}px;top:${y}px;width:${w}px;height:${h}px`; c.appendChild(d); }); }
+</script>
+</body></html>

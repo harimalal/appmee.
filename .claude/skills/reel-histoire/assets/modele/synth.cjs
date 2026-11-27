@@ -77,8 +77,8 @@ for (const e of EVT.events) {
     case 'thump': put(sfx, t, thump(e.big ? .9 : .5, e.big ? 80 : 110, e.big ? 32 : 42), e.amp ?? .8); break;
     case 'riser': put(sfx, t, riser(e.dur ?? .8), .5, -.3, .3); break;
     case 'pop': put(sfx, t, pop(380 + 40 * (k % 5), 760 + 40 * (k % 5), .1), .34, pan()); k++; break;
-    case 'swipe': put(sfx, t, swipe(.28), .3, -.4, .4); break;
-    case 'whoosh': { const d = e.dur ?? .4; put(sfx, t, e.up ? whoosh(d, 250, 6500, .7) : e.down ? whoosh(d, 3000, 500) : whoosh(d, 500, 3600), e.up ? .6 : .38, e.up ? .8 : pan(), e.up ? -.8 : -pan()); break; }
+    case 'swipe': put(sfx, t, swipe(.28), .2, -.4, .4); break;
+    case 'whoosh': { const d = e.dur ?? .4; put(sfx, t, e.up ? whoosh(d, 250, 6500, .7) : e.down ? whoosh(d, 3000, 500) : whoosh(d, 500, 3600), e.up ? .3 : .3, e.up ? .8 : pan(), e.up ? -.8 : -pan()); break; }
     case 'ticks': { const n = e.n ?? 16, d = e.dur ?? .8; for (let i = 0; i < n; i++) put(sfx, t + i * (d / n), tick(1500 + 90 * (i % 12) + rnd() * 500, .022), .2, rnd() * .8 - .4); break; }
     case 'tick': put(sfx, t, tick(e.f ?? 2400, .045), .38); break;
     case 'ding': put(sfx, t, ding(e.f ?? 1046, .7), .55, pan()); break;

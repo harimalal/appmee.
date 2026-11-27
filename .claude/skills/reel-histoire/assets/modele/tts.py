@@ -64,7 +64,13 @@ for sc in CFG['scenes']:
             body = {'contents': [{'parts': [{'text': s['voice']}]}], 'generationConfig': {'responseModalities': ['AUDIO'],
                     'speechConfig': {'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': CFG['voice']}}}}}
             d = call(CFG['model'], body, 'tts-' + s['id'])
-            open(raw, 'wb').write(base64.b64decode(d['candidates'][0]['content']['parts'][0]['inlineData']['data'])); spent += 1
+            part = d['candidates'][0]['content']['parts'][0]['inlineData']; pcm = base64.b64decode(part['data'])
+            if 'l16' in part.get('mimeType', '') or 'pcm' in part.get('mimeType', ''):   # PCM brut 16 bits (certains modèles) : on ajoute l'en-tête WAV
+                rate = int(re.search(r'rate=(\d+)', part['mimeType']).group(1)) if 'rate=' in part['mimeType'] else 24000
+                with wave.open(raw, 'wb') as w: w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes(pcm)
+            else:
+                open(raw, 'wb').write(pcm)
+            spent += 1
         tr = os.path.join(WORK, 'trim', s['id'] + '.wav')
         af = 'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse'
         if s.get('tempo') or CFG.get('tempo'): af += ',atempo=%s' % (s.get('tempo') or CFG.get('tempo'))   # ralentissement ponctuel d'une phrase lue trop vite par la synthèse

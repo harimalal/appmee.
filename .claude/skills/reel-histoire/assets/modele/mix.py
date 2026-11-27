@@ -10,8 +10,11 @@ Le dossier de travail contient trim/<id>.wav (voix) et sfx.wav / bed.wav (synth.
 import json, os, re, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+SFX = 0.5     # niveau des bruitages : --sfx 0.3
 NAPPE = 1.0   # niveau de la nappe : --sans-nappe (0) ou --nappe 0.5
 if '--sans-nappe' in sys.argv: NAPPE = 0.0; sys.argv.remove('--sans-nappe')
+if '--sfx' in sys.argv:
+    _i = sys.argv.index('--sfx'); SFX = float(sys.argv[_i + 1]); del sys.argv[_i:_i + 2]
 if '--nappe' in sys.argv: i = sys.argv.index('--nappe'); NAPPE = float(sys.argv[i + 1]); del sys.argv[i:i + 2]
 WORK, VIDEO, OUT = os.path.abspath(sys.argv[1]), os.path.abspath(sys.argv[2]), os.path.abspath(sys.argv[3])
 TL = json.load(open(os.path.join(HERE, 'timeline.json'), encoding='utf-8'))
@@ -51,7 +54,7 @@ mix = (
     '[0:a]pan=stereo|c0=c0|c1=c0,volume=1.0[v];'
     '[v]asplit=3[vm][vk1][vk2];'
     f'[2:a]volume={0.62 * NAPPE:.3f}[b];[b][vk1]sidechaincompress=threshold=0.015:ratio=9:attack=15:release=350:makeup=1[bd];'
-    '[1:a]volume=0.5[x];[x][vk2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=200:makeup=1[xd];'
+    f'[1:a]volume={SFX}[x];[x][vk2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=200:makeup=1[xd];'
     '[vm][bd][xd]amix=inputs=3:normalize=0:duration=first[m]'
 )
 ln = 'loudnorm=I=-14:TP=-1.5:LRA=11'
