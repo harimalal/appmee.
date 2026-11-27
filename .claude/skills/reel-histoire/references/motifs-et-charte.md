@@ -71,7 +71,14 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | Motif | Quand l'utiliser | Scène de référence |
 |---|---|---|
 | **Démo plein cadre façon site (sans fenêtre)** | Toute preuve par pages réelles : la page (version ordinateur 1 280 px) occupe tout l'écran 1 080 × 1 920 (échelle 1080/1280), étiquette unique sur un bandeau blanc (`scrim`) en haut ; **jamais** de barre de navigateur ni de bordure (retour de Hari : « arrête la démo dans la fenêtre, fais sans cadre ») | toutes les scènes de page |
-| **Curseur + clic + surbrillance** | Montrer ce qu'on explique en « cliquant » dessus : flèche (`makeCursor`, positions en pixels écran projetées depuis les coordonnées de page à l'instant du clic), onde (`makeClicks`), boîte jaune sur la cible réelle (`colBox`, `cardBox`) | `criteres`, `tableau`, `usages`, `profils` |
+| **Curseur + clic** | Montrer ce qu'on explique en « cliquant » dessus : flèche (`makeCursor`, positions en pixels écran projetées depuis les coordonnées de page à l'instant du clic), onde (`makeClicks`). **Plus de boîte jaune** (voir 8e essai) | `criteres`, `tableau`, `usages`, `profils` |
 | **Scroll + zoom pilotés par la caméra** | `camAt` (centre, zoom, `dip`) : défilement lent, zoom sur la cible au moment où la voix la nomme | toutes |
 | **Swipe** | Doigt translucide (`makeSwipes`) + glissement de caméra d'une page à l'autre (3 comparatifs côte à côte sur la toile), ou glissement horizontal d'un tableau qui défile (colonnes cachées révélées) | `criteres`, `tableau`, `profils` |
 | **Plongée** | Clic sur une carte de la liste, zoom jusqu'à remplir l'écran, la page cible apparaît en dézoomant (`cvB` de 0,55 à 1) | `ouverture` |
+
+## Motifs ajoutés au 8e essai (reference-comparatif-site v7 et reference-site-0-euro v7)
+| Motif | Quand l'utiliser | Scène de référence |
+|---|---|---|
+| **L'élément cliqué ressort vers l'avant** (aucun cadre jaune) | Mettre en valeur une cible réelle (colonne, carte, puce, lien de menu, bloc) : `makePops(host, srcUrl, imgW, imgH, ox, oy)` crée un voile sur le reste de la page et un calque qui reprend la région de la capture, soulevé avec une ombre ; puis la caméra zoome pour qu'on lise, puis dézoome. Retour de Hari : « il vaut mieux cliquer, ne pas le mettre en jaune, mais les agrandir, dézoomer pour qu'on voie ce qui est écrit, ou que les informations ressortent vers l'avant » | `criteres`, `tableau`, `usages`, `profils` ; ouverture, menu, newsletter du site |
+| **Navigation continue entre pages réelles** | Une couche plein écran par page (`lyr`), un clic par phrase vers la suivante (menu, carte, bouton), swipe/scroll entre les clics ; l'en-tête du site reste visible sous la bande d'étiquette (`camTop` : haut de page à y = 640) | `pages` du site |
+| **Changement de charte en balayage** | La même page plein cadre, remplacée par sa version « océan » puis « forêt » par un balayage, plutôt que des tuiles encadrées | `charte` du site |

@@ -114,3 +114,12 @@ Le `<dossier_de_travail>` (voix rognées `trim/`, `sfx.wav`, `bed.wav`) va dans 
 - **Anti-gel** : un passage où la caméra est immobile entre deux clics est détecté comme image figée (curseur trop discret) : ajouter une légère dérive de caméra (zoom +0,05, glissement +40 px) entre les mêmes cibles.
 - **Lisibilité** : l'étiquette sur page réelle exige un bandeau blanc **opaque** sur les ≈ 460 px du haut (le texte de la page passe derrière sinon) ; réduire la taille (44 px) des étiquettes longues pour qu'elles tiennent sur une ligne ; garder un bandeau doux seulement pour l'ouverture (zoom sur le titre de la page).
 - **Registre** : voir `recit.md` (ton « ami », tempo 1,16, CTA à mot-clé) ; la v6 reprend le contenu de la v4 en le réécrivant, sans toucher aux affirmations.
+
+## Enseignements du 8e essai (reels « 28 comparatifs » et « Mon site » v7)
+- **Plus aucune surbrillance jaune** : l'élément cliqué **ressort vers l'avant** (`makePops` : calque soulevé + ombre + voile), la caméra zoome pour la lecture puis dézoome. Le jaune ne sert plus qu'au surligneur de texte des scènes graphiques.
+- **Navigation continue** : pour une série de pages (accueil, article, comparatif, rubrique, page de vente, newsletter), une couche par page et **un clic par phrase** (menu, carte, bouton) plutôt qu'une fenêtre par type. L'en-tête réel (`Newsletter gratuite` sur l'accueil, `S'abonner →` ailleurs) reste visible sous la bande d'étiquette.
+- **Les fonds ne se proposent pas sans demande** : Hari a rejeté six variantes de fond (« les fonds sont pourris, utilise les fonds actuels, on verra plus tard »). Garder les fonds du moteur ; n'en proposer d'autres que s'il le demande.
+- **« Reviens sur la séquence précédente » = garder texte, ton, rythme et ordre des scènes, changer uniquement la mise en scène.** Le cache de voix permet alors un rendu à 0 requête facturée ; vérifier le compte dans `voice-report.json`.
+- **Quota de voix** : le modèle « lite » plafonne à 100 requêtes par jour ; basculer sur `gemini-3.8-flash-tts` change légèrement la voix, le dire.
+- **Transcription** : une formulation lue au passé par erreur (« l'écrit » → « l'a écrit ») se corrige par reformulation (« s'en charge sur mes instructions »), pas par relecture.
+- **Une scène d'un reel « souris » non faisable proprement** (formulaire qui ne s'ouvre pas à la capture) : le dire et garder la scène graphique plutôt que livrer un montage bancal.
