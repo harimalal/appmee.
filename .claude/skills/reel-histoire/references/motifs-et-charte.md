@@ -93,3 +93,8 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | **Chaîne de fichiers animée** | Montrer un système de production : fichier source → fiche → position → sorties → contrôle, chaque étape en rendu fidèle du vrai fichier, avec un clic qui fait ressortir la ligne clé | `reference-content-factory` |
 | **Couverture mur 3D** | Couverture d'un reel « système » : vrais rendus en perspective, titre en deux lignes avec un mot surligné, bandeau « 1 … = / → … » | `cover.html` des deux références |
 
+| **Logo en 3D léger** | Dès que la voix nomme un outil (Claude…), son logo apparaît en 3D légère au mot près (copies décalées en profondeur, rotation douce) ; le même logo coiffe le « système » qu'on explique | `reference-content-factory` (v3, `claude3D`) |
+| **Système pièce par pièce** | Une phrase par pièce, tirée de son vrai fichier ; la pièce s'allume et ressort pendant sa phrase, titre et ligne d'explication changent au même instant (une seule à la fois) | `reference-content-factory` (v3) |
+| **Fond verre bleu-noir** | Alternative au fond clair : dégradés bleus sur bleu-noir + reflet qui glisse, sans ronds de couleur, éléments agrandis (retour de Hari, n°8) | `reference-content-factory` (v3) |
+
+> Voix `gemini-3.1-flash-tts-preview` : ne pas commencer une phrase par « X : » (lu comme un nom de locuteur, avalé) ; son filtre peut bloquer une phrase anodine (PROHIBITED_CONTENT) → reformuler.

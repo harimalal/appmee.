@@ -1,5 +1,5 @@
 {
-  "_note": "Reel n°8 v2 « Content Factory » : les avantages d'abord. Voix Charon, modèle gemini-3.1-flash-tts-preview (voix de la v1, choisie par Hari). Texte validé par Hari (« Voix v1 »).",
+  "_note": "Reel n°8 v3 « Content Factory » : les avantages d'abord. Voix Charon, modèle gemini-3.1-flash-tts-preview (voix de la v1, choisie par Hari). Texte validé par Hari (« Voix v1 »).",
   "model": "gemini-3.1-flash-tts-preview",
   "voice": "Charon",
   "asr_model": "gemini-3.5-flash",
@@ -15,7 +15,7 @@
   "scenes": [
     {
       "id": "hook",
-      "bg": "#F1EFFD",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
       "min": 4.8,
       "caption": false,
       "sentences": [
@@ -28,7 +28,7 @@
     },
     {
       "id": "avantages",
-      "bg": "#EAF7F1",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
       "min": 0,
       "caption": false,
       "sentences": [
@@ -60,21 +60,51 @@
     },
     {
       "id": "anatomie",
-      "bg": "#FFF8E1",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
       "min": 0,
       "caption": false,
       "sentences": [
         {
           "id": "n1",
-          "voice": "Dedans, un skill en cinq pièces : ta voix, ton style, une fabrique par réseau, une direction artistique, et un contrôle.",
-          "cap": "Un skill, cinq pièces",
-          "hold": 6.4
+          "voice": "Dedans, un skill Claude en cinq pièces.",
+          "cap": "Un skill Claude, cinq pièces",
+          "hold": 3.2
+        },
+        {
+          "id": "n2",
+          "voice": "Ta voix, c'est ta façon de parler et les mots que tu évites.",
+          "cap": "Ta voix",
+          "hold": 2.8
+        },
+        {
+          "id": "n3",
+          "voice": "Puis ton style, avec une accroche, une preuve, une limite, pour qu'on lise jusqu'au bout.",
+          "cap": "Ton style",
+          "hold": 3.4
+        },
+        {
+          "id": "n4",
+          "voice": "Une fabrique par réseau : LinkedIn pour la leçon, X pour la version courte, et le carrousel en quatre formats.",
+          "cap": "Une fabrique par réseau",
+          "hold": 4.2
+        },
+        {
+          "id": "n5",
+          "voice": "La direction artistique : une accroche et un fond différents à chaque carrousel.",
+          "cap": "La direction artistique",
+          "hold": 3.4
+        },
+        {
+          "id": "n6",
+          "voice": "Et le contrôle : mots bannis, longueurs, sources, tout est vérifié avant que tu publies.",
+          "cap": "Le contrôle",
+          "hold": 3.6
         }
       ]
     },
     {
       "id": "apports",
-      "bg": "#F3F1FA",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
       "min": 0,
       "caption": false,
       "sentences": [
@@ -83,12 +113,6 @@
           "voice": "Résultat : ça sonne comme toi, pas comme une IA.",
           "cap": "Ça sonne comme toi",
           "hold": 3.0
-        },
-        {
-          "id": "r2",
-          "voice": "Chaque chiffre vient de ta source : rien d'inventé.",
-          "cap": "Rien d’inventé",
-          "hold": 3.6
         },
         {
           "id": "r3",
@@ -106,7 +130,7 @@
     },
     {
       "id": "cta",
-      "bg": "#0B1433",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
       "min": 7.0,
       "caption": false,
       "sentences": [
