@@ -98,3 +98,5 @@ Uniquement des **fichiers officiels existants** (le dossier de logos du projet, 
 | **Fond verre bleu-noir** | Alternative au fond clair : dégradés bleus sur bleu-noir + reflet qui glisse, sans ronds de couleur, éléments agrandis (retour de Hari, n°8) | `reference-content-factory` (v3) |
 
 > Voix `gemini-3.1-flash-tts-preview` : ne pas commencer une phrase par « X : » (lu comme un nom de locuteur, avalé) ; son filtre peut bloquer une phrase anodine (PROHIBITED_CONTENT) → reformuler.
+| **Vrais reels qui tournent** | Montrer nos réalisations en mouvement : 3 s de chaque vidéo finale extraites à 15 i/s (`ffmpeg -ss T -t 3 -vf fps=15,scale=540:960`), une seule `<img>` par lecteur dont la source change à chaque instant ; `window.__wait()` attend le décodage et `render.cjs` l'attend avant chaque capture. Utilisé en mur qui défile (hook), orbite autour du logo, plein cadre balayé, coupes rapides avec flash | `reference-reel-factory` (`vid()`) |
+| **Avant / après au balayage** | Prouver « tu le dis, il refait » : deux vraies images de la même chose avant et après la demande, une barre blanche qui balaie, pastilles « avant / après » | `reference-reel-factory` |

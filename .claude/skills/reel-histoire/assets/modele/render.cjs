@@ -19,7 +19,7 @@ const pad = n => String(n).padStart(5, '0');
   for (let w = 0; w < WORKERS; w++) { const pg = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 }); await pg.goto(FILE); await pg.evaluate(() => Promise.all([document.fonts.ready, window.__ready || 0])); pages.push(pg); }
   let done = 0;
   await Promise.all(pages.map(async (pg, w) => { for (let i = w; i < N; i += WORKERS) {
-    await pg.evaluate(t => window.__setTime(t), i / FPS);
+    await pg.evaluate(async t => { window.__setTime(t); if (window.__wait) await window.__wait(); }, i / FPS);
     await pg.screenshot({ path: path.join(FRAMES, pad(i) + '.png'), type: 'png' });
     if (++done % 300 === 0) console.log(`  ${done}/${N} (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
   } }));

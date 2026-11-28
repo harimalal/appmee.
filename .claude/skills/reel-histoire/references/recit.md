@@ -82,3 +82,19 @@ Si l'utilisateur donne l'ordre des scènes (problèmes → système → exemples
 - **Les avantages d'abord, le process en une phrase** : hook = le bénéfice (« une seule source, tout ton contenu »), puis 3 ou 4 avantages concrets (une fois, tous les réseaux, trente jours prêts, zéro outil en plus), puis l'anatomie du système en **une** phrase, puis ce que ça apporte, puis le CTA à mot-clé.
 - **Promesse non prouvée = limite affichée** : quand l'utilisateur veut dire « automatique », « 30 jours », « 0 € », garder sa phrase (signalée comme son dit) et poser la limite en sous-titre à l'écran (« production automatique · publication par toi », « prêts, pas encore publiés », « hors abonnement Claude »).
 
+
+
+## Approche besoin (retour de Hari sur le reel n°9, 28/11/2026)
+- **Partir du besoin de celui qui regarde, pas des chiffres.** Exemple n°9 : « les reels accrochent, mais en faire un est un casse-tête : du fond, de la forme, des effets, une transition toutes les quelques secondes, tout écrit au mot près ». Puis : pourquoi c'est plus simple avec le système (Claude écrit le script, choisit les images, place les effets, cale la voix ; toi tu valides le texte), l'itération (« tu le dis, il refait », avec de VRAIS avant/après), le système réglé une fois (charte, ton, effets), et « tu demandes juste une nouvelle vidéo ».
+- **Illustrer en plein espace avec ce qu'on a vraiment fait**, qui tourne : extraits de vraies vidéos, vrais écrans, vrais fichiers. Le montage final de nos réalisations vaut toutes les démonstrations.
+- **Arrêter l'approche mathématique** : pas de chiffres empilés ; un nombre seulement s'il sert le récit et qu'il est sourcé. Parler au niveau du spectateur.
+- Rythme : un changement visuel toutes les 2 à 4 s, une seule étiquette à la fois.
+- Les affirmations de Hari (« ce qui accroche le plus », « en vingt minutes ») restent marquées comme ses dits, avec une limite à l'écran (« hors retouches »).
+
+## Enseignements du reel n°8 « Content Factory » (v1 → v3)
+- Les **avantages d'abord**, le process ensuite : une source → tout ton contenu, tous les réseaux, du contenu prêt à l'avance, sans outil en plus.
+- Quand un outil est nommé (Claude), son **logo en 3D léger** apparaît au mot près ; il coiffe le « système » qu'on explique.
+- **Expliquer un système pièce par pièce** : une phrase par pièce, tirée de son vrai fichier ; titre et ligne d'explication changent au même instant.
+- Retirer une phrase dès que Hari la juge en trop (ex. « rien d'inventé »), même vraie.
+- Fond : Hari n'aime plus les fonds clairs à ronds de couleur → **bleu-noir reflet de verre**, sans ronds, éléments agrandis pour remplir l'écran.
+- Couverture : le titre doit se lire au premier coup d'œil sur fond sombre (blanc + jaune plein, grand), jamais de texte sombre sur fond sombre.

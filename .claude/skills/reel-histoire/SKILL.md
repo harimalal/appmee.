@@ -40,6 +40,10 @@ Format : `BRIEF.md` dans le dossier du reel (modèle : `<skill>/assets/brief-mod
 - Un message automatique (Stop hook, notification) n'est **pas** un accord, pas plus pour produire que pour commiter ou pousser. Seule une réponse explicite de l'utilisateur compte.
 - Après « go » seulement : étapes de production ci-dessous.
 
+**Mode direct (préférence de Hari depuis le 28/11/2026 : « arrête de me demander validation, lance tout, je fais les changements à la 1re version »).** Pour Hari, je ne m'arrête plus au brief ni au texte : j'écris le texte, je l'enregistre (`TEXTE_A_VALIDER.md`), puis je produis tout (voix, rendu, couverture) et je livre la 1re version ; il corrige ensuite. Les verrous restent : aucune donnée inventée, les dits de Hari marqués comme tels (limite à l'écran), contrôles verts avant livraison.
+
+**Approche par défaut (retour de Hari, 28/11/2026) : le besoin, pas les chiffres.** Partir de ce que vit celui qui regarde (son problème, sa difficulté), montrer pourquoi c'est plus simple avec le système, et illustrer **en plein écran avec nos vraies réalisations qui tournent** (extraits de vraies vidéos, vrais écrans, vrais avant/après). Pas de démonstration « mathématique » : un chiffre seulement s'il sert le récit, jamais un montage de chiffres. Un changement à l'écran toutes les 2 à 4 s. Fond par défaut : **bleu-noir reflet de verre** (le dernier validé). Détail : `references/recit.md` (section « Approche besoin »).
+
 ---
 
 ## Où trouver quoi
@@ -61,6 +65,7 @@ Format : `BRIEF.md` dans le dossier du reel (modèle : `<skill>/assets/brief-mod
 | Implémentation de référence 7 : « 28 comparatifs » v7 (9 scènes, 17 phrases, 76 s : **démo plein cadre façon site** — curseur, clics, scroll, zoom, swipe — sur de vraies pages, ton « ami », CTA à mot-clé, sans musique) | `<skill>/assets/reference-comparatif-site/` |
 | Implémentation de référence 8 : « Carousel Factory » (7 scènes, 11 phrases, 57 s : mur de slides de trois univers, visionneuses swipe, palettes réelles, CTA « carrousel », couverture mur 3D) | `<skill>/assets/reference-carousel-factory/` |
 | Implémentation de référence 9 : « Content Factory » (6 scènes, 11 phrases, 56 s : chaîne de vrais fichiers rendue par `cards.py`, sortie réelle du contrôle, CTA « contenu », couverture mur 3D) | `<skill>/assets/reference-content-factory/` |
+| Implémentation de référence 10 : « Reel Factory » (9 scènes, 13 phrases, 53 s : **approche besoin** — les reels accrochent mais c'est dur → Claude fait le montage → on itère d'une phrase → un système réglé une fois ; **vrais reels qui tournent** en mur, orbite, plein cadre et coupes rapides ; vrais avant/après ; fond bleu-noir verre ; CTA « reel ») | `<skill>/assets/reference-reel-factory/` |
 | Capturer des éléments réels d'une page (tableau large, grille de cartes) | `<skill>/assets/capture-elements.cjs` |
 | Capturer de vraies pages d'un site construit en local pour un défilé (script paramétré) | `<skill>/assets/capture-pages.cjs` |
 
