@@ -1,0 +1,180 @@
+{
+  "_note": "Reel « Comment j'ai comparé les outils IA en 28 comparatifs » : voice = texte lu, cap = légende. Voix Charon, modèle gemini-3.8-flash-lite-tts.",
+  "model": "gemini-3.8-flash-lite-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "nombres_autorises": [
+    "28",
+    "6",
+    "8",
+    "17",
+    "20",
+    "10",
+    "4",
+    "1",
+    "2",
+    "3"
+  ],
+  "cta_contient": "Abonne-toi",
+  "max_mots_visibles": 60,
+  "scenes": [
+    {
+      "id": "titre",
+      "bg": "#FBF1ED",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "t0",
+          "voice": "Chaque outil IA se dit le meilleur.",
+          "cap": "Chaque outil IA se dit le meilleur."
+        },
+        {
+          "id": "t1",
+          "voice": "Comment s’y retrouver, pour ce dont tu as besoin, sans passer des heures sur différents sites ?",
+          "cap": "Comment s’y retrouver, pour ce dont tu as besoin, sans passer des heures sur différents sites ?"
+        },
+        {
+          "id": "t2",
+          "voice": "J’ai fait vingt-huit comparatifs, un par type d’outil.",
+          "cap": "J’ai fait 28 comparatifs, un par type d’outil."
+        }
+      ]
+    },
+    {
+      "id": "systeme",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "s0",
+          "voice": "Je les ai faits avec un skill et un système, pour un résultat complet.",
+          "cap": "Je les ai faits avec un skill et un système, pour un résultat complet."
+        },
+        {
+          "id": "s0b",
+          "voice": "Une simple demande à ChatGPT ou à Claude reste superficielle : elle ne tient pas compte de tous les paramètres de chaque type d’outil.",
+          "cap": "Une simple demande à ChatGPT ou à Claude reste superficielle : elle ne tient pas compte de tous les paramètres de chaque type d’outil."
+        },
+        {
+          "id": "s2",
+          "voice": "Pour chaque type, je commence par ce qui compte vraiment : les critères indispensables.",
+          "cap": "Pour chaque type, je commence par ce qui compte vraiment : les critères indispensables."
+        },
+        {
+          "id": "s3",
+          "voice": "Chaque outil est ensuite noté sur ces critères, à partir de recherches, sans rien inventer.",
+          "cap": "Chaque outil est ensuite noté sur ces critères, à partir de recherches, sans rien inventer."
+        }
+      ]
+    },
+    {
+      "id": "criteres",
+      "bg": "#F1EFFD",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "c1",
+          "voice": "Le piège : prendre les mêmes critères pour tous les outils.",
+          "cap": "Le piège : prendre les mêmes critères pour tous les outils."
+        },
+        {
+          "id": "c2",
+          "voice": "Voix IA : la qualité, le clonage, les langues.",
+          "cap": "Voix IA : la qualité, le clonage, les langues."
+        },
+        {
+          "id": "c3",
+          "voice": "Code : les suggestions, l’autonomie, l’éditeur.",
+          "cap": "Code : les suggestions, l’autonomie, l’éditeur."
+        },
+        {
+          "id": "c4",
+          "voice": "CRM : le pipeline, l’automatisation, l’IA native.",
+          "cap": "CRM : le pipeline, l’automatisation, l’IA native."
+        }
+      ]
+    },
+    {
+      "id": "tableau",
+      "bg": "#FDEFF4",
+      "min": 8.5,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "tb1",
+          "voice": "D’abord, un tableau : les outils, leurs notes sur vingt, le prix et les avis.",
+          "cap": "D’abord, un tableau : les outils, leurs notes sur 20, le prix et les avis."
+        },
+        {
+          "id": "d2",
+          "voice": "Voilà trois de ces comparatifs, tels qu’ils sont publiés.",
+          "cap": "Voilà trois de ces comparatifs, tels qu’ils sont publiés."
+        }
+      ]
+    },
+    {
+      "id": "usages",
+      "bg": "#ECF4FC",
+      "min": 7.5,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "u1",
+          "voice": "Ensuite, ce que les utilisateurs créent avec ces outils : six cas d’usage, chacun avec les outils qui vont avec.",
+          "cap": "Ensuite, ce que les utilisateurs créent avec ces outils : 6 cas d’usage, chacun avec les outils qui vont avec."
+        }
+      ]
+    },
+    {
+      "id": "profils",
+      "bg": "#F1EFFD",
+      "min": 8,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "pf1",
+          "voice": "Et pour chaque profil, l’outil le plus adapté : créateur YouTube, équipe formation, développeur, agence de doublage.",
+          "cap": "Et pour chaque profil, l’outil le plus adapté : créateur YouTube, équipe formation, développeur, agence de doublage."
+        }
+      ]
+    },
+    {
+      "id": "chiffres",
+      "bg": "#FFF6DB",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n2",
+          "voice": "Dans chacun : six cas d’usage, et entre six et huit profils.",
+          "cap": "Dans chacun : 6 cas d’usage, et entre 6 et 8 profils."
+        },
+        {
+          "id": "n3",
+          "voice": "Les notes viennent de mes sources, pas d’un test indépendant.",
+          "cap": "Les notes viennent de mes sources, pas d’un test indépendant."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Abonne-toi pour plus d’astuces IA : sans compétences techniques, rapides, et terriblement efficaces.",
+          "cap": "Abonne-toi pour plus d’astuces IA : sans compétences techniques, rapides, et terriblement efficaces."
+        }
+      ]
+    }
+  ]
+}

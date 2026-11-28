@@ -1,0 +1,161 @@
+{
+ "_note": "Reel n°9 « Reel Factory » : faire des reels avec Claude. Angle du besoin, sans chiffres (retour de Hari 28/11/2026). Voix Charon, modèle gemini-3.1-flash-tts-preview (même voix que le n°8). Hari : « lance tout, je fais les changements à la 1re version ».",
+ "model": "gemini-3.1-flash-tts-preview",
+ "voice": "Charon",
+ "asr_model": "gemini-3.5-flash",
+ "gap_sentence": 0.08,
+ "gap_scene": 0.5,
+ "lead": 0.2,
+ "tail": 0.25,
+ "nombres_autorises": [],
+ "cta_contient": "Commente",
+ "max_mots_visibles": 40,
+ "tempo": 1.16,
+ "scenes": [
+  {
+   "id": "hook",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 4.6,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s1",
+     "voice": "Les reels, c'est ce qui accroche le plus. Mais en faire un, c'est un vrai casse-tête !",
+     "cap": "Les reels, c'est ce qui accroche le plus. Mais en faire un, c'est un vrai casse-tête !"
+    }
+   ]
+  },
+  {
+   "id": "craft",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s2",
+     "voice": "Il faut du fond, sinon on décroche.",
+     "cap": "Il faut du fond, sinon on décroche.",
+     "hold": 2.2
+    },
+    {
+     "id": "s3",
+     "voice": "Et de la forme : des effets, une transition toutes les quelques secondes, tout écrit au mot près.",
+     "cap": "Et de la forme : des effets, une transition toutes les quelques secondes, tout écrit au mot près."
+    }
+   ]
+  },
+  {
+   "id": "claude",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s4",
+     "voice": "Moi, je ne fais plus le montage. C'est Claude qui s'en occupe.",
+     "cap": "Moi, je ne fais plus le montage. C'est Claude qui s'en occupe."
+    },
+    {
+     "id": "s5",
+     "voice": "Il écrit le script, choisit les images, place les effets et cale la voix.",
+     "cap": "Il écrit le script, choisit les images, place les effets et cale la voix.",
+     "hold": 4.2
+    }
+   ]
+  },
+  {
+   "id": "valide",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s6",
+     "voice": "Toi, tu valides le texte. C'est tout.",
+     "cap": "Toi, tu valides le texte. C'est tout.",
+     "hold": 2.8
+    }
+   ]
+  },
+  {
+   "id": "refait",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s7",
+     "voice": "Un truc ne te plaît pas ? Tu le dis, il refait.",
+     "cap": "Un truc ne te plaît pas ? Tu le dis, il refait.",
+     "hold": 2.8
+    },
+    {
+     "id": "s8",
+     "voice": "Le fond est trop sombre ? Le titre ne se lit pas ? Une phrase, et c'est corrigé.",
+     "cap": "Le fond est trop sombre ? Le titre ne se lit pas ? Une phrase, et c'est corrigé.",
+     "hold": 4.8
+    }
+   ]
+  },
+  {
+   "id": "systeme",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s9",
+     "voice": "Et le mieux, c'est que c'est un système. Tu le règles une seule fois.",
+     "cap": "Et le mieux, c'est que c'est un système. Tu le règles une seule fois."
+    },
+    {
+     "id": "s10",
+     "voice": "Ta charte, ton ton, tes effets préférés.",
+     "cap": "Ta charte, ton ton, tes effets préférés.",
+     "hold": 3.0
+    }
+   ]
+  },
+  {
+   "id": "nouvelle",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s11",
+     "voice": "Ensuite, tu demandes juste : fais-moi une nouvelle vidéo. Et elle sort en vingt minutes !",
+     "cap": "Ensuite, tu demandes juste : fais-moi une nouvelle vidéo. Et elle sort en vingt minutes !",
+     "hold": 4.6
+    }
+   ]
+  },
+  {
+   "id": "montage",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s12",
+     "voice": "Toutes les vidéos que tu vois là sont sorties comme ça.",
+     "cap": "Toutes les vidéos que tu vois là sont sorties comme ça.",
+     "hold": 4.4
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 5.0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "k1",
+     "voice": "Tu veux le même système ? Commente « reel », et je te l'envoie !",
+     "cap": "Tu veux le même système ? Commente « reel », et je te l'envoie !"
+    }
+   ]
+  }
+ ]
+}

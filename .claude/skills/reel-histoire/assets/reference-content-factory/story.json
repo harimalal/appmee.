@@ -1,0 +1,146 @@
+{
+  "_note": "Reel n°8 v3 « Content Factory » : les avantages d'abord. Voix Charon, modèle gemini-3.1-flash-tts-preview (voix de la v1, choisie par Hari). Texte validé par Hari (« Voix v1 »).",
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.08,
+  "gap_scene": 0.5,
+  "lead": 0.2,
+  "tail": 0.25,
+  "nombres_autorises": [
+    "0"
+  ],
+  "cta_contient": "Commente",
+  "max_mots_visibles": 40,
+  "scenes": [
+    {
+      "id": "hook",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+      "min": 4.8,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "h1",
+          "voice": "Une seule source, et ton contenu se fabrique tout seul, pour tous tes réseaux !",
+          "cap": "Une source, tout ton contenu"
+        }
+      ]
+    },
+    {
+      "id": "avantages",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "a1",
+          "voice": "Un article, un test ou une idée : tu le donnes une seule fois.",
+          "cap": "Une seule fois",
+          "hold": 3.4
+        },
+        {
+          "id": "a2",
+          "voice": "Et tu récupères tes posts pour LinkedIn, X, Instagram, Pinterest et TikTok.",
+          "cap": "Tous tes réseaux",
+          "hold": 4.6
+        },
+        {
+          "id": "a3",
+          "voice": "Trente jours de contenu, prêts à l'avance !",
+          "cap": "Trente jours prêts à l’avance",
+          "hold": 3.6
+        },
+        {
+          "id": "a4",
+          "voice": "Et zéro euro d'outil en plus : tout tourne avec Claude.",
+          "cap": "Tout tourne avec Claude",
+          "hold": 3.4
+        }
+      ]
+    },
+    {
+      "id": "anatomie",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n1",
+          "voice": "Dedans, un skill Claude en cinq pièces.",
+          "cap": "Un skill Claude, cinq pièces",
+          "hold": 3.2
+        },
+        {
+          "id": "n2",
+          "voice": "Ta voix, c'est ta façon de parler et les mots que tu évites.",
+          "cap": "Ta voix",
+          "hold": 2.8
+        },
+        {
+          "id": "n3",
+          "voice": "Puis ton style, avec une accroche, une preuve, une limite, pour qu'on lise jusqu'au bout.",
+          "cap": "Ton style",
+          "hold": 3.4
+        },
+        {
+          "id": "n4",
+          "voice": "Une fabrique par réseau : LinkedIn pour la leçon, X pour la version courte, et le carrousel en quatre formats.",
+          "cap": "Une fabrique par réseau",
+          "hold": 4.2
+        },
+        {
+          "id": "n5",
+          "voice": "La direction artistique : une accroche et un fond différents à chaque carrousel.",
+          "cap": "La direction artistique",
+          "hold": 3.4
+        },
+        {
+          "id": "n6",
+          "voice": "Et le contrôle : mots bannis, longueurs, sources, tout est vérifié avant que tu publies.",
+          "cap": "Le contrôle",
+          "hold": 3.6
+        }
+      ]
+    },
+    {
+      "id": "apports",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "r1",
+          "voice": "Résultat : ça sonne comme toi, pas comme une IA.",
+          "cap": "Ça sonne comme toi",
+          "hold": 3.0
+        },
+        {
+          "id": "r3",
+          "voice": "Chaque carrousel change de style, pour ne pas lasser.",
+          "cap": "Un style à chaque carrousel",
+          "hold": 3.0
+        },
+        {
+          "id": "r4",
+          "voice": "Toi, tu relis, tu valides, et tu publies.",
+          "cap": "Toi, tu valides",
+          "hold": 3.4
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+      "min": 7.0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Tu veux le même système ? Commente « contenu », et je te l'envoie pour l'adapter à ta sauce !",
+          "cap": "Commente « contenu »"
+        }
+      ]
+    }
+  ],
+  "tempo": 1.16
+}

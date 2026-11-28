@@ -1,0 +1,275 @@
+{
+  "_note": "Récit du reel « histoire » (v2). voice = texte dit (nombres en toutes lettres), cap = légende affichée (chiffres). La voix pilote le montage : les instants de chaque scène sont calculés à partir de la durée réelle de chaque phrase (plan.py).",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "scenes": [
+    {
+      "id": "titre",
+      "bg": "#FBF1ED",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "t1",
+          "voice": "Comment optimiser le SEO de ton site avec Claude Code ?",
+          "cap": "Comment optimiser le SEO de ton site avec Claude Code ?"
+        },
+        {
+          "id": "t2",
+          "voice": "Tout automatique, en une seule commande.",
+          "cap": "Tout automatique, en une seule commande."
+        }
+      ]
+    },
+    {
+      "id": "probleme",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "p1",
+          "voice": "Ton site n'est pas référencé sur Google ?",
+          "cap": "Ton site n'est pas référencé sur Google ?",
+          "tempo": 0.92
+        },
+        {
+          "id": "p2",
+          "voice": "Ce n'est pas parce que tes articles sont mauvais.",
+          "cap": "Ce n'est pas parce que tes articles sont mauvais.",
+          "tempo": 0.88
+        },
+        {
+          "id": "p3",
+          "voice": "Ni parce que ta boutique est mal faite.",
+          "cap": "Ni parce que ta boutique est mal faite.",
+          "tempo": 0.8
+        },
+        {
+          "id": "p4",
+          "voice": "C'est parce que tes pages sont mal indexées, ou pas du tout.",
+          "cap": "C'est parce que tes pages sont mal indexées, ou pas du tout.",
+          "tempo": 0.94
+        }
+      ]
+    },
+    {
+      "id": "hook",
+      "bg": "#EEECFB",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "h1",
+          "voice": "Sur mon blog : deux cent quatre-vingt-cinq pages non indexées.",
+          "cap": "Sur mon blog : 285 pages non indexées."
+        },
+        {
+          "id": "h2",
+          "voice": "Pour cent trente-deux articles.",
+          "cap": "Pour 132 articles."
+        }
+      ]
+    },
+    {
+      "id": "indexation",
+      "bg": "#FDEFF4",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "i1",
+          "voice": "En SEO, on parle de mots-clés.",
+          "cap": "En SEO, on parle de mots-clés."
+        },
+        {
+          "id": "i2",
+          "voice": "Mais avant, il faut que Google connaisse la page : c'est l'indexation.",
+          "cap": "Mais avant, il faut que Google connaisse la page : c'est l'indexation."
+        },
+        {
+          "id": "i3",
+          "voice": "Sinon, elle n'apparaît jamais dans les résultats.",
+          "cap": "Sinon, elle n'apparaît jamais dans les résultats."
+        }
+      ]
+    },
+    {
+      "id": "console",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "c1",
+          "voice": "Le chiffre s'affiche dans la Google Search Console.",
+          "cap": "Le chiffre s'affiche dans la Google Search Console."
+        },
+        {
+          "id": "c2",
+          "voice": "Elle donne le nombre, pas la cause.",
+          "cap": "Elle donne le nombre, pas la cause."
+        },
+        {
+          "id": "c3",
+          "voice": "Claude Code a lu le code du site.",
+          "cap": "Claude Code a lu le code du site."
+        },
+        {
+          "id": "c4",
+          "voice": "Les causes étaient bêtes.",
+          "cap": "Les causes étaient bêtes."
+        }
+      ]
+    },
+    {
+      "id": "slash",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "a1",
+          "voice": "Une même page existait sous deux adresses : avec un slash à la fin, et sans.",
+          "cap": "Une même page existait sous deux adresses : avec un slash à la fin, et sans."
+        },
+        {
+          "id": "a2",
+          "voice": "Pour Google, c'est deux pages : un doublon.",
+          "cap": "Pour Google, c'est deux pages : un doublon."
+        }
+      ]
+    },
+    {
+      "id": "filtres",
+      "bg": "#FBF1ED",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "f1",
+          "voice": "Les filtres du menu fabriquaient de fausses pages.",
+          "cap": "Les filtres du menu fabriquaient de fausses pages."
+        },
+        {
+          "id": "f2",
+          "voice": "Soixante-six rangées en doublon par Google.",
+          "cap": "66 rangées en doublon par Google."
+        }
+      ]
+    },
+    {
+      "id": "fichier",
+      "bg": "#F1EFFD",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "n1",
+          "voice": "Un fichier changeait de nom à chaque mise en ligne.",
+          "cap": "Un fichier changeait de nom à chaque mise en ligne."
+        },
+        {
+          "id": "n2",
+          "voice": "Google le cherchait, et tombait sur une erreur quatre cent quatre.",
+          "cap": "Google le cherchait, et tombait sur une erreur 404."
+        }
+      ]
+    },
+    {
+      "id": "articles",
+      "bg": "#ECF4FC",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "m1",
+          "voice": "Neuf articles vus mais pas indexés : j'y ai ajouté des liens.",
+          "cap": "9 articles vus mais pas indexés : j'y ai ajouté des liens."
+        }
+      ]
+    },
+    {
+      "id": "corrections",
+      "bg": "#FDEFF4",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "r1",
+          "voice": "Cinq corrections. Un commit chacun. Vingt-trois minutes.",
+          "cap": "5 corrections. 1 commit chacun. 23 minutes."
+        }
+      ]
+    },
+    {
+      "id": "avantapres",
+      "bg": "#FDECEC",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "r2",
+          "voice": "Avant, après : cent quarante adresses à corriger, zéro.",
+          "cap": "Avant, après : 140 adresses à corriger, 0."
+        },
+        {
+          "id": "r3",
+          "voice": "Vingt-trois liens de filtres, zéro.",
+          "cap": "23 liens de filtres, 0."
+        },
+        {
+          "id": "r4",
+          "voice": "Un fichier qui change de nom, zéro.",
+          "cap": "1 fichier qui change de nom, 0."
+        },
+        {
+          "id": "r5",
+          "voice": "Vingt-sept liens vers les articles oubliés.",
+          "cap": "27 liens vers les articles oubliés."
+        }
+      ]
+    },
+    {
+      "id": "resultat",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "z1",
+          "voice": "Côté site, tout est corrigé et vérifié.",
+          "cap": "Côté site, tout est corrigé et vérifié."
+        },
+        {
+          "id": "z2",
+          "voice": "Côté Google, la réponse arrive le huit décembre.",
+          "cap": "Côté Google, la réponse arrive le 8 décembre."
+        },
+        {
+          "id": "z3",
+          "voice": "L'objectif : cent cinquante-cinq à cent soixante pages indexées.",
+          "cap": "L'objectif : 155 à 160 pages indexées."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "La méthode complète, sur Reflex IA point com.",
+          "cap": "La méthode complète : reflex-ia.com."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "_note": "Récit du reel. voice = texte lu (nombres en toutes lettres, rien d'impossible à prononcer), cap = légende affichée (chiffres). La voix pilote le montage : plan.py calcule les instants de chaque scène à partir de la durée réelle de chaque phrase. tempo (0,8-0,95, optionnel) ralentit une phrase que la synthèse lit trop vite (> 4,5 mots/s).",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "nombres_autorises": [
+    "0",
+    "1",
+    "42"
+  ],
+  "cta_contient": "reflex-ia.com",
+  "scenes": [
+    {
+      "id": "exemple",
+      "bg": "#EEECFB",
+      "min": 5.6,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "e1",
+          "voice": "Une phrase de la preuve : quarante-deux.",
+          "cap": "Une phrase de la preuve : 42."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 3.8,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "La suite, sur Reflex IA point com.",
+          "cap": "La suite : reflex-ia.com."
+        }
+      ]
+    }
+  ]
+}

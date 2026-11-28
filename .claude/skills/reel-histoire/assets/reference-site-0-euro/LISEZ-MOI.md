@@ -1,0 +1,1 @@
+Les captures (accueil, article, comparatif, rubrique, page de vente, newsletter en 3 chartes, version ordinateur 1 280 px) ne sont pas copiées (≈ 20 Mo) : elles se refont avec les scripts de capture du dépôt reflex-ia (scratchpad charte-desktop.cjs) ou `assets/capture-pages.cjs`.

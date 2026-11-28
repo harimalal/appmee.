@@ -1,0 +1,211 @@
+{
+  "_note": "Récit du reel Tri Watch Later. voice = texte lu, cap = légende. La voix pilote le montage.",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "nombres_autorises": [
+    "0",
+    "1",
+    "6",
+    "10",
+    "15",
+    "20",
+    "25",
+    "40",
+    "48",
+    "74",
+    "90",
+    "350",
+    "400",
+    "450",
+    "511",
+    "585"
+  ],
+  "cta_contient": "Abonne-toi",
+  "scenes": [
+    {
+      "id": "titre",
+      "bg": "#FBF1ED",
+      "min": 6.6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "t1",
+          "voice": "Comment trier cinq cent onze vidéos YouTube avec Claude in Chrome ?",
+          "cap": "Comment trier 511 vidéos YouTube avec Claude in Chrome ?"
+        },
+        {
+          "id": "t2",
+          "voice": "En environ quinze minutes, avec mes propres critères.",
+          "cap": "En environ 15 minutes, avec mes propres critères."
+        }
+      ]
+    },
+    {
+      "id": "probleme",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "p1",
+          "voice": "Ta liste « À regarder plus tard » déborde ?",
+          "cap": "Ta liste « À regarder plus tard » déborde ?"
+        },
+        {
+          "id": "p2",
+          "voice": "Ce n'est pas un problème de temps.",
+          "cap": "Ce n'est pas un problème de temps.",
+          "tempo": 0.7
+        },
+        {
+          "id": "p3",
+          "voice": "C'est un problème de tri.",
+          "cap": "C'est un problème de tri."
+        }
+      ]
+    },
+    {
+      "id": "hook",
+      "bg": "#EEECFB",
+      "min": 6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "h1",
+          "voice": "La mienne : cinq cent quatre-vingt-cinq vidéos annoncées.",
+          "cap": "La mienne : 585 vidéos annoncées."
+        },
+        {
+          "id": "h2",
+          "voice": "Cinq cent onze chargées dans la page.",
+          "cap": "511 chargées dans la page."
+        }
+      ]
+    },
+    {
+      "id": "criteres",
+      "bg": "#FDEFF4",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "c1",
+          "voice": "Je lui donne mes critères.",
+          "cap": "Je lui donne mes critères."
+        },
+        {
+          "id": "c2",
+          "voice": "À supprimer : les mangas, les vidéos de moins de dix minutes, tout ce qui sort de l'IA et du business.",
+          "cap": "À supprimer : les mangas, les vidéos de moins de 10 minutes, tout ce qui sort de l'IA et du business."
+        },
+        {
+          "id": "c3",
+          "voice": "Les titres putaclic, les revues de personnalités, les tutos d'outils.",
+          "cap": "Les titres putaclic, les revues de personnalités, les tutos d'outils."
+        },
+        {
+          "id": "c4",
+          "voice": "À garder : les formations, les startups, les SaaS, et les vidéos de plus de quarante minutes sur Claude Code.",
+          "cap": "À garder : les formations, les startups, les SaaS, et les vidéos de plus de 40 minutes sur Claude Code."
+        }
+      ]
+    },
+    {
+      "id": "extension",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "x1",
+          "voice": "Pourquoi l'extension Chrome, plutôt que Claude Code ou Claude Cowork ?",
+          "cap": "Pourquoi l'extension Chrome, plutôt que Claude Code ou Claude Cowork ?"
+        },
+        {
+          "id": "x2",
+          "voice": "Parce que le tri se fait dans la page YouTube elle-même.",
+          "cap": "Parce que le tri se fait dans la page YouTube elle-même.",
+          "tempo": 0.9
+        },
+        {
+          "id": "x3",
+          "voice": "L'extension travaille dans mon onglet, déjà connecté : aucun mot de passe à donner.",
+          "cap": "L'extension travaille dans mon onglet, déjà connecté : aucun mot de passe à donner."
+        }
+      ]
+    },
+    {
+      "id": "methode",
+      "bg": "#F1EFFD",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "m2",
+          "voice": "Il fait défiler toute la liste, puis relève le titre, la chaîne et la durée de chaque vidéo.",
+          "cap": "Il fait défiler toute la liste, puis relève le titre, la chaîne et la durée de chaque vidéo."
+        },
+        {
+          "id": "m3",
+          "voice": "Il classe avec une règle pour la durée et des mots-clés pour les thèmes, et je relis ce qu’il garde.",
+          "cap": "Il classe avec une règle pour la durée et des mots-clés pour les thèmes, et je relis ce qu’il garde."
+        }
+      ]
+    },
+    {
+      "id": "suppression",
+      "bg": "#FBF1ED",
+      "min": 9,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "s1",
+          "voice": "Ensuite, il supprime en boucle : le menu, puis « Supprimer de À regarder plus tard ».",
+          "cap": "Ensuite, il supprime en boucle : le menu, puis « Supprimer de À regarder plus tard »."
+        },
+        {
+          "id": "s2",
+          "voice": "Un geste toutes les quatre cents millisecondes environ. Ici, accéléré.",
+          "cap": "Un geste toutes les 400 millisecondes environ. Ici, accéléré."
+        }
+      ]
+    },
+    {
+      "id": "resultat",
+      "bg": "#ECFAF9",
+      "min": 8,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "r1",
+          "voice": "Résultat : de cinq cent onze à quarante-huit vidéos.",
+          "cap": "Résultat : de 511 à 48 vidéos."
+        },
+        {
+          "id": "r2",
+          "voice": "Environ quatre-vingt-dix pour cent supprimées automatiquement, en une quinzaine de minutes.",
+          "cap": "Environ 90 % supprimées automatiquement, en une quinzaine de minutes."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7.0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Abonne-toi pour plus d'astuces IA : sans compétences techniques, rapides, et terriblement efficaces.",
+          "cap": "Abonne-toi pour plus d'astuces IA : sans compétences techniques, rapides, et terriblement efficaces."
+        }
+      ]
+    }
+  ],
+  "max_mots_visibles": 56
+}

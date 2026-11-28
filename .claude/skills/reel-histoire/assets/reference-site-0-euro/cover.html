@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Couverture reel : le site Reflex IA, GitHub + Cloudflare + Astro</title>
+<!-- Couverture 9:16 (1080x1920). Une grande fenêtre ordinateur qui remplit presque tout le cadre en hauteur : le vrai site Reflex IA (charte actuelle). ?debug=1 affiche les cadres 3:4 et 1:1. -->
+<style>
+:root{--ink:#0F1020;--muted:#6A6B80;--yellow:#FFD93B;--red:#E5383B;--font:'Inter Display','Inter','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F1EFFD}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--font);color:var(--ink);background:#F1EFFD}
+.abs{position:absolute}
+.circ{left:470px;top:-230px;width:980px;height:980px;border-radius:50%;background:rgba(108,92,231,.14)}
+.circ2{left:-380px;top:1230px;width:760px;height:760px;border-radius:50%;background:rgba(229,56,100,.08)}
+.brand{left:50%;top:150px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;height:80px;padding:0 40px;background:#fff;border-radius:999px;font:900 40px/1 var(--font);letter-spacing:.02em;box-shadow:0 8px 26px rgba(20,20,60,.14);white-space:nowrap;z-index:5}
+.brand .dot{width:17px;height:17px;border-radius:50%;background:var(--red)}
+.win{position:absolute;left:60px;top:500px;width:960px;height:1010px;border-radius:22px;background:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(20,20,60,.34);border:4px solid var(--ink)}
+.win .bar{height:38px;background:var(--ink);display:flex;align-items:center;gap:9px;padding:0 16px;position:relative;z-index:3}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#666}
+.win .view{position:absolute;left:0;right:0;top:38px;bottom:0;overflow:hidden}
+.win .view .l{position:absolute;inset:0;overflow:hidden}
+.win .view img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+.l.a{clip-path:inset(0 66.6% 0 0)}   /* gauche : océan */
+.l.b{clip-path:none}
+.l.c{clip-path:inset(0 0 0 66.6%)}   /* droite : forêt */
+.div{position:absolute;top:0;bottom:0;width:4px;background:var(--ink);z-index:2}
+.ttl{left:84px;top:248px;width:912px;text-align:center;font:900 92px/1.02 var(--font);letter-spacing:-.04em;z-index:4}
+.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-position:0 84%;background-size:100% .5em;padding:0 .08em;border-radius:.12em}
+.pill{left:50%;top:1550px;transform:translateX(-50%);height:108px;padding:0 42px;border-radius:999px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:18px;font:900 48px/1 var(--font);letter-spacing:-.025em;white-space:nowrap;z-index:4;}
+.pill b{color:var(--yellow);font-weight:900}
+.sub{left:84px;top:1690px;width:912px;text-align:center;font:700 25px/1.35 var(--mono);color:var(--muted);letter-spacing:.03em;z-index:4}
+.dbg{position:absolute;border:3px dashed rgba(255,0,120,.8);pointer-events:none;z-index:9}
+</style></head><body>
+<div id="c">
+  <div class="abs circ"></div><div class="abs circ2"></div>
+  <div class="abs brand">REFLEX<i class="dot"></i>IA</div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="view">
+      <div class="l b"><img src="assets/charte-pc/base-accueil.jpg" alt=""></div>
+    </div>
+  </div>
+  <div class="abs ttl">Mon site tourne<br>à <span class="hl">0 €</span></div>
+  <div class="abs pill">GitHub <b>+</b> Cloudflare <b>+</b> Astro</div>
+  <div class="abs sub">UNE CHARTE CHANGE, TOUT LE SITE SUIT<br>HORS DOMAINE ET ABONNEMENT CLAUDE</div>
+</div>
+<script>
+if (new URLSearchParams(location.search).get('debug')) { const c = document.getElementById('c'); [[0,240,1080,1440],[0,420,1080,1080]].forEach(([x,y,w,h]) => { const d = document.createElement('div'); d.className='dbg'; d.style.cssText += `;left:${x}px;top:${y}px;width:${w}px;height:${h}px`; c.appendChild(d); }); }
+</script>
+</body></html>

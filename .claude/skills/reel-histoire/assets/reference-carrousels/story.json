@@ -1,0 +1,123 @@
+{
+  "_note": "Reel « Créer des carrousels automatiquement » : voice = texte lu, cap = légende. Modèle de voix : gemini-3.8-flash-lite-tts (quota quotidien du modèle gemini-3.8-flash-tts atteint le 27/11).",
+  "model": "gemini-3.8-flash-lite-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.22,
+  "gap_scene": 0.5,
+  "lead": 0.1,
+  "tail": 0.38,
+  "nombres_autorises": [
+    "0",
+    "1",
+    "4",
+    "5",
+    "6",
+    "12",
+    "55",
+    "62",
+    "82",
+    "94",
+    "051"
+  ],
+  "cta_contient": "Abonne-toi",
+  "max_mots_visibles": 50,
+  "scenes": [
+    {
+      "id": "titre",
+      "bg": "#FBF1ED",
+      "min": 6.6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "t1",
+          "voice": "Comment créer des carrousels automatiquement, avec ta charte, ton point de vue et ta maquette ?",
+          "cap": "Comment créer des carrousels automatiquement, avec ta charte, ton point de vue et ta maquette ?"
+        },
+        {
+          "id": "t2",
+          "voice": "Zéro euro d'images pour du texte, moins d'un euro avec des images.",
+          "cap": "0 € d'images pour du texte, moins de 1 € avec des images."
+        }
+      ]
+    },
+    {
+      "id": "probleme",
+      "bg": "#E8F3FB",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "p1",
+          "voice": "Faire un carrousel à la main, c’est galère : ça prend des heures.",
+          "cap": "Faire un carrousel à la main, c’est galère : ça prend des heures."
+        },
+        {
+          "id": "p2",
+          "voice": "Avec les outils IA, la personnalisation est basique et le rendu moyen, même sur Canva.",
+          "cap": "Avec les outils IA, la personnalisation est basique et le rendu moyen, même sur Canva."
+        },
+        {
+          "id": "p3",
+          "voice": "Et Claude Code sans méthode, ce sont des essais à répétition : cinquante-cinq pour cent de mes crédits partis en essais sur le premier carrousel.",
+          "cap": "Et Claude Code sans méthode, ce sont des essais à répétition : 55 % de mes crédits partis en essais sur le premier carrousel."
+        }
+      ]
+    },
+    {
+      "id": "systeme",
+      "bg": "#ECFAF9",
+      "min": 0,
+      "caption": true,
+      "sentences": [
+        {
+          "id": "s1",
+          "voice": "Avec ce système, c’est simple : tu donnes ta source, une URL de blog ou une vidéo.",
+          "cap": "Avec ce système, c’est simple : tu donnes ta source, une URL de blog ou une vidéo."
+        },
+        {
+          "id": "s2",
+          "voice": "L’IA te donne l’angle, le texte et les images.",
+          "cap": "L’IA te donne l’angle, le texte et les images."
+        },
+        {
+          "id": "s3",
+          "voice": "Tu donnes un modèle de carrousel que tu aimes, et ta charte et ton point de vue font le reste.",
+          "cap": "Tu donnes un modèle de carrousel que tu aimes, et ta charte et ton point de vue font le reste.",
+          "tempo": 0.88
+        }
+      ]
+    },
+    {
+      "id": "exemples",
+      "bg": "#ECF4FC",
+      "min": 10,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "e1",
+          "voice": "Voilà ce que ça donne, comme ça défile sur Instagram.",
+          "cap": "Voilà ce que ça donne, comme ça défile sur Instagram."
+        },
+        {
+          "id": "e2",
+          "voice": "Et sur LinkedIn, en PDF.",
+          "cap": "Et sur LinkedIn, en PDF."
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Abonne-toi pour plus d'astuces IA : sans compétences techniques, rapides, et terriblement efficaces.",
+          "cap": "Abonne-toi pour plus d'astuces IA : sans compétences techniques, rapides, et terriblement efficaces."
+        }
+      ]
+    }
+  ]
+}

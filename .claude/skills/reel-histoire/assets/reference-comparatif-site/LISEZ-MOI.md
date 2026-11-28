@@ -1,0 +1,1 @@
+Reel « 28 comparatifs » v6 : démo plein cadre façon site (curseur, clics, swipes) sur de vraies pages. Les captures (`assets/pc2/`, ≈ 6 Mo) ne sont pas copiées ; elles se refont avec les sélecteurs du SCRIPT.md (pages entières en 1 280 px, échelle 1,5) et un relevé de positions (pages.json).

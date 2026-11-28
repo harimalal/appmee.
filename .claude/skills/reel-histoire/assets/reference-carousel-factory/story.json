@@ -1,0 +1,132 @@
+{
+  "_note": "Reel n°7 « Carousel Factory : un système, plein de carrousels ». voice = texte lu, cap = légende. Voix Charon, modèle gemini-3.8-flash-tts. Texte validé par Hari le 27/11/2026 (« Go »).",
+  "model": "gemini-3.8-flash-tts",
+  "voice": "Charon",
+  "asr_model": "gemini-3.5-flash",
+  "gap_sentence": 0.08,
+  "gap_scene": 0.5,
+  "lead": 0.2,
+  "tail": 0.25,
+  "nombres_autorises": [],
+  "cta_contient": "Commente",
+  "max_mots_visibles": 40,
+  "scenes": [
+    {
+      "id": "ouverture",
+      "bg": "#F1EFFD",
+      "min": 5.4,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "o1",
+          "voice": "Un seul système, et tu fabriques des carrousels pour n'importe quel univers !",
+          "cap": "Un seul système"
+        }
+      ]
+    },
+    {
+      "id": "reflexia",
+      "bg": "#E8F3FB",
+      "min": 6.6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "a1",
+          "voice": "Celui-là, c'est pour Reflex IA, les outils IA.",
+          "cap": "Reflex IA"
+        }
+      ]
+    },
+    {
+      "id": "confitures",
+      "bg": "#FBF1ED",
+      "min": 6.4,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "b1",
+          "voice": "Celui-là, pour une marque de confitures.",
+          "cap": "Confitures"
+        }
+      ]
+    },
+    {
+      "id": "coaching",
+      "bg": "#EAF7F1",
+      "min": 6.6,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "d1",
+          "voice": "Et celui-là, pour du coaching, avec sa propre charte !",
+          "cap": "Coaching"
+        }
+      ]
+    },
+    {
+      "id": "meme",
+      "bg": "#F3F1FA",
+      "min": 4.4,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "e1",
+          "voice": "Trois univers, trois styles, mais exactement le même système !",
+          "cap": "Même système"
+        }
+      ]
+    },
+    {
+      "id": "systeme",
+      "bg": "#FFF8E1",
+      "min": 0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "n1",
+          "voice": "Moi, je lui donne trois choses : mes données, ma charte, et un modèle de carrousel.",
+          "cap": "Trois choses",
+          "hold": 1.6
+        },
+        {
+          "id": "n2",
+          "voice": "Les données, c'est le fond : le texte, les photos, l'angle.",
+          "cap": "Les données",
+          "hold": 1.6
+        },
+        {
+          "id": "n3",
+          "voice": "La charte, ce sont les couleurs, la police, le logo.",
+          "cap": "La charte",
+          "hold": 1.6
+        },
+        {
+          "id": "n4",
+          "voice": "Et le modèle, c'est la structure : une liste, une fabrication pas à pas, des coulisses, une pédagogie en cinq slides.",
+          "cap": "Le modèle",
+          "hold": 1.8
+        },
+        {
+          "id": "n5",
+          "voice": "Tu changes les données et la charte, le système fait le reste !",
+          "cap": "Le système fait le reste",
+          "hold": 2.2
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "bg": "#0B1433",
+      "min": 7.0,
+      "caption": false,
+      "sentences": [
+        {
+          "id": "k1",
+          "voice": "Tu veux le même système pour ton univers ? Commente « carrousel », et je te l'envoie pour l'adapter à ta sauce !",
+          "cap": "Commente « carrousel »"
+        }
+      ]
+    }
+  ],
+  "tempo": 1.16
+}
