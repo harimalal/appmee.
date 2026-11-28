@@ -98,3 +98,7 @@ Si l'utilisateur donne l'ordre des scènes (problèmes → système → exemples
 - Retirer une phrase dès que Hari la juge en trop (ex. « rien d'inventé »), même vraie.
 - Fond : Hari n'aime plus les fonds clairs à ronds de couleur → **bleu-noir reflet de verre**, sans ronds, éléments agrandis pour remplir l'écran.
 - Couverture : le titre doit se lire au premier coup d'œil sur fond sombre (blanc + jaune plein, grand), jamais de texte sombre sur fond sombre.
+
+## Quand Hari raconte un épisode passé (reel n°10, charte)
+- Retrouver l'épisode dans l'historique (`git log -i --grep`, valeurs CSS par commit) avant d'écrire : l'avant et l'après doivent être de vraies captures.
+- Ce que Hari ajoute et que le dépôt n'a pas (ex. « cinq ou six maquettes GPT Image ») : dit de Hari ; à l'écran, cadres neutres + la seule pièce réelle ; le noter dans SCRIPT.md et proposer de remplacer par ses images.

@@ -1,0 +1,146 @@
+{
+ "_note": "Reel n°10 « Nouvelle charte, tout le site d'un coup » : ancienne charte crème/terracotta (proche de Claude) → nouvelle charte quatre couleurs, à partir d'une maquette. Avant = commit df3b980 (02/05/2026), après = cffda46 (13/05/2026), même contenu, mêmes 25 pages. Mode direct (Hari corrige la 1re version).",
+ "model": "gemini-3.1-flash-tts-preview",
+ "voice": "Charon",
+ "asr_model": "gemini-3.5-flash",
+ "gap_sentence": 0.08,
+ "gap_scene": 0.5,
+ "lead": 0.2,
+ "tail": 0.25,
+ "nombres_autorises": [],
+ "cta_contient": "Commente",
+ "max_mots_visibles": 40,
+ "tempo": 1.16,
+ "scenes": [
+  {
+   "id": "hook",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 4.4,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s1",
+     "voice": "Changer le look de tout ton site, sans rien casser ? Je l'ai fait d'un coup !",
+     "cap": "Changer le look de tout ton site, sans rien casser ? Je l'ai fait d'un coup !"
+    }
+   ]
+  },
+  {
+   "id": "avant",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s2",
+     "voice": "Avant, mon site était crème et orange. Il ressemblait trop à Claude.",
+     "cap": "Avant, mon site était crème et orange. Il ressemblait trop à Claude.",
+     "hold": 3.6
+    }
+   ]
+  },
+  {
+   "id": "dur",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s3",
+     "voice": "D'habitude, refaire un design, c'est long, et ça casse des pages.",
+     "cap": "D'habitude, refaire un design, c'est long, et ça casse des pages.",
+     "hold": 3.2
+    }
+   ]
+  },
+  {
+   "id": "maquettes",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s4",
+     "voice": "Moi, j'ai demandé cinq ou six maquettes à GPT Image.",
+     "cap": "Moi, j'ai demandé cinq ou six maquettes à GPT Image.",
+     "hold": 2.8
+    },
+    {
+     "id": "s5",
+     "voice": "J'en ai gardé une seule, et je l'ai donnée à Claude.",
+     "cap": "J'en ai gardé une seule, et je l'ai donnée à Claude.",
+     "hold": 3.0
+    }
+   ]
+  },
+  {
+   "id": "pages",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s6",
+     "voice": "Claude a fait tout le reste : la page d'accueil, le blog, les articles, les rubriques.",
+     "cap": "Claude a fait tout le reste : la page d'accueil, le blog, les articles, les rubriques.",
+     "hold": 5.2
+    }
+   ]
+  },
+  {
+   "id": "palette",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s7",
+     "voice": "Quatre couleurs, une nouvelle police, et partout la même charte.",
+     "cap": "Quatre couleurs, une nouvelle police, et partout la même charte.",
+     "hold": 3.6
+    }
+   ]
+  },
+  {
+   "id": "rien",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s8",
+     "voice": "Et rien n'a cassé : mêmes pages, même contenu, juste un nouveau look.",
+     "cap": "Et rien n'a cassé : mêmes pages, même contenu, juste un nouveau look.",
+     "hold": 4.0
+    }
+   ]
+  },
+  {
+   "id": "ba",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "s9",
+     "voice": "Regarde l'avant, et l'après.",
+     "cap": "Regarde l'avant, et l'après.",
+     "hold": 3.6
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "bg": "linear-gradient(118deg,rgba(255,255,255,0) 28%,rgba(255,255,255,.07) 36%,rgba(255,255,255,0) 44%),radial-gradient(900px 620px at 85% -6%,rgba(92,120,255,.38),rgba(92,120,255,0) 65%),radial-gradient(800px 600px at 0% 105%,rgba(40,70,200,.30),rgba(40,70,200,0) 60%),linear-gradient(165deg,#0B1230 0%,#04060E 55%,#0A1028 100%)",
+   "min": 5.0,
+   "caption": false,
+   "sentences": [
+    {
+     "id": "k1",
+     "voice": "Tu veux faire pareil sur ton site ? Commente « charte », et je t'envoie la méthode !",
+     "cap": "Tu veux faire pareil sur ton site ? Commente « charte », et je t'envoie la méthode !"
+    }
+   ]
+  }
+ ]
+}
